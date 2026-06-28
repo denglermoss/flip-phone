@@ -82,12 +82,12 @@ Four architectures were evaluated, not just module models:
 
 | Architecture | Example | Audio | MCU/RTOS Learning | Prototyping | Selected? |
 |-------------|---------|-------|-------------------|-------------|-----------|
-| A: Cat 4 + MCU + codec | SIM7600 + STM32 + WM8960 | PCM→codec (voice) + I2S→codec (music), unified | Full | Waveshare HAT ready | **Yes** |
+| A: Cat 4 + MCU + codec | SIM7600 + STM32 + MAX9880A | PCM→codec primary (voice) + I2S→codec secondary (music), dual-port | Full | Waveshare HAT ready | **Yes** |
 | B: Cat 1 voice module + MCU | EG912U-GL + STM32 | Module analog (voice) + external DAC (music), two paths | Full | Needs carrier board | No |
 | C: OpenCPU smart module | EG912U/EC600M + QuecPython | Built-in | None (Python on module) | EVB available | No (eliminates learning goal) |
 | D: Premium certified module | LARA-R6401 + STM32 + codec | I2S→codec | Full | DigiKey available | No (**911 not supported**) |
 
-**Key insight**: The music player goal (rated 6 on wishlist) is what makes Architecture A win over B. A single codec (e.g., WM8960) handles both voice (PCM from module) and music (I2S from MCU) through one audio path. Architecture B's built-in analog audio is voice-quality only — music still needs a separate DAC, creating two audio paths and more complexity.
+**Key insight**: The music player goal (rated 6 on wishlist) is what makes Architecture A win over B. The selected codec (**MAX9880A**, see Codec Selection section below) has two independent digital audio ports — voice (PCM from module on primary port) and music (I2S from MCU on secondary port) — so both run simultaneously through one codec without the MCU in the voice path. Architecture B's built-in analog audio is voice-quality only — music still needs a separate DAC, creating two audio paths and more complexity. **Note**: The original claim that common codecs like WM8960 "unify" PCM and I2S into one audio path was **incorrect** — WM8960, NAU8810, NAU8822, and all common single-port codecs can only accept one digital audio stream at a time. The MAX9880A (dual-port) is what makes the unified architecture actually work. See Codec Selection / Audio Path Architecture section.
 
 ### SIM Cards
 
@@ -190,7 +190,7 @@ Worst-case GPIO budget for the phone (all peripherals populated):
 |-----------|------|-------|
 | UART to SIM7600 | 4 | TX, RX, RTS, CTS (hardware flow control) |
 | Debug UART | 2 | TX, RX |
-| SAI to audio codec | 4 | SCK, FS, SD, MCLK |
+| SAI to audio codec (I2S) | 4 | SCK, FS, SD, MCLK — MCU→MAX9880A secondary port (music). Voice PCM goes SIM7600↔MAX9880A primary port directly, NOT through MCU. |
 | Display (SPI) | 6 | MOSI, SCK, CS, DC, RESET, backlight |
 | SD card (SDMMC, 4-bit) | 6 | CMD, CLK, D0-D3 |
 | USB OTG_FS | 2 | D+, D- (built-in PHY) |
@@ -388,14 +388,14 @@ Marginally. A 10-bit bus gives 100 MB/s raw instead of 80 MB/s, pushing raw RGB5
 ## Open Research Questions
 
 - [ ] **RESOLVED**: Does VoLTE "just work" via AT commands, or is there significant configuration? — SIM7600 has a known IMS PDP context quirk (cid=2 conflict with cid=1 data) **specific to the `AT+NETOPEN` code path**. The project uses CMUX+PPP (`ATD*99***<cid>#`), which bypasses `AT+NETOPEN` and is the standard documented pattern for simultaneous data + AT commands. VoLTE configuration requires firmware update + `AT+voltesetting=1` + carrier IMS authorization. To validate empirically with Waveshare NA-H HAT + Mint SIM.
-- [ ] **RESOLVED**: Can we use the module's built-in audio path or do we need an external codec? — SIM7600 (LCC package) exposes PCM digital audio only, no analog pins. External codec required (e.g., WM8960, NAU8810). The EG912U-GL has analog audio but was rejected for the two-audio-path problem with music playback.
+- [ ] **RESOLVED**: Can we use the module's built-in audio path or do we need an external codec? — SIM7600 (LCC package) exposes PCM digital audio only, no analog pins. External codec required. **MAX9880A selected** (dual-port: PCM + I2S). See Codec Selection section. The EG912U-GL has analog audio but was rejected for the two-audio-path problem with music playback.
 - [ ] **OPEN — revisit**: Which carriers allow VoLTE on non-certified devices with prepaid SIMs? — T-Mobile/Mint recommended (most lenient with non-certified devices on prepaid); SIM7600A-H is T-Mobile certified which helps. Not locked in — AT&T/Verizon possible but stricter IMEI whitelisting. Validate with HAT.
 - [ ] What's the minimum antenna design for LTE? Can we use a small chip antenna or stamped antenna?
 - [ ] **RESOLVED (2026-06-28, second round)**: Can the SIM7600 maintain simultaneous VoLTE call + data tethering? — **Not a requirement.** Simultaneous VoLTE+data is a future ecosystem feature (tethering while on a call), not needed for MVP or daily driver. The PDP context conflict is confirmed in the `AT+NETOPEN` code path only; the project uses CMUX+PPP which bypasses it. CMUX+PPP is the standard pattern for simultaneous data + AT commands (SMS, calls) on the SIM7600, proven in Linux n_gsm, RT-Thread, and ESP-IDF. Whether data stays active *during* a live VoLTE call via PPP is unverified but likely (3GPP bearers should coexist). **Fallback: pause data during calls — acceptable for all current and planned use cases.** This is no longer a modem selection factor.
 - [ ] Are there any open-source cell phone projects we can reference?
 - [ ] **OPEN — ecosystem impact**: Does SIM7600 GNSS work standalone or only when module is registered on network? — If GNSS requires network registration, the car module can't use phone GPS when the phone has no signal. Worth resolving early as it affects ecosystem navigation use case.
 - [ ] **RESOLVED**: Which ESP32 variants have USB OTG? (ESP32-S2, ESP32-S3 have native USB; original ESP32 does not) — Moot; STM32H743 selected.
-- [ ] **OPEN — revisit (HIGH PRIORITY)**: Which codec best supports both PCM (voice from SIM7600) and I2S (music from MCU) inputs? WM8960 vs NAU8810 vs others. — **Key unresolved question**: Most codecs (WM8960, NAU8810) are I2S-only with no second PCM port. Voice PCM from the SIM7600 may need to be routed through the MCU (MCU reads PCM from module, outputs I2S to codec), making the MCU a real-time audio bridge during calls. This is feasible on the H743 (4× SAI) but is a non-trivial firmware task and adds latency. The "unified audio path" claim may be partially overstated. **Resolve before committing to codec / before PCB design.** See codec revisit prompt.
+- [x] **RESOLVED (2026-06-28)**: Which codec best supports both PCM (voice from SIM7600) and I2S (music from MCU) inputs? — **MAX9880A selected.** Key findings: (1) All common codecs (WM8960, NAU8810, NAU8822, SGTL5000, TLV320AIC3204/3104, ES8316/8388) have only ONE digital audio input port — they cannot accept PCM and I2S simultaneously. The original "single codec unifies voice and music" claim was false for these parts. (2) The **MAX9880A** (Maxim/ADI, ~$1.70, TQFN-48) has two truly independent digital audio ports (primary for voiceband PCM/TDM, secondary for stereo I2S/TDM) that run simultaneously and asynchronously — designed exactly for smartphone voice+media. (3) The SIM7600 outputs PCM only (fixed master mode, short-frame sync, 16-bit linear, 2048/4096kHz) — no I2S mode, not configurable. (4) With the MAX9880A, the MCU is NOT in the voice audio path during calls (SIM7600→PCM→codec primary→speaker directly), matching real smartphone architecture. (5) Fallback if MAX9880A is unavailable: MCU bridge (SAI1 PCM slave + SAI2 I2S master + single-port codec like NAU8822) — feasible but adds ~8-10ms latency and depends on Zephyr H7 SAI driver maturity. See Codec Selection / Audio Path Architecture section and project-log.md 2026-06-28 Codec Selection.
 
 ## Component Checklist (BOM items not yet specified in docs)
 
@@ -409,6 +409,9 @@ Components that are implied by the architecture but not yet explicitly listed in
 | USB-C connector | Data + charging + ecosystem interconnect | USB-C recommended over micro-USB. Connector type still TBD in requirements.md. |
 | Earpiece transducer | Call audio (held to ear) | Separate from loudspeaker. See constraints.md audio topology note. |
 | Loudspeaker | Ringtones, speakerphone (rated 3) | Codec has separate speaker output. |
+| Audio codec | PCM voice (from SIM7600) + I2S music (from MCU) | **MAX9880AETM+ selected** (TQFN-48, ~$1.70). Dual-port: primary PCM, secondary I2S. 1.8V supply. See Codec Selection section. |
+| 1.8V LDO regulator | MAX9880A supply | From 3.3V or battery rail. |
+| I2S level shifter | 3.3V MCU → 1.8V MAX9880A secondary port | Unidirectional (SCK, FS, SD, MCLK). Voltage divider or TXB010x. |
 
 ## Modem Revisit Findings
 
@@ -594,3 +597,105 @@ Every LTE module in the candidate set is LGA — none are hand-solderable with a
 No LTE/VoLTE module exists in a hand-friendly (castellated/through-hole) package — this is an industry reality, not SIM7600-specific. NFR-3 ("hand-solderable for prototypes") is unachievable for ANY LTE module and must be updated.
 
 **Realistic path**: JLCPCB assembly for the modem section (~$57–72: module + $3 extended fee + ~$24 fixture + solder joints), hand-solder the rest. Hybrid assembly is supported by JLCPCB. Alternative: M.2 socket variant (module plugs in, no reflow) at cost of larger footprint. SIM7600A-H is not directly in JLCPCB's library (would need consignment); SIM7600E and SIM7600G-H-PCIE are stocked.
+
+## Codec Selection / Audio Path Architecture
+
+### The Problem
+
+The architecture (Architecture A) assumed a single codec handles both voice (PCM from SIM7600) and music (I2S from MCU) through "one audio path." The revisit found this claim is **false for all common codecs** — they have only one digital audio input port and cannot accept PCM and I2S simultaneously.
+
+### Finding 1: SIM7600 Audio Interface (PCM only, fixed)
+
+Source: SIM7600 Series Hardware Design Manual V1.03, §3.6 "PCM Interface."
+
+| Parameter | Value | Configurable? |
+|-----------|-------|---------------|
+| Format | Linear PCM | Fixed |
+| Data length | 16-bit | Fixed |
+| Clock/sync source | Master mode (module generates) | Fixed |
+| PCM clock rate | 2048 kHz (2G/3G), 4096 kHz (4G) | Fixed |
+| Sync format | Short frame sync | Fixed |
+| Data ordering | MSB first | Fixed |
+
+Pins: PCM_OUT (73), PCM_IN (74), PCM_SYNC (75), PCM_CLK (76). No I2S pins, no AT command to change framing (unlike Quectel modules which have `AT+QDAI`). The Waveshare HAT's NAU8810 is wired in PCM mode to match. There is a USB-audio path (`AT+CPCMREG=1`, `AT+CPCMFRM=1` for 16kHz) but it transfers raw PCM over a custom USB endpoint — not standard USB Audio Class, requires host software to process. Some SIM7600-PCIEA variants have analog audio (MICP/MICN, EARP/EARN) but the standard module does not.
+
+**Conclusion**: The SIM7600 outputs PCM only. A PCM-compatible codec or MCU bridge is required. This cannot be changed via firmware.
+
+### Finding 2: Codec Digital Audio Port Survey
+
+| Codec | Digital Audio Ports | PCM + I2S Simultaneous? | Package | Price (1-qty) | Speaker Driver |
+|-------|---------------------|-------------------------|---------|---------------|----------------|
+| WM8960 | 1 port (configurable: I2S/PCM/DSP/LJ/RJ) | NO | QFN-32 (5×5mm) | ~$6-12 (obsolete) | Yes (1W Class D) |
+| NAU8810 | 1 port (I2S or PCM) | NO | QFN-20 (4×4mm) | $1.10 | Yes (BTL) |
+| NAU88C22/8822 | 1 port (I2S or PCM) | NO | QFN-32 (4×4mm) | $1.19-2.88 | Yes (1W BTL) |
+| TLV320AIC3204 | 1 port | NO | QFN-32 (4×4mm) | ~$5.12 | Yes (headphone amp) |
+| TLV320AIC3104 | 1 port | NO | QFN-32 (4×4mm) | ~$3.57 | Yes (headphone amp) |
+| TLV320AIC3106 | 1 port (pin-muxed, not dual) | NO | QFN-48/BGA-80 | Request quote | Yes |
+| SGTL5000 | 1 port | NO | QFN-20/32 | Obsolete | Yes |
+| ES8316/8388 | 1 port | NO | QFN | ~$1-2 | Yes |
+| **MAX9880A** | **2 independent ports** | **YES** | **TQFN-48 (6×6mm)** | **~$1.70** | **Yes (30mW diff, 10mW capless)** |
+| TLV320AIC34 | 2 independent ports | YES | BGA-87 (6×6mm) | ~$10.43 | Yes (4 headphone amps) |
+
+**Key finding**: All popular hobbyist codecs have only ONE digital audio port. The MAX9880A (Maxim/ADI) is the only hobbyist-accessible codec with two truly independent digital audio interfaces — primary for voiceband (PCM/TDM), secondary for stereo audio (I2S/TDM), running simultaneously and asynchronously. The TLV320AIC34 is also dual-port but BGA-only (not hand-solderable). The TLV320AIC3106's "alternate bus" is pin multiplexing, not a second independent port (confirmed by TI forum).
+
+### Finding 3: MCU Bridge Feasibility (Fallback Architecture)
+
+If a single-port codec is used, the MCU must bridge PCM↔I2S: SIM7600→PCM→STM32 SAI1 (PCM slave)→STM32 SAI2 (I2S master)→codec.
+
+- **SAI blocks**: H743 has 4× SAI (8 sub-blocks). SAI1 and SAI2 have independent kernel clocks (D2CCIP1R register), so they can run at different sample rates. Within one SAI, A and B sub-blocks share a kernel clock (both directions must use same rate — acceptable for full-duplex voice).
+- **Sample rate strategy**: Run codec at 8/16kHz during calls (no ASRC needed), reconfigure to 44.1/48kHz for music. Simpler than software ASRC (H743 has no hardware ASRC).
+- **Latency**: ~8-10ms with 32-sample buffers (4ms per direction). Well within ITU G.114 (150ms one-way). Echo cancellation needed above 25ms — not triggered.
+- **CPU load**: <1% for pure bridging at 8kHz (DMA-based, 125-500 interrupts/sec). Total system load ~20-40% with UI + modem + PPP — comfortable on 480MHz M7.
+- **Bidirectional**: 4 streams (PCM in/out, I2S in/out) fit in 2 SAI blocks (4 sub-blocks). SAI1-A/B for PCM, SAI2-A/B for I2S.
+- **Risk**: Zephyr STM32H7 SAI driver maturity. The driver (`drivers/i2s/i2s_stm32_sai.c`) supports F4/G4/L5/H5 but H7 support was in progress (PR #92887). If not merged, requires porting or direct HAL usage. This is the primary "hard" part.
+- **Cache coherency**: DMA buffers need non-cached SRAM or cache clean/invalidate operations (D-cache present on H7).
+
+**Verdict**: Feasible-but-hard. Works if Zephyr H7 SAI driver is ready or willing to port. Adds latency and firmware complexity the MAX9880A avoids.
+
+### Decision: MAX9880A (Dual-Port Codec) — LOCKED 2026-06-28
+
+**Selected codec: MAX9880AETM+ (Maxim/ADI, TQFN-48, ~$1.70).**
+
+Architecture:
+```
+Voice path (calls):
+  SIM7600 PCM_OUT/IN/SYNC/CLK → MAX9880A primary port (PCM)
+  MAX9880A → earpiece/speaker (analog out)
+  Mic → MAX9880A (analog in) → PCM_IN → SIM7600
+  [MCU NOT in voice audio path]
+
+Music path (MP3 playback):
+  STM32H743 SAI (I2S) → MAX9880A secondary port (I2S)
+  MAX9880A → loudspeaker/headphones (analog out)
+
+Simultaneous voice + music:
+  MAX9880A mixes internally (e.g., call waiting tone over music)
+```
+
+Why MAX9880A over MCU bridge:
+1. **MCU not in voice path** — voice works even if MCU is loaded or rebooting. Matches real smartphone architecture (modem↔codec direct PCM, AP only for media).
+2. **Lower voice latency** — no bridge latency (direct PCM→codec).
+3. **Simpler firmware** — no real-time DMA bridging task, no cache coherency work, no codec rate switching.
+4. **Cheaper** — $1.70 vs WM8960 ($6-12, obsolete) or NAU8822 + bridge complexity.
+5. **Designed for exactly this use case** — smartphone voice (cellular PCM) + media (processor I2S).
+6. **No Zephyr SAI driver risk** for the voice path (codec talks directly to module; MCU I2S for music is simpler and more tolerant).
+
+Risks / pre-PCB verification items:
+1. **PCM short-frame sync compatibility** — verify MAX9880A primary port supports PCM short-frame sync, 16-bit, master clock from module (check MAX9880A datasheet). The subagent reported "TDM and I2S formats" for both ports; PCM short-frame is a common subset of TDM but must be confirmed.
+2. **Stock availability** — Maxim/ADI parts can have long lead times. Verify in-stock at DigiKey/Mouser before committing. If unavailable, fall back to MCU bridge architecture.
+3. **1.8V supply** — MAX9880A operates on 1.8V. The MCU's 3.3V I2S lines need level shifting (simple voltage divider or level shifter IC; I2S from MCU is output-only, so unidirectional shifting is easy). The SIM7600 PCM lines are also 1.8V-compatible (verify module I/O voltage).
+4. **Not on Waveshare HAT** — the HAT has NAU8810 (single-port PCM). The MAX9880A can't be prototyped on the HAT. The HAT validates SIM7600 PCM voice output (the riskiest unknown); the MAX9880A is committed for the final PCB.
+
+**Fallback architecture (if MAX9880A unavailable or incompatible)**: MCU bridge with NAU8822 (single-port I2S codec, ~$1.20). SAI1 as PCM slave (SIM7600), SAI2 as I2S master (codec). Run codec at 8/16kHz during calls, 48kHz for music. ~8-10ms latency. Requires Zephyr H7 SAI driver. See Finding 3 above.
+
+### Prototyping Impact
+
+The Waveshare NA-H HAT prototyping step is **unchanged** — it validates the SIM7600's PCM voice output on T-Mobile VoLTE using the NAU8810. This is the riskiest unknown and is independent of the final codec choice. The codec architecture decision affects the final PCB, not the HAT prototyping phase.
+
+### Component Checklist Update
+
+| Component | Purpose | Notes |
+|-----------|---------|-------|
+| MAX9880AETM+ | Audio codec (dual-port: PCM voice + I2S music) | TQFN-48, ~$1.70. Verify stock + PCM short-frame sync before PCB. 1.8V supply — add level shifter for MCU I2S. |
+| 1.8V regulator | MAX9880A supply | LDO from 3.3V or battery rail. |
+| I2S level shifter | 3.3V MCU → 1.8V MAX9880A secondary port | Unidirectional, 3-4 lines (SCK, FS, SD, MCLK). Simple voltage divider or TXB010x. |

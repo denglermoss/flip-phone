@@ -108,6 +108,7 @@ Ecosystem modules are future scope.
 4. **Carrier device whitelisting** — Some US carriers block unknown IMEIs. T-Mobile prepaid is the most lenient, but this needs validation.
 5. **Mechanical/form factor** (deferred risk) — Flex cable, hinge, enclosure fit. Will become relevant once electronics are proven.
 6. **Ecosystem compatibility** (future risk) — Hardware choices (MCU USB capability, connector selection, firmware USB stack) must not preclude future module connectivity. Low risk if USB-capable MCU is selected.
+7. **MAX9880A codec availability/compatibility** (pre-PCB risk) — The selected dual-port codec (MAX9880A) must be verified for PCM short-frame sync support on its primary port and in-stock availability at distributors before committing to PCB. Fallback (MCU bridge with NAU8822) exists but adds firmware complexity. The Waveshare HAT prototyping (NAU8810) validates the SIM7600 PCM voice output independent of this risk.
 
 ## Success Criteria
 

@@ -40,9 +40,11 @@
 
 ### Audio
 - Need microphone input and speaker output.
-- Cellular modules typically have analog audio interfaces (PCM/I2S or analog).
-- Need audio codec or use module's built-in audio path if available.
-- **Audio output topology**: A phone typically needs two transducers — an **earpiece** (low power, for holding to ear during a call) and a **loudspeaker** (for ringtones, speakerphone — rated 3 on wishlist). The selected codec (e.g., WM8960) has separate speaker and headphone outputs, so this is hardware-feasible. The specific output-to-transducer mapping is a schematic design decision. Minor concern, but worth noting before schematic phase.
+- The SIM7600 outputs **PCM digital audio only** (fixed: master mode, short-frame sync, 16-bit linear, 2048/4096kHz clock). No I2S mode, not configurable. See research-notes.md Codec Selection section.
+- **Selected codec: MAX9880A** (Maxim/ADI, TQFN-48, ~$1.70) — dual-port codec. Primary port accepts PCM from SIM7600 (voice), secondary port accepts I2S from STM32H743 (music). Both simultaneous and asynchronous. **MCU is NOT in the voice audio path during calls.** See project-log.md 2026-06-28 Codec Selection.
+- **MAX9880A supply: 1.8V.** Requires a 1.8V LDO regulator and level shifting for the MCU's 3.3V I2S lines (unidirectional — SCK, FS, SD, MCLK — simple voltage divider or TXB010x). The SIM7600 PCM lines are 1.8V-compatible (verify module I/O voltage in hardware design manual).
+- **Pre-PCB verification**: (1) confirm MAX9880A primary port supports PCM short-frame sync, 16-bit, master clock from module; (2) verify stock availability at DigiKey/Mouser; (3) plan 1.8V supply + level shifting. Fallback if unavailable: MCU bridge with NAU8822 (see research-notes.md Codec Selection Finding 3).
+- **Audio output topology**: A phone typically needs two transducers — an **earpiece** (low power, for holding to ear during a call) and a **loudspeaker** (for ringtones, speakerphone — rated 3 on wishlist). The MAX9880A has stereo headphone outputs (30mW differential, 10mW capacitorless) that can drive earpiece and loudspeaker. The specific output-to-transducer mapping is a schematic design decision.
 
 ### Timekeeping
 - The phone needs accurate time for call history timestamps (rated 7), SMS metadata, and potentially future features.

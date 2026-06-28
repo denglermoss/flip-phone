@@ -1,5 +1,11 @@
 # Revisit Prompt: Codec / Audio Path Architecture (PCM + I2S)
 
+**STATUS: RESOLVED & LOCKED 2026-06-28** — Revisit conducted. **MAX9880A** dual-port codec selected.
+
+**Outcome**: The original claim that a single common codec (WM8960, NAU8810) "unifies" PCM voice and I2S music into one audio path was **false** — all common codecs have only one digital audio port. The **MAX9880A** (Maxim/ADI, TQFN-48, ~$1.70) is the only hobbyist-accessible dual-port codec: primary port accepts PCM from SIM7600 (voice), secondary port accepts I2S from STM32H743 (music), both simultaneously. **MCU is NOT in the voice audio path during calls.** The SIM7600 outputs PCM only (fixed, no I2S mode). Fallback: MCU bridge with NAU8822 if MAX9880A unavailable. Pre-PCB verification: PCM short-frame sync support, stock availability, 1.8V level shifting. HAT prototyping unchanged. See project-log.md 2026-06-28 Codec Selection and research-notes.md Codec Selection section.
+
+---
+
 **Purpose**: Paste the prompt below into a new chat to revisit whether the selected codec architecture (single codec handling both PCM voice from the SIM7600 and I2S music from the MCU) is actually feasible, or whether the MCU needs to act as a real-time audio bridge.
 
 ---
