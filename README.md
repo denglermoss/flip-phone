@@ -43,6 +43,7 @@ Designing and building a custom flip phone from scratch. The project covers hard
 
 ## Documentation Index
 
+- [Problem Definition](docs/problem-definition.md) — The problem, architecture, MVP, risks, success criteria
 - [Requirements](docs/requirements.md) — Functional & non-functional requirements
 - [Constraints](docs/constraints.md) — Technical, budget, regulatory, timeline
 - [Research Notes](docs/research-notes.md) — Cellular comms primer, component research

@@ -5,7 +5,7 @@
 ### FR-1: Cellular Communication
 - **FR-1.1**: Device shall place outgoing voice calls to any phone number.
 - **FR-1.2**: Device shall receive incoming voice calls and alert the user (ring).
-- **FR-1.3**: Device shall support SMS send/receive (stretch goal).
+- **FR-1.3**: Device shall support SMS send/receive (post-MVP, required for daily-driver).
 - **FR-1.4**: Device shall connect to a real cellular network via a standard SIM card.
 - **FR-1.5**: Device shall operate on networks currently active in the user's region (see constraints — 2G sunset issue).
 
@@ -16,9 +16,9 @@
 - **FR-2.4**: Device shall provide audible feedback (ringtones, key tones, call audio).
 
 ### FR-3: Contacts & Storage
-- **FR-3.1**: Device shall store contacts locally (name + phone number).
-- **FR-3.2**: Device shall persist contacts across power cycles.
-- **FR-3.3**: Device shall allow adding, deleting, and editing contacts.
+- **FR-3.1**: Device shall store contacts locally (name + phone number). (Post-MVP)
+- **FR-3.2**: Device shall persist contacts across power cycles. (Post-MVP)
+- **FR-3.3**: Device shall allow adding, deleting, and editing contacts. (Post-MVP)
 
 ### FR-4: Power Management
 - **FR-4.1**: Device shall be battery-powered and rechargeable via USB.
@@ -57,10 +57,22 @@
 - Prototype BOM cost target: < $150 per unit (excluding PCB fab costs).
 - Total project budget: keep relatively low; avoid gold-plating.
 
+## Resolved Decisions
+
+- **Region**: United States
+- **Network**: LTE with VoLTE (2G/3G are shut down in the US)
+- **Carrier**: No preference — will use cheapest/easiest prepaid SIM. T-Mobile/Mint recommended (most lenient with non-certified devices, good LTE band coverage).
+- **MVP scope**: Voice calls only (make/receive). Contacts, SMS, menus are post-MVP.
+- **Daily-driver scope**: Calls + contacts + SMS + basic menu system (feature phone experience).
+- **Display**: To be recommended based on constraints (see research-notes.md).
+- **Keypad**: Deferred to Phase 2 prototyping.
+- **Enclosure**: Deferred to later phases. User has access to FDM, SLA, and CNC.
+- **Firmware**: RTOS (FreeRTOS or Zephyr) — balances concurrency needs with maintainability for a daily-driver device.
+
 ## Open Questions (Requirements)
 
-- [ ] Which cellular network generations to target? (2G only vs 3G vs LTE — affects module selection and network availability)
-- [ ] Display type: OLED, e-ink, or simple LCD?
-- [ ] Keypad: custom PCB traces vs off-the-shelf membrane vs mechanical switches?
-- [ ] Should we support Bluetooth (for headset) in MVP or defer?
-- [ ] What's the target user region/carrier for network compatibility testing?
+- [ ] Display type: OLED vs TFT LCD vs monochrome LCD (recommendation needed)
+- [ ] Keypad: custom PCB traces vs membrane vs mechanical switches (defer to Phase 2)
+- [ ] Bluetooth support: defer to post-MVP
+- [ ] MCU selection: STM32 vs nRF52 vs ESP32 (need to evaluate against RTOS choice and power requirements)
+- [ ] FreeRTOS vs Zephyr (Zephyr has native nRF52 support and cellular modem integration; FreeRTOS is more portable)

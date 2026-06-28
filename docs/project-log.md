@@ -2,6 +2,19 @@
 
 ## Decision Log
 
+### 2026-06-28: Problem Definition Session
+- **Decision**: Target US market — LTE with VoLTE is the only viable network path.
+  - *Rationale*: 2G and 3G are shut down in the US. No point building for dead networks.
+- **Decision**: Carrier-agnostic, but recommend T-Mobile/Mint for testing.
+  - *Rationale*: T-Mobile is most lenient with non-certified devices on prepaid. Good LTE band 2/4/66 coverage.
+- **Decision**: MVP = voice calls only (make/receive). Contacts, SMS, menus are post-MVP.
+  - *Rationale*: Get to a working call as fast as possible to validate the hardest part (cellular + audio + firmware). Everything else is additive.
+- **Decision**: Use RTOS (FreeRTOS or Zephyr) for firmware, not bare metal.
+  - *Rationale*: Concurrent requirements (AT command parsing, UI, power management, call state machine) make bare metal unwieldy for a daily-driver. RTOS provides task scheduling without sacrificing control. FreeRTOS vs Zephyr TBD.
+- **Decision**: Display type deferred — will recommend based on constraints.
+- **Decision**: Keypad design deferred to Phase 2 prototyping.
+- **Decision**: Enclosure deferred to later phases. User has FDM, SLA, and CNC access.
+
 ### 2026-06-28: Project Kickoff
 - **Decision**: Use off-the-shelf cellular module + custom MCU architecture (not designing custom modem).
   - *Rationale*: Designing a custom cellular modem is impractical. Off-the-shelf modules handle the radio protocol stack while still being challenging in PCB/firmware/mechanical design.
