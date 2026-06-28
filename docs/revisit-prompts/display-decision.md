@@ -1,5 +1,11 @@
 # Revisit Prompt: Display Type Selection
 
+**STATUS: RESOLVED & LOCKED 2026-06-28** — Revisit conducted. **ST7789V SPI color TFT** (2.0" 240×320, RGB565, ~$5–8) selected.
+
+**Outcome**: Five options evaluated: (1) SPI color TFT ST7789V 2.0" 240×320 — **SELECTED**; (2) SPI color OLED SSD1351 1.5" 128×128 — rejected (actually HIGHER power than TFT at ~57–71mA per datasheet — self-emissive OLED draws current per pixel; 3–5x cost at $15–24; 128×128 too low for phone UI/camera preview; not in Zephyr main tree, only out-of-tree driver); (3) E-ink (B/W or spot-color BWRY) — **DISQUALIFIED** by "no 5+ blocked" (blocks camera preview 6 at ~0.5–3fps refresh, photo capture 6 with spot-color only no blue/green/gradents, video 5; true color e-ink not available at 1.5–2.4"); (4) Parallel RGB TFT via LTDC 2.0" 320×480 — rejected (20–28 GPIO pins eats spare margin needed for future ULPI/BT; needs external SDRAM for comfortable double-buffering; 320×480 overkill for feature-phone UI); (5) SPI TFT ST7735 1.8" 128×160 — rejected (too low resolution). ST7789V wins on Zephyr driver maturity (`display_st7789v.c` most widely-used SPI display driver in main tree, native LVGL support), GPIO efficiency (6 pins preserves 31-spare margin), no external SDRAM (150KB framebuffer fits internal 1MB SRAM), color-capable (satisfies "no 5+ blocked" — photo capture 6, camera preview 6, video 5), lower power than the OLED alternative, and cost (~$5–8). Pre-PCB: verify ST7789v driver on STM32H7 + target Zephyr version (MIPI DBI API conversion had teething issues). See project-log.md 2026-06-28 Display Selection and research-notes.md Display Options section.
+
+---
+
 **Purpose**: Paste the prompt below into a new chat to make a decision on the display, which has been deferred but is now blocking (it affects the "no 5+ features blocked" principle and needs to be settled before schematic design).
 
 ---

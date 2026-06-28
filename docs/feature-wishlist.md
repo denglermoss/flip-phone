@@ -96,6 +96,6 @@ When selecting components, ensure these capabilities are available (even if not 
 | I2S or audio DAC on MCU | MP3 playback, audio output | 6 — strong want |
 | Camera interface (SPI/parallel) | Photo capture | 6 — strong want |
 | Module supports data + tethering | Hotspot, ecosystem | 6 — strong want (simultaneous VoLTE+data NOT required — pause-data acceptable) |
-| Color display | Camera preview, photos | 5-6 — nice to have |
+| Color display | Camera preview, photos | 5-6 — **SELECTED: ST7789V SPI TFT, 2.0" 240×320, RGB565** (satisfies "no 5+ blocked"; see research-notes.md Display Options) |
 | FM radio in module | FM radio | 4 — nice to have |
 | Wi-Fi capability | OTA updates | 4 — nice to have |

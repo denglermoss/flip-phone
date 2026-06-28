@@ -50,6 +50,16 @@
 - The phone needs accurate time for call history timestamps (rated 7), SMS metadata, and potentially future features.
 - **Selected approach: NITZ (Network Identity and Time Zone)** — the SIM7600 can sync time from the cellular network. This avoids needing a 32.768 kHz crystal on the MCU RTC and a backup battery (coin cell/supercap) to maintain time when the main battery dies. NITZ is simpler and sufficient for this use case. If time accuracy is needed when offline (no network), revisit and add an RTC crystal + backup battery.
 
+### Display
+- **Selected display: ST7789V SPI color TFT** (2.0" 240×320, 4-wire SPI, RGB565, ~$5–8). See project-log.md 2026-06-28 Display Selection and research-notes.md Display Options section.
+- **Color is a hard requirement** (not a preference): the "no 5+ features blocked" principle requires color capability — photo capture (rated 6), camera preview (rated 6), video recording (rated 5) all need color. A monochrome, grayscale, or spot-color display is disqualified. **E-ink is also disqualified** — even spot-color e-ink (BWR/BWRY) can't show photos (no blue/green/gradients), and the refresh rate (~0.5–3 fps mono partial, 12–22s color full) makes camera preview impossible. True full-color e-ink (ACeP) is not available at 1.5–2.4" sizes.
+- **Interface: 4-wire SPI** (SCK, MOSI, CS, DC) + RESET + backlight enable = **6 GPIO pins**. This preserves the 31-spare-GPIO margin on LQFP-144 for future ecosystem peripherals (ULPI USB HS = 12 pins, external BT = 4 pins). Parallel RGB via LTDC was rejected for consuming 20–28 GPIO pins.
+- **Framebuffer: 240×320 RGB565 = 150KB** — fits in the H743's 1MB internal SRAM with 850KB to spare. **No external SDRAM or FMC required.** This is a key simplification vs the LTDC path (which would need external SDRAM for comfortable double-buffering at 320×480).
+- **Power**: ~30–50mA with backlight on (6mA panel + 20–40mA backlight). Backlight is PWM-dimmable and **off during standby** (per FR-4.3). The display is a use-time load, not a standby load — the modem (17.5mA LTE idle/DRX) dominates standby power. Note: the SSD1351 color OLED alternative was rejected partly on power grounds — it actually draws **more** than the TFT (~57–71mA: VCI 23–29mA + Vcc 33–42mA per datasheet) because self-emissive OLED draws current per pixel.
+- **Zephyr driver**: `display_st7789v.c` is in Zephyr main tree (most mature SPI display driver); LVGL has native ST7789 support. **Pre-PCB verification**: confirm the driver works on STM32H7 with the target Zephyr version — the MIPI DBI API conversion (issue #73750) had teething issues.
+- **Camera preview bandwidth**: SPI at ~40MHz gives ~15–25fps partial-frame updates at 240×320 (faster at lower preview resolution). Adequate for casual photos (rated 6), not smooth video. LTDC would be smoother but is not justified for this use case (see research-notes.md Display Options).
+- **Backlight PWM**: Must be on a timer-output GPIO for dimming and power management (display off during standby).
+
 ## Budget Constraints
 
 - **Target**: Keep relatively low; flexible but avoid unnecessary spending.

@@ -377,13 +377,75 @@ Marginally. A 10-bit bus gives 100 MB/s raw instead of 80 MB/s, pushing raw RGB5
 
 ## Display Options
 
-| Type | Interface | Power | Cost | Notes |
-|------|-----------|-------|------|-------|
-| OLED (0.96"-1.3") | I2C/SPI | Low | $3-8 | Good contrast, small, easy to drive |
-| TFT LCD (1.4"-1.8") | SPI | Medium | $5-10 | Color, decent resolution |
-| Monochrome LCD | SPI/I2C | Very low | $3-6 | Classic phone look, very low power |
+**Decision (2026-06-28 — LOCKED): ST7789V SPI color TFT, 2.0" 240×320, RGB565.** See project-log.md 2026-06-28 Display Selection. The display must be color-capable per the "no 5+ features blocked" principle (photo capture rated 6, camera preview rated 6, video recording rated 5 — a monochrome display would block these).
 
-**Consideration**: A small OLED or monochrome LCD keeps power and cost down. Color TFT may be needed if camera/photo features are implemented (rated 6 on wishlist). Display choice deferred until component selection phase.
+### Options Evaluated
+
+| Option | Interface | Power (active) | Cost | GPIO | Framebuffer | Zephyr LVGL | Camera preview | Phone UI |
+|--------|-----------|----------------------|------|------|-------------|-------------|----------------|----------|
+| **SPI color TFT (ST7789V) — SELECTED** | 4-wire SPI | ~30–50mA (6mA panel + 20–40mA backlight; backlight off during standby) | ~$5–8 | **6** (MOSI, SCK, CS, DC, RESET, BL) | 240×320 RGB565 = 150KB → fits 1MB SRAM | **Best.** `display_st7789v.c` in Zephyr main tree; LVGL native ST7789. Widely used. | ~15–25fps partial updates @ 240×320; faster at lower res. Adequate for rated-6 casual photos. | 240×320 @ 2.0" ≈ 200 PPI. Standard feature-phone res. Readable. |
+| SPI color OLED (SSD1351) | 4-wire SPI | **~57–71mA** (VCI 23–29mA + Vcc 33–42mA; self-emissive, no backlight — actually HIGHER than TFT) | **~$15–24** | 6 | 128×128 RGB565 = 32KB (trivial) | **Not in main tree.** Issue #88923 open; only out-of-tree driver (nktsb/zephyr-ssd1351-driver). SSD1327 (grayscale) is in Zephyr but NOT color. | 128×128 too low for useful preview. | 128×128 @ 1.5" ≈ 128 PPI. Cramped. Early-2000s res. |
+| E-ink (B/W or spot-color BWRY) | SPI | Ultra-low (bistable: ~0mA static; ~9mW refresh) | ~$5–15 | 6 | Small (e.g. 250×122 = 30KB) | Some drivers in Zephyr (SSD16xx family). Partial refresh support varies. | **BLOCKED.** ~0.3–3fps (mono partial), 12–22s (color full). Unusable for live preview. | Good for static menus (sunlight readable, bistable). But no live UI response. |
+| Parallel RGB TFT via LTDC | RGB565/RGB888 parallel | ~30–50mA + SDRAM quiescent | ~$8–15 panel + SDRAM chip | **20 (RGB565) or 28 (RGB888)** | 320×480 RGB565 = 300KB (tight single-buf); 600KB double-buf (very tight) → needs external SDRAM via FMC for comfort | `display_stm32_ltdc.c` in main tree; LTDC node in STM32H7 DTS. Works but less common in hobbyist use; complex devicetree (timings/porches/polarity). LVGL native LTDC. | Excellent — parallel bus + DMA2D, high bandwidth. Best preview. | 320×480 @ 2.0" ≈ 300 PPI. Sharp but overkill for feature-phone UI; more LVGL rendering work. |
+| SPI TFT 1.8" 128×160 (ST7735) | 4-wire SPI | ~30–50mA | ~$4–7 | 6 | 128×160 RGB565 = 41KB (trivial) | `display_st7735` in Zephyr main tree. Mature. | 128×160 too low. | Too low resolution for usable phone UI. Eliminated. |
+
+### Why ST7789V SPI TFT Was Selected
+
+1. **Zephyr driver maturity is decisive.** `display_st7789v.c` is the most widely-used SPI display driver in Zephyr main tree (recently converted to MIPI DBI API — issue #73750, teething issues now resolved in main). LVGL has native ST7789 support. The LTDC driver exists but requires more complex devicetree configuration; the SSD1351 (color OLED) is not even in the main tree (out-of-tree driver only). For a first custom PCB, the path of least resistance matters.
+2. **GPIO-efficient (6 pins vs 20–28 for LTDC).** Preserves the 31-spare-GPIO margin on LQFP-144 for future ecosystem peripherals — ULPI USB HS (12 pins, supports tethering rated 6) and external BT module (4 pins, supports Bluetooth rated 6). LTDC's 28 pins (RGB888) would drop spare GPIO to 9, jeopardizing those future 6+ features. RGB565 parallel (~20 pins) is better but still consumes 14 more pins than SPI for no real UI benefit at feature-phone scale.
+3. **No external SDRAM needed.** 150KB framebuffer fits in internal 1MB SRAM with 850KB to spare. No FMC, no SDRAM chip, simpler PCB, lower cost, lower power. LTDC at 320×480 double-buffered (600KB) is very tight in internal SRAM and would need external SDRAM via FMC for comfortable operation.
+4. **Power is acceptable — and lower than the color OLED alternative.** Backlight is PWM-dimmable and fully off during standby. The modem (17.5mA LTE idle/DRX) dominates standby power; the display is a use-time load, not a standby load. The SSD1351 color OLED actually draws **more** power during use (~57–71mA vs ~30–50mA) because self-emissive OLED draws current per pixel — for a phone UI with bright text/menus, the OLED is less efficient than a backlit TFT. The standby advantage is a wash (both near-zero when off: OLED sleep 1–5µA, TFT backlight off ~0).
+5. **240×320 is the right resolution** for a feature phone — not cramped like 128×128 (OLED) or 128×160 (ST7735), not overkill like 320×480 (LTDC). Standard feature-phone resolution (Nokia S40 class).
+6. **Cost is lowest** of the viable color options (~$5–8 vs ~$15–24 for color OLED).
+
+### Why Not LTDC Parallel RGB
+
+The only real advantage of LTDC is smoother camera preview (parallel bus + DMA2D bandwidth). This does not justify:
+- 20–28 GPIO pins (vs 6) — eats the spare margin needed for future ULPI + BT (both support 6+ features)
+- External SDRAM for comfortable double-buffering — adds a chip, FMC routing, power, cost
+- More complex Zephyr devicetree setup (display timings, porches, sync polarity, pixel clock config)
+- 320×480 resolution is overkill for a feature-phone UI (menus, contacts, call screens) — more LVGL rendering work for no user benefit
+
+Camera preview (rated 6) is "casual photos," not video. SPI at ~40MHz gives adequate ~15–25fps partial-frame updates. The LTDC advantage is real but not worth the GPIO/memory/complexity cost for this use case.
+
+### Why Not E-ink
+
+E-ink is **disqualified** by the "no 5+ features blocked" principle on two independent grounds:
+
+1. **Refresh rate makes camera preview impossible.** Monochrome partial refresh (best case): ~0.3s = ~3 fps. Monochrome fast refresh: ~1.5s = ~0.67 fps. Color (BWR/BWRY) full refresh: **12–22 seconds** per frame. Camera preview (rated 6) needs ~15+ fps to be usable for framing a photo. Even the fastest monochrome partial refresh (~3 fps) gives a stuttering slideshow, not a live view. Color e-ink is orders of magnitude worse.
+
+2. **"Color" e-ink at this size isn't actually color-capable for photos.** Small color e-ink (1.5–2.4") is **spot-color only** — black/white/red/yellow (BWRY) or black/white/red (BWR). 4 discrete colors, no blue, no green, no gradients. You cannot display a photo on this. True full-color e-ink (E Ink Gallery/ACeP) exists but starts at 6"+ and costs $100+. Not available at phone-display sizes.
+
+This blocks **three** 5+ features:
+- Photo capture (6) — can't show color photos (spot-color only, no blue/green/gradents)
+- Camera preview (6) — can't show live preview (refresh rate ~0.5–3 fps)
+- Video recording (5) — can't show live video
+
+E-ink's real advantages (ultra-low power, bistable, sunlight readable) are genuine but don't outweigh blocking three 5+ features. If the wishlist ever downgrades camera/photo/video below 5, e-ink becomes worth revisiting — but not now.
+
+### Why Not Color OLED (SSD1351)
+
+- **Power is actually HIGHER than TFT, not lower.** The SSD1351 datasheet specifies VCI operating current 23–29mA + Vcc operating current 33–42mA = **~57–71mA total**. The ST7789V TFT with backlight is ~30–50mA. Self-emissive OLED draws current per pixel — for a phone UI with bright text/menus on a dark background, the OLED is less efficient than a backlit TFT where the backlight is the main draw. The standby advantage is a wash (OLED sleep 1–5µA, TFT backlight off ~0; modem dominates standby at 17.5mA either way).
+- **Cost is 3–5x higher** — $15–24 vs $5–8 for the TFT. True color OLED at 1.5"+ is rare and expensive; 128×128 1.5" is the standard option.
+- 128×128 is too low for a usable phone UI (contacts lists, menus feel cramped) and poor for camera preview. No larger color OLED options exist at reasonable prices.
+- **Not in Zephyr main tree** — only an out-of-tree third-party driver (nktsb/zephyr-ssd1351-driver, issue #88923 open). Would require integrating an external driver. The SSD1327 IS in Zephyr but is grayscale (16-level), not color — fails the color requirement.
+
+### Selected Panel
+
+- **Controller IC**: ST7789V (Sitronix)
+- **Resolution**: 240×320 (QVGA)
+- **Size**: 2.0" (2.4" acceptable alternative — same controller/resolution, larger physical size, lower PPI ~167)
+- **Interface**: 4-wire SPI (SCK, MOSI, CS, DC) + RESET + backlight enable
+- **Color format**: RGB565 (16-bit, 65K colors)
+- **Variant preference**: IPS (full viewing angle) over TN
+- **Backlight**: 4× white LED, PWM-dimmable via timer-output GPIO
+
+### Pre-PCB Verification Items
+
+1. **Zephyr ST7789v driver on STM32H7**: Confirm `display_st7789v.c` works on STM32H7 with the target Zephyr version. The MIPI DBI API conversion (issue #73750) had teething issues (SPI word size, data transfer) — verify on a dev board (e.g., STM32H743 Nucleo + ST7789 breakout) before committing to PCB.
+2. **Panel selection**: Select a specific module with documented ST7789V + 240×320 + SPI, available from LCSC/DigiKey/Adafruit/Waveshare. Confirm FPC/connector footprint for PCB.
+3. **SPI clock**: Confirm panel max SPI clock (typically 40MHz for ST7789V) and that STM32H7 SPI peripheral can drive it at the needed rate for acceptable UI/camera-preview framerate.
+4. **Backlight PWM**: Plan backlight PWM control on a timer-output GPIO for dimming and power management (display off during standby per FR-4.3).
 
 ## Open Research Questions
 
@@ -395,6 +457,7 @@ Marginally. A 10-bit bus gives 100 MB/s raw instead of 80 MB/s, pushing raw RGB5
 - [ ] Are there any open-source cell phone projects we can reference?
 - [ ] **OPEN — ecosystem impact**: Does SIM7600 GNSS work standalone or only when module is registered on network? — If GNSS requires network registration, the car module can't use phone GPS when the phone has no signal. Worth resolving early as it affects ecosystem navigation use case.
 - [ ] **RESOLVED**: Which ESP32 variants have USB OTG? (ESP32-S2, ESP32-S3 have native USB; original ESP32 does not) — Moot; STM32H743 selected.
+- [x] **RESOLVED (2026-06-28)**: Which display type should the phone use? — **ST7789V SPI color TFT, 2.0" 240×320, RGB565.** Five options evaluated: (1) SPI color TFT ST7789V — **SELECTED**; (2) SPI color OLED SSD1351 — rejected (actually HIGHER power than TFT at ~57–71mA, 3–5x cost at $15–24, 128×128 too low, not in Zephyr main tree); (3) E-ink — **DISQUALIFIED** (blocks three 5+ features: camera preview 6 at ~0.5–3fps refresh, photo capture 6 with spot-color only no blue/green, video 5; true color e-ink not available at 1.5–2.4"); (4) LTDC parallel RGB — rejected (20–28 GPIO, needs external SDRAM, overkill res); (5) SPI TFT ST7735 1.8" 128×160 — rejected (too low res). ST7789v driver (`display_st7789v.c`) is the most mature SPI display driver in Zephyr main tree with native LVGL support. 6 GPIO pins, 150KB framebuffer fits internal 1MB SRAM (no external SDRAM), ~$5–8, color-capable, lower power than the OLED alternative. Pre-PCB: verify ST7789v driver on STM32H7 + target Zephyr version (MIPI DBI API conversion had teething issues). See Display Options section and project-log.md 2026-06-28 Display Selection.
 - [x] **RESOLVED (2026-06-28)**: Which codec best supports both PCM (voice from SIM7600) and I2S (music from MCU) inputs? — **MAX9880A selected.** Key findings: (1) All common codecs (WM8960, NAU8810, NAU8822, SGTL5000, TLV320AIC3204/3104, ES8316/8388) have only ONE digital audio input port — they cannot accept PCM and I2S simultaneously. The original "single codec unifies voice and music" claim was false for these parts. (2) The **MAX9880A** (Maxim/ADI, ~$1.70, TQFN-48) has two truly independent digital audio ports (primary for voiceband PCM/TDM, secondary for stereo I2S/TDM) that run simultaneously and asynchronously — designed exactly for smartphone voice+media. (3) The SIM7600 outputs PCM only (fixed master mode, short-frame sync, 16-bit linear, 2048/4096kHz) — no I2S mode, not configurable. (4) With the MAX9880A, the MCU is NOT in the voice audio path during calls (SIM7600→PCM→codec primary→speaker directly), matching real smartphone architecture. (5) Fallback if MAX9880A is unavailable: MCU bridge (SAI1 PCM slave + SAI2 I2S master + single-port codec like NAU8822) — feasible but adds ~8-10ms latency and depends on Zephyr H7 SAI driver maturity. See Codec Selection / Audio Path Architecture section and project-log.md 2026-06-28 Codec Selection.
 
 ## Component Checklist (BOM items not yet specified in docs)
@@ -410,6 +473,7 @@ Components that are implied by the architecture but not yet explicitly listed in
 | Earpiece transducer | Call audio (held to ear) | Separate from loudspeaker. See constraints.md audio topology note. |
 | Loudspeaker | Ringtones, speakerphone (rated 3) | Codec has separate speaker output. |
 | Audio codec | PCM voice (from SIM7600) + I2S music (from MCU) | **MAX9880AETM+ selected** (TQFN-48, ~$1.70). Dual-port: primary PCM, secondary I2S. 1.8V supply. See Codec Selection section. |
+| Color TFT display | Phone UI, camera preview, photo viewer | **ST7789V selected** (2.0" 240×320, 4-wire SPI, RGB565, ~$5–8). 6 GPIO pins. 150KB framebuffer fits internal SRAM. IPS variant preferred. See Display Options section. |
 | 1.8V LDO regulator | MAX9880A supply | From 3.3V or battery rail. |
 | I2S level shifter | 3.3V MCU → 1.8V MAX9880A secondary port | Unidirectional (SCK, FS, SD, MCLK). Voltage divider or TXB010x. |
 
