@@ -26,10 +26,10 @@
 - **FR-4.3**: Device shall enter low-power mode when idle (display off, modem standby).
 - **FR-4.4**: Device shall support a standby time of at least 24 hours (target).
 
-### FR-5: Form Factor
-- **FR-5.1**: Device shall be a flip/clamshell form factor with a hinge.
-- **FR-5.2**: Device shall fit comfortably in one hand when closed.
-- **FR-5.3**: Opening the flip shall wake the device / answer calls; closing shall end calls / sleep.
+### FR-5: Form Factor (Deferred)
+- **FR-5.1**: Device form factor is not yet specified. Single-board prototype first.
+- **FR-5.2**: Mechanical design (enclosure, form factor, keypad integration) will be decided after electronics and firmware are proven.
+- **FR-5.3**: User has access to FDM, SLA, and CNC for enclosure fabrication.
 
 ## Non-Functional Requirements
 
@@ -66,7 +66,7 @@
 - **Daily-driver scope**: Calls + contacts + SMS + basic menu system (feature phone experience).
 - **Display**: To be recommended based on constraints (see research-notes.md).
 - **Keypad**: Deferred to Phase 2 prototyping.
-- **Enclosure**: Deferred to later phases. User has access to FDM, SLA, and CNC.
+- **Enclosure/Form factor**: Deferred — single-board prototype first, mechanical design after electronics are proven. User has FDM, SLA, and CNC access.
 - **Firmware**: RTOS (FreeRTOS or Zephyr) — balances concurrency needs with maintainability for a daily-driver device.
 
 ## Open Questions (Requirements)

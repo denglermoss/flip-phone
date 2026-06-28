@@ -2,47 +2,42 @@
 
 ## The Problem
 
-Design and build a custom flip phone from scratch that can make and receive real voice calls on a live cellular network in the United States. The device must eventually become a usable daily-driver, not just a lab prototype.
+Design and build a custom cell phone from scratch that can make and receive real voice calls on a live cellular network in the United States. The device must eventually become a usable daily-driver, not just a lab prototype.
+
+**Form factor is deferred.** The initial focus is electronics and firmware. Mechanical design (flip, candybar, slider, etc.) will be decided after the core phone functionality is proven on a single-board design.
 
 ## Why This Is Hard
 
-A flip phone is a convergence of five engineering disciplines, each non-trivial on its own:
+A cell phone is a convergence of five engineering disciplines, each non-trivial on its own:
 
 1. **Cellular Communication** — The device must register on a real LTE network, authenticate via SIM, and establish VoLTE calls. This requires a cellular module, correct AT command sequencing, audio path configuration, and antenna integration. Get any of this wrong and there's no call.
 
-2. **Multi-Board Hardware** — A flip phone has two halves connected through a hinge. This means two PCBs linked by a flex cable that must survive thousands of bend cycles. Power, audio, display, and control signals all route through this hinge.
+2. **Hardware / PCB Design** — MCU, cellular module, power management, audio circuit, display, keypad, SIM, and antenna all on a custom PCB. RF trace impedance control, power rail integrity for 2A+ module peaks, and component placement all matter.
 
 3. **Embedded Firmware** — An RTOS must concurrently manage: UART communication with the cellular module (parsing async AT responses), UI rendering on a display, keypad input handling, call state machine, and power management policies. All within tight memory and power constraints.
 
 4. **Power Management** — Cellular modules draw 2A+ peaks during transmission. The battery, regulators, and charging circuit must handle this while fitting in a small enclosure. Standby time needs to be at least 24 hours.
 
-5. **Mechanical Integration** — The hinge mechanism, enclosure, keypad, display mounting, and antenna placement must all fit together in a pocketable form factor. The flex cable routing through the hinge is a known failure point.
+5. **Mechanical Integration** (deferred) — Enclosure, keypad feel, display mounting, antenna placement, and form factor. This is a separate design phase that depends on the electronics being proven first.
 
-## Architecture (Preliminary)
+## Architecture (Preliminary — Single Board)
 
 ```
-┌──────────────────────────────┐
-│         TOP HALF              │
-│  - Display (SPI/I2C)          │
-│  - Earpiece Speaker           │
-│  - Cellular Antenna           │
-│  - Status LED                 │
-└──────────┬───────────────────┘
-           │ Flex Cable (FPC)
-           │ - Display bus
-           │ - Speaker audio
-           │ - Antenna feed (50Ω)
-           │ - GPIO (status LED)
-┌──────────┴───────────────────┐
-│       BOTTOM HALF             │
-│  - MCU (STM32/nRF52, RTOS)    │
-│  - Cellular Module (LTE/VoLTE)│
-│  - SIM Card Slot              │
-│  - Battery + Charging IC      │
-│  - Keypad (matrix)            │
-│  - Microphone                 │
-│  - Power Regulation           │
-└──────────────────────────────┘
+┌─────────────────────────────┐
+│        Phone Board           │
+│  - MCU (RTOS)                │
+│  - Cellular Module (LTE)     │
+│  - SIM Card Slot             │
+│  - Display                   │
+│  - Keypad                    │
+│  - Mic + Speaker             │
+│  - Battery + Charging IC     │
+│  - Power Regulation          │
+│  - Antenna                   │
+└─────────────────────────────┘
+
+Multi-board split and form factor
+(flip, candybar, etc.) deferred.
 ```
 
 ## MVP Definition
@@ -72,17 +67,17 @@ A flip phone is a convergence of five engineering disciplines, each non-trivial 
 | PCB EDA | KiCad |
 | Budget | Keep low; flexible |
 | Prototype BOM | < $150/unit |
-| Form factor | Flip/clamshell, two PCBs + flex |
+| Form factor | Deferred — single board first, mechanical design later |
 | Assembly | Hand-solderable for prototypes |
 | Enclosure | 3D print (FDM/SLA) or CNC |
 
 ## Key Risks
 
 1. **VoLTE configuration** — Getting VoLTE working via AT commands may require carrier-specific settings. Need to validate early with a breakout board before committing to PCB design.
-2. **Antenna/RF** — LTE antenna in a small flip form factor may have poor performance. May need PCB respin.
-3. **Flex cable through hinge** — Routing display + audio + RF through a bending flex cable is mechanically and electrically challenging.
-4. **Power budget** — Meeting 24h standby with a small battery while powering an LTE module is tight.
-5. **Carrier device whitelisting** — Some US carriers block unknown IMEIs. T-Mobile prepaid is the most lenient, but this needs validation.
+2. **Antenna/RF** — LTE antenna design on a custom PCB may have poor performance. May need PCB respin.
+3. **Power budget** — Meeting 24h standby with a small battery while powering an LTE module is tight.
+4. **Carrier device whitelisting** — Some US carriers block unknown IMEIs. T-Mobile prepaid is the most lenient, but this needs validation.
+5. **Mechanical/form factor** (deferred risk) — Flex cable, hinge, enclosure fit. Will become relevant once electronics are proven.
 
 ## Success Criteria
 

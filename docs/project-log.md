@@ -11,9 +11,10 @@
   - *Rationale*: Get to a working call as fast as possible to validate the hardest part (cellular + audio + firmware). Everything else is additive.
 - **Decision**: Use RTOS (FreeRTOS or Zephyr) for firmware, not bare metal.
   - *Rationale*: Concurrent requirements (AT command parsing, UI, power management, call state machine) make bare metal unwieldy for a daily-driver. RTOS provides task scheduling without sacrificing control. FreeRTOS vs Zephyr TBD.
+- **Decision**: Form factor/mechanical design deferred. Start with single-board design.
+  - *Rationale*: The hard problems (cellular, firmware, power, RF) are form-factor independent. Locking into flip early adds constraints (flex cable, hinge, multi-board) before core electronics are validated. Decide mechanical design after the phone works on a single board.
 - **Decision**: Display type deferred — will recommend based on constraints.
 - **Decision**: Keypad design deferred to Phase 2 prototyping.
-- **Decision**: Enclosure deferred to later phases. User has FDM, SLA, and CNC access.
 
 ### 2026-06-28: Project Kickoff
 - **Decision**: Use off-the-shelf cellular module + custom MCU architecture (not designing custom modem).
@@ -24,6 +25,7 @@
   - *Rationale*: Open-source, well-supported, no license cost.
 - **Decision**: Flip/clamshell form factor with two PCBs connected via flex cable.
   - *Rationale*: Core to the project concept. Adds mechanical and routing complexity (desired challenge).
+  - *Note*: **Revised 2026-06-28** — Form factor deferred. Single-board first, mechanical design after electronics proven.
 
 ## Phase Breakdown & Effort Estimate
 

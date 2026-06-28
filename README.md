@@ -1,23 +1,25 @@
-# Flip Phone Project
+# Custom Phone Project
 
 ## Overview
 
-Designing and building a custom flip phone from scratch. The project covers hardware design (PCB, mechanical), embedded firmware, cellular communication, and integration into a usable device.
+Designing and building a custom cell phone from scratch. The project covers hardware design (PCB, electronics), embedded firmware, cellular communication, and eventually mechanical/enclosure design.
+
+**Form factor is not yet locked.** The initial goal is a working phone (breadboard → custom PCB). Mechanical design (flip, candybar, slider, etc.) will be decided after the electronics and firmware are proven.
 
 ## Goals
 
 - **Learning / Portfolio**: Deepen hardware and embedded systems skills; build something impressive.
 - **Actually Usable**: End goal is a device that can make real phone calls on a real cellular network.
-- **The Challenge**: Push beyond prior experience (microcontrollers, simple PCBs) into multi-board design, RF, cellular comms, and mechanical integration.
+- **The Challenge**: Push beyond prior experience (microcontrollers, simple PCBs) into RF, cellular comms, power management, and eventually mechanical integration.
 
 ## Scope
 
 ### In Scope
-- Custom PCB design (mainboard + sub-board connected via flex through hinge)
+- Custom PCB design (single-board initially; multi-board/form factor decided later)
 - Microcontroller + off-the-shelf cellular module architecture
 - Firmware: call handling, UI, contacts, power management
-- Mechanical: flip hinge, enclosure, keypad
 - Making real phone calls on a real network
+- Mechanical/enclosure design (deferred — decided after electronics are proven)
 
 ### Out of Scope (for now)
 - Custom cellular modem / baseband processor design
@@ -28,17 +30,21 @@ Designing and building a custom flip phone from scratch. The project covers hard
 ## Architecture Summary (Preliminary)
 
 ```
-┌─────────────────────────────────────────┐
-│              Flip Phone                  │
-│                                         │
-│  Top Half: Display + Speaker + Antenna   │
-│     │                                    │
-│   Flex Cable (through hinge)             │
-│     │                                    │
-│  Bottom Half: MCU + Cellular Module      │
-│               Battery + Keypad + Mic     │
-│               SIM Card Slot              │
-└─────────────────────────────────────────┘
+┌─────────────────────────────┐
+│        Phone Board           │
+│  - MCU (RTOS)                │
+│  - Cellular Module (LTE)     │
+│  - SIM Card Slot             │
+│  - Display                   │
+│  - Keypad                    │
+│  - Mic + Speaker             │
+│  - Battery + Charging IC     │
+│  - Power Regulation          │
+│  - Antenna                   │
+└─────────────────────────────┘
+
+Form factor (flip, candybar, etc.)
+and multi-board split deferred.
 ```
 
 ## Documentation Index

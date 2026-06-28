@@ -18,8 +18,7 @@
 - **Candidates to evaluate**: STM32 family, ESP32 (has Bluetooth/Wi-Fi if needed), nRF52 series.
 
 ### PCB Design
-- Multi-board design: main board + display board connected via flex cable through hinge.
-- Flex cable routing through hinge is mechanically challenging — limited bend cycles.
+- Single-board design initially. Multi-board split (for flip/slider/etc.) deferred until form factor is decided.
 - RF trace design for cellular antenna requires impedance control (50Ω) and possibly FCC layout guidelines.
 - Antenna: can use off-the-shelf cellular antenna component or PCB trace antenna (latter is harder).
 
@@ -27,7 +26,7 @@
 - Cellular modules can draw 2A+ peaks during transmission — battery and power management must handle this.
 - Battery: likely a single-cell LiPo (3.7V nominal). Need boost/buck converters for module power rails.
 - Charging: USB (Type-C or Micro-USB) with a battery management IC.
-- Battery capacity vs form factor tradeoff — flip phones have limited internal volume.
+- Battery capacity vs form factor tradeoff — final enclosure volume TBD (form factor deferred).
 
 ### Audio
 - Need microphone input and speaker output.
@@ -45,7 +44,7 @@
   - PCB assembly (if not hand-soldering): $20-80 per board
   - Battery: $5-15
   - Miscellaneous components (connectors, switches, audio, power ICs): $20-50
-  - Flex cable / FPC: $5-20
+  - Flex cable / FPC: $5-20 (only if multi-board form factor chosen later)
   - Enclosure materials: $10-30 (3D printing)
 - **Prototype BOM target**: < $150/unit
 - **Total project budget** (including multiple iterations, tools, mistakes): $200-500 realistic
@@ -68,7 +67,7 @@
 ## Skill / Tooling Constraints
 
 - User has: microcontroller experience, simple PCB design, soldering.
-- User needs to learn (or deepen): RF PCB layout, flex cable design, cellular AT command protocols, audio circuits, power management for RF loads, mechanical/cad for enclosure.
+- User needs to learn (or deepen): RF PCB layout, cellular AT command protocols, audio circuits, power management for RF loads. Mechanical/CAD for enclosure deferred.
 - **Tools needed**:
   - KiCad (free, open-source PCB EDA)
   - 3D CAD for enclosure (FreeCAD, Fusion 360)
