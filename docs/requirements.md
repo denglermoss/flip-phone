@@ -43,7 +43,7 @@
 ### NFR-1: Performance
 - Call setup time < 10 seconds from pressing "call" to hearing ringback.
 - UI response time < 200ms for keypad input.
-- Boot time < 15 seconds.
+- Boot time (MCU firmware ready + UI displayed): < 15 seconds. Note: full LTE network registration is a separate, longer sequence (~15–30s depending on carrier and signal) and is not included in this target. The phone shall show a "searching for network" indicator during registration.
 
 ### NFR-2: Reliability
 - Device shall not crash during a phone call.
@@ -53,7 +53,7 @@
 ### NFR-3: Manufacturability
 - PCB design shall be producible by standard PCB fab houses (e.g., JLCPCB, PCBWay).
 - Components shall be sourced from available distributors (DigiKey, Mouser, LCSC).
-- Assembly shall be feasible with hand soldering for prototypes (minimize BGA if possible).
+- Assembly shall be feasible with hand soldering for prototypes, **except the cellular module** — all LTE/VoLTE modules are LGA and require reflow or JLCPCB assembly. Realistic approach: JLCPCB assembles the modem section (~$57–72), hand-solder the rest. No LTE module exists in a hand-friendly package; this is an industry reality. (Updated 2026-06-28 per modem revisit.)
 
 ### NFR-4: Maintainability
 - Firmware shall be modular and well-structured.
@@ -78,10 +78,16 @@
 
 ## Open Questions (Requirements)
 
-- [ ] Display type: OLED vs TFT LCD vs monochrome LCD (recommendation needed)
+- [ ] Display type: OLED vs TFT LCD vs monochrome LCD (recommendation needed). **Constraint**: must be color-capable to satisfy the "no 5+ features blocked" principle (camera preview is rated 6).
 - [ ] Keypad: custom PCB traces vs membrane vs mechanical switches (defer to Phase 2)
-- [ ] Bluetooth support: defer to post-MVP
-- [ ] MCU selection: STM32 vs nRF52 vs ESP32 (need to evaluate against RTOS choice, power requirements, **and USB capability for ecosystem interconnect**)
-- [ ] FreeRTOS vs Zephyr (Zephyr has native nRF52 support and cellular modem integration; FreeRTOS is more portable)
-- [ ] USB connector type for ecosystem interconnect: USB-C vs micro-USB (data-capable, not charge-only)
-- [ ] USB mode: device-only vs OTG (does the phone need to be USB host for any ecosystem scenario?)
+- [ ] USB connector type for ecosystem interconnect: USB-C vs micro-USB (data-capable, not charge-only). USB-C strongly recommended for any new design.
+- [ ] USB mode: device-only vs OTG (does the phone need to be USB host for any ecosystem scenario?) — see FR-6.1 note.
+
+## Resolved Questions (moved from Open)
+
+- [x] **Bluetooth support**: Deferred to post-MVP. Will be added as an external module (e.g., BM83 for classic BT + BLE) when the Bluetooth feature (rated 6) is implemented. Neither STM32H7 nor ESP32-S3 has classic BT (A2DP), so an external module is needed regardless of MCU choice.
+- [x] **MCU selection**: STM32H743ZI (LQFP-144, 480MHz Cortex-M7). See project-log.md 2026-06-28 MCU Selection.
+- [x] **FreeRTOS vs Zephyr**: Zephyr RTOS. See project-log.md 2026-06-28 RTOS Selection.
+- [x] **USB mode (partial)**: USB FS (built-in PHY) for MVP; USB HS via external ULPI transceiver (USB3300) is a board-level upgrade path preserved by the LQFP-144 package. The phone acts as USB **device** in all described ecosystem scenarios (car module is host); OTG host capability is a bonus, not a requirement.
+- [x] **Modem revisit (2026-06-28, first round)**: SIM7600 selection confirmed after reviewing standby power, B71 validation, simultaneous VoLTE+data, and LGA assembly. Two changes: (1) switch prototyping HAT to SIM7600NA-H (~$89, has B71 + NAU8810 codec) — resolves B71 validation gap; (2) make simultaneous VoLTE+data the first HAT test — if it fails, it blocks a future ecosystem feature (not the MVP). Standby power figure corrected: 17.5 mA idle/DRX (not 3 mA deep-sleep). NFR-3 updated to acknowledge LGA assembly reality. See project-log.md 2026-06-28 Modem Revisit.
+- [x] **Modem revisit (2026-06-28, second round — LOCKED)**: SIM7600 selection **locked** after full re-evaluation. Key findings: (1) **LARA-R6401 disqualified** — 911/E911 not supported (safety disqualifier); (2) **EC25-AF evaluated** as fallback — T-Mobile voice certified, B71, but no codec breakout and higher idle current (23.3 mA); (3) **PDP context conflict is AT+NETOPEN-specific** — the project uses CMUX+PPP which bypasses it (standard pattern: Linux n_gsm, RT-Thread, ESP-IDF); (4) **simultaneous VoLTE+data is NOT a requirement** — not needed for MVP or daily driver; "pause data during call" is acceptable for the future ecosystem too. EC25-AF documented as PCB fallback if SIM7600 HAT testing reveals a blocking issue. See project-log.md 2026-06-28 Modem Revisit (Second Round).

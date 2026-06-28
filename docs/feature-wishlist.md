@@ -27,7 +27,7 @@ These ratings inform **component selection** — we should ensure the MCU, cellu
 |---------|--------|-------|
 | USB data transfer | 8 | Daily driver. Also critical for **ecosystem interconnect** (car module tethering). MCU must have USB device/peripheral capability. |
 | Bluetooth (headset, audio, file transfer) | 6 | Strong want. MCU selection should support BT (nRF52 has built-in BLE; STM32 would need external BT module). Note: BLE != classic BT — A2DP audio needs classic BT. |
-| Hotspot / tethering | 6 | Strong want. Ties into ecosystem concept — phone provides LTE to car module via USB. Cellular module must support data + tethering. Most LTE modules do. |
+| Hotspot / tethering | 6 | Strong want. Ties into ecosystem concept — phone provides LTE to car module via USB. Cellular module must support data + tethering. Most LTE modules do. **Note (2026-06-28)**: Simultaneous VoLTE+data (tethering while on a call) is NOT required — "pause data during call" is acceptable. SIM7600 supports data via CMUX+PPP. See project-log.md Modem Revisit (Second Round). |
 | Wi-Fi (OTA updates, basic internet) | 4 | Nice to have. ESP32 has built-in; STM32/nRF52 would need external module. Could use for firmware OTA updates. |
 | NFC | 1.5 | Not wanted. |
 
@@ -78,9 +78,9 @@ These ratings inform **component selection** — we should ensure the MCU, cellu
 The phone is envisioned as the **hub** in a multi-device ecosystem. Key hardware implications to keep options open:
 
 1. **USB with data capability** (rating 8) — MCU must support USB device mode. This is the primary interconnect for future modules (e.g., car infotainment). **Affects MCU selection.**
-2. **GPS/GNSS** — Select a cellular module with built-in GNSS if available (Quectel EG25-G has it). Costs nothing extra and enables ecosystem navigation use cases. **Affects module selection.**
+2. **GPS/GNSS** — Select a cellular module with built-in GNSS if available (SIM7600 has built-in GNSS). Costs nothing extra and enables ecosystem navigation use cases. **Affects module selection.**
 3. **Bluetooth** (rating 6) — May be used for wireless ecosystem connectivity later. nRF52 has BLE built-in; classic BT (A2DP for audio) would need a separate module or different MCU. **Affects MCU selection.**
-4. **Tethering / data mode** — Cellular module must support data connections (not just voice). Most LTE modules do, but verify. **Affects module selection.**
+4. **Tethering / data mode** — Cellular module must support data connections (not just voice). SIM7600 supports data via CMUX+PPP (not AT+NETOPEN, which has a firmware bug with IMS context). Simultaneous VoLTE+data is not required — pause-data-during-call is acceptable. **Affects module selection.**
 5. **Storage access via USB** — Phone should expose SD card or internal storage to connected modules. MCU USB stack must support mass storage class. **Affects firmware architecture.**
 
 ## Component Selection Summary (Informed by Wishlist)
@@ -95,7 +95,7 @@ When selecting components, ensure these capabilities are available (even if not 
 | BLE on MCU (or external BT module) | Bluetooth, ecosystem wireless | 6 — strong want |
 | I2S or audio DAC on MCU | MP3 playback, audio output | 6 — strong want |
 | Camera interface (SPI/parallel) | Photo capture | 6 — strong want |
-| Module supports data + tethering | Hotspot, ecosystem | 6 — strong want |
+| Module supports data + tethering | Hotspot, ecosystem | 6 — strong want (simultaneous VoLTE+data NOT required — pause-data acceptable) |
 | Color display | Camera preview, photos | 5-6 — nice to have |
 | FM radio in module | FM radio | 4 — nice to have |
 | Wi-Fi capability | OTA updates | 4 — nice to have |

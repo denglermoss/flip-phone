@@ -71,6 +71,7 @@ Ecosystem modules are future scope.
 - [Research Notes](docs/research-notes.md) — Cellular comms primer, component research
 - [Feature Wishlist](docs/feature-wishlist.md) — All potential features rated 1-10, ecosystem implications, component selection guide
 - [Project Log](docs/project-log.md) — Decision log and progress tracking
+- [Revisit Prompts](docs/revisit-prompts/) — Prompts for open questions requiring dedicated discussion (modem, codec, display, USB HS)
 
 ## Status
 
