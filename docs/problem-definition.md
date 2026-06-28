@@ -6,6 +6,18 @@ Design and build a custom cell phone from scratch that can make and receive real
 
 **Form factor is deferred.** The initial focus is electronics and firmware. Mechanical design (flip, candybar, slider, etc.) will be decided after the core phone functionality is proven on a single-board design.
 
+## Modular Ecosystem Vision (Future — Does Not Affect MVP)
+
+The phone is the first and primary project. However, the long-term vision is a **personal ecosystem of targeted devices** that can connect to the phone (or each other) for connectivity and shared data. The phone acts as the hub — providing LTE, contacts, music storage — while satellite modules handle specific tasks with their own UIs.
+
+**First envisioned module: Car System**
+- Display navigation (Google Maps alternatives — Organic Maps, OsmAnd, Mapbox)
+- Play music (local files, phone storage, Spotify via librespot)
+- Connect to phone via **USB** for tethered LTE + data + charging (primary), or Bluetooth/WiFi (future wireless modules)
+- This is essentially a custom head unit / infotainment system
+
+**Design principle**: The phone's hardware and firmware decisions must not prevent ecosystem integration. Specifically, the phone must expose connectivity interfaces (USB at minimum) that allow a future module to access LTE tethering, file storage, and potentially audio. This does not change the MVP scope — it only constrains hardware choices to leave the door open.
+
 ## Why This Is Hard
 
 A cell phone is a convergence of five engineering disciplines, each non-trivial on its own:
@@ -34,10 +46,25 @@ A cell phone is a convergence of five engineering disciplines, each non-trivial 
 │  - Battery + Charging IC     │
 │  - Power Regulation          │
 │  - Antenna                   │
+│  - USB (data + power) ←──┐   │ ← Ecosystem interconnect
+│  - (future: BT/WiFi)     │   │
+└──────────────────────────┼──┘
+                           │
+    ┌──────────────────────┘
+    │
+    ▼
+┌─────────────────────────────┐
+│  Future Module (e.g. Car)    │
+│  - SBC (Linux)               │
+│  - Display (5-7" TFT)        │
+│  - Audio out                 │
+│  - USB host to phone         │
+│  - Uses phone LTE via tether │
 └─────────────────────────────┘
 
 Multi-board split and form factor
 (flip, candybar, etc.) deferred.
+Ecosystem modules are future scope.
 ```
 
 ## MVP Definition
@@ -54,6 +81,7 @@ Multi-board split and form factor
 | Battery indicator | ✅ | ✅ |
 | Signal indicator | ✅ | ✅ |
 | Bluetooth | ❌ | Maybe |
+| USB data (ecosystem) | ❌ | ✅ |
 | Enclosure | Test jig | ✅ |
 
 ## Key Constraints Summary
@@ -70,6 +98,7 @@ Multi-board split and form factor
 | Form factor | Deferred — single board first, mechanical design later |
 | Assembly | Hand-solderable for prototypes |
 | Enclosure | 3D print (FDM/SLA) or CNC |
+| Ecosystem interconnect | USB (data + power); BT/WiFi deferred |
 
 ## Key Risks
 
@@ -78,6 +107,7 @@ Multi-board split and form factor
 3. **Power budget** — Meeting 24h standby with a small battery while powering an LTE module is tight.
 4. **Carrier device whitelisting** — Some US carriers block unknown IMEIs. T-Mobile prepaid is the most lenient, but this needs validation.
 5. **Mechanical/form factor** (deferred risk) — Flex cable, hinge, enclosure fit. Will become relevant once electronics are proven.
+6. **Ecosystem compatibility** (future risk) — Hardware choices (MCU USB capability, connector selection, firmware USB stack) must not preclude future module connectivity. Low risk if USB-capable MCU is selected.
 
 ## Success Criteria
 

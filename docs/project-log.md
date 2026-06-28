@@ -16,6 +16,16 @@
 - **Decision**: Display type deferred — will recommend based on constraints.
 - **Decision**: Keypad design deferred to Phase 2 prototyping.
 
+### 2026-06-28: Modular Ecosystem Vision
+- **Decision**: Adopt a long-term vision of a personal ecosystem of targeted devices, with the phone as the connectivity hub.
+  - *Rationale*: Building one perfect do-everything phone is unrealistic as a first project. Decomposing into targeted modules (car system, etc.) makes each piece achievable. The phone remains the primary project.
+- **Decision**: First envisioned module is a car system (navigation + music), connecting to phone via USB.
+  - *Rationale*: Car dock scenario makes USB ideal — provides data + power in one cable, higher bandwidth than Bluetooth, lower latency. Phone charges while docked. Android USB tethering is native. Car system offloads the hardest work (cellular) to the phone.
+- **Decision**: USB is the primary ecosystem interconnect; Bluetooth/WiFi deferred for future wireless modules.
+  - *Rationale*: USB is simpler, higher bandwidth, and provides power. Wireless is needed only for modules that can't be physically docked — that's a future problem.
+- **Decision**: Ecosystem vision does not change MVP scope, but does constrain hardware selection — MCU must have USB capability.
+  - *Rationale*: Selecting an MCU without USB would preclude future ecosystem integration. This is a low-cost constraint (many candidate MCUs have USB) that keeps the door open.
+
 ### 2026-06-28: Project Kickoff
 - **Decision**: Use off-the-shelf cellular module + custom MCU architecture (not designing custom modem).
   - *Rationale*: Designing a custom cellular modem is impractical. Off-the-shelf modules handle the radio protocol stack while still being challenging in PCB/firmware/mechanical design.
@@ -101,3 +111,4 @@
 | Date | Milestone | Status |
 |------|-----------|--------|
 | 2026-06-28 | Project definition & documentation started | In Progress |
+| 2026-06-28 | Modular ecosystem vision documented; USB interconnect constraint added to hardware selection | Done |

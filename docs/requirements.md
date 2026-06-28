@@ -31,6 +31,13 @@
 - **FR-5.2**: Mechanical design (enclosure, form factor, keypad integration) will be decided after electronics and firmware are proven.
 - **FR-5.3**: User has access to FDM, SLA, and CNC for enclosure fabrication.
 
+### FR-6: Ecosystem Connectivity (Future — Constrains Hardware Selection Now)
+- **FR-6.1**: Device MCU shall have USB capability (device or OTG mode) to enable future module connectivity. This is a hardware selection constraint, not an MVP feature.
+- **FR-6.2**: Device PCB shall include a USB data connector (not charge-only) routed to the MCU. Physical connector type TBD.
+- **FR-6.3**: Future scope (post-daily-driver): USB tethering to expose LTE connectivity to external modules.
+- **FR-6.4**: Future scope: File access (contacts, music storage) over USB for external modules.
+- **FR-6.5**: Bluetooth/WiFi for wireless ecosystem modules is deferred — not a hardware selection constraint at this time.
+
 ## Non-Functional Requirements
 
 ### NFR-1: Performance
@@ -74,5 +81,7 @@
 - [ ] Display type: OLED vs TFT LCD vs monochrome LCD (recommendation needed)
 - [ ] Keypad: custom PCB traces vs membrane vs mechanical switches (defer to Phase 2)
 - [ ] Bluetooth support: defer to post-MVP
-- [ ] MCU selection: STM32 vs nRF52 vs ESP32 (need to evaluate against RTOS choice and power requirements)
+- [ ] MCU selection: STM32 vs nRF52 vs ESP32 (need to evaluate against RTOS choice, power requirements, **and USB capability for ecosystem interconnect**)
 - [ ] FreeRTOS vs Zephyr (Zephyr has native nRF52 support and cellular modem integration; FreeRTOS is more portable)
+- [ ] USB connector type for ecosystem interconnect: USB-C vs micro-USB (data-capable, not charge-only)
+- [ ] USB mode: device-only vs OTG (does the phone need to be USB host for any ecosystem scenario?)

@@ -6,6 +6,8 @@ Designing and building a custom cell phone from scratch. The project covers hard
 
 **Form factor is not yet locked.** The initial goal is a working phone (breadboard → custom PCB). Mechanical design (flip, candybar, slider, etc.) will be decided after the electronics and firmware are proven.
 
+**Long-term vision**: The phone is the hub of a personal ecosystem of targeted devices. Future modules (e.g. a car infotainment system for navigation + music) would connect to the phone via USB for LTE tethering, data access, and charging. The phone project is the primary focus — ecosystem modules are future scope, but hardware decisions must not prevent them.
+
 ## Goals
 
 - **Learning / Portfolio**: Deepen hardware and embedded systems skills; build something impressive.
@@ -20,12 +22,14 @@ Designing and building a custom cell phone from scratch. The project covers hard
 - Firmware: call handling, UI, contacts, power management
 - Making real phone calls on a real network
 - Mechanical/enclosure design (deferred — decided after electronics are proven)
+- Hardware selection constrained to preserve USB connectivity for future ecosystem modules
 
 ### Out of Scope (for now)
 - Custom cellular modem / baseband processor design
 - FCC certification (prototype stage; revisit if moving toward production)
 - App store, browser, camera, or smartphone features
 - Custom OS (will use RTOS or bare metal)
+- Ecosystem module design (car system, etc.) — future projects, not this one
 
 ## Architecture Summary (Preliminary)
 
@@ -41,10 +45,22 @@ Designing and building a custom cell phone from scratch. The project covers hard
 │  - Battery + Charging IC     │
 │  - Power Regulation          │
 │  - Antenna                   │
+│  - USB (data + power) ←──┐   │ ← Ecosystem interconnect
+│  - (future: BT/WiFi)     │   │
+└──────────────────────────┼──┘
+                           │
+    ┌──────────────────────┘
+    ▼
+┌─────────────────────────────┐
+│  Future Module (e.g. Car)    │
+│  - SBC + Display + Audio     │
+│  - USB host to phone         │
+│  - Uses phone LTE via tether │
 └─────────────────────────────┘
 
 Form factor (flip, candybar, etc.)
 and multi-board split deferred.
+Ecosystem modules are future scope.
 ```
 
 ## Documentation Index
