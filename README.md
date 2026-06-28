@@ -69,6 +69,7 @@ Ecosystem modules are future scope.
 - [Requirements](docs/requirements.md) — Functional & non-functional requirements
 - [Constraints](docs/constraints.md) — Technical, budget, regulatory, timeline
 - [Research Notes](docs/research-notes.md) — Cellular comms primer, component research
+- [Feature Wishlist](docs/feature-wishlist.md) — All potential features rated 1-10, ecosystem implications, component selection guide
 - [Project Log](docs/project-log.md) — Decision log and progress tracking
 
 ## Status

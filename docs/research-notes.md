@@ -73,14 +73,34 @@ Your firmware must parse these asynchronously — the module can send URCs at an
 
 ## MCU Candidates
 
-| MCU | UARTs | Low Power | Cost | Notes |
-|-----|-------|-----------|------|-------|
-| STM32F4 series | 4-6 | Good | $5-10 | Well-supported (HAL/LL), lots of peripherals |
-| STM32L4 series | 3-5 | Excellent | $5-10 | Low-power optimized, good for battery device |
-| ESP32 | 3 | Moderate | $3-5 | Has Wi-Fi/BT (overkill?), lots of community support |
-| nRF52840 | 2-4 | Excellent | $5-8 | Great low-power, BLE if needed, Zephyr RTOS support |
+| MCU | UARTs | Low Power | Cost | USB | BT | Notes |
+|-----|-------|-----------|------|-----|-----|-------|
+| STM32F4 series | 4-6 | Good | $5-10 | Device + OTG | Needs external | Well-supported (HAL/LL), lots of peripherals |
+| STM32L4 series | 3-5 | Excellent | $5-10 | Device (some OTG) | Needs external | Low-power optimized, good for battery device |
+| ESP32 | 3 | Moderate | $3-5 | Device + OTG (some) | BLE + Classic | Has Wi-Fi/BT built-in, huge community support |
+| nRF52840 | 2-4 | Excellent | $5-8 | Device only | BLE only | Great low-power, Zephyr RTOS support. No classic BT, no USB OTG |
+| nRF52832 | 2-3 | Excellent | $4-6 | **None** | BLE only | Cheaper nRF52 variant but **no USB — eliminated for ecosystem interconnect** |
 
-**Consideration**: ESP32 is tempting (cheap, huge community) but power management is weaker than STM32L4. For a battery device, STM32L4 or nRF52 might be better. Need to evaluate peripheral count vs needs.
+### Ecosystem MCU Risk Analysis
+
+The phone is envisioned as a hub for future ecosystem devices (e.g., car infotainment). This creates specific MCU constraints:
+
+| Requirement | nRF52840 | STM32F4 | ESP32 |
+|------------|----------|---------|-------|
+| USB device mode | ✅ | ✅ | ✅ |
+| USB OTG (host+device) | ❌ | ✅ | ✅ (some variants) |
+| BLE | ✅ | Needs external | ✅ |
+| Classic BT (A2DP audio) | ❌ | Needs external | ✅ |
+| Low power | ✅✅ | ✅ | ⚠️ |
+| RTOS support | Zephyr/FreeRTOS | FreeRTOS | FreeRTOS |
+
+**Key risks identified:**
+1. **nRF52832 is eliminated** — no USB at all, kills ecosystem interconnect.
+2. **nRF52840 has no USB OTG** — phone can only be USB device, not host. Fine if ecosystem modules are hosts (e.g., Linux SBC), but limits future flexibility.
+3. **BLE ≠ Classic Bluetooth** — nRF52 has BLE only. A2DP audio streaming (to BT headphones or car audio) requires classic BT. Only ESP32 has both built-in.
+4. **Simultaneous voice + data** — Must verify cellular module can maintain data tethering while also handling VoLTE calls. Most LTE modules can, but needs verification with specific module + carrier.
+
+**Consideration**: ESP32 is tempting (cheapest, everything built-in) but power management is weaker than STM32L4/nRF52. For a battery device, STM32L4 or nRF52 might be better for standby time. Need to evaluate peripheral count vs needs. ESP32 with external power management IC might bridge the gap.
 
 ## Display Options
 
@@ -90,7 +110,7 @@ Your firmware must parse these asynchronously — the module can send URCs at an
 | TFT LCD (1.4"-1.8") | SPI | Medium | $5-10 | Color, decent resolution |
 | Monochrome LCD | SPI/I2C | Very low | $3-6 | Classic phone look, very low power |
 
-**Consideration**: A small OLED or monochrome LCD fits the flip phone aesthetic and keeps power/cost down.
+**Consideration**: A small OLED or monochrome LCD keeps power and cost down. Color TFT may be needed if camera/photo features are implemented (rated 6 on wishlist). Display choice deferred until component selection phase.
 
 ## Open Research Questions
 
@@ -98,5 +118,7 @@ Your firmware must parse these asynchronously — the module can send URCs at an
 - [ ] Which carriers allow VoLTE on non-certified devices with prepaid SIMs?
 - [ ] Can we use the module's built-in audio path (analog mic/speaker pins) or do we need an external codec?
 - [ ] What's the minimum antenna design for LTE? Can we use a small chip antenna or stamped antenna?
-- [ ] Flex cable: standard FPC connectors and ribbon types that survive hinge bending?
-- [ ] Are there any open-source flip phone projects we can reference?
+- [ ] Can the cellular module maintain simultaneous VoLTE call + data tethering? (Critical for ecosystem concept)
+- [ ] Are there any open-source cell phone projects we can reference?
+- [ ] Does Quectel EG25-G GNSS work standalone or only when module is registered on network?
+- [ ] Which ESP32 variants have USB OTG? (ESP32-S2, ESP32-S3 have native USB; original ESP32 does not)

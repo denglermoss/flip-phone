@@ -1,5 +1,13 @@
 # Project Log
 
+## User Background
+
+- Senior year Computer and Systems Engineering student.
+- Experience level: between "some hardware experience" and "moderate hardware" — has worked with microcontrollers and designed a few simple PCBs.
+- Wants this project to push beyond prior experience into RF, cellular comms, power management, and multi-discipline integration.
+- Open to simplifying initial versions but wants the overall project to be challenging and time-consuming.
+- Has access to FDM, SLA, and CNC for enclosure fabrication.
+
 ## Decision Log
 
 ### 2026-06-28: Problem Definition Session
@@ -57,13 +65,10 @@
 - Power management circuit (battery charging, regulation, module power)
 - Audio circuit (mic, speaker, codec or module direct)
 - Display and keypad interfacing
-- Flex cable connector selection and pinout
 - **Deliverable**: Complete schematic, reviewed
 
 ### Phase 4: PCB Layout (~3-5 weeks, part-time)
-- Main board layout (MCU, cellular module, power, keypad, SIM, mic)
-- Display board layout (display, speaker, antenna)
-- Flex cable design / FPC specification
+- Board layout (MCU, cellular module, power, keypad, SIM, mic, display, audio)
 - RF trace impedance control for antenna
 - DRC, manufacturing prep (Gerbers, BOM, pick-and-place)
 - **Deliverable**: PCB files sent to fab
@@ -84,16 +89,16 @@
 
 ### Phase 7: Mechanical Design & Enclosure (~3-6 weeks, part-time)
 - 3D model the enclosure in CAD
-- Design hinge mechanism
+- Design form factor (flip, candybar, etc. — decision made by this phase)
 - Design keypad integration
-- 3D print iterations, fit-check with PCBs
+- 3D print / CNC iterations, fit-check with PCB
 - **Deliverable**: Functional enclosure, assembled phone
 
 ### Phase 8: Integration & Testing (~2-4 weeks)
 - Full assembly
 - Test calls, battery life, durability
 - Fix issues discovered during integration
-- **Deliverable**: Working flip phone prototype
+- **Deliverable**: Working phone prototype
 
 ### Total Estimate
 - **Conservative estimate**: 4-6 months working part-time (evenings/weekends)
@@ -103,7 +108,7 @@
 ### Key Risk Areas (likely to extend timeline)
 1. **RF/antenna**: First PCB may have antenna issues requiring a respin.
 2. **Cellular module bring-up**: Subtle AT command / VoLTE configuration issues.
-3. **Mechanical hinge**: Flex cable failure, fit issues, 3D print iterations.
+3. **Mechanical/form factor**: Enclosure fit, keypad feel, 3D print/CNC iterations.
 4. **Power management**: Battery life tuning, peak current handling.
 
 ## Progress Tracking
