@@ -133,9 +133,9 @@ The "no 5+ features blocked" principle and concurrent processing load requiremen
 **Selected: STM32H743 (LQFP-144, STM32H743ZI)**
 
 Key reasons:
-1. **480MHz Cortex-M7 with L1 cache** — handles the worst-case concurrent load (ecosystem tethering: PPP routing + USB CDC ECM + MP3 decode + LVGL + modem management). The L1 cache is critical for networking/media workloads; cacheless M4 parts struggle with packet processing.
+1. **480MHz Cortex-M7 with L1 cache** — handles the worst-case concurrent load (~~ecosystem tethering: PPP routing + USB CDC ECM~~ [superseded 2026-06-28 — tethering now runs on the modem's USB, not the MCU; MCU load for tethering is ~zero] + MP3 decode + LVGL + modem management). The L1 cache is critical for networking/media workloads; cacheless M4 parts struggle with packet processing.
 2. **No 5+ features blocked** — every feature rated 5+ is hardware-capable. Camera (DCMI), audio (4x SAI), USB (FS + HS), SD (2x SDMMC), display (LTDC), video (hardware JPEG codec).
-3. **USB High-Speed** (via ULPI on LQFP-144) — important for ecosystem tethering. USB FS (12 Mbps) would bottleneck real-world LTE (20-50 Mbps). Can start with FS (built-in PHY) for MVP, add ULPI transceiver (USB3300, ~$2) later.
+3. ~~**USB High-Speed** (via ULPI on LQFP-144) — important for ecosystem tethering. USB FS (12 Mbps) would bottleneck real-world LTE (20-50 Mbps). Can start with FS (built-in PHY) for MVP, add ULPI transceiver (USB3300, ~$2) later.~~ **SUPERSEDED 2026-06-28**: USB HS via ULPI is no longer needed — the SIM7600's own USB 2.0 HS port (480 Mbps) does ecosystem tethering directly via RNDIS/ECM, bypassing the MCU. MCU USB OTG_FS (12 Mbps) is sufficient for firmware/files/debug. USB3300 dropped. See "USB HS / ULPI Revisit" section. (The LQFP-144 package is still retained for its GPIO margin — now 41 spare after dropping ULPI — camera bit depth, and peripheral fit.)
 4. **ARM Cortex-M7** — industry-standard, career-relevant, best-documented in Zephyr.
 5. **Mature Zephyr support** — multiple H7 boards in mainline Zephyr (H7B3I, H747I, H745I). USB stack well-tested on STM32.
 
@@ -149,13 +149,13 @@ Eliminated candidates:
 
 All three packages share identical silicon — same CPU, peripherals, memory. The only difference is how many pins are brought out from the die. More pins = more GPIO available + more peripheral pins accessible simultaneously.
 
-| Package | Size | GPIO | USB HS (ULPI) | Hand-solderable | Selected? |
+| Package | Size | GPIO | ~~USB HS (ULPI)~~ | Hand-solderable | Selected? |
 |---------|------|------|---------------|-----------------|-----------|
-| LQFP-100 | 14×14mm | 82 | ❌ No (ULPI pins not exposed) | ✅ Easiest | No — loses USB HS |
-| LQFP-144 | 20×20mm | 106 | ✅ Yes | ⚠️ Doable | **Yes** — keeps USB HS, sufficient GPIO |
-| LQFP-176 | 24×24mm | 140 | ✅ Yes | ⚠️ Large | No — overkill for this project |
+| LQFP-100 | 14×14mm | 82 | ~~❌ No (ULPI pins not exposed)~~ | ✅ Easiest | No — ~~loses USB HS~~ insufficient GPIO margin |
+| LQFP-144 | 20×20mm | 106 | ~~✅ Yes~~ | ⚠️ Doable | **Yes** — ~~keeps USB HS~~ 41 spare GPIO (margin for future peripherals), sufficient GPIO |
+| LQFP-176 | 24×24mm | 140 | ~~✅ Yes~~ | ⚠️ Large | No — overkill for this project |
 
-All packages are 0.5mm pitch. LQFP-144 selected to preserve USB HS option. JLCPCB assembly is the fallback (and will be needed for SIM7600 LGA module regardless).
+All packages are 0.5mm pitch. ~~LQFP-144 selected to preserve USB HS option.~~ **SUPERSEDED 2026-06-28**: LQFP-144 selected for its GPIO margin (41 spare after dropping ULPI), camera bit depth, and overall peripheral fit — not USB HS (ULPI dropped, see "USB HS / ULPI Revisit" section). JLCPCB assembly is the fallback (and will be needed for SIM7600 LGA module regardless).
 
 #### USB HS / ULPI Clarification
 
@@ -174,11 +174,12 @@ The STM32H743 has two separate USB OTG controllers on the silicon:
 | LQFP-144 | ✅ Yes | ✅ Yes (12 ULPI pins available) | ✅ Yes, **with** external USB3300 |
 | LQFP-176 | ✅ Yes | ✅ Yes | ✅ Yes, **with** external USB3300 |
 
-Practical path:
-- **MVP**: Use USB OTG_FS (built-in PHY, 12 Mbps, no extra chip). Fine for contacts transfer, firmware updates, basic ecosystem data.
-- **Later (ecosystem tethering)**: Populate USB3300 ULPI transceiver on PCB and switch to OTG_HS (480 Mbps). Board-level change (add chip + 12 traces), no MCU change.
+Practical path (updated 2026-06-28 per USB HS/ULPI Revisit — see "USB HS / ULPI Revisit" section below):
+- **MVP and daily driver**: Use the MCU's USB OTG_FS (built-in PHY, 12 Mbps, no extra chip). Fine for firmware updates, file/contacts transfer, CDC ACM debug.
+- **Ecosystem tethering (future)**: **Use the SIM7600's own USB 2.0 HS port** (480 Mbps) directly to the car module via RNDIS/ECM (`AT+CUSBPIDSWITCH`). The modem becomes the USB network adapter — **no MCU bridging, no USB3300 ULPI transceiver, no Zephyr USB HS stack needed.** The MCU's USB speed is irrelevant for tethering.
+- ~~Populate USB3300 ULPI transceiver on PCB and switch to OTG_HS (480 Mbps).~~ **SUPERSEDED 2026-06-28**: Dropped. The modem-direct USB tethering path (Finding 2) eliminates the need for MCU USB HS. USB3300 footprint is wasted board space; do not populate. The 12 ULPI pins are freed for other future use. Zephyr STM32H7 ULPI support is viable (mainline since Dec 2022) but no longer needed for this project. See "USB HS / ULPI Revisit" section.
 
-The 144-pin package keeps this option open. The 100-pin closes it permanently.
+The 144-pin package is retained (chosen for its GPIO margin — 41 spare after dropping ULPI — camera bit depth, and overall peripheral fit — not ULPI alone). The 100-pin closes the ULPI option permanently, but ULPI is no longer a project requirement.
 
 #### LQFP-144 vs LQFP-176 Detailed Tradeoff Analysis
 
@@ -207,20 +208,21 @@ Future additions:
 
 | Future peripheral | Pins | Notes |
 |-------------------|------|-------|
-| USB OTG_HS (ULPI) | 12 | External USB3300 transceiver, for ecosystem tethering |
+| ~~USB OTG_HS (ULPI)~~ | ~~12~~ | ~~External USB3300 transceiver, for ecosystem tethering~~ **DROPPED 2026-06-28** — modem-direct USB tethering replaces MCU USB HS (see USB HS/ULPI Revisit). 12 pins freed. |
+| Modem USB (D+/D-) | 2 | SIM7600 USB 2.0 HS port routed to ecosystem connector footprint/test points (rev1); future internal USB hub for tethering |
 | External BT module | 4 | UART + power/control |
-| **Subtotal** | **16** | |
+| **Subtotal** | **6** | ~~16~~ (was 16 with ULPI; now 6 with modem USB + BT) |
 
-**Total worst case: 75 pins.**
+**Total worst case: 65 pins.** (Was 75 with ULPI; dropped to 65 after USB HS/ULPI Revisit replaced 12-pin ULPI with 2-pin modem USB.)
 
-| Package | GPIO available | Used (75) | Spare |
+| Package | GPIO available | Used (65) | Spare |
 |---------|---------------|-----------|-------|
-| LQFP-144 | 106 | 75 | **31 spare** |
-| LQFP-176 | 140 | 75 | **65 spare** |
+| LQFP-144 | 106 | 65 | **41 spare** |
+| LQFP-176 | 140 | 65 | **75 spare** |
 
-Even with every peripheral populated (ULPI + BT + camera + keypad + everything), the 144 has 31 spare GPIO. The only scenario where the 176 helps is LTDC parallel RGB display (RGB888 = 28 pins instead of 6 for SPI), pushing total to 97 — still fits in 106 with 9 spare.
+Even with every peripheral populated (modem USB + BT + camera + keypad + everything), the 144 has 41 spare GPIO. The only scenario where the 176 helps is LTDC parallel RGB display (RGB888 = 28 pins instead of 6 for SPI), pushing total to 87 — still fits in 106 with 19 spare.
 
-**Verdict: 31 spare GPIO on the 144 is plenty. The extra 34 pins on the 176 are unused.**
+**Verdict: 41 spare GPIO on the 144 is plenty. The extra 34 pins on the 176 are unused.** (Previously 31 spare with ULPI; now 41 spare after dropping ULPI.)
 
 **2. Camera bit depth: 8-bit (144) vs 14-bit (176)**
 
@@ -273,7 +275,7 @@ Every factor favors the 144 or is a wash:
 
 | Factor | 144 wins | 176 wins | Neither matters |
 |--------|----------|----------|----------------|
-| GPIO count | ✅ 31 spare is plenty | Overkill (65 spare) | |
+| GPIO count | ✅ 41 spare is plenty (was 31 with ULPI; +10 after dropping ULPI 2026-06-28) | Overkill (75 spare) | |
 | Camera quality | ✅ 8-bit = same photos | 14-bit raw unused | |
 | FMC/external RAM | ✅ 16-bit sufficient if needed | 32-bit overkill | ✅ Probably not needed |
 | Package size | ✅ 20×20mm smaller | 24×24mm larger | |
@@ -392,7 +394,7 @@ Marginally. A 10-bit bus gives 100 MB/s raw instead of 80 MB/s, pushing raw RGB5
 ### Why ST7789V SPI TFT Was Selected
 
 1. **Zephyr driver maturity is decisive.** `display_st7789v.c` is the most widely-used SPI display driver in Zephyr main tree (recently converted to MIPI DBI API — issue #73750, teething issues now resolved in main). LVGL has native ST7789 support. The LTDC driver exists but requires more complex devicetree configuration; the SSD1351 (color OLED) is not even in the main tree (out-of-tree driver only). For a first custom PCB, the path of least resistance matters.
-2. **GPIO-efficient (6 pins vs 20–28 for LTDC).** Preserves the 31-spare-GPIO margin on LQFP-144 for future ecosystem peripherals — ULPI USB HS (12 pins, supports tethering rated 6) and external BT module (4 pins, supports Bluetooth rated 6). LTDC's 28 pins (RGB888) would drop spare GPIO to 9, jeopardizing those future 6+ features. RGB565 parallel (~20 pins) is better but still consumes 14 more pins than SPI for no real UI benefit at feature-phone scale.
+2. **GPIO-efficient (6 pins vs 20–28 for LTDC).** Preserves the 41-spare-GPIO margin on LQFP-144 for future ecosystem peripherals — modem USB (2 pins, supports tethering rated 6) and external BT module (4 pins, supports Bluetooth rated 6). ~~ULPI USB HS (12 pins)~~ was dropped 2026-06-28 (modem-direct USB tethering replaces it — see USB HS/ULPI Revisit). LTDC's 28 pins (RGB888) would drop spare GPIO to 19, still fitting but eating the margin needed for BT and other future peripherals. RGB565 parallel (~20 pins) is better but still consumes 14 more pins than SPI for no real UI benefit at feature-phone scale.
 3. **No external SDRAM needed.** 150KB framebuffer fits in internal 1MB SRAM with 850KB to spare. No FMC, no SDRAM chip, simpler PCB, lower cost, lower power. LTDC at 320×480 double-buffered (600KB) is very tight in internal SRAM and would need external SDRAM via FMC for comfortable operation.
 4. **Power is acceptable — and lower than the color OLED alternative.** Backlight is PWM-dimmable and fully off during standby. The modem (17.5mA LTE idle/DRX) dominates standby power; the display is a use-time load, not a standby load. The SSD1351 color OLED actually draws **more** power during use (~57–71mA vs ~30–50mA) because self-emissive OLED draws current per pixel — for a phone UI with bright text/menus, the OLED is less efficient than a backlit TFT. The standby advantage is a wash (both near-zero when off: OLED sleep 1–5µA, TFT backlight off ~0).
 5. **240×320 is the right resolution** for a feature phone — not cramped like 128×128 (OLED) or 128×160 (ST7735), not overkill like 320×480 (LTDC). Standard feature-phone resolution (Nokia S40 class).
@@ -401,7 +403,7 @@ Marginally. A 10-bit bus gives 100 MB/s raw instead of 80 MB/s, pushing raw RGB5
 ### Why Not LTDC Parallel RGB
 
 The only real advantage of LTDC is smoother camera preview (parallel bus + DMA2D bandwidth). This does not justify:
-- 20–28 GPIO pins (vs 6) — eats the spare margin needed for future ULPI + BT (both support 6+ features)
+- 20–28 GPIO pins (vs 6) — eats the spare margin needed for future modem USB + BT (both support 6+ features) ~~and ULPI~~ (ULPI dropped 2026-06-28)
 - External SDRAM for comfortable double-buffering — adds a chip, FMC routing, power, cost
 - More complex Zephyr devicetree setup (display timings, porches, sync polarity, pixel clock config)
 - 320×480 resolution is overkill for a feature-phone UI (menus, contacts, call screens) — more LVGL rendering work for no user benefit
@@ -459,6 +461,7 @@ E-ink's real advantages (ultra-low power, bistable, sunlight readable) are genui
 - [ ] **RESOLVED**: Which ESP32 variants have USB OTG? (ESP32-S2, ESP32-S3 have native USB; original ESP32 does not) — Moot; STM32H743 selected.
 - [x] **RESOLVED (2026-06-28)**: Which display type should the phone use? — **ST7789V SPI color TFT, 2.0" 240×320, RGB565.** Five options evaluated: (1) SPI color TFT ST7789V — **SELECTED**; (2) SPI color OLED SSD1351 — rejected (actually HIGHER power than TFT at ~57–71mA, 3–5x cost at $15–24, 128×128 too low, not in Zephyr main tree); (3) E-ink — **DISQUALIFIED** (blocks three 5+ features: camera preview 6 at ~0.5–3fps refresh, photo capture 6 with spot-color only no blue/green, video 5; true color e-ink not available at 1.5–2.4"); (4) LTDC parallel RGB — rejected (20–28 GPIO, needs external SDRAM, overkill res); (5) SPI TFT ST7735 1.8" 128×160 — rejected (too low res). ST7789v driver (`display_st7789v.c`) is the most mature SPI display driver in Zephyr main tree with native LVGL support. 6 GPIO pins, 150KB framebuffer fits internal 1MB SRAM (no external SDRAM), ~$5–8, color-capable, lower power than the OLED alternative. Pre-PCB: verify ST7789v driver on STM32H7 + target Zephyr version (MIPI DBI API conversion had teething issues). See Display Options section and project-log.md 2026-06-28 Display Selection.
 - [x] **RESOLVED (2026-06-28)**: Which codec best supports both PCM (voice from SIM7600) and I2S (music from MCU) inputs? — **MAX9880A selected.** Key findings: (1) All common codecs (WM8960, NAU8810, NAU8822, SGTL5000, TLV320AIC3204/3104, ES8316/8388) have only ONE digital audio input port — they cannot accept PCM and I2S simultaneously. The original "single codec unifies voice and music" claim was false for these parts. (2) The **MAX9880A** (Maxim/ADI, ~$1.70, TQFN-48) has two truly independent digital audio ports (primary for voiceband PCM/TDM, secondary for stereo I2S/TDM) that run simultaneously and asynchronously — designed exactly for smartphone voice+media. (3) The SIM7600 outputs PCM only (fixed master mode, short-frame sync, 16-bit linear, 2048/4096kHz) — no I2S mode, not configurable. (4) With the MAX9880A, the MCU is NOT in the voice audio path during calls (SIM7600→PCM→codec primary→speaker directly), matching real smartphone architecture. (5) Fallback if MAX9880A is unavailable: MCU bridge (SAI1 PCM slave + SAI2 I2S master + single-port codec like NAU8822) — feasible but adds ~8-10ms latency and depends on Zephyr H7 SAI driver maturity. See Codec Selection / Audio Path Architecture section and project-log.md 2026-06-28 Codec Selection.
+- [x] **RESOLVED (2026-06-28)**: Is Zephyr's STM32H7 USB OTG_HS + ULPI support mature enough for the ecosystem tethering path? — **Yes, it is viable (mainline since Dec 2022, PR #52772; bugs #61464/#75119 fixed; works on STM32H747I-DISCO), BUT it is no longer needed.** The SIM7600's own USB 2.0 HS port (480 Mbps) does tethering directly via RNDIS/ECM (`AT+CUSBPIDSWITCH`), bypassing the MCU entirely — a better architecture that eliminates the MCU USB bottleneck, the USB3300 ULPI transceiver, the Zephyr USB HS stack risk, and the 12 ULPI GPIO pins. **Decision: drop USB3300/ULPI; use MCU USB OTG_FS (12 Mbps) for MCU-originated USB (firmware, files, debug); route the modem's USB to the ecosystem connector (via an internal USB hub on a future respin) for tethering.** The "USB HS via ULPI is a board-level upgrade path preserved by LQFP-144" claim is superseded. See "USB HS / ULPI Revisit" section and project-log.md 2026-06-28 USB HS/ULPI Revisit.
 
 ## Component Checklist (BOM items not yet specified in docs)
 
@@ -467,7 +470,11 @@ Components that are implied by the architecture but not yet explicitly listed in
 | Component | Purpose | Notes |
 |-----------|---------|-------|
 | Nano-SIM socket | SIM card holder for SIM7600 | LGA/SMD, typically Molex 786470-3001 or similar |
-| Battery fuel gauge IC | Battery level monitoring (FR-4.2) | I2C, e.g., MAX17048 or LC709203F. Listed in GPIO budget but not as a selected component. |
+| Battery fuel gauge IC | Battery level monitoring (FR-4.2) | I2C. **Selected: MAX17048** (ModelGauge, coulomb counting, ~$2.50). Shares I2C bus with MAX9880A. See `docs/bom.md` item 12 and `docs/constraints.md` Power section. |
+| 3.3V buck-boost regulator | MCU/system rail from LiPo | **Selected: TPS630201** (3.3V fixed, 2A, ~$3.50). LiPo 3.0–4.2V → 3.3V. See `docs/bom.md` item 10 and `docs/constraints.md` Power section. |
+| ESD protection diodes | USB-C, SIM, microSD data lines | **Selected: USBLC6-2SC6** (USB) + **ESDA6V1-5SC6** (SIM/SD), ~$1 total. See `docs/bom.md` items 23-24 and `docs/constraints.md` PCB Design section. |
+| Modem PWRKEY/STATUS GPIO | Power-cycle SIM7600 from MCU | 2 GPIO pins (PWRKEY output + STATUS input). See `docs/constraints.md` MCU section. |
+| Display backlight driver | Raw panel LED backlight (FET + resistors) | N-FET + current-limiting resistors + PWM GPIO for parallel-LED panels. Verify panel config before PCB. See `docs/constraints.md` Display section. |
 | 32.768 kHz crystal | Not needed (NITZ selected) | Only if RTC crystal approach is later adopted. See constraints.md timekeeping section. |
 | USB-C connector | Data + charging + ecosystem interconnect | USB-C recommended over micro-USB. Connector type still TBD in requirements.md. |
 | Earpiece transducer | Call audio (held to ear) | Separate from loudspeaker. See constraints.md audio topology note. |
@@ -763,3 +770,78 @@ The Waveshare NA-H HAT prototyping step is **unchanged** — it validates the SI
 | MAX9880AETM+ | Audio codec (dual-port: PCM voice + I2S music) | TQFN-48, ~$1.70. Verify stock + PCM short-frame sync before PCB. 1.8V supply — add level shifter for MCU I2S. |
 | 1.8V regulator | MAX9880A supply | LDO from 3.3V or battery rail. |
 | I2S level shifter | 3.3V MCU → 1.8V MAX9880A secondary port | Unidirectional, 3-4 lines (SCK, FS, SD, MCLK). Simple voltage divider or TXB010x. |
+
+## USB HS / ULPI Revisit (Zephyr STM32H7 OTG_HS + ULPI Maturity)
+
+Revisit of the open item: "Zephyr USB HS via ULPI maturity on STM32H7." The concern was that the docs claimed "mature" STM32H7 USB support but possibly conflated **USB OTG_FS** (well-tested) with **USB OTG_HS via external ULPI** (less tested). This matters because the ecosystem tethering path (car module gets LTE from phone) needs more than USB FS's 12 Mbps, and the LQFP-144 package was chosen partly to expose the 12 ULPI pins.
+
+### Finding 1: Zephyr STM32H7 USB OTG_HS + ULPI IS in mainline and works
+
+- **PR #52772 "stm32h7: add usb hs ulpi support"** (XenuIsWatching) — **merged Dec 15, 2022.** Adds OTG_HS + ULPI PHY support to the STM32 USB driver, with the ULPI devicetree definition example on the **STM32H747I-DISCO** board (a mainline board that has a USB3300 ULPI transceiver onboard). A follow-up PR to `hal_stm32#155` set the ULPI pinctrl slew rate to "high-speed" (a required board-level detail).
+- **Issue #52420 "STM32: support external ULPI PHY with OTG_HS"** — **closed/completed 2024-05-14.** The feature request is resolved.
+- **Both USB stacks have ULPI support**: the legacy `drivers/usb/device/usb_dc_stm32.c` and the new `drivers/usb/udc/udc_stm32.c` (the "device_next" / UDC stack). The new stack selects `PCD_PHY_ULPI` from the PHY devicetree `compatible` (`usb-ulpi-phy`) referenced by the USB controller's `phys` property.
+- **Real-world confirmation** (TMPDIR community, cbrake, Aug–Sep 2023): HS USB on the STM32H747I-DISCO works well with the `cdc_acm` sample ("HS USB is behaving well"). A custom STM32H743 board initially failed to receive data (issue #57499), but the root cause was **hardware** — "Discovered the power to the USB Phy IO power was floating, so after we fixed that, the USB on our custom STM32H7 board is now reliable and matches dev boards." The same hardware worked under TinyUSB/FreeRTOS, proving the board wasn't the issue — it was a floating PHY IO power rail, not a Zephyr software bug.
+- **Known bugs are fixed**:
+  - #61464 (ECM class assertion on STM32H7, "mutexes cannot be used inside ISRs" in `udc_stm32_lock` from `HAL_PCD_SetupStageCallback`) — **fixed by PR #104825.** Was directly relevant when CDC ECM was the planned MCU tethering class; no longer relevant to the tethering path (modem-direct now) but still relevant if any MCU USB class is used.
+  - #75179 (USB-HS not working on stm32h747i_disco with the new `device_next` stack) — **fixed by PR #76115.**
+- **Latest Zephyr versions**: v3.7.2 LTS (Jul 2024, supported to 7/2029) and v4.1.0 (Mar 2025). ULPI support has been in mainline since Dec 2022 (over 3 years).
+
+**Caveats (ULPI is the less-trodden path):**
+- Only **one mainline board** (stm32h747i_disco) uses ULPI on an H7. Most H7 boards use OTG_FS. ULPI has far fewer users than FS.
+- The new UDC stack (`device_next`) had a ULPI regression on the disco board (#75179) — fixed, but it signals the new stack's ULPI path is less battle-tested than FS.
+- Clock configuration for ULPI is confusing (issue #71248 still has open TODOs about exposing sleep-clock DTS properties for F4/H7 ULPI; currently handled by `if(SERIES_xxx)`-gated driver code).
+- Board-level details are easy to get wrong: ULPI pinctrl **slew rate must be "high-speed"**, and the USB3300 IO power rail must be solidly tied (the #57499 "bug" was a floating PHY IO power).
+
+**Verdict on Finding 1**: Zephyr STM32H7 USB OTG_HS via ULPI is **viable and in mainline**, with known bugs fixed and real-world success on the disco board. It is not as mature as OTG_FS and has rough edges (clock config, slew rate, new-stack maturity), but it is a real, working path — not vaporware. Contributing upstream support is no longer needed (it already exists); the work would be board-bring-up (DTS/pinctrl/clock) on the custom PCB.
+
+### Finding 2: The SIM7600's own USB port does tethering directly — a better architecture
+
+This is the bigger finding and changes the architecture.
+
+- The SIM7600 has a **USB 2.0 High-Speed (480 Mbps)** device port (confirmed: SIMCom hardware design PDF states "USB2.0 is up to 480Mbps").
+- The module can present itself as a **USB network adapter** for tethering, with no MCU involvement:
+  - **RNDIS mode**: `AT+CUSBPIDSWITCH=9011,1,1` (best for Windows; also works on Linux via `rndis_host`)
+  - **ECM mode**: `AT+CUSBPIDSWITCH=9018,1,1` (best for Linux/macOS; standard CDC ECM)
+- In RNDIS/ECM mode the module's single USB port is a **composite device** exposing **both** the network interface **and** multiple AT/ttyUSB serial ports simultaneously (diagnostic, GPS NMEA, AT port, modem port, USB audio). Confirmed via `lsusb` on Raspberry Pi. So the USB host (car module) gets LTE data **and** AT command access over one cable.
+- This is the module's **native, best-supported tethering path** — it is what the SIM7600 is designed to do for USB tethering (used by Raspberry Pi, routers, Travel routers like Beryl AX). It is independent of the `AT+NETOPEN` firmware bug (which affects the AT-controlled embedded TCP/IP stack, not the USB network stack) and independent of the project's CMUX+PPP path (which is for MCU-originated data over UART).
+- The MCU talks to the modem via **UART** (CMUX+PPP for MCU data, AT for calls/SMS) — completely independent of the modem's USB. The modem's USB is free to be dedicated to tethering.
+
+**Implication**: For the ecosystem tethering use case, the modem's own HS USB can connect directly to the car module (USB host). The car module gets LTE at full USB 2.0 HS (480 Mbps) — **no MCU bridging, no ULPI transceiver, no USB3300, no Zephyr USB HS stack, no 12 GPIO pins.** The MCU's USB speed becomes irrelevant for tethering.
+
+### Finding 3: What the MCU's USB actually needs to do (all FS-sufficient)
+
+With modem-direct tethering, the MCU's USB (OTG_FS, 12 Mbps, built-in PHY) only needs to handle:
+- **Firmware updates** (MCU firmware via USB DFU/class) — FS is fine.
+- **File transfer / mass storage** (expose SD card / contacts / music to a PC or the car module) — FS is fine for occasional sync; music files are not bandwidth-critical to stream over USB (the car module would copy/store them, not stream).
+- **CDC ACM console / debug** — FS is fine.
+
+None of these need HS. The MCU USB FS bottleneck only existed when the MCU was *bridging* LTE data to USB CDC ECM. With the modem doing tethering directly, that bridge is eliminated.
+
+### Finding 4: Topology options for the ecosystem connector
+
+The phone has two USB device ports (MCU OTG_FS, modem USB 2.0 HS) and the car module is a USB host. To connect two USB devices to one host over one cable requires a USB hub (you cannot wire two device ports together). Options:
+
+| Topology | What it does | Cost / complexity | Tradeoff |
+|----------|--------------|-------------------|----------|
+| **A. Internal USB 2.0 hub** (e.g., USB2514) | Single USB-C → hub → {MCU FS, modem HS}. Car module sees both devices: modem (RNDIS for LTE) + MCU (MSC for files). | +1 hub chip (~$1–2), modest routing | Cleanest for the ecosystem vision; simultaneous LTE + file access over one cable. When plugged into a PC, the PC sees both modem (for firmware update) and MCU — also fine. |
+| **B. Two USB-C connectors** | USB-C #1 → MCU (charge + firmware + files), USB-C #2 → modem (tethering + modem firmware update). | No hub chip, but 2 connectors (board space, 2 enclosure holes) | Car module must connect to both for LTE + files simultaneously, or accept files-only-over-#1 and LTE-only-over-#2. |
+| **C. One USB-C + USB switch/MUX** | MCU controls a switch routing the connector to either MCU USB or modem USB (one at a time). | +1 switch chip, MCU control | Cannot do LTE + file access simultaneously. Cheapest single-connector option but loses simultaneity. |
+| **D. Minimal "keep door open"** | Lay out modem USB D+/D- to a connector footprint (or test points) + MCU USB on the main USB-C. Decide hub/switch topology in a PCB respin when the ecosystem becomes real. | Lowest commitment now | Defers the topology decision; preserves the option without committing to a hub chip on rev1. |
+
+**Recommendation: Topology D for rev1 (minimal commitment), with Topology A (internal hub) as the planned ecosystem path.** Tethering is rated 6 (strong want, not must-have) and is explicitly post-daily-driver scope. Rev1 should preserve the modem USB routing option (footprint/test points) without committing to a hub chip. When the ecosystem module becomes a real project, respin with the USB2514 hub (Topology A) for the clean single-cable simultaneous LTE + file access.
+
+### Recommendation Summary
+
+1. **USB HS via ULPI on Zephyr/STM32H7 is viable** (mainline since Dec 2022, bugs fixed, works on the disco board) — but it is **no longer needed** for the tethering use case, because the SIM7600's own USB 2.0 HS port does tethering directly and better.
+2. **Do NOT populate the USB3300 ULPI transceiver.** It is wasted board space given the modem-direct tethering architecture. The 12 ULPI pins are freed for other future use. The LQFP-144 package decision is retained (it was also chosen for its GPIO margin — 41 spare after dropping ULPI — camera, and overall peripheral fit — not ULPI alone).
+3. **Use the MCU's USB OTG_FS (12 Mbps, built-in PHY)** for all MCU-originated USB needs (firmware, files, debug). FS is sufficient for all of them.
+4. **Route the SIM7600's USB D+/D- to a connector footprint or test points** on rev1 (preserve the tethering option). Plan for an internal USB 2.0 hub (Topology A) on a future respin when the ecosystem module becomes real — this gives the car module simultaneous LTE (modem RNDIS, 480 Mbps) + file access (MCU MSC) over one USB-C cable, with no MCU USB bottleneck and no ULPI.
+5. **Update the "USB mode" resolved question**: USB FS for the MCU is the committed path; USB HS via ULPI is dropped (not needed — modem handles tethering at HS directly). The phone remains a USB **device** in all ecosystem scenarios; the modem is also a USB device, and a future internal hub presents both to the host.
+
+### Pre-PCB / Prototype Verification Items (new)
+
+- Validate `AT+CUSBPIDSWITCH=9018,1,1` (ECM) and `=9011,1,1` (RNDIS) on the Waveshare NA-H HAT connected to a Linux host — confirm the module enumerates as a network adapter and LTE data flows. This is cheap to test on the HAT (the HAT exposes the modem USB).
+- Confirm whether the modem can run **PPP-over-UART (MCU data) simultaneously with RNDIS-over-USB (car module data)** — two independent data sessions on two PDP contexts. Likely yes (SIM7600 supports multiple PDP contexts) but unverified. If not, the MCU can use the RNDIS network via the hub, or accept MCU data pause while tethering (acceptable — future scope).
+- If the ULPI path is ever revisited (e.g., a future use case needs the MCU itself to do HS USB, not tethering): verify on a STM32H743 Nucleo + USB3300 breakout that the Zephyr `udc_stm32.c` ULPI path works on the target Zephyr version, with ULPI pinctrl slew rate set to "high-speed" and solid USB3300 IO power.
+
+Sources: Zephyr PR #52772 (merged), issues #52420/#57499/#61464/#75179/#71248, PRs #76115/#104825; TMPDIR community thread "Zephyr on STM32H743" (cbrake); SIMCom SIM7600 hardware design PDF ("USB2.0 is up to 480Mbps"); Waveshare RNDIS/ECM dial-up wikis; SIMCom Linux NDIS driver doc (composite interface table).

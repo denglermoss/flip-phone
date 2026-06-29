@@ -18,6 +18,8 @@ The phone is the first and primary project. However, the long-term vision is a *
 
 **Design principle**: The phone's hardware and firmware decisions must not prevent ecosystem integration. Specifically, the phone must expose connectivity interfaces (USB at minimum) that allow a future module to access LTE tethering, file storage, and potentially audio. This does not change the MVP scope — it only constrains hardware choices to leave the door open.
 
+**Tethering architecture (updated 2026-06-28)**: LTE tethering to the car module uses the **SIM7600's own USB 2.0 HS port (480 Mbps)** directly — the modem presents itself as a USB network adapter (RNDIS/ECM via `AT+CUSBPIDSWITCH`), bypassing the MCU entirely. The MCU's USB (OTG_FS, 12 Mbps) handles firmware updates, file/MSC transfer, and debug. A future internal USB 2.0 hub (USB2514) presents both the modem (LTE) and the MCU (files) to the car module over one USB-C cable. The earlier "MCU bridges LTE to USB CDC ECM, needs USB HS via ULPI" plan is superseded — no USB3300 ULPI transceiver needed. See `docs/project-log.md` 2026-06-28 USB HS/ULPI Revisit.
+
 ## Why This Is Hard
 
 A cell phone is a convergence of five engineering disciplines, each non-trivial on its own:
@@ -91,7 +93,7 @@ Ecosystem modules are future scope.
 | Region | United States |
 | Network | LTE (VoLTE) |
 | Carrier | T-Mobile/Mint recommended (prepaid) |
-| Firmware | RTOS (FreeRTOS or Zephyr) |
+| Firmware | Zephyr RTOS |
 | PCB EDA | KiCad |
 | Budget | Keep low; flexible |
 | Prototype BOM | < $150/unit |
@@ -107,7 +109,7 @@ Ecosystem modules are future scope.
 3. **Power budget** — Meeting 24h standby with a small battery while powering an LTE module is tight.
 4. **Carrier device whitelisting** — Some US carriers block unknown IMEIs. T-Mobile prepaid is the most lenient, but this needs validation.
 5. **Mechanical/form factor** (deferred risk) — Flex cable, hinge, enclosure fit. Will become relevant once electronics are proven.
-6. **Ecosystem compatibility** (future risk) — Hardware choices (MCU USB capability, connector selection, firmware USB stack) must not preclude future module connectivity. Low risk if USB-capable MCU is selected.
+6. **Ecosystem compatibility** (future risk) — Hardware choices (MCU USB capability, modem USB routing, connector selection) must not preclude future module connectivity. **Resolved 2026-06-28**: tethering uses the SIM7600's own USB 2.0 HS port directly (no MCU USB HS / ULPI needed); rev1 routes the modem USB to a connector footprint to preserve the option, with an internal USB hub planned for the ecosystem respin. Low risk.
 7. **MAX9880A codec availability/compatibility** (pre-PCB risk) — The selected dual-port codec (MAX9880A) must be verified for PCM short-frame sync support on its primary port and in-stock availability at distributors before committing to PCB. Fallback (MCU bridge with NAU8822) exists but adds firmware complexity. The Waveshare HAT prototyping (NAU8810) validates the SIM7600 PCM voice output independent of this risk.
 
 ## Success Criteria

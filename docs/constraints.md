@@ -15,9 +15,10 @@
 
 ### Microcontroller / SoC
 - Must have sufficient UART interfaces (at least 2: one for cellular module, one for debugging).
-- Must have enough GPIO for keypad matrix, display interface, status LEDs, power control.
-- Must have I2C/SPI for display, audio codec, and possibly battery fuel gauge.
+- Must have enough GPIO for keypad matrix, display interface, status LEDs, power control, **modem PWRKEY/STATUS control**.
+- Must have I2C/SPI for display, audio codec, **battery fuel gauge (MAX17048)**.
 - Must support low-power modes (deep sleep, wake on interrupt).
+- **Modem control GPIO (required)**: The SIM7600 requires a PWRKEY GPIO (pulse to power on/off) and a STATUS output GPIO (module ready indicator). Optionally a RESET GPIO (hard reset, rarely needed). Allocate **2 GPIO pins minimum** (PWRKEY + STATUS) in the GPIO budget. These are not optional — the MCU cannot power-cycle the modem without them.
 - **Candidates to evaluate**: STM32 family, ESP32 (has Bluetooth/Wi-Fi if needed), nRF52 series. **Selected: STM32H743ZI (LQFP-144, 480MHz Cortex-M7)** — see project-log.md and research-notes.md for selection rationale.
 
 ### PCB Design
@@ -25,16 +26,26 @@
 - RF trace design for cellular antenna requires impedance control (50Ω) and possibly FCC layout guidelines.
 - Antenna: can use off-the-shelf cellular antenna component or PCB trace antenna (latter is harder).
 - **Cellular module assembly (LGA reality)**: All candidate LTE modules (SIM7600, EG25-G, EG912U-GL, LARA-R6401) are LGA — none are hand-solderable with an iron. No LTE/VoLTE module exists in a hand-friendly package. Realistic path: JLCPCB assembly for the modem section (~$57–72: module + $3 extended fee + ~$24 fixture + solder joints), hand-solder the rest. Alternative: M.2 socket variant (module plugs in, no reflow) at cost of larger footprint. SIM7600A-H requires consignment to JLCPCB (not in their stock library); SIM7600E and SIM7600G-H-PCIE are stocked. See NFR-3 update in requirements.md.
+- **ESD protection (required for external connectors)**: All external-facing data lines need ESD protection diodes placed close to the connector:
+  - **USB-C D+/D-**: USBLC6-2SC6 (bidirectional, SOT-23-6, ~$0.50) — protects MCU USB OTG_FS.
+  - **SIM + microSD data lines**: ESDA6V1-5SC6 (5-line array, ~$0.50) — protects modem SIM interface and MCU SDMMC.
+  - These are small, cheap, and standard practice for any device with external connectors. Omitting them risks ESD damage during handling.
 
 ### Power
 - Cellular modules can draw 2A+ peaks during transmission — battery and power management must handle this.
-- **VBAT rail stability (CRITICAL)**: The SIM7600 (and most LTE modules) require VBAT to remain within tolerance (typically ±100–200 mV) **during 2A transmit bursts**. If the rail droops, the module resets mid-call. This demands:
-  - A dedicated high-current buck regulator for the module VBAT rail (not shared with MCU rails)
+- **Power architecture (resolved 2026-06-28)**:
+  - **VBAT (modem)**: Powered **directly from the LiPo** (3.4–4.3V matches the LiPo operating range 3.4–4.2V). No buck regulator needed — the previous "dedicated high-current buck regulator" was incorrect. The key requirement is a **separate power net** from the MCU's 3.3V rail (so modem 2A bursts don't droop the MCU rail), with substantial bulk capacitance at the module VBAT pins.
+  - **3.3V system rail**: Powered from the LiPo via a **buck-boost regulator** (e.g., TPS630201, 3.3V fixed, 2A). A buck-only regulator is insufficient — the LiPo drops below 3.3V at ~40% charge, and the MCU/display/SD card need a stable 3.3V. Powers: MCU, display, SD card, codec I2S side, level shifter, fuel gauge.
+  - **1.8V codec rail**: Powered from the 3.3V rail via an LDO (TPS7A0218, 200mA). Low current (~10–20mA for MAX9880A).
+  - **Charging**: USB 5V → MCP73831 charger IC → LiPo. The charger tops up the battery; the battery handles all load currents (including 2A modem peaks). The MCP73831 (500mA) does NOT need to handle modem peaks — the battery does. For production: consider a power-path charger (e.g., BQ25895, 5A) that can supply system load + charge simultaneously; for prototype, MCP73831 is sufficient.
+- **VBAT rail stability (CRITICAL)**: The SIM7600 requires VBAT to remain within tolerance (typically ±100–200 mV) **during 2A transmit bursts**. If the rail droops, the module resets mid-call. This demands:
+  - ~~A dedicated high-current buck regulator for the module VBAT rail (not shared with MCU rails)~~ **RESOLVED 2026-06-28**: Direct from LiPo — no regulator. The "dedicated rail" requirement is satisfied by a separate power net (VBAT net ≠ 3.3V MCU net), not a separate regulator.
   - Substantial low-ESR bulk capacitance near the module VBAT pins (typically 100–470 µF ceramic + tantalum)
   - Short, wide PDN traces to VBAT pins
   - This is a schematic review checklist item and a PCB layout constraint.
-- Battery: likely a single-cell LiPo (3.7V nominal). Need boost/buck converters for module power rails.
-- Charging: USB (Type-C or Micro-USB) with a battery management IC. **USB-C strongly recommended** for any new design (micro-USB is obsolete).
+- Battery: single-cell LiPo (3.7V nominal, 3.0–4.2V range). 1200mAh candidate gives ~45h standby.
+- Charging: USB-C with a battery charger IC (MCP73831 candidate). **USB-C strongly recommended** for any new design (micro-USB is obsolete).
+- **Battery fuel gauge (required for FR-4.2)**: The phone must monitor and display battery level. Selected approach: **MAX17048** I2C fuel gauge (ModelGauge, coulomb counting + voltage, ~$2.50). Shares I2C bus with MAX9880A. Provides state-of-charge (%) — more accurate than ADC voltage-only (which can't track coulomb count during 2A modem bursts). Alternative: ADC voltage-only (cheaper, less accurate — no coulomb counting, ~10% error vs ~1% for fuel gauge IC).
 - Battery capacity vs form factor tradeoff — final enclosure volume TBD (form factor deferred).
 - **Standby current note (verified 2026-06-28 from datasheets)**: The SIM7600's LTE idle/DRX current is **17.5 mA** (the state where the module CAN receive incoming calls). The previously cited "3 mA" figure is deep-sleep, where the module cannot receive calls. To satisfy FR-1.2 (receive calls) and FR-4.3 (idle low-power with modem standby), the module must remain in LTE idle/DRX mode. The 24h standby target (FR-4.4) requires ~420 mAh minimum (17.5 mA × 24h) — achievable with an 800+ mAh battery with comfortable margin. All modules support `AT+CEDRXS` for eDRX cycle tuning (longer cycle = lower current, higher call setup latency). The modem dominates standby power; MCU sleep (~20 µA) is negligible. See research-notes.md modem revisit findings for comparison across modules.
 
@@ -53,12 +64,21 @@
 ### Display
 - **Selected display: ST7789V SPI color TFT** (2.0" 240×320, 4-wire SPI, RGB565, ~$5–8). See project-log.md 2026-06-28 Display Selection and research-notes.md Display Options section.
 - **Color is a hard requirement** (not a preference): the "no 5+ features blocked" principle requires color capability — photo capture (rated 6), camera preview (rated 6), video recording (rated 5) all need color. A monochrome, grayscale, or spot-color display is disqualified. **E-ink is also disqualified** — even spot-color e-ink (BWR/BWRY) can't show photos (no blue/green/gradients), and the refresh rate (~0.5–3 fps mono partial, 12–22s color full) makes camera preview impossible. True full-color e-ink (ACeP) is not available at 1.5–2.4" sizes.
-- **Interface: 4-wire SPI** (SCK, MOSI, CS, DC) + RESET + backlight enable = **6 GPIO pins**. This preserves the 31-spare-GPIO margin on LQFP-144 for future ecosystem peripherals (ULPI USB HS = 12 pins, external BT = 4 pins). Parallel RGB via LTDC was rejected for consuming 20–28 GPIO pins.
+- **Interface: 4-wire SPI** (SCK, MOSI, CS, DC) + RESET + backlight enable = **6 GPIO pins**. This preserves the 41-spare-GPIO margin on LQFP-144 for future ecosystem peripherals (external BT = 4 pins, modem USB = 2 pins; ~~ULPI USB HS = 12 pins~~ **dropped 2026-06-28 — modem-direct USB tethering replaces MCU USB HS, see USB/Ecosystem interconnect section**). Parallel RGB via LTDC was rejected for consuming 20–28 GPIO pins.
 - **Framebuffer: 240×320 RGB565 = 150KB** — fits in the H743's 1MB internal SRAM with 850KB to spare. **No external SDRAM or FMC required.** This is a key simplification vs the LTDC path (which would need external SDRAM for comfortable double-buffering at 320×480).
 - **Power**: ~30–50mA with backlight on (6mA panel + 20–40mA backlight). Backlight is PWM-dimmable and **off during standby** (per FR-4.3). The display is a use-time load, not a standby load — the modem (17.5mA LTE idle/DRX) dominates standby power. Note: the SSD1351 color OLED alternative was rejected partly on power grounds — it actually draws **more** than the TFT (~57–71mA: VCI 23–29mA + Vcc 33–42mA per datasheet) because self-emissive OLED draws current per pixel.
 - **Zephyr driver**: `display_st7789v.c` is in Zephyr main tree (most mature SPI display driver); LVGL has native ST7789 support. **Pre-PCB verification**: confirm the driver works on STM32H7 with the target Zephyr version — the MIPI DBI API conversion (issue #73750) had teething issues.
 - **Camera preview bandwidth**: SPI at ~40MHz gives ~15–25fps partial-frame updates at 240×320 (faster at lower preview resolution). Adequate for casual photos (rated 6), not smooth video. LTDC would be smoother but is not justified for this use case (see research-notes.md Display Options).
 - **Backlight PWM**: Must be on a timer-output GPIO for dimming and power management (display off during standby).
+- **Backlight driver circuit (raw panel)**: Most 2.0" ST7789V panels use 4 parallel white LEDs (common anode, ~3.1V Vf, 20mA each = 80mA total). For parallel-LED panels: 3.3V rail → current-limiting resistors (one per LED or grouped) → PWM-controlled N-FET → GND. No dedicated LED driver IC needed. **Verify panel backlight configuration (parallel vs series) before PCB** — series LEDs (~12V total) would need a boost LED driver (e.g., AP3031). The Waveshare module (item 7 in BOM) has the backlight circuit onboard; the raw panel (item 7b) does not.
+
+### USB / Ecosystem Interconnect
+- **MCU USB: OTG_FS only (12 Mbps, built-in PHY).** Sufficient for firmware updates, file/MSC transfer, and CDC ACM debug. ~~USB HS via external ULPI transceiver (USB3300) is a board-level upgrade path preserved by LQFP-144.~~ **DROPPED 2026-06-28** — see below.
+- **Ecosystem tethering uses the SIM7600's own USB 2.0 HS port (480 Mbps), not the MCU.** The modem presents itself as a USB network adapter via RNDIS (`AT+CUSBPIDSWITCH=9011,1,1`) or ECM (`=9018,1,1`), simultaneously exposing AT/ttyUSB serial ports (composite device). This bypasses the MCU entirely for tethering — no MCU USB bottleneck, no USB3300 ULPI transceiver, no Zephyr USB HS stack, no 12 ULPI GPIO pins. The MCU controls the modem via UART (CMUX+PPP); the modem's USB is dedicated to tethering. See project-log.md 2026-06-28 USB HS/ULPI Revisit and research-notes.md "USB HS / ULPI Revisit" section.
+- **Do NOT populate USB3300.** The ULPI footprint is wasted board space under the modem-direct tethering architecture. The 12 ULPI pins on LQFP-144 are freed for other future use.
+- **PCB routing (rev1, minimal commitment)**: Route the SIM7600 USB D+/D- to a connector footprint or test points to preserve the tethering option. MCU USB OTG_FS on the main USB-C (charge + firmware + files).
+- **Future ecosystem respin**: Add an internal USB 2.0 hub (e.g., USB2514, ~$1–2) so a single USB-C presents both the modem (RNDIS for LTE) and the MCU (MSC for files) to the car module — simultaneous LTE + file access over one cable. Two USB devices cannot share one host port without a hub.
+- **Pre-PCB verification**: Validate `AT+CUSBPIDSWITCH=9018,1,1` (ECM) and `=9011,1,1` (RNDIS) on the Waveshare NA-H HAT connected to a Linux host (the HAT exposes the modem USB). Confirm whether the modem can run PPP-over-UART (MCU data) simultaneously with RNDIS-over-USB (car module data) on two PDP contexts.
 
 ## Budget Constraints
 

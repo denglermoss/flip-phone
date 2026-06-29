@@ -6,7 +6,7 @@ Designing and building a custom cell phone from scratch. The project covers hard
 
 **Form factor is not yet locked.** The initial goal is a working phone (breadboard → custom PCB). Mechanical design (flip, candybar, slider, etc.) will be decided after the electronics and firmware are proven.
 
-**Long-term vision**: The phone is the hub of a personal ecosystem of targeted devices. Future modules (e.g. a car infotainment system for navigation + music) would connect to the phone via USB for LTE tethering, data access, and charging. The phone project is the primary focus — ecosystem modules are future scope, but hardware decisions must not prevent them.
+**Long-term vision**: The phone is the hub of a personal ecosystem of targeted devices. Future modules (e.g. a car infotainment system for navigation + music) would connect to the phone via USB for LTE tethering, data access, and charging. **Tethering uses the SIM7600 modem's own USB 2.0 HS port directly** (RNDIS/ECM), bypassing the MCU — no USB3300 ULPI transceiver needed. The phone project is the primary focus — ecosystem modules are future scope, but hardware decisions must not prevent them.
 
 ## Goals
 
@@ -72,7 +72,7 @@ Ecosystem modules are future scope.
 - [Feature Wishlist](docs/feature-wishlist.md) — All potential features rated 1-10, ecosystem implications, component selection guide
 - [Project Log](docs/project-log.md) — Decision log and progress tracking
 - [Bill of Materials](docs/bom.md) — Component list with prices, links, and cost estimates (preliminary)
-- [Revisit Prompts](docs/revisit-prompts/) — Prompts for open questions requiring dedicated discussion. **Resolved**: modem (SIM7600 locked), codec (MAX9880A selected), display (ST7789V SPI TFT selected). **Open**: Zephyr USB HS via ULPI.
+- [Revisit Prompts](docs/revisit-prompts/) — Prompts for open questions requiring dedicated discussion. **All resolved and archived** (2026-06-28): modem (SIM7600 locked), codec (MAX9880A selected), display (ST7789V SPI TFT selected), USB HS/ULPI (dropped — SIM7600's own USB 2.0 HS port does tethering directly, bypassing the MCU; no USB3300 needed). Archived prompts in `docs/revisit-prompts/archive/`; see `docs/revisit-prompts/README.md` for the archive index.
 
 ## Status
 

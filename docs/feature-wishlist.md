@@ -27,7 +27,7 @@ These ratings inform **component selection** — we should ensure the MCU, cellu
 |---------|--------|-------|
 | USB data transfer | 8 | Daily driver. Also critical for **ecosystem interconnect** (car module tethering). MCU must have USB device/peripheral capability. |
 | Bluetooth (headset, audio, file transfer) | 6 | Strong want. MCU selection should support BT (nRF52 has built-in BLE; STM32 would need external BT module). Note: BLE != classic BT — A2DP audio needs classic BT. |
-| Hotspot / tethering | 6 | Strong want. Ties into ecosystem concept — phone provides LTE to car module via USB. Cellular module must support data + tethering. Most LTE modules do. **Note (2026-06-28)**: Simultaneous VoLTE+data (tethering while on a call) is NOT required — "pause data during call" is acceptable. SIM7600 supports data via CMUX+PPP. See project-log.md Modem Revisit (Second Round). |
+| Hotspot / tethering | 6 | Strong want. Ties into ecosystem concept — phone provides LTE to car module via USB. Cellular module must support data + tethering. Most LTE modules do. **Note (2026-06-28)**: Simultaneous VoLTE+data (tethering while on a call) is NOT required — "pause data during call" is acceptable. SIM7600 supports data via CMUX+PPP (MCU-originated) **and** via its own USB 2.0 HS port directly (RNDIS/ECM, `AT+CUSBPIDSWITCH`) for ecosystem tethering — bypassing the MCU. USB3300 ULPI transceiver dropped (not needed). See project-log.md Modem Revisit (Second Round) and USB HS/ULPI Revisit. |
 | Wi-Fi (OTA updates, basic internet) | 4 | Nice to have. ESP32 has built-in; STM32/nRF52 would need external module. Could use for firmware OTA updates. |
 | NFC | 1.5 | Not wanted. |
 
