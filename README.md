@@ -76,4 +76,4 @@ Ecosystem modules are future scope.
 
 ## Status
 
-**Phase: Problem Definition & Requirements Gathering**
+**Phase 1 (Research & Component Selection) — Complete.** All guiding hardware decisions locked: MCU (STM32H743ZI), modem (SIM7600A-H), codec (MAX9880A), display (ST7789V SPI TFT), keypad (SMD tactile switches), USB architecture (modem-direct tethering, no ULPI). Next: **Phase 2 — HAT-based prototype** (order prototyping kit, validate VoLTE on a real carrier, write firmware). See `docs/project-log.md` Phase Breakdown.

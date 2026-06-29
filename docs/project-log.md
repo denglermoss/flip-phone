@@ -23,7 +23,8 @@
   - *Rationale*: The hard problems (cellular, firmware, power, RF) are form-factor independent. Locking into flip early adds constraints (flex cable, hinge, multi-board) before core electronics are validated. Decide mechanical design after the phone works on a single board.
 - **Decision**: ~~Display type deferred — will recommend based on constraints.~~
   - **SUPERSEDED 2026-06-28**: Display selected — ST7789V SPI color TFT (2.0" 240×320, RGB565). See "Display Selection" decision below.
-- **Decision**: Keypad design deferred to Phase 2 prototyping.
+- **Decision**: ~~Keypad design deferred to Phase 2 prototyping.~~
+  - **SUPERSEDED 2026-06-28**: Keypad selected — SMD tactile switches on custom PCB traces (LOCKED). Phase 2 prototyping uses off-the-shelf 4×4 matrix module + loose tactile buttons. See "Keypad Selection" decision below.
 
 ### 2026-06-28: Modular Ecosystem Vision
 - **Decision**: Adopt a long-term vision of a personal ecosystem of targeted devices, with the phone as the connectivity hub.
@@ -175,8 +176,8 @@
   - *Status of components in BOM*:
     - **LOCKED**: MCU (STM32H743ZIT6, $14.61), modem (SIM7600A-H, ~$28–32), codec (MAX9880AETM+T, ~$1.70), display (ST7789V 2.0" 240×320 SPI TFT, $11.99 module / ~$5–8 raw panel), prototyping HAT (Waveshare SIM7600NA-H, $76.99).
     - **CANDIDATE** (not yet locked, revisit pending): battery (1200mAh LiPo, $9.95), charger (MCP73831, ~$1), **3.3V buck-boost (TPS630201, ~$3.50)**, 1.8V LDO (TPS7A0218, ~$0.84), **fuel gauge (MAX17048, ~$2.50)**, level shifter (TXB0104, ~$0.76), **ESD protection (USBLC6-2SC6 + ESDA6V1-5SC6, ~$1)**, USB-C connector, nano SIM socket, microSD socket, cellular antenna (Pulse W3907B0100, $5.54), earpiece speaker (Taoglas SPKM.10.8.A, ~$1.69).
-    - **TBD** (deferred): loudspeaker, microphone, keypad, GNSS antenna. ~~High-current buck regulator for modem VBAT~~ **RESOLVED 2026-06-28 — not needed (direct from LiPo).**
-  - *Open verification items carried forward*: MAX9880A PCM short-frame sync + stock; SIM7600A-H JLCPCB consignment; ST7789V Zephyr driver on STM32H7; keypad design; ~~buck regulator selection~~ **RESOLVED (direct from LiPo)**; 3.3V buck-boost verification; fuel gauge I2C address check; display backlight config (parallel vs series). See `docs/bom.md` §6.
+    - **TBD** (deferred): loudspeaker, microphone, GNSS antenna. ~~Keypad~~ **RESOLVED 2026-06-28 — SMD tactile switches on custom PCB traces (LOCKED).** ~~High-current buck regulator for modem VBAT~~ **RESOLVED 2026-06-28 — not needed (direct from LiPo).**
+  - *Open verification items carried forward*: MAX9880A PCM short-frame sync + stock; SIM7600A-H JLCPCB consignment; ST7789V Zephyr driver on STM32H7; ~~keypad design~~ **RESOLVED 2026-06-28 (SMD tactile switches, LOCKED)**; ~~buck regulator selection~~ **RESOLVED (direct from LiPo)**; 3.3V buck-boost verification; fuel gauge I2C address check; display backlight config (parallel vs series). See `docs/bom.md` §6.
 
 ### 2026-06-28: Project Kickoff
 - **Decision**: Use off-the-shelf cellular module + custom MCU architecture (not designing custom modem).
@@ -188,6 +189,17 @@
 - **Decision**: ~~Flip/clamshell form factor with two PCBs connected via flex cable.~~
   - *Rationale*: ~~Core to the project concept. Adds mechanical and routing complexity (desired challenge).~~
   - **SUPERSEDED 2026-06-28**: Form factor deferred. Single-board first, mechanical design after electronics proven. See "Problem Definition Session" decision above. This entry is retained for history only — do not reference it as an active decision.
+
+### 2026-06-28: Keypad Selection
+- **Decision**: **SMD tactile switches on custom PCB traces** for the final PCB keypad. **LOCKED.**
+  - *Rationale*: Three switch technologies were evaluated for the final PCB: (1) SMD tactile switches on PCB traces — snappy, mechanical, individual parts, easy to source from DigiKey/Mouser/LCSC, no custom tooling; (2) conductive-rubber (silicone dome) keypad over PCB pad pairs — soft dome feel, sealed, most "phone-like" (classic feature-phone construction, e.g. Nokia 3310), but requires a custom silicone dome sheet (~$50–150 mold run from Chinese vendors, harder to source in prototype qty); (3) membrane keypad (PET/FPC stack) — thinnest, fully sealed, but flat feel and harder to source in small qty. SMD tactile selected for simplicity, sourcing, and alignment with the custom-PCB learning goal. The key matrix (5×4 = 9 GPIO for ~20 keys) is identical regardless of switch technology, so the schematic/GPIO allocation is unaffected by this choice.
+  - *Key layout*: ~17–19 keys minimum per FR-2.1/FR-2.3 — 12 numeric (0–9, *, #) + 2 call/end + 3–5 nav (up/down/select or D-pad). 5×4 matrix (20 keys) cleanly fits with 1 spare.
+  - *GPIO*: 5×4 matrix = 9 GPIO pins. Non-issue with 41 spare GPIO on LQFP-144.
+  - *Cost*: ~20 SMD tactile switches at ~$0.05–0.10 each = ~$1–2. Cheaper than membrane or conductive-rubber alternatives.
+  - *Tradeoff*: SMD tactile switches are not dust/water sealed (unlike conductive-rubber or membrane). Acceptable for a personal prototype/daily-driver; sealing can be revisited if needed via a silicone overlay sheet on top of the SMD switches.
+- **Decision**: **Off-the-shelf 4×4 matrix keypad module + loose tactile buttons** for Phase 2 prototyping.
+  - *Rationale*: A $2–5 4×4 matrix membrane module plus ~6–8 loose 6×6mm tactile buttons on a breadboard (for call/end/nav) enables immediate firmware development (matrix scan + debounce) with zero custom hardware. The electrical interface (matrix rows/cols → MCU GPIO) is identical to the final PCB, so no firmware rework when moving to the custom board.
+  - *Tradeoff*: The prototyping keypad feel is unrelated to the final PCB keypad feel (SMD tactile). This is acceptable — Phase 2 validates firmware, not mechanical feel. Keypad feel is a Phase 7 (mechanical/enclosure) concern.
 
 ## Phase Breakdown & Effort Estimate
 
@@ -280,3 +292,4 @@
 | 2026-06-28 | Display selected: **ST7789V SPI color TFT** (2.0" 240×320, RGB565, ~$5–8). 6 GPIO pins, 150KB framebuffer fits internal SRAM (no external SDRAM). Zephyr `display_st7789v.c` is most mature SPI display driver in main tree. Five options evaluated: ST7789V TFT (selected), SSD1351 color OLED (rejected — actually higher power ~57–71mA, 3–5x cost, 128×128 too low, not in Zephyr), e-ink (DISQUALIFIED — blocks camera preview/photo/video 5+ features via refresh rate + spot-color limitation), LTDC parallel RGB (20–28 GPIO, needs external SDRAM, overkill res), ST7735 1.8" (too low res). Color-capable — satisfies "no 5+ blocked". Pre-PCB: verify ST7789v driver on STM32H7 + target Zephyr version. | Done |
 | 2026-06-28 | USB HS/ULPI revisit: **Drop USB3300 ULPI transceiver.** Zephyr STM32H7 ULPI is viable (mainline since Dec 2022, PR #52772; bugs fixed) but no longer needed — the SIM7600's own USB 2.0 HS port (480 Mbps) does tethering directly via RNDIS/ECM (`AT+CUSBPIDSWITCH`), bypassing the MCU. MCU USB OTG_FS (12 Mbps) is sufficient for firmware/files/debug. Rev1: route modem USB to connector footprint/test points. Future ecosystem respin: internal USB 2.0 hub (USB2514) for single-cable simultaneous LTE + file access. LQFP-144 retained (GPIO margin, not ULPI). | Done |
 | 2026-06-28 | **Documentation review**: Fixed 5 stale items (BOM MCU note, package selection table, firmware wording, USB mode question). Resolved 6 missed PCB-impacting factors: VBAT direct-from-LiPo (no buck regulator), 3.3V buck-boost (TPS630201, was missing), fuel gauge (MAX17048, was missing), ESD protection (USBLC6-2 + ESDA6V1), backlight driver note, modem PWRKEY/STATUS GPIO. MCP73831 note corrected. Revisit prompts archived. BOM ~$98–146 (was ~$94–145). | Done |
+| 2026-06-28 | Keypad selected: **SMD tactile switches on custom PCB traces** (final PCB, LOCKED). 5×4 matrix = 9 GPIO for ~20 keys (12 numeric + 2 call/end + 3–5 nav + 1 spare). Three options evaluated: SMD tactile (selected — simple, cheap, easy to source), conductive-rubber (phone-like feel but custom silicone tooling), membrane (sealed but flat feel, hard to source). Phase 2 prototyping: off-the-shelf 4×4 matrix module + loose tactile buttons. | Done |

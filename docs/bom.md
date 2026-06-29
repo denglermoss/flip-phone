@@ -1,6 +1,6 @@
 # Bill of Materials (BOM)
 
-> **Status**: Preliminary — reflects component selections locked as of 2026-06-28 (MCU, modem, codec, display). Items not yet selected (keypad, power ICs, transducers) are listed as candidates with price ranges. Prices are USD, captured 2026-06-28 from publicly listed distributor pages. Verify current pricing/stock before ordering. **Updated 2026-06-28 (documentation review)**: VBAT buck regulator removed (direct-from-LiPo); 3.3V buck-boost (TPS630201) and fuel gauge (MAX17048) added; ESD protection added; MCP73831 note corrected.
+> **Status**: Preliminary — reflects component selections locked as of 2026-06-28 (MCU, modem, codec, display, keypad). Items not yet selected (power ICs, transducers) are listed as candidates with price ranges. Prices are USD, captured 2026-06-28 from publicly listed distributor pages. Verify current pricing/stock before ordering. **Updated 2026-06-28 (documentation review)**: VBAT buck regulator removed (direct-from-LiPo); 3.3V buck-boost (TPS630201) and fuel gauge (MAX17048) added; ESD protection added; MCP73831 note corrected. **Updated 2026-06-28 (keypad selection)**: Keypad locked — SMD tactile switches on custom PCB traces; prototyping keypad module added to §1.
 
 ## How to Read This BOM
 
@@ -21,7 +21,9 @@ These items are for Phase 2 validation (VoLTE on a real carrier) before any cust
 | 2 | Prepaid SIM (T-Mobile/Mint, most lenient with non-cert devices) | Mint Mobile Starter Kit / plan | CANDIDATE | 1 | ~$0–15 (starter) + $15–30/mo plan | ~$15–45 | [Best Buy — Mint Starter Kit](https://www.bestbuy.com/product/mint-mobile-prepaid-sim-card-starter-kit-gold/J3RZWKZGFK) · [Amazon — Mint plans](https://www.amazon.com/Mint-Mobile-Wireless-Unlimited-3-Months/dp/B0741FV7ZV) |
 | 3 | STM32H743 dev board (for MCU-side prototyping on breadboard/perfboard with HAT) | Nucleo-H743ZI2 or bare STM32H743ZIT6 on breakout | CANDIDATE | 1 | ~$25–35 (Nucleo) / $14.61 (bare MCU) | ~$25–35 | [ST eStore — STM32H743ZIT6](https://estore.st.com/en/stm32h743zit6-cpn.html) |
 | 4 | 2.0" SPI IPS TFT display (ST7789VW, for MCU prototyping) | Waveshare 2inch LCD Module (SKU 17344) | LOCKED | 1 | $11.99 | $11.99 | [Waveshare — 2inch LCD Module](https://www.waveshare.com/product/2inch-lcd-module.htm) |
-| | **Prototyping subtotal** | | | | | **~$129–169** | |
+| 5 | 4×4 matrix keypad module (membrane, for firmware prototyping) | Generic 4×4 matrix keypad | CANDIDATE | 1 | ~$2–5 | ~$2–5 | [Amazon — 4×4 matrix keypad](https://www.amazon.com/s?k=4x4+matrix+keypad) · [Adafruit — 3×4 keypad](https://www.adafruit.com/product/1824) | 16-key membrane matrix. For Phase 2 firmware development (matrix scan + debounce). Electrical interface (rows/cols → MCU GPIO) identical to final PCB. |
+| 6 | Tactile buttons, 6×6mm, for call/end/nav (breadboard) | Generic 6×6mm tactile switches | CANDIDATE | ~6–8 | ~$0.05–0.10 | ~$0.50–1 | [Amazon — tactile switches assortment](https://www.amazon.com/s?k=6x6mm+tactile+switch) | Loose buttons on breadboard for call/end/nav keys not on the 4×4 matrix. |
+| | **Prototyping subtotal** | | | | | **~$132–176** | |
 
 ---
 
@@ -93,12 +95,12 @@ These components are required for the phone but have not been formally locked in
 | 21 | GNSS antenna (for SIM7600 built-in GNSS) | TBD — U.FL GPS antenna | TBD | 1 | ~$2–5 | ~$2–5 | — | SIM7600 has built-in GNSS. Needed only if GPS feature used. |
 | | **Antenna subtotal** | | | | | **~$8–11** | | |
 
-### 3g. Keypad (TBD — deferred to Phase 2)
+### 3g. Keypad (LOCKED — SMD tactile switches on custom PCB traces)
 
 | # | Component | Part Number | Status | Qty | Unit Price | Ext Price | Source / Link | Notes |
 |---|-----------|-------------|--------|-----|-----------|-----------|---------------|-------|
-| 22 | Keypad (0-9, *, #, call/end, nav) | TBD — custom PCB traces / membrane / mechanical | TBD | 1 | ~$2–8 | ~$2–8 | — | Deferred to Phase 2 prototyping per `docs/project-log.md`. Matrix scanned by MCU GPIO. |
-| | **Keypad subtotal** | | | | | **~$2–8** | | |
+| 22 | SMD tactile switches, 6×6mm or smaller (keypad matrix) | TBD — e.g. C&K PTS645, ALPS SKQG | LOCKED | ~20 | ~$0.05–0.10 | ~$1–2 | [DigiKey — tactile switches](https://www.digikey.com/en/products/category/switches/tactile-switches/19) · [Mouser — tactile switches](https://www.mouser.com/c/electromechanical/switches/tactile-switches/) | **LOCKED 2026-06-28**: SMD tactile switches on custom PCB traces. 5×4 matrix = 9 GPIO for ~20 keys (12 numeric + 2 call/end + 3–5 nav + 1 spare). Three options evaluated: SMD tactile (selected — simple, cheap, easy to source), conductive-rubber (phone-like feel but custom silicone tooling ~$50–150), membrane (sealed but flat feel, hard to source). Specific switch part TBD at schematic time — select based on actuation force, travel, height, and footprint. See project-log.md 2026-06-28 Keypad Selection. |
+| | **Keypad subtotal** | | | | | **~$1–2** | | |
 
 ### 3h. ESD Protection (CANDIDATE — required for external connectors)
 
@@ -145,11 +147,11 @@ These components are required for the phone but have not been formally locked in
 | Connectors (USB-C, SIM, microSD) | $3 | $9 |
 | ESD protection | $1 | $1 |
 | Antenna (cellular + GNSS) | $8 | $11 |
-| Keypad | $2 | $8 |
+| Keypad (SMD tactile switches) | $1 | $2 |
 | Passive components & misc | $11 | $32 |
-| **BOM total (components, per unit)** | **~$98** | **~$146** |
+| **BOM total (components, per unit)** | **~$97** | **~$140** |
 | PCB fab + assembly (separate) | $62 | $122 |
-| **Total per unit (BOM + PCB)** | **~$160** | **~$268** |
+| **Total per unit (BOM + PCB)** | **~$159** | **~$262** |
 
 **Assessment**: The components-only BOM target (< $150/unit, NFR-5) is achievable at the low end and tight at the high end. The dominant cost is the cellular module (~$28–32) + JLCPCB assembly (~$57–72). PCB fab/assembly is correctly excluded from the NFR-5 BOM target per `docs/requirements.md`. Note: the previous "high-current buck regulator for VBAT" (~$3–6) was removed — VBAT is powered directly from the LiPo (see constraints.md Power section). A 3.3V buck-boost (TPS630201, ~$3.50) and fuel gauge (MAX17048, ~$2.50) were added — net cost change is approximately +$2.50.
 
@@ -162,17 +164,18 @@ These components are required for the phone but have not been formally locked in
 | Mint Mobile SIM + plan (3-month) | $15–45 |
 | STM32H743 dev board (Nucleo) | $25–35 |
 | Breadboard/perfboard, jumper wires, misc | ~$10 |
-| **Prototyping subtotal** | **~$139–179** |
+| 4×4 matrix keypad module + tactile buttons | ~$3–6 |
+| **Prototyping subtotal** | **~$142–185** |
 
 ### Total Project Budget Estimate (per `docs/constraints.md`: $200–500 realistic)
 
 | Phase | Est Cost |
 |-------|----------|
-| Phase 2: HAT prototyping | $139–179 |
+| Phase 2: HAT prototyping | $142–185 |
 | Phase 4–5: First PCB (BOM + fab + assembly) | $156–267 |
 | Iterations / respins / mistakes (1–2 boards) | $100–200 |
 | Tools (if not already owned: hot air, solder, etc.) | $0–50 |
-| **Total project estimate** | **~$395–696** |
+| **Total project estimate** | **~$398–702** |
 
 > The high end exceeds the $500 target if multiple PCB respins are needed. The modem LGA assembly cost (~$57–72/board) is the main driver — minimizing respins by thorough schematic review is the biggest cost lever.
 
@@ -185,7 +188,7 @@ Per `docs/constraints.md` and `docs/project-log.md`, these must be verified befo
 - [ ] **MAX9880A**: Confirm PCM short-frame sync support on primary port (datasheet review). Verify stock at DigiKey/Mouser — Maxim/ADI parts can have long lead times. Confirm 1.8V supply + level shifting plan.
 - [ ] **SIM7600A-H**: Confirm consignment process with JLCPCB (not in their stock library). Verify firmware version supports VoLTE before PCB commit.
 - [ ] **ST7789V display**: Confirm ST7789v Zephyr driver works on STM32H7 with target Zephyr version (MIPI DBI API conversion had teething issues — verify on dev board before PCB). Select specific raw panel module and confirm FPC/connector footprint. Confirm panel max SPI clock (~40MHz) and STM32H7 SPI can drive it. Plan backlight PWM on timer-output GPIO. **Verify panel backlight LED configuration (parallel vs series) — parallel needs only FET + resistors; series needs a boost LED driver.**
-- [ ] **Keypad design**: Deferred to Phase 2 — decide custom traces vs membrane vs mechanical switches.
+- [x] **Keypad design**: **RESOLVED 2026-06-28** — SMD tactile switches on custom PCB traces (LOCKED). 5×4 matrix = 9 GPIO for ~20 keys. Specific switch part (e.g. C&K PTS645, ALPS SKQG) to be selected at schematic time based on actuation force/travel/height. Phase 2 prototyping uses off-the-shelf 4×4 matrix module + loose tactile buttons. See project-log.md 2026-06-28 Keypad Selection.
 - [x] ~~**High-current buck regulator**: Select specific part for modem VBAT rail (2A+ peaks, dedicated rail).~~ **RESOLVED 2026-06-28**: No buck regulator needed — VBAT powered directly from LiPo (3.4–4.3V matches LiPo operating range). Separate power net from 3.3V MCU rail, with 100–470µF bulk capacitance. See `docs/constraints.md` Power section.
 - [ ] **3.3V buck-boost regulator**: Verify TPS630201 stock + 2A rating sufficient for all system loads (MCU + display + SD + codec). Confirm output voltage accuracy and ripple specs meet MCU requirements.
 - [ ] **Battery fuel gauge**: Verify MAX17048 I2C address doesn't conflict with MAX9880A. Confirm fuel gauge characterization for the selected LiPo (MAX17048 has a characterization table; may need custom model for non-standard cells).
