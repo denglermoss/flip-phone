@@ -1,6 +1,6 @@
 # Bill of Materials (BOM)
 
-> **Status**: Preliminary — reflects component selections locked as of 2026-06-28 (MCU, modem, codec, display, keypad). Items not yet selected (power ICs, transducers) are listed as candidates with price ranges. Prices are USD, captured 2026-06-28 from publicly listed distributor pages. Verify current pricing/stock before ordering. **Updated 2026-06-28 (documentation review)**: VBAT buck regulator removed (direct-from-LiPo); 3.3V buck-boost (TPS630201) and fuel gauge (MAX17048) added; ESD protection added; MCP73831 note corrected. **Updated 2026-06-28 (keypad selection)**: Keypad locked — SMD tactile switches on custom PCB traces; prototyping keypad module added to §1.
+> **Status**: Preliminary — reflects component selections locked as of 2026-06-28 (MCU, modem, codec, display, keypad). Items not yet selected (power ICs, transducers) are listed as candidates with price ranges. Prices are USD, captured 2026-06-28 from publicly listed distributor pages. Verify current pricing/stock before ordering. **Updated 2026-06-28 (documentation review)**: VBAT buck regulator removed (direct-from-LiPo); 3.3V buck-boost (TPS630201) and fuel gauge (MAX17048) added; ESD protection added; MCP73831 note corrected. **Updated 2026-06-28 (keypad selection)**: Keypad locked — SMD tactile switches on custom PCB traces; prototyping keypad module added to §1. **Updated 2026-06-28 (Nucleo substitution)**: NUCLEO-H743ZI/ZI2 obsolete — NUCLEO-H753ZI is the substitute (H753 = H743 + crypto, identical for this project). DigiKey links added for all prototyping parts. Order consolidation: DigiKey (electronics) + Waveshare (HAT + display) + Mint Mobile (SIM).
 
 ## How to Read This BOM
 
@@ -15,15 +15,26 @@
 
 These items are for Phase 2 validation (VoLTE on a real carrier) before any custom PCB work. See `docs/project-log.md` Phase Breakdown.
 
+**Order consolidation (3 sources):**
+- **DigiKey** (one order): Nucleo H753ZI, Adafruit keypad, tactile buttons, breadboard, jumper wires
+- **Waveshare** (direct): SIM7600NA-H HAT + 2" LCD
+- **Mint Mobile**: SIM + plan
+
 | # | Component | Part Number | Status | Qty | Unit Price | Ext Price | Source / Link |
 |---|-----------|-------------|--------|-----|-----------|-----------|---------------|
 | 1 | LTE Cat-4 HAT (NA variant, B71, NAU8810 codec, GNSS) | Waveshare SIM7600NA-H 4G HAT (SKU 30717) | LOCKED | 1 | $76.99 | $76.99 | [Waveshare](https://www.waveshare.com/sim7600na-h-4g-hat.htm) |
-| 2 | Prepaid SIM (T-Mobile/Mint, most lenient with non-cert devices) | Mint Mobile Starter Kit / plan | CANDIDATE | 1 | ~$0–15 (starter) + $15–30/mo plan | ~$15–45 | [Best Buy — Mint Starter Kit](https://www.bestbuy.com/product/mint-mobile-prepaid-sim-card-starter-kit-gold/J3RZWKZGFK) · [Amazon — Mint plans](https://www.amazon.com/Mint-Mobile-Wireless-Unlimited-3-Months/dp/B0741FV7ZV) |
-| 3 | STM32H743 dev board (for MCU-side prototyping on breadboard/perfboard with HAT) | Nucleo-H743ZI2 or bare STM32H743ZIT6 on breakout | CANDIDATE | 1 | ~$25–35 (Nucleo) / $14.61 (bare MCU) | ~$25–35 | [ST eStore — STM32H743ZIT6](https://estore.st.com/en/stm32h743zit6-cpn.html) |
+| 2 | Prepaid SIM (T-Mobile/Mint, most lenient with non-cert devices) | Mint Mobile Starter Kit / plan | CANDIDATE | 1 | ~$0–15 (starter) + $15–30/mo plan | ~$15–45 | [Mint Mobile](https://www.mintmobile.com) · [Amazon — Mint plans](https://www.amazon.com/Mint-Mobile-Wireless-Unlimited-3-Months/dp/B0741FV7ZV) |
+| 3 | STM32H7 dev board (Nucleo-144, for MCU-side prototyping with HAT) | NUCLEO-H753ZI (substitute — see note) | CANDIDATE | 1 | $28.15 | $28.15 | [DigiKey — NUCLEO-H753ZI](https://www.digikey.com/en/products/detail/stmicroelectronics/NUCLEO-H753ZI/21348937) · [Mouser — NUCLEO-H753ZI](https://www.mouser.com/ProductDetail/STMicroelectronics/NUCLEO-H753ZI) |
 | 4 | 2.0" SPI IPS TFT display (ST7789VW, for MCU prototyping) | Waveshare 2inch LCD Module (SKU 17344) | LOCKED | 1 | $11.99 | $11.99 | [Waveshare — 2inch LCD Module](https://www.waveshare.com/product/2inch-lcd-module.htm) |
-| 5 | 4×4 matrix keypad module (membrane, for firmware prototyping) | Generic 4×4 matrix keypad | CANDIDATE | 1 | ~$2–5 | ~$2–5 | [Amazon — 4×4 matrix keypad](https://www.amazon.com/s?k=4x4+matrix+keypad) · [Adafruit — 3×4 keypad](https://www.adafruit.com/product/1824) | 16-key membrane matrix. For Phase 2 firmware development (matrix scan + debounce). Electrical interface (rows/cols → MCU GPIO) identical to final PCB. |
-| 6 | Tactile buttons, 6×6mm, for call/end/nav (breadboard) | Generic 6×6mm tactile switches | CANDIDATE | ~6–8 | ~$0.05–0.10 | ~$0.50–1 | [Amazon — tactile switches assortment](https://www.amazon.com/s?k=6x6mm+tactile+switch) | Loose buttons on breadboard for call/end/nav keys not on the 4×4 matrix. |
-| | **Prototyping subtotal** | | | | | **~$132–176** | |
+| 5 | 4×4 matrix keypad module (membrane, for firmware prototyping) | Adafruit 4×4 Matrix Keypad (PID 3844) | CANDIDATE | 1 | $5.95 | $5.95 | [DigiKey — Adafruit 3844](https://www.digikey.com/en/products/detail/adafruit-industries-llc/3844/9561536) | 16-key membrane matrix. For Phase 2 firmware development (matrix scan + debounce). Electrical interface (rows/cols → MCU GPIO) identical to final PCB. |
+| 6 | Tactile buttons, 6×6mm, for call/end/nav (breadboard) | Adafruit Tactile Button Switch 6mm, 20-pack (PID 367) | CANDIDATE | 1 | $2.50 | $2.50 | [DigiKey — Adafruit 367](https://www.digikey.com/en/products/detail/adafruit-industries-llc/367/10669771) | Loose buttons on breadboard for call/end/nav keys not on the 4×4 matrix. |
+| 7 | Breadboard, 830 tie-point, solderless | Adafruit Full-size Breadboard (PID 239) | CANDIDATE | 1 | $2.95 | $2.95 | [DigiKey — Adafruit 239](https://www.digikey.com/en/products/detail/adafruit-industries-llc/239/7244929) | Standard full-size breadboard for prototyping. |
+| 8 | Jumper wires, M/M, 40×3" (75mm) | Adafruit Premium M/M Jumper Wires (PID 759) | CANDIDATE | 1 | $1.95 | $1.95 | [DigiKey — Adafruit 759](https://www.digikey.com/en/products/detail/adafruit-industries-llc/759/5353615) | 40 male-to-male jumpers for breadboard connections. |
+| | **Prototyping subtotal** | | | | | **~$131–165** | |
+
+> **Nucleo board note (2026-06-28)**: Both NUCLEO-H743ZI2 and NUCLEO-H743ZI are **obsolete** on DigiKey and ST eStore. The **NUCLEO-H753ZI** is the recommended substitute — the STM32H753ZI is an STM32H743ZI with crypto peripherals (AES, HASH, TRNG) added; everything else (core, Flash, RAM, package, peripherals, pinout) is identical. The crypto peripherals are irrelevant to this project. The locked MCU decision (STM32H743ZIT6 for the final PCB) is unaffected — the Nucleo is only for prototyping. DigiKey has 387 in stock ($28.15); Mouser has 898 in stock ($27.00). DigiKey is recommended to consolidate with the Adafruit parts (Mouser does not carry the Adafruit keypad).
+
+> **Bare chip stock (STM32H743ZIT6, for final PCB — not needed now)**: Confirmed in stock at ST eStore ($14.61), Mouser (360 units, $17.37), DigiKey (limited stock, $16.54). No supply concern for the PCB phase.
 
 ---
 
@@ -157,25 +168,26 @@ These components are required for the phone but have not been formally locked in
 
 ### Prototyping Phase (one-time, before custom PCB)
 
-| Item | Est Cost |
-|------|----------|
-| Waveshare SIM7600NA-H 4G HAT | $77 |
-| Waveshare 2" LCD Module (ST7789VW, for MCU prototyping) | $12 |
-| Mint Mobile SIM + plan (3-month) | $15–45 |
-| STM32H743 dev board (Nucleo) | $25–35 |
-| Breadboard/perfboard, jumper wires, misc | ~$10 |
-| 4×4 matrix keypad module + tactile buttons | ~$3–6 |
-| **Prototyping subtotal** | **~$142–185** |
+| Item | Source | Est Cost |
+|------|--------|----------|
+| Waveshare SIM7600NA-H 4G HAT | Waveshare | $77 |
+| Waveshare 2" LCD Module (ST7789VW) | Waveshare | $12 |
+| Mint Mobile SIM + plan (3-month) | Mint Mobile | $15–45 |
+| NUCLEO-H753ZI dev board | DigiKey | $28 |
+| Adafruit 4×4 matrix keypad (PID 3844) | DigiKey | $6 |
+| Adafruit 6mm tactile buttons, 20-pack (PID 367) | DigiKey | $3 |
+| Adafruit breadboard + jumper wires (PID 239 + 759) | DigiKey | $5 |
+| **Prototyping subtotal** | | **~$146–176** |
 
 ### Total Project Budget Estimate (per `docs/constraints.md`: $200–500 realistic)
 
 | Phase | Est Cost |
 |-------|----------|
-| Phase 2: HAT prototyping | $142–185 |
+| Phase 2: HAT prototyping | $146–176 |
 | Phase 4–5: First PCB (BOM + fab + assembly) | $156–267 |
 | Iterations / respins / mistakes (1–2 boards) | $100–200 |
 | Tools (if not already owned: hot air, solder, etc.) | $0–50 |
-| **Total project estimate** | **~$398–702** |
+| **Total project estimate** | **~$402–693** |
 
 > The high end exceeds the $500 target if multiple PCB respins are needed. The modem LGA assembly cost (~$57–72/board) is the main driver — minimizing respins by thorough schematic review is the biggest cost lever.
 
