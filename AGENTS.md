@@ -74,3 +74,7 @@ This project is documentation-driven. The docs are the source of truth for decis
 - ~~Zephyr USB HS via ULPI maturity on STM32H7~~ **RESOLVED & LOCKED 2026-06-28**: Zephyr STM32H7 ULPI is viable (mainline since Dec 2022, PR #52772; bugs #61464/#75179 fixed; works on STM32H747I-DISCO) but **no longer needed** — the SIM7600's own USB 2.0 HS port does tethering directly via RNDIS/ECM, bypassing the MCU. USB3300 ULPI transceiver dropped. MCU USB OTG_FS (12 Mbps) is sufficient for firmware/files/debug. Rev1 routes modem USB to connector footprint; future respin adds internal USB 2.0 hub (USB2514). See project-log.md 2026-06-28 USB HS/ULPI Revisit.
 
 **No open revisit items remain.** All four scheduled revisits (modem, codec, display, USB HS/ULPI) are resolved. The revisit prompt files have been **archived** to `docs/revisit-prompts/archive/` (see `docs/revisit-prompts/README.md` for the archive index). The prompts are retained for historical reference only — do not re-run them.
+
+## Workflow Preferences
+
+- **Commit messages**: When using a temporary file for the commit message (e.g., `.git/COMMIT_MSG.txt`), always delete it after committing. Do not leave temporary files in the `.git/` directory.
