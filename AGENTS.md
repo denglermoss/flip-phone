@@ -79,3 +79,15 @@ This project is documentation-driven. The docs are the source of truth for decis
 ## Workflow Preferences
 
 - **Commit messages**: When using a temporary file for the commit message (e.g., `.git/COMMIT_MSG.txt`), always delete it after committing. Do not leave temporary files in the `.git/` directory.
+
+## Zephyr Development Environment (set up 2026-06-29)
+
+The Zephyr dev environment is installed on Windows (native, not WSL — WSL flashing is unsupported per Zephyr docs). See `docs/project-log.md` 2026-06-29 entry for full details.
+
+- **Workspace**: `C:\Users\dengle\zephyrproject` (external to the phone repo — multi-GB tree, not version-controlled here)
+- **Python venv**: `C:\Users\dengle\zephyrproject\.venv` (Python 3.12, contains west 1.5.0 + Zephyr Python deps)
+- **Zephyr SDK**: `C:\Users\dengle\zephyr-sdk-1.0.1` (ARM toolchain `arm-zephyr-eabi-gcc` 14.3.0)
+- **Board target**: `nucleo_h753zi` (the prototyping board — NUCLEO-H753ZI, substitute for the obsolete NUCLEO-H743ZI; STM32H753 = H743 + crypto, identical for this project)
+- **Activation**: Dot-source `scripts/activate-zephyr.ps1` in a new PowerShell terminal to refresh PATH and activate the venv
+- **Build a sample**: `cd ~/zephyrproject/zephyr; west build -p always -b nucleo_h753zi samples/basic/blinky`
+- **Known gap**: Zephyr SDK Windows host tools (QEMU, OpenOCD) are not available. Install OpenOCD separately (xpack-openocd or winget) before flashing via ST-Link. Building works now; flashing needs this extra step.

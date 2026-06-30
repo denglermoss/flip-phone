@@ -76,4 +76,4 @@ Ecosystem modules are future scope.
 
 ## Status
 
-**Phase 1 (Research & Component Selection) — Complete.** All guiding hardware decisions locked: MCU (STM32H743ZI), modem (SIM7600A-H), codec (MAX9880A), display (ST7789V SPI TFT), keypad (SMD tactile switches), USB architecture (modem-direct tethering, no ULPI). Next: **Phase 2 — HAT-based prototype** (order prototyping kit, validate VoLTE on a real carrier, write firmware). See `docs/project-log.md` Phase Breakdown.
+**Phase 1 (Research & Component Selection) — Complete.** All guiding hardware decisions locked: MCU (STM32H743ZI), modem (SIM7600A-H), codec (MAX9880A), display (ST7789V SPI TFT), keypad (SMD tactile switches), USB architecture (modem-direct tethering, no ULPI). **Zephyr development environment set up (2026-06-29)** — toolchain verified by building blinky for `nucleo_h753zi`. Next: **Phase 2 — HAT-based prototype** (prototyping components ordered; in parallel: learn Zephyr devicetree/Kconfig, write hardware-independent firmware modules, prepare AT command sequences). See `docs/project-log.md` Phase Breakdown.
