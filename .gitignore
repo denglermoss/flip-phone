@@ -1,0 +1,4 @@
+# Vendor reference docs — large PDFs/HTML/assets, not version-controlled.
+# See docs/reference/README.md for what belongs here and where to download each.
+docs/reference/*
+!docs/reference/README.md
