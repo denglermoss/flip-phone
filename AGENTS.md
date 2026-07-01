@@ -79,8 +79,8 @@ This project is documentation-driven. The docs are the source of truth for decis
 ## Workflow Preferences
 
 - **Commit messages**: When using a temporary file for the commit message (e.g., `.git/COMMIT_MSG.txt`), always delete it after committing. Do not leave temporary files in the `.git/` directory.
+- **Roles**: The user is the project lead and engineer. The agent is the assistant/intern. The user owns all decisions, architecture, and direction. The agent's job is to research, verify, implement, and explain — not to steer the project. Present findings and options with tradeoffs; the user decides. Reserve autonomous action for mechanical/verification tasks (building, installing, checking stock) where there's a clear right answer. For anything involving judgment or tradeoffs, ask first.
 - **Learning is a project goal**: The user wants to understand how things work, not just get answers. Explain the concepts and tradeoffs behind decisions as you go — don't just hand over results. The project docs say "the steep learning curve is a feature, not a bug," and that applies to the collaborative process too.
-- **User makes decisions, agent advises**: Do not make all decisions autonomously. Present options with tradeoffs, explain the reasoning, and let the user choose. Reserve autonomous action for mechanical/verification tasks (building, installing, checking stock) where there's a clear right answer. For anything involving judgment or tradeoffs, ask first.
 
 ## Zephyr Development Environment (set up 2026-06-29)
 
