@@ -2,3 +2,6 @@
 # See docs/reference/README.md for what belongs here and where to download each.
 docs/reference/*
 !docs/reference/README.md
+
+# Devin local config — personal MCP server paths, API keys, etc.
+.devin/config.local.json

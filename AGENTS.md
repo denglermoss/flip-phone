@@ -82,6 +82,20 @@ This project is documentation-driven. The docs are the source of truth for decis
 - **Roles**: The user is the project lead and engineer. The agent is the assistant/intern. The user owns all decisions, architecture, and direction. The agent's job is to research, verify, implement, and explain — not to steer the project. Present findings and options with tradeoffs; the user decides. Reserve autonomous action for mechanical/verification tasks (building, installing, checking stock) where there's a clear right answer. For anything involving judgment or tradeoffs, ask first.
 - **Learning is a project goal**: The user wants to understand how things work, not just get answers. Explain the concepts and tradeoffs behind decisions as you go — don't just hand over results. The project docs say "the steep learning curve is a feature, not a bug," and that applies to the collaborative process too.
 
+## Reference Documentation & PDF MCP Server (set up 2026-06-30)
+
+Vendor datasheets, reference manuals, and hardware design docs are stored locally in `docs/reference/` (gitignored — only `docs/reference/README.md` is tracked, which indexes every file with its exact part number and download URL). When a datasheet is cited in the project docs (e.g., "Hardware Design Manual V1.03 §3.6"), the local PDF is the source of truth.
+
+**PDF MCP server** (`mcp-pdf`, rsp2k/mcp-pdf on PyPI) is configured in the Windsurf MCP config (`~/.codeium/windsurf/mcp_config.json`) and auto-imported by Devin at session start. It provides:
+- `textextraction__extract_text` — extract text from any PDF (by page or full doc), via PyMuPDF with auto-fallback to pdfplumber/pypdf
+- `tableextraction__extract_tables` — extract tables (electrical characteristics, pin tables, timing)
+- `documentanalysis__get_document_structure` — TOC/outline for navigation
+- Image/SVG extraction, OCR, and more (14 tool mixins total)
+
+**How to use**: When verifying a spec, pin voltage, register address, or timing parameter, call the MCP tools against the local PDFs in `docs/reference/` rather than relying on web search snippets. The MCP server handles encrypted vendor PDFs (e.g., SIMCom manuals) that `webfetch` cannot parse. Example: `textextraction__extract_text` with `pdf_path` pointing to the SIM7600 manual, `pages="35"`, `inline=true` returns the PCM reference design page in ~0.06s.
+
+**Tooling**: `uv`/`uvx` (Astral, installed via winget) manages the isolated Python environment for `mcp-pdf` — no manual venv maintenance. The MCP config uses the full path to `uvx.exe` (`C:\Users\dengle\AppData\Local\Microsoft\WinGet\Links\uvx.exe`).
+
 ## Zephyr Development Environment (set up 2026-06-29)
 
 The Zephyr dev environment is installed on Windows (native, not WSL — WSL flashing is unsupported per Zephyr docs). See `docs/project-log.md` 2026-06-29 entry for full details.
