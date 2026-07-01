@@ -752,9 +752,9 @@ Why MAX9880A over MCU bridge:
 6. **No Zephyr SAI driver risk** for the voice path (codec talks directly to module; MCU I2S for music is simpler and more tolerant).
 
 Risks / pre-PCB verification items:
-1. **PCM short-frame sync compatibility** — verify MAX9880A primary port supports PCM short-frame sync, 16-bit, master clock from module (check MAX9880A datasheet). The subagent reported "TDM and I2S formats" for both ports; PCM short-frame is a common subset of TDM but must be confirmed.
-2. **Stock availability** — Maxim/ADI parts can have long lead times. Verify in-stock at DigiKey/Mouser before committing. If unavailable, fall back to MCU bridge architecture.
-3. **1.8V supply** — MAX9880A operates on 1.8V. The MCU's 3.3V I2S lines need level shifting (simple voltage divider or level shifter IC; I2S from MCU is output-only, so unidirectional shifting is easy). The SIM7600 PCM lines are also 1.8V-compatible (verify module I/O voltage).
+1. **PCM short-frame sync compatibility — RESOLVED 2026-06-29**: **CONFIRMED COMPATIBLE.** The MAX9880A datasheet explicitly documents "TDM Short-Sync" mode (register settings: TDM = 1, FSW = 0) with timing parameters for both master and slave modes. PCM short-frame sync is electrically identical to TDM with 1 timeslot — the FS pulse is short (1 bit clock wide), marking the start of each 16-bit sample. The MAX9880A's TDM clock frequency range is 128–2048 kHz (datasheet spec), and the SIM7600 outputs BCLK at 2048 kHz — exactly the top of the range. The SIM7600 is always PCM master (generates BCLK + FS); the MAX9880A primary port in slave mode (MAS = 0) accepts these external clocks. The primary interface is explicitly "intended for voiceband applications" (8/16kHz, 16-bit). Register configuration at schematic time: TDM = 1, FSW = 0, MAS = 0 (slave), 16-bit slot width. Schematic-time check: verify SIM7600 PCM pin I/O voltage matches MAX9880A's 1.8V (if SIM7600 PCM lines are 1.8V, connect directly; if higher, add level shifter on PCM lines too).
+2. **Stock availability — RESOLVED 2026-06-29**: **AVAILABLE.** Mouser has 2,250 in stock (part # 700-MAX9880AETM+T, $2.23 qty 1, $1.52 qty 50+). DigiKey is temporarily out of stock (normal for ADI/Maxim parts — cycles in/out). Part is **active** (not discontinued), manufacturer lead time 6–13 weeks. Chinese brokers have 4,896–64,286 pcs. No supply risk for the PCB phase — order from Mouser when ready.
+3. **1.8V supply — documented, no change**: MAX9880A operates on 1.8V (1.65–1.95V range). The MCU's 3.3V I2S lines need level shifting (simple voltage divider or level shifter IC; I2S from MCU is output-only, so unidirectional shifting is easy). The SIM7600 PCM lines are also expected to be 1.8V-compatible (verify module I/O voltage in hardware design manual at schematic time).
 4. **Not on Waveshare HAT** — the HAT has NAU8810 (single-port PCM). The MAX9880A can't be prototyped on the HAT. The HAT validates SIM7600 PCM voice output (the riskiest unknown); the MAX9880A is committed for the final PCB.
 
 **Fallback architecture (if MAX9880A unavailable or incompatible)**: MCU bridge with NAU8822 (single-port I2S codec, ~$1.20). SAI1 as PCM slave (SIM7600), SAI2 as I2S master (codec). Run codec at 8/16kHz during calls, 48kHz for music. ~8-10ms latency. Requires Zephyr H7 SAI driver. See Finding 3 above.
@@ -767,7 +767,7 @@ The Waveshare NA-H HAT prototyping step is **unchanged** — it validates the SI
 
 | Component | Purpose | Notes |
 |-----------|---------|-------|
-| MAX9880AETM+ | Audio codec (dual-port: PCM voice + I2S music) | TQFN-48, ~$1.70. Verify stock + PCM short-frame sync before PCB. 1.8V supply — add level shifter for MCU I2S. |
+| MAX9880AETM+ | Audio codec (dual-port: PCM voice + I2S music) | TQFN-48, ~$1.70–2.23. **Pre-PCB verification COMPLETE 2026-06-29**: PCM short-frame sync confirmed compatible (TDM short-sync slave mode, 128–2048 kHz matches SIM7600's 2048 kHz); Mouser has 2,250 in stock ($2.23 qty 1). 1.8V supply — add level shifter for MCU I2S. Schematic-time: verify SIM7600 PCM pin I/O voltage. |
 | 1.8V regulator | MAX9880A supply | LDO from 3.3V or battery rail. |
 | I2S level shifter | 3.3V MCU → 1.8V MAX9880A secondary port | Unidirectional, 3-4 lines (SCK, FS, SD, MCLK). Simple voltage divider or TXB010x. |
 
