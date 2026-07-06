@@ -1,0 +1,36 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/*
+ * app.overlay — Devicetree hardware overlay for the phone
+ *
+ * This file is merged (overlaid) on top of the board's base devicetree
+ * (nucleo_h753zi.dts) at build time. It describes phone-specific
+ * hardware that is attached to the Nucleo board's peripherals.
+ *
+ * The board already defines: USART3 (console), LPUART1, USB OTG_FS,
+ * I2C1, I2C2, SPI1, 2 LEDs, 1 user button, and flash partitions.
+ *
+ * This overlay will grow as we add peripherals:
+ *   - Modem UART (LPUART1 or USART2) + PWRKEY/STATUS GPIO
+ *   - Keypad matrix (5x4 = 9 GPIO pins)
+ *   - ST7789V display on SPI1 (CS, DC, reset, backlight pins)
+ *   - MAX9880A codec + MAX17048 fuel gauge on I2C1
+ *
+ * For now, the overlay is empty — the skeleton uses only the board's
+ * built-in peripherals (console + LEDs). We'll add hardware nodes
+ * incrementally, one peripheral at a time.
+ */
+
+/ {
+    /* Phone-specific hardware nodes will be added here as we bring up
+     * each peripheral. Examples of what will come:
+     *
+     *   modem_pwrkey: modem-pwrkey {
+     *       gpios = <&gpiox N GPIO_ACTIVE_LOW>;
+     *   };
+     *
+     *   keypad: keypad {
+     *       compatible = "gpio-keys";
+     *       ...
+     *   };
+     */
+};

@@ -106,4 +106,7 @@ The Zephyr dev environment is installed on Windows (native, not WSL — WSL flas
 - **Board target**: `nucleo_h753zi` (the prototyping board — NUCLEO-H753ZI, substitute for the obsolete NUCLEO-H743ZI; STM32H753 = H743 + crypto, identical for this project)
 - **Activation**: Dot-source `scripts/activate-zephyr.ps1` in a new PowerShell terminal to refresh PATH and activate the venv
 - **Build a sample**: `cd ~/zephyrproject/zephyr; west build -p always -b nucleo_h753zi samples/basic/blinky`
+- **Build the phone firmware**: `cd C:\Users\dengle\Documents\personal_projects\phone; . .\scripts\activate-zephyr.ps1; $env:ZEPHYR_BASE = "$env:HOMEPATH\zephyrproject\zephyr"; west build -b nucleo_h753zi firmware`
 - **Known gap**: Zephyr SDK Windows host tools (QEMU, OpenOCD) are not available. Install OpenOCD separately (xpack-openocd or winget) before flashing via ST-Link. Building works now; flashing needs this extra step.
+- **Firmware app**: `firmware/` directory in the phone repo — Zephyr application with `CMakeLists.txt` (build manifest), `prj.conf` (Kconfig features), `app.overlay` (devicetree hardware config), `src/main.c` (application code). Skeleton created 2026-07-05, builds successfully. See `docs/project-log.md` 2026-07-05 entry.
+- **Path constraint**: The project directory must NOT contain spaces — Zephyr's devicetree preprocessor splits paths at spaces and fails. Directory renamed from `Personal Projects` to `personal_projects` on 2026-07-05 for this reason.
