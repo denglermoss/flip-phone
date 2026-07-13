@@ -76,4 +76,6 @@ Ecosystem modules are future scope.
 
 ## Status
 
-**Phase 1 (Research & Component Selection) — Complete.** All guiding hardware decisions locked: MCU (STM32H743ZI), modem (SIM7600A-H), codec (MAX9880A), display (ST7789V SPI TFT), keypad (SMD tactile switches), USB architecture (modem-direct tethering, no ULPI). **Zephyr development environment set up (2026-06-29)** — toolchain verified by building blinky for `nucleo_h753zi`. Next: **Phase 2 — HAT-based prototype** (prototyping components ordered; in parallel: learn Zephyr devicetree/Kconfig, write hardware-independent firmware modules, prepare AT command sequences). See `docs/project-log.md` Phase Breakdown.
+**Phase 1 (Research & Component Selection) — Complete.** All guiding hardware decisions locked: MCU (STM32H743ZI), modem (SIM7600A-H), codec (MAX9880A), display (ST7789V SPI TFT), keypad (SMD tactile switches), USB architecture (modem-direct tethering, no ULPI). **Zephyr development environment set up (2026-06-29)** — toolchain verified by building blinky for `nucleo_h753zi`.
+
+**Phase 2 (HAT-Based Prototype) — In Progress (2026-07-12).** All prototyping hardware received. SIM7600NA-H HAT bring-up complete: modem alive on SIM7600's own USB port (not CP210x), registered on Mint LTE (CEREG 0,1, COPS "Mint" AcT=7, CSQ 19). **VoLTE validated** — `AT+voltesetting=1` works on LE20B02 firmware (no update needed), first test call connected on LTE (CNSMOD=8, not CSFB). Next: verify call audio path (NAU8810 codec), receive incoming call, then MCU integration. See `docs/project-log.md` Phase Breakdown.
