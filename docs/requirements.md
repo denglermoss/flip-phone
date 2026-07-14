@@ -79,6 +79,7 @@
 ## Open Questions (Requirements)
 
 - [ ] USB connector type for ecosystem interconnect: USB-C vs micro-USB (data-capable, not charge-only). USB-C strongly recommended for any new design — effectively decided (USB-C), pending formal lock.
+- [ ] **MCU-to-modem UART stress test** (post-MVP, pre-PCB): Run a long-duration stress test of the LPUART1 ↔ SIM7600 UART link — send 100+ AT commands back-to-back with no delay, verify zero data loss (every response contains expected result code). Test with varied response sizes (short `AT`→`OK`, long `AT+CGMM`, multi-line `AT+COPS?`). Also test GPS NMEA streaming (continuous data into the 1KB ring buffer — verify no overflow). This validates the interrupt-driven UART + ring buffer architecture is reliable enough for the final PCB. Deferred until after the MVP call works — the current 4-command test is sufficient for MVP development. See project-log.md 2026-07-13 entries.
 
 ## Resolved Questions (moved from Open)
 

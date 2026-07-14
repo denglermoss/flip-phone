@@ -10,27 +10,86 @@
  * I2C1, I2C2, SPI1, 2 LEDs, 1 user button, and flash partitions.
  *
  * This overlay will grow as we add peripherals:
- *   - Modem UART (LPUART1 or USART2) + PWRKEY/STATUS GPIO
+ *   - Modem UART: LPUART1 (already in board DTS, PB6/PB7, 115200)
+ *     + PWRKEY/STATUS GPIO (to be added)
  *   - Keypad matrix (5x4 = 9 GPIO pins)
  *   - ST7789V display on SPI1 (CS, DC, reset, backlight pins)
  *   - MAX9880A codec + MAX17048 fuel gauge on I2C1
  *
- * For now, the overlay is empty — the skeleton uses only the board's
- * built-in peripherals (console + LEDs). We'll add hardware nodes
- * incrementally, one peripheral at a time.
+ * The modem UART (LPUART1) is already configured in the board DTS —
+ * no overlay changes needed for it. PWRKEY and STATUS GPIOs will be
+ * added here when we wire up modem power control.
  */
 
+#include <zephyr/dt-bindings/mipi_dbi/mipi_dbi.h>
+#include <zephyr/dt-bindings/gpio/arduino-header-r3.h>
+#include <zephyr/dt-bindings/display/panel.h>
+
 / {
-    /* Phone-specific hardware nodes will be added here as we bring up
-     * each peripheral. Examples of what will come:
+    chosen {
+        zephyr,display = &st7789v_lcd;
+    };
+
+    /* ST7789V 2.0" 240×320 color TFT display (Waveshare 2inch LCD Module)
      *
-     *   modem_pwrkey: modem-pwrkey {
-     *       gpios = <&gpiox N GPIO_ACTIVE_LOW>;
-     *   };
+     * Wiring (LCD → Nucleo Arduino header):
+     *   VCC → 3.3V
+     *   GND → GND
+     *   DIN → D11 (PB5, SPI1 MOSI)
+     *   CLK → D13 (PA5, SPI1 SCK)
+     *   CS  → D10 (PD14, SPI1 CS — already in board DTS)
+     *   DS  → D9  (PD15, Data/Command)
+     *   RST → D8  (PF3,  Reset, active low)
+     *   BL  → D7  (PG12, Backlight, active high)
      *
-     *   keypad: keypad {
-     *       compatible = "gpio-keys";
-     *       ...
-     *   };
-     */
+     * The MIPI DBI SPI wrapper (zephyr,mipi-dbi-spi) sits between the
+     * SPI controller and the display panel. It handles the DC pin
+     * (data/command) and reset pin, translating Zephyr's display API
+     * calls into SPI transactions with the right DC state. */
+    mipi_dbi_lcd: mipi-dbi-lcd {
+        compatible = "zephyr,mipi-dbi-spi";
+        spi-dev = <&spi1>;
+        dc-gpios = <&arduino_header ARDUINO_HEADER_R3_D9 GPIO_ACTIVE_HIGH>;
+        reset-gpios = <&arduino_header ARDUINO_HEADER_R3_D8 GPIO_ACTIVE_LOW>;
+        write-only;
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        st7789v_lcd: st7789v@0 {
+            compatible = "sitronix,st7789v";
+            mipi-max-frequency = <20000000>;
+            reg = <0>;
+            width = <240>;
+            height = <320>;
+            x-offset = <0>;
+            y-offset = <0>;
+            vcom = <0x19>;
+            gctrl = <0x35>;
+            vrhs = <0x12>;
+            vdvs = <0x20>;
+            mdac = <0x00>;
+            gamma = <0x01>;
+            pixel-format = <PANEL_PIXEL_FORMAT_RGB_565>;
+            lcm = <0x2c>;
+            porch-param = [0c 0c 00 33 33];
+            cmd2en-param = [5a 69 02 01];
+            pwctrl1-param = [a4 a1];
+            pvgam-param = [d0 04 0d 11 13 2b 3f 54 4c 18 0d 0b 1f 23];
+            nvgam-param = [d0 04 0c 11 13 2c 3f 44 51 2f 1f 1f 20 23];
+            ram-param = [00 f0];
+            rgb-param = [cd 08 14];
+            mipi-mode = "MIPI_DBI_MODE_SPI_4WIRE";
+        };
+    };
+
+    /* Backlight GPIO — controlled via regulator-fixed.
+     * Active high: set high to turn on the backlight.
+     * regulator-boot-on ensures it's on at boot. */
+    lcd_backlight: lcd-backlight {
+        compatible = "regulator-fixed";
+        enable-gpios = <&arduino_header ARDUINO_HEADER_R3_D7 GPIO_ACTIVE_HIGH>;
+        regulator-name = "lcd-backlight";
+        regulator-boot-on;
+        startup-delay-us = <10000>;
+    };
 };

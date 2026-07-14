@@ -114,5 +114,5 @@ Ecosystem modules are future scope.
 
 ## Success Criteria
 
-- **MVP**: Successfully place and receive a voice call from the custom-built device to another phone, with intelligible audio, on a US LTE network.
+- **MVP**: ~~Successfully place and receive a voice call from the custom-built device to another phone, with intelligible audio, on a US LTE network.~~ **ACHIEVED 2026-07-13** — MCU firmware places outgoing VoLTE call (`ATD6078821755;` → `VOICE CALL: BEGIN` → `VOICE CALL: END`) and receives incoming calls (detects `RING` URC → auto-answers with `ATA` → `VOICE CALL: BEGIN`). Audio works both directions through HAT's NAU8810 codec. Running on Nucleo H753ZI + Waveshare SIM7600NA-H HAT (not yet custom PCB). See project-log.md 2026-07-13.
 - **Daily driver**: Use the device as primary phone for one week, including contacts, SMS, and acceptable battery life.
