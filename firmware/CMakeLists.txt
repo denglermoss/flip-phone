@@ -28,4 +28,7 @@ project(phone)
 # they get listed here.
 target_sources(app PRIVATE
     src/main.c
+    src/fonts/jetbrainsmono_10.c
+    src/fonts/jetbrainsmono_14.c
+    src/fonts/jetbrainsmono_22.c
 )

@@ -71,6 +71,7 @@ Ecosystem modules are future scope.
 - [Research Notes](docs/research-notes.md) — Cellular comms primer, component research
 - [Feature Wishlist](docs/feature-wishlist.md) — All potential features rated 1-10, ecosystem implications, component selection guide
 - [Project Log](docs/project-log.md) — Decision log and progress tracking
+- [UI Design](docs/ui-design.md) — Screen map, input model, visual style (in progress)
 - [Bill of Materials](docs/bom.md) — Component list with prices, links, and cost estimates (preliminary)
 - [Revisit Prompts](docs/revisit-prompts/) — Prompts for open questions requiring dedicated discussion. **All resolved and archived** (2026-06-28): modem (SIM7600 locked), codec (MAX9880A selected), display (ST7789V SPI TFT selected), USB HS/ULPI (dropped — SIM7600's own USB 2.0 HS port does tethering directly, bypassing the MCU; no USB3300 needed). Archived prompts in `docs/revisit-prompts/archive/`; see `docs/revisit-prompts/README.md` for the archive index.
 
@@ -78,4 +79,4 @@ Ecosystem modules are future scope.
 
 **Phase 1 (Research & Component Selection) — Complete.** All guiding hardware decisions locked: MCU (STM32H743ZI), modem (SIM7600A-H), codec (MAX9880A), display (ST7789V SPI TFT), keypad (SMD tactile switches), USB architecture (modem-direct tethering, no ULPI). **Zephyr development environment set up (2026-06-29)** — toolchain verified by building blinky for `nucleo_h753zi`.
 
-**Phase 2 (HAT-Based Prototype) — In Progress (2026-07-12).** All prototyping hardware received. SIM7600NA-H HAT bring-up complete: modem alive on SIM7600's own USB port (not CP210x), registered on Mint LTE (CEREG 0,1, COPS "Mint" AcT=7, CSQ 19). **VoLTE validated** — `AT+voltesetting=1` works on LE20B02 firmware (no update needed), first test call connected on LTE (CNSMOD=8, not CSFB). Next: verify call audio path (NAU8810 codec), receive incoming call, then MCU integration. See `docs/project-log.md` Phase Breakdown.
+**Phase 2 (HAT-Based Prototype) — In Progress (2026-07-18).** All prototyping hardware received. **MVP achieved (2026-07-13)**: MCU firmware places and receives VoLTE calls with audio on Mint LTE. **Keypad integrated + verified (2026-07-18)**: 4×4 matrix keypad wired to Nucleo GPIO via Zephyr's `gpio-kbd-matrix` input driver — user types arbitrary phone numbers and places calls (A=Call, B=End, C=Backspace). Functional test passed: real VoLTE call to a user-typed number, no PC involvement. Standalone-dialer milestone reached. Remaining MVP items: signal indicator (`AT+CSQ` polling — doable now), battery indicator (PCB-phase — needs MAX17048 fuel gauge). See `docs/project-log.md` Phase Breakdown.

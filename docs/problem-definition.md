@@ -80,8 +80,8 @@ Ecosystem modules are future scope.
 | Contacts | ❌ | ✅ |
 | SMS | ❌ | ✅ |
 | Menu system | ❌ | ✅ |
-| Battery indicator | ✅ | ✅ |
-| Signal indicator | ✅ | ✅ |
+| Battery indicator | ❌ | ✅ |
+| Signal indicator | ❌ | ✅ |
 | Bluetooth | ❌ | Maybe |
 | USB data (ecosystem) | ❌ | ✅ |
 | Enclosure | Test jig | ✅ |

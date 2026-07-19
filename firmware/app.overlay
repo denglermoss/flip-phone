@@ -25,6 +25,17 @@
 #include <zephyr/dt-bindings/gpio/arduino-header-r3.h>
 #include <zephyr/dt-bindings/display/panel.h>
 
+/* Disable the B1 user button (PC13) — we removed B1 from app code
+ * (the keypad's A/B keys replaced it), but the board DTS still
+ * defines the user_button node and the gpio-keys driver claims
+ * PC13/EXTI13 at boot. Our keypad row 0 is PE13, which also needs
+ * EXTI13. STM32 EXTI lines are port-shared — only one port per
+ * line — so PC13's claim blocks PE13 with -EBUSY. Disabling the
+ * user_button node frees EXTI13 for PE13. */
+&user_button {
+    status = "disabled";
+};
+
 / {
     chosen {
         zephyr,display = &st7789v_lcd;
@@ -91,5 +102,54 @@
         regulator-name = "lcd-backlight";
         regulator-boot-on;
         startup-delay-us = <10000>;
+    };
+
+    /* 4x4 matrix keypad (Adafruit PID 3844 membrane keypad)
+     *
+     * Wiring (keypad → Nucleo Arduino header):
+     *   R1 → D3  (PE13, row 0)
+     *   R2 → D4  (PE14, row 1)
+     *   R3 → D5  (PE11, row 2)
+     *   R4 → D6  (PE9,  row 3)
+     *   C1 → A1  (PC0,  col 0)
+     *   C2 → A2  (PC3,  col 1)
+     *   C3 → A3  (PB1,  col 2)
+     *   C4 → D2  (PG14, col 3)
+     *
+     * Rows are inputs with internal pull-ups (active low): a pressed
+     * key connects the row to the currently-driven column, which the
+     * driver pulls low during that column's scan slot. Unselected
+     * columns are high-impedance (input) so they don't interfere.
+     *
+     * idle-mode = "interrupt" — the driver sleeps with row-pin EXTI
+     * interrupts armed; a keypress wakes it instantly. Zero CPU until
+     * a key is pressed. This is the default and most efficient mode.
+     *
+     * The driver runs in its own thread (CONFIG_INPUT_KBD_MATRIX_THREAD_*
+     * defaults) and emits input events: INPUT_ABS_X = column,
+     * INPUT_ABS_Y = row, INPUT_BTN_TOUCH = pressed/released. The app
+     * registers an INPUT_CALLBACK_DEFINE() callback to receive them.
+     *
+     * Keymap (Adafruit 4x4 membrane layout):
+     *        C1  C2  C3  C4
+     *   R1:  1   2   3   A
+     *   R2:  4   5   6   B
+     *   R3:  7   8   9   C
+     *   R4:  *   0   #   D
+     */
+    kbd_matrix: kbd-matrix {
+        compatible = "gpio-kbd-matrix";
+        row-gpios = <&arduino_header ARDUINO_HEADER_R3_D3 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>,
+                    <&arduino_header ARDUINO_HEADER_R3_D4 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>,
+                    <&arduino_header ARDUINO_HEADER_R3_D5 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>,
+                    <&arduino_header ARDUINO_HEADER_R3_D6 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
+        col-gpios = <&arduino_header ARDUINO_HEADER_R3_A1 GPIO_ACTIVE_LOW>,
+                    <&arduino_header ARDUINO_HEADER_R3_A2 GPIO_ACTIVE_LOW>,
+                    <&arduino_header ARDUINO_HEADER_R3_A3 GPIO_ACTIVE_LOW>,
+                    <&arduino_header ARDUINO_HEADER_R3_D2 GPIO_ACTIVE_LOW>;
+        debounce-down-ms = <10>;
+        debounce-up-ms = <20>;
+        poll-timeout-ms = <100>;
+        idle-mode = "interrupt";
     };
 };

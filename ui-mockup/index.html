@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phone UI Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Layered grey palette — TE-inspired industrial depth */
+  --bg: #1a1a1a;            /* base background (darkest) */
+  --panel: #262626;         /* content panels (slightly lighter) */
+  --panel-raised: #303030;  /* raised elements within panels */
+  --border: #3a3a3a;        /* subtle grey borders between zones */
+  --border-bright: #4a4a4a; /* active/selected borders */
+
+  /* Amber — reserved for content and active elements only */
+  --amber: #FFB000;
+  --amber-bright: #FFD000;
+  --amber-dim: #8a6a00;
+
+  /* CRT surface */
+  --scanline-opacity: 0.04;
+  --scanline-spacing: 3;
+  --glow: 0.03;
+  --amber-intensity: 1.0;
+
+  /* Scale + font */
+  --font-scale: 1;
+  --font-family: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0d0d0d;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  font-family: 'VT323', monospace;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding: 24px;
+}
+
+/* ===== SCREEN ===== */
+.screen {
+  width: calc(240px * var(--font-scale));
+  height: calc(320px * var(--font-scale));
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #2a2a2a;
+  border-radius: 6px;
+  box-shadow: 0 0 60px rgba(255, 176, 0, 0.08), 0 8px 32px rgba(0,0,0,0.6);
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+/* CRT surface overlays */
+.scanlines {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--scanline-spacing) * var(--font-scale) * 1px - 1px),
+    rgba(255, 176, 0, var(--scanline-opacity)) calc(var(--scanline-spacing) * var(--font-scale) * 1px - 1px),
+    rgba(255, 176, 0, var(--scanline-opacity)) calc(var(--scanline-spacing) * var(--font-scale) * 1px)
+  );
+  pointer-events: none; z-index: 100;
+}
+.glow {
+  position: absolute; inset: 0;
+  box-shadow: inset 0 0 80px rgba(255, 176, 0, var(--glow));
+  pointer-events: none; z-index: 99;
+}
+.vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.4) 100%);
+  pointer-events: none; z-index: 98;
+}
+
+/* ===== ZONES — equal weight, grey panels, grey borders ===== */
+.zone {
+  position: absolute;
+  left: 0; right: 0;
+  font-family: var(--font-family);
+}
+
+.status-bar {
+  top: 0;
+  height: calc(22px * var(--font-scale));
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(5px * var(--font-scale));
+  font-size: calc(9px * var(--font-scale));
+  color: var(--amber);
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+.status-bar .sig { letter-spacing: 1px; }
+.status-bar .net { color: var(--amber-dim); }
+.status-bar .time { letter-spacing: 1px; }
+
+.content {
+  top: calc(22px * var(--font-scale));
+  bottom: calc(26px * var(--font-scale));
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  padding: calc(4px * var(--font-scale)) calc(6px * var(--font-scale));
+  overflow: hidden;
+}
+
+.softkey-bar {
+  bottom: 0;
+  height: calc(26px * var(--font-scale));
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 calc(4px * var(--font-scale));
+  font-size: calc(10px * var(--font-scale));
+  color: var(--amber);
+  letter-spacing: 0.5px;
+  text-align: center;
+  line-height: 1;
+}
+
+/* ===== CONTENT — shared elements ===== */
+.screen-title {
+  font-size: calc(11px * var(--font-scale));
+  color: var(--amber);
+  padding: calc(3px * var(--font-scale)) 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: calc(3px * var(--font-scale));
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.list {
+  flex: 1;
+  overflow: hidden;
+  font-size: calc(12px * var(--font-scale));
+  line-height: 1.3;
+}
+.list-item {
+  padding: calc(3px * var(--font-scale)) calc(2px * var(--font-scale));
+  color: var(--amber);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.list-item.selected {
+  color: var(--amber-bright);
+  background: var(--panel-raised);
+  border-left: 2px solid var(--amber);
+  padding-left: calc(4px * var(--font-scale));
+}
+.list-item .sub {
+  font-size: calc(8px * var(--font-scale));
+  color: var(--amber-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0;
+}
+
+/* Dialer */
+.dialer-state {
+  font-size: calc(10px * var(--font-scale));
+  color: var(--amber);
+  text-align: center;
+  padding-top: calc(8px * var(--font-scale));
+  letter-spacing: 2px;
+  min-height: calc(12px * var(--font-scale));
+}
+.dialer-number {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(22px * var(--font-scale));
+  color: var(--amber-bright);
+  text-align: center;
+  word-break: break-all;
+  line-height: 1.1;
+  letter-spacing: 1px;
+  padding: 0 calc(4px * var(--font-scale));
+}
+.dialer-number.empty::after {
+  content: "—";
+  color: var(--amber-dim);
+}
+.dialer-cursor {
+  display: inline-block;
+  width: calc(2px * var(--font-scale));
+  height: calc(18px * var(--font-scale));
+  background: var(--amber-bright);
+  margin-left: calc(2px * var(--font-scale));
+  animation: blink-cursor 1s steps(2) infinite;
+  vertical-align: middle;
+}
+@keyframes blink-cursor { 50% { opacity: 0; } }
+
+/* In-call */
+.incall-state {
+  font-size: calc(12px * var(--font-scale));
+  color: var(--amber-bright);
+  text-align: center;
+  padding-top: calc(20px * var(--font-scale));
+  letter-spacing: 3px;
+  min-height: calc(16px * var(--font-scale));
+}
+.incall-state.incoming {
+  animation: blink 1s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0.3; } }
+.incall-number {
+  font-size: calc(16px * var(--font-scale));
+  color: var(--amber);
+  text-align: center;
+  padding-top: calc(6px * var(--font-scale));
+  letter-spacing: 1px;
+}
+.incall-name {
+  font-size: calc(12px * var(--font-scale));
+  color: var(--amber-dim);
+  text-align: center;
+  padding-top: calc(3px * var(--font-scale));
+}
+.incall-timer {
+  font-size: calc(20px * var(--font-scale));
+  color: var(--amber-bright);
+  text-align: center;
+  padding-top: calc(16px * var(--font-scale));
+  letter-spacing: 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Contact detail */
+.detail-name {
+  font-size: calc(14px * var(--font-scale));
+  color: var(--amber-bright);
+  padding: calc(2px * var(--font-scale)) 0;
+}
+.detail-number {
+  font-size: calc(11px * var(--font-scale));
+  color: var(--amber);
+  padding-bottom: calc(4px * var(--font-scale));
+  border-bottom: 1px solid var(--border);
+  margin-bottom: calc(4px * var(--font-scale));
+  letter-spacing: 0.5px;
+}
+
+/* Conversation */
+.conv-header {
+  font-size: calc(11px * var(--font-scale));
+  color: var(--amber);
+  padding-bottom: calc(3px * var(--font-scale));
+  border-bottom: 1px solid var(--border);
+  margin-bottom: calc(3px * var(--font-scale));
+  letter-spacing: 1px;
+}
+.conv-messages {
+  flex: 1;
+  overflow: hidden;
+  font-size: calc(10px * var(--font-scale));
+  line-height: 1.35;
+}
+.msg {
+  padding: calc(2px * var(--font-scale)) 0;
+  color: var(--amber);
+}
+.msg.me {
+  text-align: right;
+  color: var(--amber-bright);
+}
+.msg.them {
+  text-align: left;
+}
+
+/* Compose */
+.compose-to {
+  font-size: calc(10px * var(--font-scale));
+  color: var(--amber-dim);
+  padding-bottom: calc(2px * var(--font-scale));
+  border-bottom: 1px solid var(--border);
+  margin-bottom: calc(4px * var(--font-scale));
+}
+.compose-to .val { color: var(--amber); }
+.compose-body {
+  flex: 1;
+  font-size: calc(12px * var(--font-scale));
+  color: var(--amber-bright);
+  line-height: 1.3;
+  overflow: hidden;
+}
+
+/* ===== CONTROLS PANEL ===== */
+.controls {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 20px;
+  color: #aaa;
+  font-family: 'VT323', monospace;
+  font-size: 16px;
+  width: 340px;
+  flex-shrink: 0;
+}
+.controls h2 {
+  font-size: 20px;
+  color: var(--amber);
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+.controls .subtitle {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+.controls h3 {
+  font-size: 14px;
+  color: #777;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 1px solid #2a2a2a;
+  padding-bottom: 4px;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+  margin-bottom: 4px;
+}
+.key {
+  background: #262626;
+  border: 1px solid #3a3a3a;
+  color: #ccc;
+  padding: 10px 4px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 15px;
+  font-family: 'JetBrains Mono', monospace;
+  user-select: none;
+  transition: background 0.08s, border-color 0.08s;
+}
+.key:hover { background: #303030; border-color: #4a4a4a; }
+.key:active { background: var(--amber-dim); border-color: var(--amber); color: var(--amber); }
+
+.screen-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+.scr-btn {
+  background: #262626;
+  border: 1px solid #3a3a3a;
+  color: #aaa;
+  padding: 6px 8px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: 'VT323', monospace;
+  letter-spacing: 0.5px;
+}
+.scr-btn:hover { background: #303030; }
+.scr-btn.active { background: var(--amber-dim); border-color: var(--amber); color: var(--amber); }
+
+.font-select, select {
+  background: #262626;
+  border: 1px solid #3a3a3a;
+  color: #ccc;
+  padding: 6px;
+  font-size: 14px;
+  font-family: 'VT323', monospace;
+  border-radius: 4px;
+  width: 100%;
+  margin-bottom: 6px;
+  cursor: pointer;
+}
+
+.slider-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+.slider-row label {
+  font-size: 13px;
+  color: #888;
+  min-width: 110px;
+  letter-spacing: 0.5px;
+}
+.slider-row input[type="range"] { flex: 1; cursor: pointer; }
+.slider-row .val {
+  font-size: 13px;
+  color: var(--amber);
+  min-width: 44px;
+  text-align: right;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.info {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.45;
+  padding: 8px;
+  background: #111;
+  border-radius: 4px;
+  border-left: 2px solid var(--amber-dim);
+}
+.info b { color: #999; }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px; height: 14px;
+  background: var(--amber);
+  border-radius: 50%;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== PHONE SCREEN ===== -->
+<div class="screen" id="screen">
+  <div class="zone status-bar" id="status-bar">
+    <span class="sig" id="sig">SIG:|||</span>
+    <span class="net" id="net">MINT</span>
+    <span class="time" id="time">--:--</span>
+  </div>
+  <div class="zone content" id="content"></div>
+  <div class="zone softkey-bar" id="softkey-bar">
+    <span id="softkey-text"></span>
+  </div>
+  <div class="vignette"></div>
+  <div class="glow"></div>
+  <div class="scanlines"></div>
+</div>
+
+<!-- ===== CONTROLS ===== -->
+<div class="controls">
+  <h2>PHONE UI MOCKUP</h2>
+  <div class="subtitle">TE structure + CRT surface. Layered grey, amber content, grey borders.</div>
+
+  <h3>Keypad</h3>
+  <div class="keypad" id="keypad">
+    <div class="key" data-key="1">1</div>
+    <div class="key" data-key="2">2</div>
+    <div class="key" data-key="3">3</div>
+    <div class="key" data-key="A">A</div>
+    <div class="key" data-key="4">4</div>
+    <div class="key" data-key="5">5</div>
+    <div class="key" data-key="6">6</div>
+    <div class="key" data-key="B">B</div>
+    <div class="key" data-key="7">7</div>
+    <div class="key" data-key="8">8</div>
+    <div class="key" data-key="9">9</div>
+    <div class="key" data-key="C">C</div>
+    <div class="key" data-key="*">*</div>
+    <div class="key" data-key="0">0</div>
+    <div class="key" data-key="#">#</div>
+    <div class="key" data-key="D">D</div>
+  </div>
+
+  <h3>Jump to screen</h3>
+  <div class="screen-buttons" id="screen-buttons">
+    <button class="scr-btn active" data-screen="idle">Idle / Dialer</button>
+    <button class="scr-btn" data-screen="menu">Main Menu</button>
+    <button class="scr-btn" data-screen="contacts">Contacts</button>
+    <button class="scr-btn" data-screen="contact">Contact Detail</button>
+    <button class="scr-btn" data-screen="messages">Messages</button>
+    <button class="scr-btn" data-screen="conversation">Conversation</button>
+    <button class="scr-btn" data-screen="compose">SMS Compose</button>
+    <button class="scr-btn" data-screen="calling">Calling</button>
+    <button class="scr-btn" data-screen="incoming">Incoming</button>
+    <button class="scr-btn" data-screen="connected">Connected</button>
+  </div>
+
+  <h3>Font</h3>
+  <select class="font-select" id="font-select">
+    <option value="'VT323', monospace">VT323 (terminal pixel)</option>
+    <option value="'Press Start 2P', monospace">Press Start 2P (chunky 8-bit)</option>
+    <option value="'JetBrains Mono', monospace" selected>JetBrains Mono (clean mono)</option>
+    <option value="'Inter', sans-serif">Inter (modern sans)</option>
+  </select>
+
+  <h3>CRT surface</h3>
+  <div class="slider-row">
+    <label>Scanline opacity</label>
+    <input type="range" id="sl-opacity" min="0" max="20" value="4">
+    <span class="val" id="sl-opacity-val">4%</span>
+  </div>
+  <div class="slider-row">
+    <label>Scanline spacing</label>
+    <input type="range" id="sl-spacing" min="2" max="8" value="3">
+    <span class="val" id="sl-spacing-val">3px</span>
+  </div>
+  <div class="slider-row">
+    <label>Glow</label>
+    <input type="range" id="sl-glow" min="0" max="20" value="3">
+    <span class="val" id="sl-glow-val">3%</span>
+  </div>
+  <div class="slider-row">
+    <label>Vignette</label>
+    <input type="range" id="sl-vignette" min="0" max="60" value="40">
+    <span class="val" id="sl-vignette-val">40%</span>
+  </div>
+
+  <h3>Amber</h3>
+  <div class="slider-row">
+    <label>Amber intensity</label>
+    <input type="range" id="sl-amber" min="40" max="100" value="100">
+    <span class="val" id="sl-amber-val">100%</span>
+  </div>
+
+  <h3>Grey depth</h3>
+  <div class="slider-row">
+    <label>Base darkness</label>
+    <input type="range" id="sl-bg" min="0" max="40" value="26">
+    <span class="val" id="sl-bg-val">26</span>
+  </div>
+  <div class="slider-row">
+    <label>Panel lift</label>
+    <input type="range" id="sl-panel" min="0" max="30" value="12">
+    <span class="val" id="sl-panel-val">12</span>
+  </div>
+  <div class="slider-row">
+    <label>Border visibility</label>
+    <input type="range" id="sl-border" min="0" max="50" value="32">
+    <span class="val" id="sl-border-val">32</span>
+  </div>
+
+  <div class="info">
+    <b>Keys:</b> 0-9*# = digits (dialer) / nav (menu: 2=up, 8=down)<br>
+    <b>A</b> = Call / Select / Answer &nbsp; <b>B</b> = End / Back / Reject<br>
+    <b>C</b> = Backspace / Compose &nbsp; <b>D</b> = Menu<br>
+    Keyboard also works. Click any screen button to jump.
+  </div>
+</div>
+
+<script>
+// ===== SAMPLE DATA =====
+const contacts = [
+  { name: "ALICE", number: "+1 607 555 1234" },
+  { name: "BOB",   number: "+1 607 555 9876" },
+  { name: "MOM",   number: "+1 607 555 0001" },
+  { name: "DAD",   number: "+1 607 555 0002" },
+  { name: "JEN",   number: "+1 212 555 4242" },
+];
+
+const messages = {
+  "ALICE": [
+    { from: "them", text: "hey, are you free tonight?" },
+    { from: "me",   text: "yeah, what's up?" },
+    { from: "them", text: "movie at 8?" },
+    { from: "me",   text: "sounds great, see you there" },
+  ],
+  "BOB": [
+    { from: "them", text: "did you finish the thing?" },
+    { from: "me",   text: "almost, tomorrow morning" },
+  ],
+  "MOM": [
+    { from: "them", text: "call me when you can <3" },
+  ],
+};
+
+const menuItems = ["CONTACTS", "MESSAGES", "SETTINGS"];
+
+// ===== STATE =====
+let screen = "idle";
+let dialString = "";
+const dialMax = 20;
+let menuIndex = 0;
+let contactsIndex = 0;
+let currentContact = 0;
+let messagesIndex = 0;
+let currentConversation = "ALICE";
+let composeText = "";
+let composeRecipient = "ALICE";
+let contactActionIndex = 0;
+const contactActions = ["CALL", "TEXT", "EDIT", "DELETE"];
+let callTimer = 0;
+let callTimerInterval = null;
+
+const content = document.getElementById("content");
+const softkeyText = document.getElementById("softkey-text");
+const statusBar = document.getElementById("status-bar");
+
+// ===== RENDER =====
+function render() {
+  content.innerHTML = "";
+  if (callTimerInterval) { clearInterval(callTimerInterval); callTimerInterval = null; }
+
+  switch (screen) {
+    case "idle":       renderDialer(); break;
+    case "menu":       renderMenu(); break;
+    case "contacts":   renderContacts(); break;
+    case "contact":    renderContact(); break;
+    case "messages":   renderMessages(); break;
+    case "conversation": renderConversation(); break;
+    case "compose":    renderCompose(); break;
+    case "calling":    renderIncall("CALLING...", "B:CANCEL"); break;
+    case "incoming":   renderIncoming(); break;
+    case "connected":  renderConnected(); break;
+  }
+  updateScreenButtons();
+}
+
+function renderDialer() {
+  let s = '<div class="dialer-state"></div>';
+  s += '<div class="dialer-number' + (dialString ? "" : " empty") + '">';
+  if (dialString) {
+    s += dialString + '<span class="dialer-cursor"></span>';
+  }
+  s += '</div>';
+  content.innerHTML = s;
+  softkeyText.textContent = "A:CALL  C:BKSP  D:MENU";
+}
+
+function renderMenu() {
+  let s = '<div class="screen-title">MENU</div><div class="list">';
+  menuItems.forEach((item, i) => {
+    s += `<div class="list-item${i === menuIndex ? " selected" : ""}">${i === menuIndex ? "> " : "  "}${item}</div>`;
+  });
+  s += '</div>';
+  content.innerHTML = s;
+  softkeyText.textContent = "A:SELECT  B:BACK  2/8:SCROLL";
+}
+
+function renderContacts() {
+  let s = '<div class="screen-title">CONTACTS</div><div class="list">';
+  contacts.forEach((c, i) => {
+    s += `<div class="list-item${i === contactsIndex ? " selected" : ""}">${i === contactsIndex ? "> " : "  "}${c.name}</div>`;
+  });
+  s += '</div>';
+  content.innerHTML = s;
+  softkeyText.textContent = "A:OPEN  B:BACK  2/8:SCROLL";
+}
+
+function renderContact() {
+  const c = contacts[currentContact];
+  let s = `<div class="detail-name">${c.name}</div>`;
+  s += `<div class="detail-number">${c.number}</div>`;
+  s += '<div class="list">';
+  contactActions.forEach((a, i) => {
+    s += `<div class="list-item${i === contactActionIndex ? " selected" : ""}">${i === contactActionIndex ? "> " : "  "}${a}</div>`;
+  });
+  s += '</div>';
+  content.innerHTML = s;
+  softkeyText.textContent = "A:SELECT  B:BACK  2/8:SCROLL";
+}
+
+function renderMessages() {
+  let s = '<div class="screen-title">MESSAGES</div><div class="list">';
+  Object.keys(messages).forEach((name, i) => {
+    const conv = messages[name];
+    const last = conv[conv.length - 1];
+    const selected = i === messagesIndex;
+    s += `<div class="list-item${selected ? " selected" : ""}">${selected ? "> " : "  "}${name}`;
+    s += `<div class="sub">${last.from === "me" ? "me: " : ""}${last.text}</div>`;
+    s += `</div>`;
+  });
+  s += '</div>';
+  content.innerHTML = s;
+  softkeyText.textContent = "A:OPEN  B:BACK  2/8:SCROLL";
+}
+
+function renderConversation() {
+  const conv = messages[currentConversation] || [];
+  let s = `<div class="conv-header">${currentConversation}</div><div class="conv-messages">`;
+  conv.forEach(m => {
+    s += `<div class="msg ${m.from === "me" ? "me" : "them"}">${m.text}</div>`;
+  });
+  s += '</div>';
+  content.innerHTML = s;
+  softkeyText.textContent = "C:COMPOSE  B:BACK";
+}
+
+function renderCompose() {
+  let s = `<div class="compose-to">TO: <span class="val">${composeRecipient}</span></div>`;
+  s += `<div class="compose-body">${composeText || ""}<span class="dialer-cursor"></span></div>`;
+  content.innerHTML = s;
+  softkeyText.textContent = "A:SEND  C:BACKSP  B:BACK";
+}
+
+function renderIncall(stateText, softkey) {
+  let s = `<div class="incall-state">${stateText}</div>`;
+  s += `<div class="incall-number">${dialString || "UNKNOWN"}</div>`;
+  content.innerHTML = s;
+  softkeyText.textContent = softkey;
+}
+
+function renderIncoming() {
+  // Try to match caller to a contact
+  const caller = contacts.find(c => c.number.replace(/\s/g, "") === dialString.replace(/\s/g, ""));
+  let s = `<div class="incall-state incoming">INCOMING</div>`;
+  if (caller) {
+    s += `<div class="incall-number">${caller.name}</div>`;
+    s += `<div class="incall-name">${caller.number}</div>`;
+  } else {
+    s += `<div class="incall-number">${dialString || "UNKNOWN"}</div>`;
+  }
+  content.innerHTML = s;
+  softkeyText.textContent = "A:ANSWER  B:REJECT";
+}
+
+function renderConnected() {
+  let s = `<div class="incall-state">CONNECTED</div>`;
+  s += `<div class="incall-number">${dialString || "UNKNOWN"}</div>`;
+  s += `<div class="incall-timer" id="call-timer">${formatTimer(callTimer)}</div>`;
+  content.innerHTML = s;
+  softkeyText.textContent = "B:HANG UP";
+  callTimerInterval = setInterval(() => {
+    callTimer++;
+    const el = document.getElementById("call-timer");
+    if (el) el.textContent = formatTimer(callTimer);
+  }, 1000);
+}
+
+function formatTimer(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return String(m).padStart(2, "0") + ":" + String(sec).padStart(2, "0");
+}
+
+function updateScreenButtons() {
+  document.querySelectorAll(".scr-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.screen === screen);
+  });
+}
+
+// ===== KEY HANDLING =====
+function handleKey(key) {
+  switch (screen) {
+    case "idle":
+      if (/[0-9*#]/.test(key)) {
+        if (dialString.length < dialMax) { dialString += key; render(); }
+      } else if (key === "A" && dialString.length > 0) {
+        screen = "calling"; render();
+      } else if (key === "C" && dialString.length > 0) {
+        dialString = dialString.slice(0, -1); render();
+      } else if (key === "D") {
+        screen = "menu"; menuIndex = 0; render();
+      }
+      break;
+
+    case "menu":
+      if (key === "B") { screen = "idle"; render(); }
+      else if (key === "A") {
+        if (menuIndex === 0) { screen = "contacts"; contactsIndex = 0; render(); }
+        else if (menuIndex === 1) { screen = "messages"; messagesIndex = 0; render(); }
+        else if (menuIndex === 2) { /* settings — future */ }
+      } else if (key === "2") { menuIndex = (menuIndex - 1 + menuItems.length) % menuItems.length; render(); }
+      else if (key === "8") { menuIndex = (menuIndex + 1) % menuItems.length; render(); }
+      break;
+
+    case "contacts":
+      if (key === "B") { screen = "menu"; menuIndex = 0; render(); }
+      else if (key === "A") { screen = "contact"; currentContact = contactsIndex; contactActionIndex = 0; render(); }
+      else if (key === "2") { contactsIndex = (contactsIndex - 1 + contacts.length) % contacts.length; render(); }
+      else if (key === "8") { contactsIndex = (contactsIndex + 1) % contacts.length; render(); }
+      break;
+
+    case "contact":
+      if (key === "B") { screen = "contacts"; contactsIndex = currentContact; render(); }
+      else if (key === "A") {
+        if (contactActionIndex === 0) { dialString = contacts[currentContact].number.replace(/\s/g, ""); screen = "calling"; render(); }
+        else if (contactActionIndex === 1) { screen = "conversation"; currentConversation = contacts[currentContact].name; render(); }
+        else if (contactActionIndex === 2) { /* edit — future */ }
+        else if (contactActionIndex === 3) { /* delete — future */ }
+      } else if (key === "2") { contactActionIndex = (contactActionIndex - 1 + contactActions.length) % contactActions.length; render(); }
+      else if (key === "8") { contactActionIndex = (contactActionIndex + 1) % contactActions.length; render(); }
+      break;
+
+    case "messages":
+      if (key === "B") { screen = "menu"; menuIndex = 1; render(); }
+      else if (key === "A") {
+        const names = Object.keys(messages);
+        screen = "conversation"; currentConversation = names[messagesIndex]; render();
+      } else if (key === "2") { messagesIndex = (messagesIndex - 1 + Object.keys(messages).length) % Object.keys(messages).length; render(); }
+      else if (key === "8") { messagesIndex = (messagesIndex + 1) % Object.keys(messages).length; render(); }
+      break;
+
+    case "conversation":
+      if (key === "B") { screen = "messages"; messagesIndex = Object.keys(messages).indexOf(currentConversation); render(); }
+      else if (key === "C") { screen = "compose"; composeRecipient = currentConversation; composeText = ""; render(); }
+      break;
+
+    case "compose":
+      if (key === "B") { screen = "conversation"; composeText = ""; render(); }
+      else if (key === "A") {
+        // Send — add to conversation, go back
+        if (composeText.length > 0) {
+          if (!messages[currentConversation]) messages[currentConversation] = [];
+          messages[currentConversation].push({ from: "me", text: composeText });
+        }
+        composeText = ""; screen = "conversation"; render();
+      } else if (key === "C") { composeText = composeText.slice(0, -1); render(); }
+      else if (/[0-9*#]/.test(key)) {
+        // Simple multi-tap placeholder: just append the key
+        if (composeText.length < 60) { composeText += key; render(); }
+      }
+      break;
+
+    case "calling":
+      if (key === "B") { screen = "idle"; dialString = ""; render(); }
+      break;
+
+    case "incoming":
+      if (key === "A") { screen = "connected"; callTimer = 0; render(); }
+      else if (key === "B") { screen = "idle"; dialString = ""; render(); }
+      break;
+
+    case "connected":
+      if (key === "B") { screen = "idle"; dialString = ""; callTimer = 0; render(); }
+      break;
+  }
+}
+
+// ===== INPUT WIRING =====
+document.querySelectorAll(".key").forEach(key => {
+  key.addEventListener("click", () => handleKey(key.dataset.key));
+});
+
+document.querySelectorAll(".scr-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    screen = btn.dataset.screen;
+    if (screen === "incoming") dialString = "+16075551234";
+    else if (screen === "idle") dialString = "";
+    else if (screen === "calling" || screen === "connected") {
+      if (!dialString) dialString = "6075551234";
+      callTimer = 0;
+    }
+    else if (screen === "contact") { currentContact = 0; contactActionIndex = 0; }
+    else if (screen === "conversation") { currentConversation = "ALICE"; }
+    else if (screen === "compose") { composeRecipient = "ALICE"; composeText = ""; }
+    render();
+  });
+});
+
+document.addEventListener("keydown", (e) => {
+  const key = e.key.toUpperCase();
+  if (/[0-9*#ABCD]/.test(key)) { handleKey(key); e.preventDefault(); }
+});
+
+// ===== CONTROLS — FONT =====
+document.getElementById("font-select").addEventListener("change", (e) => {
+  document.documentElement.style.setProperty("--font-family", e.target.value);
+});
+
+// ===== CONTROLS — CRT SURFACE =====
+function bindSlider(id, valId, suffix, applyFn) {
+  const el = document.getElementById(id);
+  const val = document.getElementById(valId);
+  el.addEventListener("input", () => {
+    applyFn(el.value);
+    val.textContent = el.value + (suffix || "");
+  });
+}
+
+bindSlider("sl-opacity", "sl-opacity-val", "%", v => {
+  document.documentElement.style.setProperty("--scanline-opacity", v / 100);
+});
+bindSlider("sl-spacing", "sl-spacing-val", "px", v => {
+  document.documentElement.style.setProperty("--scanline-spacing", v);
+});
+bindSlider("sl-glow", "sl-glow-val", "%", v => {
+  document.documentElement.style.setProperty("--glow", v / 100);
+});
+bindSlider("sl-vignette", "sl-vignette-val", "%", v => {
+  document.querySelector(".vignette").style.background =
+    `radial-gradient(ellipse at center, transparent ${100 - v}%, rgba(0,0,0,${v / 100}) 100%)`;
+});
+bindSlider("sl-amber", "sl-amber-val", "%", v => {
+  const intensity = v / 100;
+  document.documentElement.style.setProperty("--amber", `rgba(255, 176, 0, ${intensity})`);
+  document.documentElement.style.setProperty("--amber-bright", `rgba(255, 208, 0, ${intensity})`);
+  document.documentElement.style.setProperty("--amber-dim", `rgba(138, 106, 0, ${intensity})`);
+});
+
+// ===== CONTROLS — GREY DEPTH =====
+bindSlider("sl-bg", "sl-bg-val", "", v => {
+  const hex = "#" + Math.round(v).toString(16).padStart(2, "0").repeat(3);
+  document.documentElement.style.setProperty("--bg", hex);
+});
+bindSlider("sl-panel", "sl-panel-val", "", v => {
+  const base = parseInt(document.getElementById("sl-bg").value);
+  const panelVal = Math.min(255, base + Math.round(v));
+  const hex = "#" + panelVal.toString(16).padStart(2, "0").repeat(3);
+  document.documentElement.style.setProperty("--panel", hex);
+  const raisedVal = Math.min(255, panelVal + 10);
+  document.documentElement.style.setProperty("--panel-raised", "#" + raisedVal.toString(16).padStart(2, "0").repeat(3));
+});
+bindSlider("sl-border", "sl-border-val", "", v => {
+  const base = parseInt(document.getElementById("sl-bg").value);
+  const borderVal = Math.min(255, base + Math.round(v));
+  const hex = "#" + borderVal.toString(16).padStart(2, "0").repeat(3);
+  document.documentElement.style.setProperty("--border", hex);
+  const brightVal = Math.min(255, borderVal + 16);
+  document.documentElement.style.setProperty("--border-bright", "#" + brightVal.toString(16).padStart(2, "0").repeat(3));
+});
+
+// ===== CLOCK =====
+function updateClock() {
+  const now = new Date();
+  document.getElementById("time").textContent =
+    String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ===== INIT =====
+render();
+</script>
+
+</body>
+</html>

@@ -11,7 +11,9 @@
 
 ### FR-2: User Interface
 - **FR-2.1**: Device shall have a numeric keypad (0-9, *, #) plus call/end buttons.
+  - **Prototype status (2026-07-18)**: Implemented on the Nucleo+HAT prototype using a 4×4 matrix keypad (Adafruit PID 3844) via Zephyr's `gpio-kbd-matrix` input driver. Keys: 0-9/\*/# = digits, A = Call, B = End/Cancel/Reject, C = Backspace, D = Menu (future). Final PCB will use SMD tactile switches in a 5×4 matrix (same driver, different devicetree pins).
 - **FR-2.2**: Device shall have a display capable of showing: call status, dialed digits, contacts list, signal strength, battery level.
+  - **Prototype status (2026-07-18)**: Call status + dialed digits implemented (LVGL labels on ST7789V). Signal strength and battery level not yet implemented (signal indicator is next; battery indicator is PCB-phase — needs MAX17048 fuel gauge in the battery power path).
 - **FR-2.3**: Device shall support navigation buttons (up/down/select or D-pad) for menu interaction.
 - **FR-2.4**: Device shall provide audible feedback (ringtones, key tones, call audio).
 
