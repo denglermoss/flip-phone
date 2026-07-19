@@ -45,7 +45,7 @@
  *
  * The Waveshare HAT has an onboard voltage translator (1.8V ↔ 3.3V).
  * On the final custom PCB, a TXB0108 will be needed between the
- * STM32H743 and the SIM7600A-H raw module pins.
+ * STM32H743 and the SIM7600NA-H raw module pins.
  */
 
 #include <zephyr/kernel.h>

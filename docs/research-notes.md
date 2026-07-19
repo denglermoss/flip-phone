@@ -60,13 +60,13 @@ Your firmware must parse these asynchronously — the module can send URCs at an
 | SIM5320 | 3G | Yes | UART | ~$20 | 3G also sunsetting |
 | Quectel EG25-G | LTE Cat 4 | VoLTE | UART/USB | ~$25-35 | No B66/B71 (T-Mobile 600MHz gap). T-Mobile cert is **data-only** (not voice) — VoLTE CS fallback on T-Mobile is a carrier provisioning issue, not hardware. Proven in PinePhone. Idle/DRX: 22 mA. LGA (144 pads). |
 | Quectel EC25-AF | LTE Cat 4 | VoLTE | UART/USB/PCM | ~$30-60 | **NA variant with B71 + T-Mobile voice certification** (unlike EG25-G). Optional GNSS. Multi-PDP with IMS auto-isolated. Mini PCIe EVB at DigiKey (~$60), but no breakout with codec. Idle/DRX: 23.3 mA. LCC (144 pads, reflow required). **Documented alternative if SIM7600 is ever reconsidered.** |
-| SIMCom SIM7600A-H | LTE Cat 4 | VoLTE | UART/USB | ~$25-35 | **SELECTED.** B66/B71, T-Mobile certified. 911/E911 supported. Built-in GNSS. Idle/DRX: 17.5 mA. LGA/LCC. |
+| SIMCom SIM7600NA-H | LTE Cat 4 | VoLTE | UART/USB | ~$31 (JLC pre-order) | **SELECTED.** B66/B71, T-Mobile certified. 911/E911 supported. Built-in GNSS. Idle/DRX: 17.5 mA. LCC+LGA 119-pin. **Part name corrected 2026-07-19** — "SIM7600A-H" was a misnomer; actual product code is SIM7600NA-H (North America H-series). |
 | SIMCom SIM7600G-H | LTE Cat 4 | VoLTE | UART/USB | ~$25-35 | Global variant (B66, no B71). Waveshare G-H HAT uses this. Idle/DRX: 17.5 mA. |
 | SIMCom SIM7600NA-H | LTE Cat 4 | VoLTE | UART/USB | ~$25-35 | NA variant **with B71**. **Waveshare NA-H HAT available (~$89) with NAU8810 codec — recommended prototyping platform (replaces G-H HAT).** Resolves B71 validation gap. |
 | Quectel EG912U-GL | LTE Cat 1 | VoLTE | UART/USB | ~$15-20 | Analog audio pins (no codec needed for voice), but music needs separate DAC → two audio paths. LGA only, no breakout. Lowest idle/DRX: 14 mA. |
 | u-blox LARA-R6401 | LTE Cat 1 | VoLTE | UART/USB/I2S | ~$31-49 | Best carrier cert (T-Mobile/AT&T/Verizon/FirstNet), B66/B71. Best multi-PDN architecture (8 contexts, IMS auto-managed). I2S audio (codec-native, cleaner than PCM). **DISQUALIFIED: 911/E911 NOT supported** (datasheet: "The 911 and E911 services are not supported"). No built-in GNSS. Supply: Trasna transition ongoing, -00B-00 EOL but -00B-01 in mass production, available at DigiKey. Small community. |
 
-**Selected module**: SIMCom SIM7600 series (SIM7600NA-H for prototyping, SIM7600A-H for final PCB). **Decision locked 2026-06-28** after two rounds of evaluation.
+**Selected module**: SIMCom SIM7600 series — **SIM7600NA-H** for both prototyping (Waveshare HAT) and the final PCB. **Decision locked 2026-06-28** after two rounds of evaluation. *(Part name corrected 2026-07-19: "SIM7600A-H" was a misnomer — SIMCom's actual product code is `SIM7600NA-H`. The old LCSC link C2995537 pointed to the non-H `SIM7600A`, a different 87-pin LCC product. See project-log.md 2026-07-19.)*
 - *Why not EG25-G*: Missing B66/B71 (T-Mobile Extended Range LTE). T-Mobile certification is **data-only, not voice** — the EG25-G is not T-Mobile voice-certified. Forum reports of VoLTE CS fallback on T-Mobile are a **carrier provisioning issue** (T-Mobile does not authorize IMS/VoLTE for the EG25-G's IMEI range), not a hardware limitation. The EC25-AF (below) is T-Mobile voice-certified and is the proper Quectel alternative if needed.
 - *Why not EC25-AF*: Strong candidate — T-Mobile voice certified, B71, optional GNSS, 911/eCall supported, better-documented multi-PDP (IMS auto-isolated from data). However: no breakout board with integrated codec (unlike SIM7600's Waveshare NA-H HAT), requiring Quectel EVB + external codec for prototyping. Higher idle current (23.3 mA vs 17.5 mA). The multi-PDP advantage is irrelevant for this project (simultaneous VoLTE+data is not required — see below). **Documented as the fallback for the final PCB if SIM7600 testing reveals a blocking issue.**
 - *Why not EG912U-GL (analog audio)*: Eliminates codec for voice, but the music player goal requires a real DAC anyway — would result in two audio paths (module analog for voice + external DAC for music) instead of one unified codec. LGA-only with no ready breakout. Has the lowest idle/DRX current (14 mA) but the two-audio-path problem disqualifies it.
@@ -456,7 +456,7 @@ E-ink's real advantages (ultra-low power, bistable, sunlight readable) are genui
 
 - [x] **RESOLVED (2026-07-12)**: Does VoLTE "just work" via AT commands, or is there significant configuration? — **Yes, VoLTE works.** `AT+voltesetting=1` on LE20B02 firmware returned OK. IMS PDP context (cid=2) auto-created by the network. `AT+CNSMOD: 0,8` confirms LTE mode (not CSFB). Test call connected successfully on Mint/T-Mobile. No firmware update needed — LE20B02 supports VoLTE despite being older than the documented LE20B04/05 versions. The IMS PDP context quirk (cid=2 conflict with cid=1 data) is specific to `AT+NETOPEN` and does not affect this project (uses CMUX+PPP). Validated empirically with Waveshare NA-H HAT + Mint SIM.
 - [ ] **RESOLVED**: Can we use the module's built-in audio path or do we need an external codec? — SIM7600 (LCC package) exposes PCM digital audio only, no analog pins. External codec required. **MAX9880A selected** (dual-port: PCM + I2S). See Codec Selection section. The EG912U-GL has analog audio but was rejected for the two-audio-path problem with music playback.
-- [x] **RESOLVED (2026-07-12)**: Which carriers allow VoLTE on non-certified devices with prepaid SIMs? — **Mint/T-Mobile allows VoLTE on the SIM7600NA-H.** VoLTE call connected successfully with `AT+voltesetting=1` on a Mint Mobile SIM. The SIM7600A-H's T-Mobile certification likely helps, but the HAT's SIM7600NA-H (not the same as the PCB's SIM7600A-H) also works. No IMEI whitelisting issues encountered. AT&T/Verizon remain untested but are stricter — not needed since Mint works.
+- [x] **RESOLVED (2026-07-12)**: Which carriers allow VoLTE on non-certified devices with prepaid SIMs? — **Mint/T-Mobile allows VoLTE on the SIM7600NA-H.** VoLTE call connected successfully with `AT+voltesetting=1` on a Mint Mobile SIM. The SIM7600NA-H's T-Mobile certification likely helps. No IMEI whitelisting issues encountered. AT&T/Verizon remain untested but are stricter — not needed since Mint works.
 - [ ] What's the minimum antenna design for LTE? Can we use a small chip antenna or stamped antenna?
 - [ ] **RESOLVED (2026-06-28, second round)**: Can the SIM7600 maintain simultaneous VoLTE call + data tethering? — **Not a requirement.** Simultaneous VoLTE+data is a future ecosystem feature (tethering while on a call), not needed for MVP or daily driver. The PDP context conflict is confirmed in the `AT+NETOPEN` code path only; the project uses CMUX+PPP which bypasses it. CMUX+PPP is the standard pattern for simultaneous data + AT commands (SMS, calls) on the SIM7600, proven in Linux n_gsm, RT-Thread, and ESP-IDF. Whether data stays active *during* a live VoLTE call via PPP is unverified but likely (3GPP bearers should coexist). **Fallback: pause data during calls — acceptable for all current and planned use cases.** This is no longer a modem selection factor.
 - [ ] Are there any open-source cell phone projects we can reference?
@@ -587,7 +587,7 @@ The docs previously cited "3 mA sleep" to argue the modem dominates standby powe
 
 | Module | LTE Idle/DRX (can receive calls) | Deep-sleep | Peak TX | 24h standby battery |
 |--------|----------------------------------|------------|---------|---------------------|
-| SIM7600A/G/NA-H | **17.5 mA** | 4.6 mA | 2A | ~420 mAh |
+| SIM7600G/NA-H | **17.5 mA** | 4.6 mA | 2A | ~420 mAh |
 | EG25-G | **22 mA** | 3 mA | 1.8A (up to 3.5A) | ~528 mAh |
 | EG912U-GL | **14 mA** (USB disconnected) | 1.5–1.7 mA | 2–3A | ~336 mAh |
 | LARA-R6401 | **~1.1 mA** (unverified — needs full datasheet) | not found | 630 mA+ | ~26 mAh (if figure holds) |
@@ -603,7 +603,7 @@ Sources: SIM7600E Hardware Design V1.00 Table 26; EG25-G LTE Standard Spec V1.2;
 - **NAU8810 audio codec** (same as the G-H HAT)
 - GNSS, SIM slot, antennas, USB-to-UART
 
-This is the recommended replacement for the discontinued SIM7600A-H HAT. **Switch the prototyping HAT from G-H to NA-H** to validate B71 early without a custom PCB.
+This is the recommended replacement for the discontinued SIM7600G-H HAT. **Switch the prototyping HAT from G-H to NA-H** to validate B71 early without a custom PCB.
 
 B71 importance: load-bearing for rural/indoor T-Mobile coverage, supplementary in urban areas. User reports good coverage in their area, so B71 is supplementary but still worth validating (the NA-H HAT makes it cheap). Check T-Mobile coverage map for areas you frequent.
 
@@ -662,7 +662,7 @@ Every LTE module in the candidate set is LGA — none are hand-solderable with a
 
 | Module | Package | Dimensions | Pins |
 |--------|---------|------------|------|
-| SIM7600A-H | LCC/LGA | 30×30×2.9mm | 87 |
+| SIM7600NA-H | LCC+LGA | 30×30×2.9mm | 119 |
 | EG25-G | LGA | 29×32×2.4mm | 144 |
 | EC25-AF | LCC | 29×32×2.4mm | 144 |
 | EG912U-GL | LGA | 25×29×2.4mm | 126 |
@@ -670,7 +670,7 @@ Every LTE module in the candidate set is LGA — none are hand-solderable with a
 
 No LTE/VoLTE module exists in a hand-friendly (castellated/through-hole) package — this is an industry reality, not SIM7600-specific. NFR-3 ("hand-solderable for prototypes") is unachievable for ANY LTE module and must be updated.
 
-**Realistic path**: JLCPCB assembly for the modem section (~$57–72: module + $3 extended fee + ~$24 fixture + solder joints), hand-solder the rest. Hybrid assembly is supported by JLCPCB. Alternative: M.2 socket variant (module plugs in, no reflow) at cost of larger footprint. SIM7600A-H is not directly in JLCPCB's library (would need consignment); SIM7600E and SIM7600G-H-PCIE are stocked.
+**Realistic path**: JLCPCB assembly for the modem section (~$57–72: module + $3 extended fee + ~$24 fixture + solder joints), hand-solder the rest. Hybrid assembly is supported by JLCPCB. Alternative: M.2 socket variant (module plugs in, no reflow) at cost of larger footprint. **SIM7600NA-H (C5380303) is a JLC pre-order part** — JLC sources it from SIMCom on demand ($31.42, lead time ≤18 days auto-proceed / >18 days email confirmation). SIM7600G-H (C5355477, 39 in stock, $46.95) shares the identical 119-pin LCC+LGA package and is the footprint fallback if NA-H library data is incomplete (do NOT buy G-H for the board: it lacks B71). SA-H and E-H are 87-pin LCC (different package) and lack B71 — disqualified.
 
 ## Codec Selection / Audio Path Architecture
 

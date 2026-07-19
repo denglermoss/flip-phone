@@ -40,7 +40,7 @@ Download each file below into this directory (`docs/reference/`). Browser "Save 
 
 - **MCU**: STM32H743ZIT6 (LQFP-144, 2MB Flash, 1MB RAM)
 - **MCU dev board**: NUCLEO-H753ZI (substitute for obsolete NUCLEO-H743ZI; H753 = H743 + crypto, identical for this project)
-- **Cellular module (final PCB)**: SIM7600A-H
+- **Cellular module (final PCB)**: SIM7600NA-H (JLC pre-order C5380303; "SIM7600A-H" was a misnomer — corrected 2026-07-19)
 - **Cellular module (prototyping HAT)**: SIM7600NA-H (Waveshare HAT, SKU 30717)
 - **Audio codec**: MAX9880AETM+T (TQFN-48, 6×6mm) — Mouser 700-MAX9880AETM+T
 - **Display dev module**: Waveshare 2inch LCD Module, SKU 17344 (ST7789VW driver)

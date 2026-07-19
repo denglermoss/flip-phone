@@ -19,7 +19,7 @@ These ratings inform **component selection** — we should ensure the MCU, cellu
 | MMS (picture messages) | 6 | Requires data connection + camera. Module-dependent. |
 | Group chat (with smartphone users) | 6 | Strong want. Three implementation paths evaluated (2026-07-05): (1) **SMS broadcast** — easy firmware, but recipients see individual texts with no group context, replies only go to sender; (2) **MMS group messaging** — real group thread on smartphones (green bubble experience), but MMS PDU encoding is complex and carrier-specific (MMSC URL, MMS proxy, binary SMIL format); SIM7600 has MMS AT commands but poorly documented; weeks of work; (3) **IP bridge** — phone SMS relays to a server that bridges to Telegram/Discord/Matrix; zero friction for smartphone users but requires maintaining a server and is a relay hack, not native group chat. No hardware impact — firmware/software only. Post-daily-driver feature. |
 | Voicemail | 3 | Carrier-side feature. Phone just needs to dial voicemail number. Minimal hardware impact. |
-| Speakerphone | 3 | Firmware + audio routing. Needs speaker capable of louder output. |
+| Speakerphone | 3 | Firmware + audio routing. Needs speaker capable of louder output. **Rev1 hardware decision (2026-07-19)**: loudspeaker included on rev1 — MAX9880A stereo outputs drive earpiece + loudspeaker at no extra codec cost. Speakerphone is firmware-only once the loudspeaker transducer is present. |
 | Call recording | 1 | Not wanted. |
 
 ## Connectivity
@@ -70,7 +70,7 @@ These ratings inform **component selection** — we should ensure the MCU, cellu
 | 3.5mm headphone jack | 4 | Nice to have. PCB space + audio routing. Could use BT headphones instead. |
 | Vibration motor | 2 | Don't care. GPIO + driver circuit, minimal impact. |
 | LED notification light | 2 | Don't care. Single GPIO, trivial. |
-| GPS / GNSS | (see ecosystem) | Some LTE modules have built-in GNSS (e.g., Quectel EG25-G has GPS/GLONASS). Important for ecosystem (car navigation). Select module with GNSS if possible. |
+| GPS / GNSS | (see ecosystem) | Some LTE modules have built-in GNSS (e.g., Quectel EG25-G has GPS/GLONASS). Important for ecosystem (car navigation). Select module with GNSS if possible. **Rev1 hardware decision (2026-07-19)**: U.FL footprint for GNSS antenna included on rev1 — SIM7600 has built-in GNSS (validated 2026-07-12), user wants this board to potentially be the final version. |
 | Proximity / ambient light sensor | 1 | Not wanted. |
 | Hardware power button | — | No preference. |
 

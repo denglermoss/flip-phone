@@ -1,0 +1,10 @@
+# KiCad lock files
+*.lck
+
+# KiCad local history/backups (has its own .git — don't commit as submodule)
+phone/.history/
+
+# Empty lib subdirs (using easyeda2kicad.* instead)
+phone/lib/symbols/
+phone/lib/footprints.pretty/
+phone/lib/3dshapes/

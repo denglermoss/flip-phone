@@ -45,7 +45,7 @@ These are the locked component decisions per `docs/project-log.md`. Prices refle
 | # | Component | Part Number | Package | Status | Qty | Unit Price | Ext Price | Source / Link | Notes |
 |---|-----------|-------------|---------|--------|-----|-----------|-----------|---------------|-------|
 | 4 | MCU — STM32H7 Cortex-M7 480MHz, 2MB Flash, 1MB RAM | STM32H743ZIT6 | LQFP-144 20×20mm | LOCKED | 1 | $14.61 (qty 1) / $9.13 (10ku) | $14.61 | [ST eStore](https://estore.st.com/en/stm32h743zit6-cpn.html) · [DigiKey](https://www.digikey.com/en/products/detail/stmicroelectronics/STM32H743ZIT6/6371188) | Hand-solderable LQFP. USB OTG_FS built-in (12 Mbps). USB HS via ULPI **dropped** 2026-06-28 — modem-direct USB tethering replaces it. LQFP-144 retained for GPIO margin (41 spare). |
-| 5 | Cellular module — LTE Cat-4, VoLTE, B66/B71, NA variant | SIM7600A-H | LCC+LGA 30×30mm | LOCKED | 1 | ~$28–32 (LCSC) / ~$119 (4gltemall, overpriced) | ~$28–32 | [LCSC — SIM7600A (C2995537)](https://www.lcsc.com/product-detail/C2995537.html) · [JLCPCB part](https://jlcpcb.com/partdetail/SIMCom_WirelessSolutions-SIM7600A/C2995537) | LGA — requires JLCPCB assembly (~$57–72 for modem section). SIM7600A-H requires consignment to JLCPCB (not in stock library). Fallback: EC25-AF. |
+| 5 | Cellular module — LTE Cat-4, VoLTE, B66/B71, NA variant | SIM7600NA-H | LCC+LGA 30×30mm, 119-pin | LOCKED | 1 | $31.42 (JLC pre-order) | $31.42 | [JLC pre-order — SIM7600NA-H (C5380303)](https://jlcpcb.com/partdetail/SIMCom_WirelessSolutions-SIM7600NA-H/C5380303) | LGA — requires JLCPCB assembly (~$57–72 for modem section). **Part name corrected 2026-07-19**: "SIM7600A-H" was a misnomer — SIMCom's actual product code is `SIM7600NA-H` (North America H-series). The old LCSC link (C2995537) pointed to the non-H `SIM7600A`, a different/older product (87-pin LCC, not 119-pin LCC+LGA). **JLC availability**: NA-H is a **pre-order part** (C5380303, $31.42, 0 in stock — JLC sources it from SIMCom on demand). SIM7600G-H (C5355477, $46.95, 39 in stock) shares the identical 119-pin LCC+LGA package and is the **footprint fallback** if NA-H library data is incomplete. SA-H and E-H are 87-pin LCC (different package) and lack B71 — disqualified. Fallback modem: EC25-AF. See project-log.md 2026-07-19 SIM7600 Variant Selection. |
 | 6 | Audio codec — dual-port (PCM voice + I2S music) | MAX9880AETM+T | TQFN-48 6×6mm | LOCKED | 1 | ~$2.23 (Mouser qty 1) / $1.52 (qty 50+) / $1.57 (2500+) | ~$2.23 | [Mouser — 700-MAX9880AETM+T](https://www.mouser.com/ProductDetail/Maxim-Integrated/MAX9880AETM-T) · [Analog Devices — MAX9880A](https://www.analog.com/en/products/max9880a.html) · [DigiKey search](https://www.digikey.com/en/products/detail/analog-devices-inc-maxim-integrated/MAX9880AETM-T/4013130) | 1.8V supply — needs LDO + level shifter (MCU I2S lines only; PCM lines connect directly to SIM7600 at 1.8V — confirmed 2026-06-30). **Pre-PCB verification COMPLETE**: PCM short-frame sync confirmed compatible (TDM short-sync slave mode); Mouser has 2,250 in stock (DigiKey temp out, part active); SIM7600 PCM pin voltage = 1.8V (HW Design Manual V1.03 Table 32 + §3.6.2 ref design). Fallback: NAU8822 MCU bridge. |
 | | **Core subtotal** | | | | | **~$44–48** | | |
 
@@ -78,7 +78,7 @@ These components are required for the phone but have not been formally locked in
 | # | Component | Part Number | Status | Qty | Unit Price | Ext Price | Source / Link | Notes |
 |---|-----------|-------------|--------|-----|-----------|-----------|---------------|-------|
 | 13 | Earpiece speaker, 10mm, 8Ω | Taoglas SPKM.10.8.A | CANDIDATE | 1 | ~$1.69 | ~$1.69 | [Taoglas — SPKM.10.8.A](https://www.taoglas.com/product/10-mm-round-miniature-speaker-500mw/) · [ichome](https://www.ichome.com/product-detail/taoglas/spkm-10-8-a) | 10×4mm, 200mW RMS. For call audio (held to ear). |
-| 14 | Loudspeaker (ringtones, speakerphone) | TBD — 20mm+ mylar speaker | TBD | 1 | ~$2–5 | ~$2–5 | — | Rated 3 on wishlist. MAX9880A has stereo outputs for both. |
+| 14 | Loudspeaker (ringtones, speakerphone) | TBD — 20mm+ mylar speaker | CANDIDATE (include on rev1 — locked 2026-07-19) | 1 | ~$2–5 | ~$2–5 | — | Rated 3 on wishlist. MAX9880A has stereo outputs for both. **Rev1 decision (2026-07-19)**: include both earpiece + loudspeaker — stereo outputs drive both at no extra codec cost. Specific part TBD at schematic time. |
 | 15 | Microphone (MEMS or electret) | TBD — e.g. Knowles SPQ | TBD | 1 | ~$1–3 | ~$1–3 | — | MEMS preferred for SMD. |
 | | **Audio transducer subtotal** | | | | | **~$5–10** | | |
 
@@ -93,9 +93,10 @@ These components are required for the phone but have not been formally locked in
 
 | # | Component | Part Number | Status | Qty | Unit Price | Ext Price | Source / Link | Notes |
 |---|-----------|-------------|--------|-----|-----------|-----------|---------------|-------|
-| 17 | USB-C receptacle, 16-pin, SMD (data + power) | GCT USB4081 or similar | CANDIDATE | 1 | ~$1–3 | ~$1–3 | [DigiKey — GCT USB-C](https://www.digikey.com/en/product-highlight/g/gct/usb-type-c) | USB-C strongly recommended (see `docs/constraints.md`). 16-pin for USB 2.0 + power. |
-| 18 | Nano SIM card socket, SMD, push-push | GCT SIM8066 or Molex | CANDIDATE | 1 | ~$1–3 | ~$1–3 | [DigiKey — GCT Nano SIM](https://www.digikey.com/en/product-highlight/g/gct/ultra-compact-nano-sim-connector-with-card-detect-functionality) · [Molex Nano SIM](https://www.digikey.com/en/supplier-centers/molex/nano-sim-microsd-sim-and-micro-sim-memory-card-connectors) | Card detect switch recommended. |
-| 19 | MicroSD card socket, SMD, push-push | GCT or Molex combo | CANDIDATE | 1 | ~$1–3 | ~$1–3 | [GCT — MicroSD push-push](https://gct.co/micro-sd-connector/push-push-micro-sd) · [Mouser SD SMD](https://www.mouser.com/c/connectors/memory-connectors/memory-card-connectors/?card+type=SD&termination+style=SMD%2FSMT) | For music/photo storage (rated 7). Consider SIM+microSD combo connector to save space. |
+| 17 | USB-C receptacle, 16-pin, SMD (data + power) — main MCU USB | GCT USB4081 or similar | LOCKED (USB-C locked 2026-07-19) | 1 | ~$1–3 | ~$1–3 | [DigiKey — GCT USB-C](https://www.digikey.com/en/product-highlight/g/gct/usb-type-c) | USB-C 16-pin for USB 2.0 + power. Routes to MCU USB OTG_FS (firmware/files/debug). |
+| 17b | USB-C receptacle (or micro-USB) — modem USB HS port footprint | TBD | CANDIDATE (unpopulated on rev1 — locked 2026-07-19) | 1 | ~$1–3 | ~$0 (unpopulated) | — | **Rev1 decision (2026-07-19)**: route SIM7600 USB HS D+/D- to an unpopulated connector footprint. Preserves tethering + modem FW update + diagnostics + GNSS-over-USB + ecosystem options. May be USB-C (consistent) or micro-USB (smaller footprint) — TBD at schematic time. |
+| 18 | Nano SIM card socket, SMD, push-push | GCT SIM8066 or Molex | CANDIDATE (sourcing-deferred 2026-07-19) | 1 | ~$1–3 | ~$1–3 | [DigiKey — GCT Nano SIM](https://www.digikey.com/en/product-highlight/g/gct/ultra-compact-nano-sim-connector-with-card-detect-functionality) · [Molex Nano SIM](https://www.digikey.com/en/supplier-centers/molex/nano-sim-microsd-sim-and-micro-sim-memory-card-connectors) | Card detect switch recommended. **Sourcing decision deferred (2026-07-19)**: combo SIM+microSD socket vs separate sockets — decide at BOM finalization based on reliable availability. |
+| 19 | MicroSD card socket, SMD, push-push (OR combo SIM+microSD) | GCT or Molex combo | CANDIDATE (sourcing-deferred 2026-07-19) | 1 | ~$1–3 | ~$1–3 | [GCT — MicroSD push-push](https://gct.co/micro-sd-connector/push-push-micro-sd) · [Mouser SD SMD](https://www.mouser.com/c/connectors/memory-connectors/memory-card-connectors/?card+type=SD&termination+style=SMD%2FSMT) | For music/photo storage (rated 7). **Sourcing decision deferred (2026-07-19)**: if combo SIM+microSD socket is reliably sourceable, use it (saves space); else use separate sockets (item 18 + item 19). |
 | | **Connector subtotal** | | | | | **~$3–9** | | |
 
 ### 3f. Antenna (CANDIDATE)
@@ -103,7 +104,7 @@ These components are required for the phone but have not been formally locked in
 | # | Component | Part Number | Status | Qty | Unit Price | Ext Price | Source / Link | Notes |
 |---|-----------|-------------|--------|-----|-----------|-----------|---------------|-------|
 | 20 | LTE cellular antenna, U.FL/IPEX, 700–2700MHz | Pulse W3907B0100 | CANDIDATE | 1 | $5.54 | $5.54 | [ArcAntenna — W3907B0100](https://www.arcantenna.com/products/antenna-for-embedded-iot-modules-lte-catm1-catnb1-egprs-like-quectel-bg96-w3907b0100-with-100mm-cable-ufl-ipex-mhf-connector) | Flexible patch, 100mm cable, U.FL. Covers B2/B4/B66/B71. |
-| 21 | GNSS antenna (for SIM7600 built-in GNSS) | TBD — U.FL GPS antenna | TBD | 1 | ~$2–5 | ~$2–5 | — | SIM7600 has built-in GNSS. Needed only if GPS feature used. |
+| 21 | GNSS antenna (for SIM7600 built-in GNSS) | TBD — U.FL GPS antenna | CANDIDATE (include on rev1 — locked 2026-07-19) | 1 | ~$2–5 | ~$2–5 | — | SIM7600 has built-in GNSS (validated 2026-07-12 on HAT — valid fix in ~60s cold start). **Rev1 decision (2026-07-19)**: include U.FL footprint on rev1 — user wants this board to potentially be the final version; deferring would mean a respin. Specific antenna part TBD at schematic time. |
 | | **Antenna subtotal** | | | | | **~$8–11** | | |
 
 ### 3g. Keypad (LOCKED — SMD tactile switches on custom PCB traces)
@@ -139,7 +140,7 @@ These components are required for the phone but have not been formally locked in
 | # | Item | Vendor | Est Cost | Notes |
 |---|------|--------|----------|-------|
 | 30 | PCB fabrication (4-layer, impedance control) | JLCPCB / PCBWay | ~$5–50/board | Price scales with complexity. 4-layer recommended for RF + PDN. |
-| 31 | PCB assembly — modem section only (LGA reflow) | JLCPCB | ~$57–72 | Module + $3 extended fee + ~$24 fixture + solder joints. SIM7600A-H requires consignment. |
+| 31 | PCB assembly — modem section only (LGA reflow) | JLCPCB | ~$57–72 | Module + $3 extended fee + ~$24 fixture + solder joints. SIM7600NA-H via JLC pre-order (C5380303) — JLC sources from SIMCom, stores in your private library until PCBA order. |
 | 32 | PCB assembly — rest of board | Hand-solder | $0 (labor) | All other components hand-solderable. JLCPCB fallback if needed. |
 | | **PCB total (per board, first iteration)** | | **~$62–122** | |
 
@@ -198,14 +199,18 @@ These components are required for the phone but have not been formally locked in
 Per `docs/constraints.md` and `docs/project-log.md`, these must be verified before placing the PCB order:
 
 - [x] **MAX9880A**: ~~Confirm PCM short-frame sync support on primary port (datasheet review). Verify stock at DigiKey/Mouser — Maxim/ADI parts can have long lead times. Confirm 1.8V supply + level shifting plan.~~ **ALL VERIFIED 2026-06-29/30**: PCM short-frame sync confirmed compatible (TDM short-sync slave mode); stock available at Mouser (2,250 units, $2.23); 1.8V supply + level shifting documented (MCU I2S lines only — SIM7600 PCM lines are 1.8V, connect directly to MAX9880A, no level shifter needed on PCM).
-- [ ] **SIM7600A-H**: Confirm consignment process with JLCPCB (not in their stock library). Verify firmware version supports VoLTE before PCB commit.
+- [ ] **SIM7600NA-H**: Pre-order placed via JLC (C5380303, $31.42). JLC sources from SIMCom — lead time ≤18 days = auto-proceed, >18 days = email confirmation. Part appears in your JLC Parts Lib when it arrives at their warehouse. Can start PCB fab order in parallel; SMT assembly waits for both board + part. Verify firmware version supports VoLTE before PCB commit (HAT validated on LE20B02). |
 - [ ] **ST7789V display**: Confirm ST7789v Zephyr driver works on STM32H7 with target Zephyr version (MIPI DBI API conversion had teething issues — verify on dev board before PCB). Select specific raw panel module and confirm FPC/connector footprint. Confirm panel max SPI clock (~40MHz) and STM32H7 SPI can drive it. Plan backlight PWM on timer-output GPIO. **Verify panel backlight LED configuration (parallel vs series) — parallel needs only FET + resistors; series needs a boost LED driver.**
 - [x] **Keypad design**: **RESOLVED 2026-06-28** — SMD tactile switches on custom PCB traces (LOCKED). 5×4 matrix = 9 GPIO for ~20 keys. Specific switch part (e.g. C&K PTS645, ALPS SKQG) to be selected at schematic time based on actuation force/travel/height. Phase 2 prototyping uses off-the-shelf 4×4 matrix module + loose tactile buttons. See project-log.md 2026-06-28 Keypad Selection.
 - [x] ~~**High-current buck regulator**: Select specific part for modem VBAT rail (2A+ peaks, dedicated rail).~~ **RESOLVED 2026-06-28**: No buck regulator needed — VBAT powered directly from LiPo (3.4–4.3V matches LiPo operating range). Separate power net from 3.3V MCU rail, with 100–470µF bulk capacitance. See `docs/constraints.md` Power section.
 - [ ] **3.3V buck-boost regulator**: Verify TPS630201 stock + 2A rating sufficient for all system loads (MCU + display + SD + codec). Confirm output voltage accuracy and ripple specs meet MCU requirements.
 - [ ] **Battery fuel gauge**: Verify MAX17048 I2C address doesn't conflict with MAX9880A. Confirm fuel gauge characterization for the selected LiPo (MAX17048 has a characterization table; may need custom model for non-standard cells).
-- [ ] **USB-C connector**: Confirm 16-pin (USB 2.0) vs 24-pin (USB 3.x) — USB FS/HS only needs 16-pin.
+- [ ] **USB-C connector**: ~~Confirm 16-pin (USB 2.0) vs 24-pin (USB 3.x) — USB FS/HS only needs 16-pin.~~ **RESOLVED 2026-07-19**: 16-pin USB-C (USB 2.0) — formally locked. USB FS/HS only needs D+/D-.
 - [ ] **ESD protection**: Confirm USBLC6-2SC6 and ESDA6V1-5SC6 footprints/placement near connectors.
+- [ ] **Modem USB HS connector (rev1)**: Select USB-C vs micro-USB for the unpopulated modem USB footprint (2026-07-19 decision: include footprint, type TBD at schematic time).
+- [ ] **GNSS antenna part**: Select specific U.FL GNSS antenna (2026-07-19 decision: include on rev1, part TBD).
+- [ ] **Loudspeaker part**: Select specific loudspeaker transducer (2026-07-19 decision: include on rev1, part TBD).
+- [ ] **SIM/microSD connector sourcing**: Evaluate combo vs separate socket availability at DigiKey/Mouser/LCSC; decide at BOM finalization (2026-07-19 decision: deferred to sourcing).
 
 ---
 
@@ -216,8 +221,8 @@ Per `docs/constraints.md` and `docs/project-log.md`, these must be verified befo
 | [ST eStore](https://estore.st.com/) | STM32H743ZIT6 | Direct from ST, in stock |
 | [DigiKey](https://www.digikey.com/) | MCU, codec, charger, LDO, level shifter, connectors | US-authorized, fast shipping |
 | [Mouser](https://www.mouser.com/) | Same parts as DigiKey | Compare price/stock |
-| [LCSC](https://www.lcsc.com/) | SIM7600A, passives | China-based, cheaper for some parts |
-| [JLCPCB](https://jlcpcb.com/) | PCB fab + assembly + SIM7600A part | Use for modem LGA assembly |
+| [LCSC](https://www.lcsc.com/) | SIM7600NA-H (via JLC pre-order), passives | China-based, cheaper for some parts |
+| [JLCPCB](https://jlcpcb.com/) | PCB fab + assembly + SIM7600NA-H part (pre-order C5380303) | Use for modem LGA assembly |
 | [Waveshare](https://www.waveshare.com/) | SIM7600NA-H 4G HAT | Prototyping platform |
 | [Adafruit](https://www.adafruit.com/) | Battery, display breakout, misc | Hobbyist-friendly |
 | [BuyDisplay / EastRising](https://www.buydisplay.com/) | Raw TFT panels | Cheapest display option |

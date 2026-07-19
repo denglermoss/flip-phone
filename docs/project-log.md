@@ -174,10 +174,10 @@
     - **Total per unit (BOM + PCB fab/assembly)**: ~$153–269. PCB fab/assembly is correctly excluded from the NFR-5 BOM target per `docs/requirements.md`.
     - **Total project estimate**: ~$380–686 (prototyping + first PCB + 1–2 respins + tools). High end exceeds $500 if multiple respins needed.
   - *Status of components in BOM*:
-    - **LOCKED**: MCU (STM32H743ZIT6, $14.61), modem (SIM7600A-H, ~$28–32), codec (MAX9880AETM+T, ~$1.70), display (ST7789V 2.0" 240×320 SPI TFT, $11.99 module / ~$5–8 raw panel), prototyping HAT (Waveshare SIM7600NA-H, $76.99).
+    - **LOCKED**: MCU (STM32H743ZIT6, $14.61), modem (~~SIM7600A-H~~ → **SIM7600NA-H**, ~$28–32 → $31.42 JLC pre-order; name corrected 2026-07-19 — see 2026-07-19 entry), codec (MAX9880AETM+T, ~$1.70), display (ST7789V 2.0" 240×320 SPI TFT, $11.99 module / ~$5–8 raw panel), prototyping HAT (Waveshare SIM7600NA-H, $76.99).
     - **CANDIDATE** (not yet locked, revisit pending): battery (1200mAh LiPo, $9.95), charger (MCP73831, ~$1), **3.3V buck-boost (TPS630201, ~$3.50)**, 1.8V LDO (TPS7A0218, ~$0.84), **fuel gauge (MAX17048, ~$2.50)**, level shifter (TXB0104, ~$0.76), **ESD protection (USBLC6-2SC6 + ESDA6V1-5SC6, ~$1)**, USB-C connector, nano SIM socket, microSD socket, cellular antenna (Pulse W3907B0100, $5.54), earpiece speaker (Taoglas SPKM.10.8.A, ~$1.69).
     - **TBD** (deferred): loudspeaker, microphone, GNSS antenna. ~~Keypad~~ **RESOLVED 2026-06-28 — SMD tactile switches on custom PCB traces (LOCKED).** ~~High-current buck regulator for modem VBAT~~ **RESOLVED 2026-06-28 — not needed (direct from LiPo).**
-  - *Open verification items carried forward*: MAX9880A PCM short-frame sync + stock; SIM7600A-H JLCPCB consignment; ST7789V Zephyr driver on STM32H7; ~~keypad design~~ **RESOLVED 2026-06-28 (SMD tactile switches, LOCKED)**; ~~buck regulator selection~~ **RESOLVED (direct from LiPo)**; 3.3V buck-boost verification; fuel gauge I2C address check; display backlight config (parallel vs series). See `docs/bom.md` §6.
+  - *Open verification items carried forward*: MAX9880A PCM short-frame sync + stock; ~~SIM7600A-H JLCPCB consignment~~ **RESOLVED 2026-07-19 — SIM7600NA-H via JLC pre-order (C5380303, $31.42), not consignment**; ST7789V Zephyr driver on STM32H7; ~~keypad design~~ **RESOLVED 2026-06-28 (SMD tactile switches, LOCKED)**; ~~buck regulator selection~~ **RESOLVED (direct from LiPo)**; 3.3V buck-boost verification; fuel gauge I2C address check; display backlight config (parallel vs series). See `docs/bom.md` §6.
 
 ### 2026-06-28: Project Kickoff
 - **Decision**: Use off-the-shelf cellular module + custom MCU architecture (not designing custom modem).
@@ -312,6 +312,81 @@
 - **Decision**: After MVP-complete session, priority is PCB schematic design (KiCad) — all component selections are locked. During PCB fab/assembly wait, parallel firmware track: AT command parser refactor (separate echo/response/URC), UART stress test (open item in requirements.md), multi-thread architecture (modem/UI/keypad threads), then daily-driver features (SMS, contacts).
 - *Rationale*: The 2026-07-13 session demonstrated high throughput (7 milestones in one session). Keypad + arbitrary calling + signal indicator is achievable in a single ~90 min session. PCB schematic is the critical path to a standalone device — starting it immediately after MVP completion keeps the project moving toward the daily-driver goal. Filling the PCB fab lead time with firmware hardening avoids dead time.
 
+### 2026-07-19: PCB Schematic Kickoff — Pre-Schematic Decisions
+- **Context**: Phase 3 (Schematic Design) started. Approach chosen: **block-diagram-first (Option D)** — draw the system block diagram showing every block and the signals between them before opening the KiCad schematic editor, then implement it as a hierarchical KiCad design (root sheet = block diagram, one sub-sheet per block). This catches pin conflicts, missing level shifters, bus topology issues, and power-net count problems early. See `docs/block-diagram.md` (to be created).
+- **Decision**: **Modem USB HS port — route to unpopulated connector footprint on rev1.**
+  - *Rationale*: Preserves the locked modem-direct tethering architecture (RNDIS/ECM via `AT+CUSBPIDSWITCH`) without committing a 2nd populated USB connector. Reasons to keep the footprint beyond tethering: modem firmware updates (some versions only flash over USB), USB-based AT/diagnostics (higher bandwidth than UART), GNSS NMEA over USB (alternative to UART), and the future ecosystem (car module). Cost is small (footprint + 2 ESD diodes + short traces); the space is the real tradeoff. User wants this board to potentially be the final version, so preserving all options without a respin is worth the footprint area.
+  - *Tradeoff*: Slightly larger board. Acceptable.
+- **Decision**: **GNSS antenna — include U.FL footprint on rev1.**
+  - *Rationale*: User wants this board to potentially be the final version. SIM7600 has built-in GNSS (validated 2026-07-12 on HAT — valid fix in ~60s cold start, works while registered on network). U.FL is a tiny SMD coaxial connector (~2mm) that connects the PCB to an off-board antenna via a short pigtail — standard for cellular/GPS modules. Low cost (~$0.50 for the connector + ~$2–5 for a GNSS antenna). Deferring would mean a respin to add it later.
+  - *Tradeoff*: One RF trace + connector. Acceptable.
+- **Decision**: **Loudspeaker — include earpiece + loudspeaker on rev1.**
+  - *Rationale*: MAX9880A has stereo outputs — using both earpiece (call audio, held to ear) and loudspeaker (ringtones, speakerphone) costs nothing extra in codec capacity. BOM §3c already lists both. Speakerphone is rated 3 on the wishlist (nice to have) but the hardware cost is just the transducer + routing.
+  - *Tradeoff*: Slightly more board area for the second transducer + its traces. Acceptable.
+- **Decision**: **SIM + microSD connector — defer combo-vs-separate to sourcing; mark as a sourcing problem.**
+  - *Rationale*: Combo SIM+microSD sockets save board space (common in phones) but are slightly harder to source. Separate sockets are easier to source with more placement flexibility but take more area. Both blocks appear in the block diagram either way. Decision will be made at the time of BOM finalization based on what's reliably sourceable from DigiKey/Mouser/LCSC. If a combo socket is reliably in stock at a reasonable price, use it; otherwise use separate sockets.
+  - *Tradeoff*: Block diagram and BOM must accommodate both options until sourcing is settled.
+- **Decision**: **USB-C connector type — formally locked (was effectively decided, pending formal lock per requirements.md Open Questions).**
+  - *Rationale*: USB-C is strongly recommended for any new design (micro-USB is obsolete). 16-pin USB-C (USB 2.0) is sufficient — USB FS/HS only needs D+/D-. Moves from Open Questions to Resolved in requirements.md.
+
+### 2026-07-19: SIM7600 Variant Selection for PCB — Part Name Correction + Footprint/Purchase Plan
+- **Context**: Started assembling the KiCad parts library for the PCB. Needed to download the SIM7600 footprint from JLCPCB's parts library. Discovered two issues: (1) the locked part name "SIM7600A-H" doesn't exist in SIMCom's H-series lineup, and (2) the BOM's LCSC link (C2995537) pointed to the non-H `SIM7600A` — a different, older product with a different package.
+- **Correction**: **"SIM7600A-H" was a misnomer.** SIMCom's actual H-series variants are: E-H (Europe), G-H (Global), NA-H (North America), SA-H (South America), JC-H (Japan/China). There is no "A-H". The intended part was always the North America H-series variant with B71 — which is **`SIM7600NA-H`**. The "A" was likely shorthand for "Americas"; the actual product code is "NA". The locked decision (NA H-series, B71, T-Mobile) is unchanged — only the part name was wrong in the docs since 2026-06-28.
+- **Band comparison (from SIMCom product spec)**:
+  | Variant | B71? | B66? | Package | Pins | JLC status |
+  |---------|------|------|---------|------|------------|
+  | SIM7600NA-H | ✅ | ✅ | LCC+LGA | 119 | Pre-order (C5380303, $31.42) |
+  | SIM7600G-H R2 | ❌ | ✅ | LCC+LGA | 119 | In stock (C5355477, $46.95, 39 units) |
+  | SIM7600SA-H | ❌ | ✅ | LCC | 87 | Pre-order (C17702592, $26.25) |
+  | SIM7600E-H | ❌ | ❌ | LCC | 87 | In stock (C5338795, $39.05, 224 units) |
+  - **B71 is only on NA-H.** B71 is T-Mobile's 600 MHz extended-range band — a locked requirement for in-building/rural coverage on Mint/T-Mobile. G-H (global) has the widest band set but is missing B71 specifically.
+  - **Package matters**: NA-H and G-H are 119-pin LCC+LGA (same mechanical package). SA-H and E-H are 87-pin LCC (different package, different pad layout). The BOM's "LCC+LGA 30×30mm" matches only NA-H and G-H.
+- **Decision**: **Purchase SIM7600NA-H via JLC pre-order (C5380303, $31.42).**
+  - *Rationale*: Only variant with B71 (locked requirement). Same H-series 119-pin LCC+LGA package as the design intent. JLC pre-order means JLC sources it from SIMCom on demand — lead time ≤18 days = auto-proceed, >18 days = email confirmation. Part is stored in your private JLC library until the PCBA order. Can start PCB fab in parallel; SMT assembly waits for both board + part.
+  - *Tradeoff*: 0 in stock — lead time unknown but bounded (JLC auto-proceeds if ≤18 days). Pre-order early (at schematic start) so it arrives while designing.
+- **Decision**: **Download the SIM7600NA-H footprint from JLC (C5380303). Use SIM7600G-H (C5355477) as footprint fallback only if NA-H library data is incomplete.**
+  - *Rationale*: NA-H is the exact part being purchased — cleanest to use its own footprint. G-H shares the identical 119-pin LCC+LGA package (verified from SIMCom product spec), so it's a mechanical stand-in if NA-H's CAD data is missing. Do NOT buy G-H for the board (lacks B71).
+  - *Tradeoff*: None — footprint is the same either way. Using NA-H directly avoids a "footprint stand-in" mental note.
+- **Disqualified variants**:
+  - **SIM7600SA-H**: 87-pin LCC (different package from NA-H), no B71. Wrong package + wrong bands.
+  - **SIM7600E-H**: 87-pin LCC, no B71, no B66. Europe variant — wrong package + wrong bands.
+  - **SIM7600A (non-H, C2995537)**: Older product, 87-pin LCC. This is what the old BOM link pointed to — a documentation error. Different package from the H-series.
+- **JLC pre-order mechanics** (from jlcpcb.com/help/article/what-is-jlcpcb-parts-pre-order-service):
+  - Prepay for parts → JLC sources from SIMCom/LCSC → stored in your private JLC library (not shipped to you).
+  - Lead time ≤18 days: JLC auto-proceeds. >18 days: email confirmation required (check email after ordering).
+  - Parts only usable for PCBA orders — not shipped separately (pickup available but incurs fees).
+  - Can place PCB fab order first and add pre-ordered parts to assembly order when they arrive (parallel workflow).
+  - MOQ applies for non-stock extended parts (NA-H shows Min: 1, so qty 1 is fine).
+- **Docs updated**: bom.md (part name, link, price, assembly method), constraints.md (consignment → pre-order, package info), AGENTS.md (key decisions), README.md, block-diagram.md (4 occurrences), research-notes.md (7 references), docs/reference/README.md. Historical/superseded decision text in project-log.md left as-is (the decision intent was always NA-H; only the name was wrong). Archived revisit-prompts not touched (historical artifacts).
+
+### 2026-07-19: Parts Library Build — JLC/LCSC KiCad Models Downloaded + Assembly Method Locked
+- **Context**: Started building the KiCad project-local parts library at `pcb/phone/lib/`. Needed footprints/symbols/3D models for all components before schematic work. Discovered JLC's parts library only offers EasyEDA format downloads, not KiCad — solved by using `easyeda2kicad` (Python tool, run via `uvx`) which fetches from LCSC C-numbers and outputs KiCad V6+ format.
+- **Decision**: **Assembly method locked: JLCPCB PCBA, 2-board MOQ.**
+  - *Rationale*: Evaluated JLC vs PCBWay vs NextPCB. JLC has the lowest MOQ (2 boards vs 5 for PCBWay/NextPCB Rev0), the only integrated parts library (LCSC C-number auto-matching at order time), and the cheapest assembly for LCSC-stocked BOMs. For 2 boards, JLC saves ~$100+ vs NextPCB (which forces 5 boards = 3 extra SIM7600 modules at $31 each). PCBWay has no parts library at all (manual RFQ model). Misconceptions corrected: "PCBWay allows single board" (backwards — JLC MOQ is 2, PCBWay is 5), "PCBWay has greater parts library" (backwards — JLC/LCSC is the industry exception).
+  - *Tradeoff*: 2 parts not on JLC (MAX9880A, TPS630201) require consignment (buy from Mouser/DigiKey, ship to JLC). ~$8 shipping. Acceptable — far cheaper than the 3-extra-boards penalty at NextPCB.
+- **Decision**: **Use OEM/brand-name parts where available on JLC.**
+  - *Rationale*: Initial cart had TECH PUBLIC clones for USBLC6-2SC6 and ESDA6V1-5SC6. Swapped to ST originals (C7519, C6650) for quality/authenticity. Also swapped TXB0108DQSR (SON/leadless, clone-friendly) → TXB0108PWR (TSSOP-20, TI OEM, hand-solderable, matches block diagram).
+- **Parts downloaded (12 total via `easyeda2kicad`)**:
+  | Ref | Part | C# | Status |
+  |-----|------|-----|--------|
+  | U1 | STM32H743ZIT6 | C114408 | ✅ symbol+footprint+3D |
+  | U2 | SIM7600NA-H | C5380303 | ✅ symbol+footprint (no 3D — pre-order part) |
+  | U5 | TPS7A0218PDBVR | C3748843 | ✅ |
+  | U6 | MCP73831-2ACI/MC | C150772 | ✅ |
+  | U7 | MAX17048G+T10 | C2682616 | ✅ |
+  | U8 | TXB0108PWR | C53406 | ✅ (PWR used — DGSR C44861261 failed EasyEDA API) |
+  | U9 | TXB0104D | C1549752 | ✅ |
+  | U10 | USBLC6-2SC6 | C7519 | ✅ (ST OEM, swapped from TECH PUBLIC clone) |
+  | U11 | ESDA6V1-5SC6 | C6650 | ✅ (ST OEM, swapped from TECH PUBLIC clone) |
+  | — | 100nF 0603 cap (YAGEO) | C14663 | ✅ |
+  | — | 10uF 0805 cap (muRata) | C440198 | ✅ |
+  | — | Blue LED 0603 (LITEON) | C99290 | ✅ |
+- **Parts NOT on JLC (need Ultra Librarian + Mouser/DigiKey consignment)**:
+  - U3: MAX9880AETM+T (ADI audio codec) — not on LCSC
+  - U4: TPS630201 (TI buck-boost) — not on LCSC (only TPS63020DSJR, different part)
+- **Remaining parts (need JLC part selection or design decisions)**: Created revisit prompt `docs/revisit-prompts/parts-sourcing-revisit.md` documenting all open items: 2 ICs (Ultra Librarian), 8 mechanical parts (connectors, switches, transducers, crystal, inductor), 3 design decisions (J2 modem USB type, J3/J4 SIM+SD combo vs separate, J7 display panel pick). See the revisit prompt for the full list and workflow.
+- **Docs updated**: `pcb/PARTS_TRACKING.md` (sourcing status for all parts), `pcb/JLCPCB_BOM.xls` (C-numbers filled in for downloaded parts), `docs/revisit-prompts/README.md` (new active prompt), `docs/revisit-prompts/parts-sourcing-revisit.md` (created).
+
 ## Phase Breakdown & Effort Estimate
 
 ### Phase 1: Research & Component Selection (~2-3 weeks, part-time)
@@ -333,11 +408,12 @@
 - **Note**: The SIM7600 is LGA and cannot be breadboarded directly — the Waveshare HAT is the prototyping platform. The MCU and peripherals can be on breadboard/perfboard connected to the HAT.
 - **Deliverable**: Working phone call from HAT + MCU setup
 
-### Phase 3: Schematic Design (~2-4 weeks, part-time)
+### Phase 3: Schematic Design (~2-4 weeks, part-time) — IN PROGRESS (2026-07-19)
 - Design full schematic in KiCad
 - Power management circuit (battery charging, regulation, module power)
 - Audio circuit (mic, speaker, codec or module direct)
 - Display and keypad interfacing
+- **Approach (2026-07-19)**: Block-diagram-first → KiCad hierarchical sheets (root sheet = block diagram, one sub-sheet per block). Pre-schematic decisions settled: modem USB footprint (unpopulated), GNSS U.FL footprint (included), loudspeaker (included), SIM/microSD (sourcing-deferred). See `docs/block-diagram.md` (to be created).
 - **Deliverable**: Complete schematic, reviewed
 
 ### Phase 4: PCB Layout (~3-5 weeks, part-time)
@@ -426,3 +502,5 @@
 | 2026-07-18 | **Keypad EXTI conflict fixed + hardware test passed.** First flash failed: `<err> input_gpio_kbd_matrix: Pin 0 interrupt configuration failed: -16` (EBUSY). Root cause: STM32 EXTI line conflict — row 0 is PE13 (EXTI13), but board DTS defines B1 user button on PC13 (also EXTI13). STM32 EXTI lines 0–15 are port-shared (one port per line); `gpio-keys` claimed PC13/EXTI13 first, blocking PE13. Fix: `&user_button { status = "disabled"; }` in `app.overlay` — B1 was already removed from app code (keypad A/B replaced it), so disabling the board node frees EXTI13. Build verified `status = "disabled"` in compiled DTS. After reflash: clean boot, no errors. **Functional test passed**: typed `6077936142` (cleared a `123` typo with C/backspace), A → `ATD6077936142;` → `VOICE CALL: BEGIN` (~10s connect) → B → `AT+CHUP` → `VOICE CALL: END: 000044`. **Real VoLTE call to an arbitrary user-typed number, no PC involvement.** Standalone-dialer milestone reached. Firmware: 333,944 B flash (15.92%), 56,916 B RAM (10.86%). | Done |
 | 2026-07-18 | **UI redesign: TE-inspired industrial design with JetBrains Mono.** Replaced the 80s sci-fi HUD aesthetic (amber on black, amber borders) with a Teenage Engineering-inspired industrial design: layered grey palette (`#1A1A1A` base, `#262626` panels, `#3A3A3A` borders), amber reserved for content only. Status bar: grey panel with signal (left) / time (center) / battery (right) — carrier label removed. Softkey bar: grey panel with grey border. Scanlines retained for CRT phosphor depth. **Fonts**: Replaced Unscii 8/16 with JetBrains Mono (converted from TTF via `lv_font_conv` npm tool — 3 sizes: 10px status bar, 14px content/softkeys/menu, 22px bold dialer number). Font files in `firmware/src/fonts/`, added to CMakeLists.txt. Node.js installed for font conversion workflow. Zone heights adjusted (22px status, 26px softkey). "IDLE" state label removed from dialer (cleaner). Build: 303,536 B flash (14.47%), 56,916 B RAM (10.86%). See `ui-mockup/index.html` for the reference mockup. | Done |
 | 2026-07-18 | **Full UI port: all 10 mockup screens migrated to firmware with mock data.** Migrated every screen from the HTML mockup to LVGL firmware: (1) **Dialer** — digits + blinking cursor, A=call, C=backspace, D=menu; (2) **Menu** — CONTACTS/MESSAGES/SETTINGS, 2/8 scroll, A select, B back; (3) **Contacts list** — 5 mock contacts, 2/8 scroll, A open, B back; (4) **Contact detail** — name + number + 4 actions (CALL/TEXT/EDIT/DELETE), CALL places real `ATD` call; (5) **Messages list** — 3 mock conversations with last-message preview; (6) **Conversation** — message thread (`<` incoming, `>` outgoing), C=compose, B=back; (7) **SMS Compose** — mock text entry with blinking cursor, A=send (logs only, no real `AT+CMGS`); (8) **In-call** — call timer (MM:SS) counting up from connect; (9) **Incoming** — INCOMING label + number, A=answer, B=reject; (10) **Calling** — CALLING... label + number, B=cancel. Architecture: unified `ui_render()` function replaces per-screen `ui_show()`/`ui_show_menu()` — hides all content labels then shows+populates only the ones needed. 5 flexible content labels (title/hero/list/timer/cursor) cover all screens. Blinking cursor via LVGL `lv_anim_t` (500ms cycle). Call timer via `k_uptime_get()` in main loop. All contacts/messages data are hardcoded arrays (real persistence + real SMS are future work). Build: 306,136 B flash (14.60%), 56,980 B RAM (10.87%). | Done |
+| 2026-07-19 | **Phase 3 (Schematic Design) kickoff — pre-schematic decisions settled.** Approach: block-diagram-first → KiCad hierarchical sheets. Four pre-schematic decisions made: (1) modem USB HS port → unpopulated connector footprint on rev1 (preserves tethering + modem FW update + diagnostics + GNSS-over-USB + ecosystem options); (2) GNSS antenna → include U.FL footprint on rev1 (board may be final version, low cost, can't add without respin); (3) loudspeaker → include earpiece + loudspeaker (MAX9880A stereo outputs, both transducers); (4) SIM + microSD → defer combo-vs-separate to sourcing (both blocks in diagram, decide at BOM finalization based on availability). USB-C connector type formally locked (was effectively decided, pending formal lock). See project-log.md 2026-07-19 decision entry. | In Progress |
+| 2026-07-19 | **SIM7600 variant selection for PCB + part name correction.** "SIM7600A-H" was a misnomer — SIMCom's actual product code is `SIM7600NA-H` (North America H-series, 119-pin LCC+LGA). Old LCSC link (C2995537) pointed to non-H `SIM7600A` (87-pin LCC, different package) — a doc error since 2026-06-28. Band comparison from SIMCom spec: B71 is only on NA-H (T-Mobile 600MHz, locked requirement). G-H (in stock, same package) lacks B71 — footprint fallback only, do not buy. SA-H/E-H are 87-pin LCC (different package) + no B71 — disqualified. **Purchase**: SIM7600NA-H via JLC pre-order (C5380303, $31.42). **Footprint**: NA-H from JLC; G-H as fallback (same 119-pin LCC+LGA). JLC pre-order mechanics documented. All docs updated (bom, constraints, AGENTS, README, block-diagram, research-notes, reference/README). | Done |
