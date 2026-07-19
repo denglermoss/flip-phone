@@ -6,6 +6,10 @@ __pycache__/
 *.pyc
 .venv/
 
+# Reference docs (vendor PDFs/datasheets — only README.md is tracked)
+docs/reference/*
+!docs/reference/README.md
+
 # IDE
 .vscode/
 .idea/
