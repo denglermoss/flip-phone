@@ -39,7 +39,7 @@
 - Cellular modules can draw 2A+ peaks during transmission — battery and power management must handle this.
 - **Power architecture (resolved 2026-06-28)**:
   - **VBAT (modem)**: Powered **directly from the LiPo** (3.4–4.3V matches the LiPo operating range 3.4–4.2V). No buck regulator needed — the previous "dedicated high-current buck regulator" was incorrect. The key requirement is a **separate power net** from the MCU's 3.3V rail (so modem 2A bursts don't droop the MCU rail), with substantial bulk capacitance at the module VBAT pins.
-  - **3.3V system rail**: Powered from the LiPo via a **buck-boost regulator** (e.g., TPS630201, 3.3V fixed, 2A). A buck-only regulator is insufficient — the LiPo drops below 3.3V at ~40% charge, and the MCU/display/SD card need a stable 3.3V. Powers: MCU, display, SD card, codec I2S side, level shifter, fuel gauge.
+  - **3.3V system rail**: Powered from the LiPo via a **buck-boost regulator** (**TPS63021DSJR**, 3.3V fixed, 4A switches / ~3A output, LCSC C202140 — LOCKED 2026-07-19). A buck-only regulator is insufficient — the LiPo drops below 3.3V at ~40% charge, and the MCU/display/SD card need a stable 3.3V. Powers: MCU, display, SD card, codec I2S side, level shifter, fuel gauge. *(Note: docs previously referenced "TPS630201" — that was a phantom part number TI never manufactured. Corrected to TPS63021DSJR 2026-07-19. See project-log.md.)*
   - **1.8V codec rail**: Powered from the 3.3V rail via an LDO (TPS7A0218, 200mA). Low current (~10–20mA for MAX9880A).
   - **Charging**: USB 5V → MCP73831 charger IC → LiPo. The charger tops up the battery; the battery handles all load currents (including 2A modem peaks). The MCP73831 (500mA) does NOT need to handle modem peaks — the battery does. For production: consider a power-path charger (e.g., BQ25895, 5A) that can supply system load + charge simultaneously; for prototype, MCP73831 is sufficient.
 - **VBAT rail stability (CRITICAL)**: The SIM7600 requires VBAT to remain within tolerance (typically ±100–200 mV) **during 2A transmit bursts**. If the rail droops, the module resets mid-call. This demands:
@@ -50,7 +50,7 @@
 - Battery: single-cell LiPo (3.7V nominal, 3.0–4.2V range). 1200mAh candidate gives ~45h standby.
 - Charging: USB-C with a battery charger IC (MCP73831 candidate). **USB-C strongly recommended** for any new design (micro-USB is obsolete).
 - **Battery fuel gauge (required for FR-4.2)**: The phone must monitor and display battery level. Selected approach: **MAX17048** I2C fuel gauge (ModelGauge, coulomb counting + voltage, ~$2.50). Shares I2C bus with MAX9880A. Provides state-of-charge (%) — more accurate than ADC voltage-only (which can't track coulomb count during 2A modem bursts). Alternative: ADC voltage-only (cheaper, less accurate — no coulomb counting, ~10% error vs ~1% for fuel gauge IC).
-- Battery capacity vs form factor tradeoff — final enclosure volume TBD (form factor deferred).
+- Battery capacity vs form factor tradeoff — flip form factor locked 2026-07-19 (two PCBs + hinge flex). Final enclosure volume TBD (Phase 7 mechanical design).
 - **Standby current note (verified 2026-06-28 from datasheets)**: The SIM7600's LTE idle/DRX current is **17.5 mA** (the state where the module CAN receive incoming calls). The previously cited "3 mA" figure is deep-sleep, where the module cannot receive calls. To satisfy FR-1.2 (receive calls) and FR-4.3 (idle low-power with modem standby), the module must remain in LTE idle/DRX mode. The 24h standby target (FR-4.4) requires ~420 mAh minimum (17.5 mA × 24h) — achievable with an 800+ mAh battery with comfortable margin. All modules support `AT+CEDRXS` for eDRX cycle tuning (longer cycle = lower current, higher call setup latency). The modem dominates standby power; MCU sleep (~20 µA) is negligible. See research-notes.md modem revisit findings for comparison across modules.
 
 ### Audio
@@ -68,6 +68,11 @@
 
 ### Display
 - **Selected display: ST7789V SPI color TFT** (2.0" 240×320, 4-wire SPI, RGB565, ~$5–8). See project-log.md 2026-06-28 Display Selection and research-notes.md Display Options section.
+- **Specific panel: HS HS20HS072RX** (LCSC C5329582). **LOCKED 2026-07-19.** See project-log.md 2026-07-19 Display Panel Selection.
+  - Specs: 2.0" IPS TFT, 240×RGB×320, ST7789T3 (compatible variant — same Zephyr `display_st7789v.c` driver), 4-wire SPI, 262K color. Outline 51.80×36.20×2.1mm. Active area 40.80×30.6mm.
+  - FPC: 12-pin, 0.5mm pitch, ZIF plug-in type. Backlight LEDs broken out as LEDA/LEDK (not logic BLK) — enables PWM dimming. FPC cable ~20mm.
+  - Sourcing: LCSC C5329582, 1,786 in stock, $3.42 qty 1. JLC-assemblable (Extended pre-order). EasyEDA footprint available.
+  - Pre-PCB: verify ST7789T3 works with Zephyr `display_st7789v.c` driver. Confirm exact RST pin position from mechanical drawing.
 - **Color is a hard requirement** (not a preference): the "no 5+ features blocked" principle requires color capability — photo capture (rated 6), camera preview (rated 6), video recording (rated 5) all need color. A monochrome, grayscale, or spot-color display is disqualified. **E-ink is also disqualified** — even spot-color e-ink (BWR/BWRY) can't show photos (no blue/green/gradients), and the refresh rate (~0.5–3 fps mono partial, 12–22s color full) makes camera preview impossible. True full-color e-ink (ACeP) is not available at 1.5–2.4" sizes.
 - **Interface: 4-wire SPI** (SCK, MOSI, CS, DC) + RESET + backlight enable = **6 GPIO pins**. This preserves the 41-spare-GPIO margin on LQFP-144 for future ecosystem peripherals (external BT = 4 pins, modem USB = 2 pins; ~~ULPI USB HS = 12 pins~~ **dropped 2026-06-28 — modem-direct USB tethering replaces MCU USB HS, see USB/Ecosystem interconnect section**). Parallel RGB via LTDC was rejected for consuming 20–28 GPIO pins.
 - **Framebuffer: 240×320 RGB565 = 150KB** — fits in the H743's 1MB internal SRAM with 850KB to spare. **No external SDRAM or FMC required.** This is a key simplification vs the LTDC path (which would need external SDRAM for comfortable double-buffering at 320×480).
@@ -75,17 +80,39 @@
 - **Zephyr driver**: `display_st7789v.c` is in Zephyr main tree (most mature SPI display driver); LVGL has native ST7789 support. **Pre-PCB verification**: confirm the driver works on STM32H7 with the target Zephyr version — the MIPI DBI API conversion (issue #73750) had teething issues.
 - **Camera preview bandwidth**: SPI at ~40MHz gives ~15–25fps partial-frame updates at 240×320 (faster at lower preview resolution). Adequate for casual photos (rated 6), not smooth video. LTDC would be smoother but is not justified for this use case (see research-notes.md Display Options).
 - **Backlight PWM**: Must be on a timer-output GPIO for dimming and power management (display off during standby).
-- **Backlight driver circuit (raw panel)**: Most 2.0" ST7789V panels use 4 parallel white LEDs (common anode, ~3.1V Vf, 20mA each = 80mA total). For parallel-LED panels: 3.3V rail → current-limiting resistors (one per LED or grouped) → PWM-controlled N-FET → GND. No dedicated LED driver IC needed. **Verify panel backlight configuration (parallel vs series) before PCB** — series LEDs (~12V total) would need a boost LED driver (e.g., AP3031). The Waveshare module (item 7 in BOM) has the backlight circuit onboard; the raw panel (item 7b) does not.
+- **Backlight driver circuit (raw panel)**: ~~Most 2.0" ST7789V panels use 4 parallel white LEDs (common anode, ~3.1V Vf, 20mA each = 80mA total). For parallel-LED panels: 3.3V rail → current-limiting resistors (one per LED or grouped) → PWM-controlled N-FET → GND. No dedicated LED driver IC needed. **Verify panel backlight configuration (parallel vs series) before PCB** — series LEDs (~12V total) would need a boost LED driver (e.g., AP3031).~~ **CONFIRMED 2026-07-19**: HS20HS072RX uses 4 parallel white LEDs, Vf 3.0V, 80mA total. 3.3V rail → current-limiting resistors → PWM-controlled N-FET → GND. No boost driver needed. The Waveshare module (item 7 in BOM) has the backlight circuit onboard; the raw panel (item 7b) does not.
+
+### Form Factor
+- **Flip/clamshell form factor LOCKED 2026-07-19.** Two PCBs connected via hinge flex cable. See project-log.md 2026-07-19 Display Panel + Flip Form Factor entry. (Supersedes 2026-06-28 "form factor deferred, single-board first" decision.)
+- **Board architecture**:
+  - **Main board** (base): MCU, modem, codec, keypad, battery, power (charger + buck-boost + LDO + fuel gauge), USB-C, SIM, SD, cellular/GNSS antennas, microphone, loudspeaker, level shifter, ESD protection, crystals, passives.
+  - **Display daughterboard** (lid): main display panel (HS20HS072RX, 2.0" ST7789T3), outer display (EastRising ER-TFT1.14-2, 1.14" ST7789V), earpiece speaker. Trivial board (~5 components + 3 ZIF connectors). Both displays are 3.3V-only TFT — no boost converters needed on the daughterboard. **Both display panels are purchased separately from the PCB (BuyDisplay/LCSC) and assembled by the user** — the ZIF connectors are JLC-assembled on the PCB; the panels plug in post-assembly. This decouples display sourcing from PCB fab.
+- **Hinge flex cable**: ~13 signals on 14-pin 0.5mm FFC (1 spare):
+  - Main display SPI: SDA, SCL, CS, DC, RST (5) — shared bus with outer display
+  - Display power: VCC (3.3V), GND (2)
+  - Backlight: LEDA, LEDK (2) — PWM dimming via FET on main board
+  - Earpiece speaker: SPK+, SPK- (2) — differential audio from MAX9880A
+  - Outer display: CS2, DC2 (2) — shares SPI bus (SDA/SCL/RST) with main display
+- **Camera**: Out of scope for rev1. Will go in the **base** (not lid) when added — DCMI parallel bus (11 pins + 1 power) stays on main board, no hinge flex signals. No camera pins reserved in hinge flex. The 41 spare GPIO on LQFP-144 already accounts for DCMI in the GPIO budget. If camera-in-lid is ever desired later, it would need a custom FPC with ground plane (signal integrity for 50MHz parallel data) — not worth the complexity for rev1.
+- **Hinge mechanism**: Deferred to Phase 7 (mechanical design). Options: salvage from existing flip phone, custom 3D printed, off-the-shelf metal hinge, or CNC machined. User has FDM/SLA/CNC access.
+- **Enclosure design**: Deferred to Phase 7. 3D model in CAD, fit-check with PCBs.
 
 ### Keypad
 - **Selected keypad: SMD tactile switches on custom PCB traces.** LOCKED 2026-06-28. See project-log.md 2026-06-28 Keypad Selection.
+- **Specific switch part: ALPS Alpine SKQGABE010** (LCSC C115351). LOCKED 2026-07-19. See project-log.md 2026-07-19 Keypad Switch Selection.
+  - Specs: 5.2×5.2×1.5mm SMD, 1.57N (160gf) operating force, 0.25mm travel, 1,000,000 cycle life, SPST-NO top-actuated gull-wing, 50mA @ 12V rating. ALPS OEM.
+  - Sourcing: LCSC C115351 (41,590 in stock at LCSC, 1,344 at JLC). ~$0.089 @ 50+ qty → ~$3.50 for 40 switches (2 boards × 20 + overage).
+  - KiCad library: downloaded to `pcb/phone/lib/` via easyeda2kicad (symbol `SKQGABE010`, footprint `KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4`, 3D `KEY-SMD_4P-L5.2-W5.2-H1.5-LS6.4-P3.70`).
+  - Footprint-compatibility note: the SKQG series has 3.1mm, 3.4mm, and 5.0mm stem-height variants on the **same 5.2×5.2mm footprint** — if the 1.5mm/0.25mm-travel build feels too snappy, swap up without respinning the PCB.
 - **Switch technology**: SMD tactile switches (e.g., C&K PTS645, ALPS SKQG class). Three options evaluated: (1) SMD tactile — selected (snappy, cheap ~$1–2 for ~20 switches, easy to source, no custom tooling); (2) conductive-rubber (silicone dome) over PCB pad pairs — phone-like feel (classic feature-phone construction) but requires custom silicone dome sheet (~$50–150 mold run); (3) membrane keypad (PET/FPC stack) — sealed but flat feel, hard to source in small qty. SMD tactile chosen for simplicity, sourcing, and alignment with the custom-PCB learning goal.
 - **Key count / layout**: ~17–19 keys minimum per FR-2.1/FR-2.3 — 12 numeric (0–9, *, #) + 2 call/end + 3–5 nav (up/down/select or D-pad). 5×4 matrix (20 keys) with 1 spare.
 - **GPIO**: 5×4 matrix = 9 GPIO pins (5 rows + 4 cols). Non-issue with 41 spare GPIO on LQFP-144. The matrix is identical regardless of switch technology — the schematic/GPIO allocation is unaffected by the switch choice.
-- **Cost**: ~20 SMD tactile switches at ~$0.05–0.10 each = ~$1–2.
+- **Cost**: ~20 SMD tactile switches at ~$0.05–0.10 each = ~$1–2. (SKQGABE010 actual: ~$0.089 each → ~$1.78 for 20.)
 - **Sealing**: SMD tactile switches are not dust/water sealed (unlike conductive-rubber or membrane). Acceptable for a personal prototype/daily-driver. Can be revisited with a silicone overlay sheet on top of the SMD switches if sealing becomes a requirement.
+- **Washability**: SKQGABE010 datasheet marks "Non washable" — investigated and confirmed non-issue for JLC PCBA. JLC's standard flow uses no-clean flux and only washes "when applicable" (residue left on board is normal/acceptable per their after-sales FAQ). The "non washable" marking is industry-standard conservative text appearing even on IP67-rated sealed switches — it's about the wash process, not ambient moisture. No special JLC order notes needed.
 - **Phase 2 prototyping**: Off-the-shelf 4×4 matrix keypad module (~$2–5) + ~6–8 loose 6×6mm tactile buttons on breadboard for call/end/nav. Electrical interface (matrix rows/cols → MCU GPIO) identical to final PCB — no firmware rework when moving to custom board.
 - **Keypad feel**: Deferred to Phase 7 (mechanical/enclosure). The switch technology is locked, but keycap design, actuation force tuning, and tactile feel are mechanical-design concerns.
+- **Side buttons (power, volume)**: NOT in scope of the SW1–SW20 matrix selection (2026-07-19). Would use a different switch family (side-actuated). Revisit at schematic time.
 
 ### USB / Ecosystem Interconnect
 - **MCU USB: OTG_FS only (12 Mbps, built-in PHY).** Sufficient for firmware updates, file/MSC transfer, and CDC ACM debug. ~~USB HS via external ULPI transceiver (USB3300) is a board-level upgrade path preserved by LQFP-144.~~ **DROPPED 2026-06-28** — see below.

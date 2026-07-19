@@ -75,7 +75,7 @@
 - **Daily-driver scope**: Calls + contacts + SMS + basic menu system (feature phone experience).
 - **Display**: ST7789V SPI color TFT, 2.0" 240×320, RGB565. See research-notes.md Display Options section and project-log.md 2026-06-28 Display Selection.
 - **Keypad**: SMD tactile switches on custom PCB traces (LOCKED 2026-06-28). See Resolved Questions below and project-log.md 2026-06-28 Keypad Selection.
-- **Enclosure/Form factor**: Deferred — single-board prototype first, mechanical design after electronics are proven. User has FDM, SLA, and CNC access.
+- **Enclosure/Form factor**: Flip/clamshell — two PCBs (main board + display daughterboard) connected via hinge flex cable. **LOCKED 2026-07-19** (supersedes 2026-06-28 deferral). Hinge mechanism + enclosure design deferred to Phase 7 (mechanical design). User has FDM, SLA, and CNC access.
 - **Firmware**: Zephyr RTOS — balances concurrency needs with maintainability for a daily-driver device. See project-log.md 2026-06-28 RTOS Selection.
 
 ## Open Questions (Requirements)

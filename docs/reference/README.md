@@ -18,7 +18,11 @@ Download each file below into this directory (`docs/reference/`). Browser "Save 
 | `stm32h743zi.pdf` | STMicroelectronics STM32H743ZI datasheet (LQFP-144 electrical/mechanical/pinout) | https://www.st.com/resource/en/datasheet/stm32h743zi.pdf |
 | `dm00314099-stm32h742-stm32h743753-and-stm32h750-value-line-advanced-armbased-32bit-mcus-stmicroelectronics.pdf` | STMicroelectronics RM0433 Rev 8 — STM32H742/H743/753/H750 reference manual (peripheral registers, 3353 pp) | https://www.st.com/resource/en/reference_manual/dm00314099-stm32h742-stm32h743753-and-stm32h750-value-line-advanced-armbased-32bit-mcus-stmicroelectronics.pdf |
 | `dm00499160-stm32h7-nucleo144-boards-mb1364-stmicroelectronics.pdf` | STMicroelectronics UM2407 Rev 5 — STM32H7 Nucleo-144 boards (MB1364) user manual (board schematics, jumper config, ST-Link) | https://www.st.com/resource/en/user_manual/dm00499160-stm32h7-nucleo144-boards-mb1364-stmicroelectronics.pdf |
-| `ST7789V.pdf` | Sitronix ST7789V LCD controller datasheet (240RGB×320, 262K color TFT controller/driver) | https://newhavendisplay.com/content/datasheets/ST7789V.pdf |
+| `ST7789V.pdf` | Sitronix ST7789V LCD controller datasheet (240RGB×320, 262K color TFT controller/driver) — covers both main display (ST7789T3) and outer display (ST7789V3) | https://newhavendisplay.com/content/datasheets/ST7789V.pdf |
+| `HS20HS072RX-main-display.pdf` | HS HS20HS072RX panel datasheet — 2.0" IPS TFT, 240×RGB×320, ST7789T3, 12-pin 0.5mm ZIF FPC (main display, LOCKED 2026-07-19). Pinout: 1=GND, 2=CS, 3=RS(DC), 4=SCL, 5=SDA, 6=RST, 7=NC, 8=I/O-VCC, 9=VCC, 10=LEDA, 11=LEDK, 12=GND. | https://www.lcsc.com/product-detail/C5329582.html |
+| `ER-TFT1.14-2-outer-display.pdf` | EastRising ER-TFT1.14-2 panel datasheet — 1.14" IPS TFT, 135×240, ST7789V, 8-pin 0.5mm FPC top contact (outer display, LOCKED 2026-07-19). Pinout: 1=LEDA, 2=GND, 3=RESET, 4=RS(DC), 5=SDA, 6=SCL, 7=VDD, 8=CS. Purchased from BuyDisplay (not LCSC) — assembled by user post-PCB-assembly. | https://www.buydisplay.com/1-14-inch-tft-lcd-display-ips-panel-screen-135x240-for-smart-watch |
+| `N114-2413THBIG01-H13-outer-display-superseded.pdf` | Wisevision N114-2413THBIG01-H13 panel datasheet — 1.14" IPS TFT, 240×135, ST7789V3, 13-pin 0.7mm FPC (**SUPERSEDED 2026-07-19**: 0.7mm pitch has no JLC-stocked connectors — replaced by ER-TFT1.14-2 with standard 0.5mm pitch). | https://lcsc.com/product-detail/C2890618.html |
+| `N130-6428TSWOG01-H13-OLED-rejected.pdf` | Wisevision N130-6428TSWOG01-H13 panel datasheet — 1.3" SH1107 OLED, 128×64, 13-pin 0.7mm FPC (REJECTED 2026-07-19: requires 9V VPP external boost converter) | https://lcsc.com/product-detail/C2890613.html |
 
 ### Saved wiki pages (HTML + `_files/` subdirectory)
 
@@ -45,7 +49,8 @@ Download each file below into this directory (`docs/reference/`). Browser "Save 
 - **Audio codec**: MAX9880AETM+T (TQFN-48, 6×6mm) — Mouser 700-MAX9880AETM+T
 - **Display dev module**: Waveshare 2inch LCD Module, SKU 17344 (ST7789VW driver)
 - **Display controller**: ST7789V (Sitronix; Waveshare module uses ST7789VW variant — same datasheet covers both)
-- **Display raw panel (final PCB candidate)**: W200QVC016-A or equivalent 2.0" ST7789V FPC panel
+- **Display raw panel (final PCB — LOCKED 2026-07-19)**: HS HS20HS072RX (LCSC C5329582) — 2.0" IPS TFT, ST7789T3, 12-pin 0.5mm ZIF FPC
+- **Outer display raw panel (final PCB — LOCKED 2026-07-19)**: EastRising ER-TFT1.14-2 (BuyDisplay) — 1.14" IPS TFT, ST7789V, 8-pin 0.5mm FPC (purchased from BuyDisplay, not LCSC — user assembles post-PCB)
 
 ## Maintenance
 

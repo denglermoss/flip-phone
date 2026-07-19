@@ -13,8 +13,8 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 | Net name | Voltage | Source | Consumers |
 |----------|---------|--------|-----------|
 | `VBUS` | 5V | USB-C connector | MCP73831 charger input, MCU VBUS sense |
-| `VBAT` | 3.4–4.3V (LiPo) | LiPo battery (direct, no regulator) | SIM7600 VBAT pins, TPS630201 input, MAX17048 sense |
-| `+3V3` | 3.3V | TPS630201 buck-boost output | MCU, display, SD card, codec I2S side, level shifter 3.3V side, fuel gauge |
+| `VBAT` | 3.4–4.3V (LiPo) | LiPo battery (direct, no regulator) | SIM7600 VBAT pins, TPS63021DSJR input, MAX17048 sense |
+| `+3V3` | 3.3V | TPS63021DSJR buck-boost output | MCU, display, SD card, codec I2S side, level shifter 3.3V side, fuel gauge |
 | `+1V8` | 1.8V | TPS7A0218 LDO output (from +3V3) | MAX9880A codec, level shifter 1.8V side (modem UART/PCM) |
 | `GND` | 0V | Common ground | All blocks |
 
@@ -73,7 +73,7 @@ The most signal-dense interface in the design. Every phone function (dial, answe
 | Pin | Net | Notes |
 |-----|-----|-------|
 | VCCA | `+1V8` | 1.8V supply (from TPS7A0218 LDO). Powers the modem-facing side. |
-| VCCB | `+3V3` | 3.3V supply (from TPS630201). Powers the MCU-facing side. |
+| VCCB | `+3V3` | 3.3V supply (from TPS63021DSJR). Powers the MCU-facing side. |
 | OE | `+3V3` via pullup | Output enable (active high). Pull high to enable. Tie to VCCB or a GPIO for power sequencing. |
 | GND | `GND` | Common ground. |
 
@@ -138,7 +138,48 @@ In practice: use **net labels** (`L`) on both sides of the level shifter rather 
 
 ## Section: Codec (MAX9880A + PCM + I2S + transducers) — *to be specified*
 
-## Section: Display (ST7789V + SPI + backlight) — *to be specified*
+## Section: Display (ST7789V + SPI + backlight) — *panel locked 2026-07-19*
+
+> **Panel**: HS HS20HS072RX (LCSC C5329582) — 2.0" IPS TFT, 240×RGB×320, ST7789T3, 4-wire SPI, 12-pin 0.5mm ZIF FPC. 4 parallel white LEDs (LEDA/LEDK broken out for PWM dimming). See project-log.md 2026-07-19 Display Panel Selection.
+>
+> **Outer display**: EastRising ER-TFT1.14-2 (BuyDisplay) — 1.14" IPS TFT, 135×240, ST7789V (same driver family), 4-wire SPI, **8-pin 0.5mm FPC** (standard JLC-stockable ZIF connector). 3.3V only (no boost converter). Shares SPI bus with main display (+2 signals: CS2, DC2). **Both display panels purchased separately from PCB and assembled by user** (ZIF FPC plugs in post-assembly). See project-log.md 2026-07-19 Outer Display Re-Selection.
+>
+> **Form factor**: Flip/clamshell — both displays are on the display daughterboard (lid), connected to the main board via hinge flex cable (J8 main board → J9 daughterboard). See project-log.md 2026-07-19 Flip Form Factor.
+
+### Board architecture (flip, two PCBs)
+
+**Main board** (base): MCU, modem, codec, keypad, battery, power, USB-C, SIM, SD, antennas, microphone, loudspeaker, level shifter, ESD, crystals, passives. Connector J8 (14-pin 0.5mm ZIF) for hinge flex.
+
+**Display daughterboard** (lid): main display panel (J7, 12-pin 0.5mm ZIF), outer display (J10, 8-pin 0.5mm ZIF), earpiece speaker. Connector J9 (14-pin 0.5mm ZIF) for hinge flex. ~5 components + 3 connectors — trivial board. Both displays are 3.3V-only TFT (no boost converters). **Display panels are purchased separately from the PCB and plugged into the ZIF connectors by the user post-assembly.**
+
+### Hinge flex signals (~13 signals, 14-pin 0.5mm FFC)
+
+| Signal | Direction | Source | Destination | Notes |
+|--------|-----------|--------|-------------|-------|
+| `DISP_SDA` | Main → Lid | MCU SPI MOSI | Display panel SDA | High-speed (up to 40MHz) |
+| `DISP_SCL` | Main → Lid | MCU SPI SCK | Display panel SCL | High-speed (up to 40MHz) |
+| `DISP_CS` | Main → Lid | MCU GPIO | Display panel CS | Active low |
+| `DISP_DC` | Main → Lid | MCU GPIO | Display panel DC/RS | Data/command |
+| `DISP_RST` | Main → Lid | MCU GPIO | Display panel RST | Reset |
+| `+3V3` | Main → Lid | TPS63021DSJR | Display panel IOVCC/VCI | Power |
+| `GND` | — | Common | Common | Return for SPI + power |
+| `LEDA` | Main → Lid | 3.3V rail | Display panel LEDA | Backlight anode (common) |
+| `LEDK` | Main → Lid | PWM FET → GND | Display panel LEDK | Backlight cathode (PWM dimming) |
+| `SPK+` | Main → Lid | MAX9880A earpiece out+ | Earpiece speaker + | Differential audio |
+| `SPK-` | Main → Lid | MAX9880A earpiece out- | Earpiece speaker - | Differential audio |
+| `OUTER_CS` | Main → Lid | MCU GPIO | Outer display CS2 | Active low (shared SPI bus with main display) |
+| `OUTER_DC` | Main → Lid | MCU GPIO | Outer display DC2 | Data/command (shared SPI bus) |
+| *(spare)* | — | — | — | 14th pin on FFC — unused / spare GND |
+
+> **Camera**: Out of scope for rev1. DCMI (11 pins + 1 power) stays on main board when added. No hinge flex reservation. See project-log.md 2026-07-19 Flip Form Factor.
+
+### Backlight PWM circuit (main board)
+
+4 parallel white LEDs in the panel, common anode (LEDA), Vf 3.0V, 80mA total. Circuit on main board (LEDK switches to GND):
+- `+3V3` → current-limiting resistors → panel LEDA (through hinge flex)
+- Panel LEDK (through hinge flex) → N-FET drain → N-FET source → GND
+- N-FET gate: MCU timer-output GPIO (PWM dimmable, off during standby per FR-4.3)
+- No boost LED driver needed (parallel LEDs, 3.0V Vf < 3.3V rail)
 
 ## Section: Keypad (5×4 matrix) — *to be specified*
 

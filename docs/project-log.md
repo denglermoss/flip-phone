@@ -19,8 +19,9 @@
   - *Rationale*: Get to a working call as fast as possible to validate the hardest part (cellular + audio + firmware). Everything else is additive.
 - **Decision**: Use RTOS (FreeRTOS or Zephyr) for firmware, not bare metal.
   - *Rationale*: Concurrent requirements (AT command parsing, UI, power management, call state machine) make bare metal unwieldy for a daily-driver. RTOS provides task scheduling without sacrificing control. FreeRTOS vs Zephyr TBD.
-- **Decision**: Form factor/mechanical design deferred. Start with single-board design.
-  - *Rationale*: The hard problems (cellular, firmware, power, RF) are form-factor independent. Locking into flip early adds constraints (flex cable, hinge, multi-board) before core electronics are validated. Decide mechanical design after the phone works on a single board.
+- **Decision**: ~~Form factor/mechanical design deferred. Start with single-board design.~~
+  - *Rationale*: ~~The hard problems (cellular, firmware, power, RF) are form-factor independent. Locking into flip early adds constraints (flex cable, hinge, multi-board) before core electronics are validated. Decide mechanical design after the phone works on a single board.~~
+  - **SUPERSEDED 2026-07-19**: Flip form factor re-locked. Two PCBs (main + display daughterboard) + hinge flex. The display daughterboard is trivial (~5 components), and the main board is the same complexity either way — deferring flip no longer reduces rev1 risk meaningfully. See "2026-07-19: Display Panel Selection + Flip Form Factor Locked" entry below.
 - **Decision**: ~~Display type deferred — will recommend based on constraints.~~
   - **SUPERSEDED 2026-06-28**: Display selected — ST7789V SPI color TFT (2.0" 240×320, RGB565). See "Display Selection" decision below.
 - **Decision**: ~~Keypad design deferred to Phase 2 prototyping.~~
@@ -189,6 +190,7 @@
 - **Decision**: ~~Flip/clamshell form factor with two PCBs connected via flex cable.~~
   - *Rationale*: ~~Core to the project concept. Adds mechanical and routing complexity (desired challenge).~~
   - **SUPERSEDED 2026-06-28**: Form factor deferred. Single-board first, mechanical design after electronics proven. See "Problem Definition Session" decision above. This entry is retained for history only — do not reference it as an active decision.
+  - **RE-LOCKED 2026-07-19**: Flip form factor re-confirmed. Two PCBs (main + display daughterboard) + hinge flex cable. See "2026-07-19: Display Panel Selection + Flip Form Factor Locked" entry below for full rationale. The 2026-06-28 deferral is itself superseded — flip is now the active form factor decision.
 
 ### 2026-06-29: MAX9880A Pre-PCB Verification — PASSED
 
@@ -387,6 +389,156 @@
 - **Remaining parts (need JLC part selection or design decisions)**: Created revisit prompt `docs/revisit-prompts/parts-sourcing-revisit.md` documenting all open items: 2 ICs (Ultra Librarian), 8 mechanical parts (connectors, switches, transducers, crystal, inductor), 3 design decisions (J2 modem USB type, J3/J4 SIM+SD combo vs separate, J7 display panel pick). See the revisit prompt for the full list and workflow.
 - **Docs updated**: `pcb/PARTS_TRACKING.md` (sourcing status for all parts), `pcb/JLCPCB_BOM.xls` (C-numbers filled in for downloaded parts), `docs/revisit-prompts/README.md` (new active prompt), `docs/revisit-prompts/parts-sourcing-revisit.md` (created).
 
+### 2026-07-19: Keypad Switch Selection — ALPS SKQGABE010 (LOCKED)
+- **Context**: Working through `docs/revisit-prompts/parts-sourcing-revisit.md` item B5 (SW1–SW20). The keypad *technology* (SMD tactile on PCB traces, 5×4 matrix) was locked 2026-06-28; what was open is the *specific switch part*. User-driven selection process — user defined the constraints (force, lifecycle, package, height, travel) and proposed candidate parts; agent verified specs against datasheets/JLC stock and confirmed the fit.
+- **User-defined requirements (settled in discussion)**:
+  - **Force**: 160–180gf (1.57–1.77N) — classic phone keypad range.
+  - **Lifecycle**: "more is better" → agent recommended 300K min, 1M if cheap. User accepted 1M target.
+  - **Package**: smaller is better (denser layout).
+  - **Height**: minimize — thinness is the dominant enclosure constraint.
+  - **Travel**: agent recommended 0.25–0.35mm for numeric keypad comfort; user accepted 0.25mm to win thinness + 1M cycle life.
+  - **Board location**: main board (base) — keypad is on the main board in the flip architecture (LOCKED 2026-07-19). The display daughterboard (lid) has only the display + outer OLED + earpiece speaker.
+- **Decision**: **ALPS Alpine SKQGABE010** (LCSC C115351).
+  - *Specs*: 5.2×5.2×1.5mm SMD, 1.57N (160gf) operating force, 0.25mm travel, 1,000,000 cycle life, SPST-NO top-actuated, gull-wing, rated 50mA @ 12V (way overkill for a keypad matrix signal). Operating temp −40 to +90°C. ALPS OEM (project principle: brand-name preferred ✓).
+  - *Sourcing*: LCSC C115351 — 41,590 in stock at LCSC, 1,344 in stock at JLC for PCBA. Price $0.089 @ 50+ qty → ~$3.50 for 40 switches (2 boards × 20 + overage). JLC has it as a basic/extended part — confirm at order time, but C115351 is the LCSC number.
+  - *KiCad library*: Downloaded via `uvx easyeda2kicad --full --lcsc_id=C115351 --output "pcb/phone/lib"`. Symbol `SKQGABE010` in `easyeda2kicad.kicad_sym`, footprint `KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4`, 3D model `KEY-SMD_4P-L5.2-W5.2-H1.5-LS6.4-P3.70` (.wrl + .step).
+- **Rationale (why this part over alternatives)**:
+  - Evaluated against the Panasonic EVQPL series (C79172, 4.9×4.9mm, 0.8/1.5mm height, 500K–2M cycles, 0.25mm travel) — comparable specs, but user preferred the ALPS SKQG footprint (5.2×5.2mm gull-wing is a more standard JLC assembly package than EVQPL's film-scratch-sensitive push-plate design).
+  - Beats the 6×6×3.5mm C&K PTS645 class the revisit prompt pre-loaded: smaller footprint (5.2 vs 6mm), thinner (1.5 vs 3.5mm = 2mm stackup saved), higher lifecycle (1M vs 300K), same force target (160gf). Tradeoff: less travel (0.25 vs ~0.35mm).
+  - 1M cycle life = 10× the 100K minimum math (heavy texter ~200 presses/day × 3 years ≈ 220K on the most-used key). Comfortable margin even allowing for gradual dome fatigue.
+- **Tradeoffs accepted**:
+  - **0.25mm travel** is at the low end of the numeric-keypad-comfortable range (smartphone side-button class, not feature-phone class). Accepted to win 1.5mm height + 1M cycles. Mitigation: the SKQG series has 3.1mm, 3.4mm, and 5.0mm stem-height variants on the **same 5.2×5.2mm footprint** — if the first build feels too snappy, swap up without respinning the PCB.
+  - **Non-washable marking** on the datasheet — investigated and confirmed non-issue for JLC PCBA. JLC's standard flow uses no-clean flux and only washes "when applicable" (their after-sales FAQ: residue is "normal and acceptable ... safe for use"). The "non washable" marking is industry-standard conservative text that appears even on IP67-rated sealed switches (e.g., Panasonic EVPBV, EVPAW) — it's about the wash process, not ambient moisture. No special JLC order notes needed.
+  - **Unsealed** (no IP rating) — consistent with the locked keypad decision (SMD tactile accepted as unsealed for prototype; sealing is a Phase 7 silicone-overlay concern).
+- **What is NOT decided here** (deferred as before):
+  - Side buttons (power, volume) — not in the revisit prompt's SW1–SW20 scope; would be a different switch family (side-actuated). Revisit at schematic time.
+  - Keycap / overlay design — Phase 7 (mechanical/enclosure).
+  - Specific key layout / matrix mapping beyond "5×4, 20 keys" — schematic-time decision.
+- **Docs updated**: `pcb/PARTS_TRACKING.md` (SW1–SW20 row filled in, decision #3 marked resolved), `docs/constraints.md` (Keypad section — specific part added), `docs/bom.md` (§3g keypad row — specific part + C#), `docs/revisit-prompts/parts-sourcing-revisit.md` (B5 marked resolved), `docs/revisit-prompts/README.md` (parts-sourcing prompt summary updated to reflect partial progress).
+
+### 2026-07-19: U4 Buck-Boost Correction — TPS630201 → TPS63021DSJR (LOCKED) + U3 MAX9880A Integrated
+- **TI's actual buck-boost lineup (verified via TI.com + datasheet SLVS916I)**:
+  - **TPS6302x family** (4A switches, ~3A output, VSON-14 / DSJ package, 3×4mm with exposed pad): TPS63020 = adjustable, **TPS63021 = fixed 3.3V**. This is the family the project wants.
+  - **TPS6300x family** (1.8A switches, ~1.5A output, VSON-10 / DRC package, 3×3mm): TPS63000/1/2. Lower current — not what the project needs.
+  - There is **no 4A part in the DRC package**. The revisit prompt's "DRC VQFN-10 4A" spec was impossible.
+- **Decision**: **U4 = TPS63021DSJR** (LCSC C202140). **LOCKED 2026-07-19.**
+  - *Specs*: Fixed 3.3V output (matches BOM spec exactly — no external feedback divider needed), 4A switch current limit, ~3A output current in buck mode (exceeds the BOM's "2A" spec with headroom), Vin 1.8–5.5V (covers LiPo 3.0–4.2V range), 2.4MHz fixed-frequency PWM, VSON-14 (DSJ, 3×4mm) with exposed pad. TI lists it as **Active Production**.
+  - *Sourcing*: LCSC C202140 — user confirmed in stock at JLC for PCBA (LCSC web page showed "Out of stock" but JLC's assembly stock can differ; user verified directly). **This eliminates U4 as a consignment part** — it can go through normal JLC PCBA assembly. Only MAX9880A remains as a consignment part (Mouser → JLC).
+  - *KiCad library*: Downloaded via `uvx easyeda2kicad --full --lcsc_id=C202140 --output "pcb/phone/lib"`. Symbol `TPS63021DSJR` in `easyeda2kicad.kicad_sym`, footprint `VSON-14_L4.0-W3.0-P0.50-BL-EP_TI_DSJ` (confirms DSJ package, 4×3mm, 0.5mm pitch, exposed pad), 3D model `VSON-14_L4.0-W3.0-H1.0-P0.50` (.wrl + .step).
+- **Alternative considered (TPS63020DSJR, C15483)**: Adjustable version, in stock at LCSC, same DSJ package. Would need 2 external resistors to set 3.3V output. Rejected because TPS63021 (fixed 3.3V) matches the BOM spec exactly and is available at JLC — no reason to add a feedback divider when the fixed-output variant is sourced.
+- **U3 MAX9880A integrated**: User downloaded the Ultra Librarian KiCad v6 package for MAX9880AETM+T. Files integrated into `pcb/phone/lib/`:
+  - Symbol: `lib/symbols/ultralibrarian.kicad_sym` (separate lib from `easyeda2kicad.kicad_sym` — Ultra Librarian parts kept distinct for organizational clarity).
+  - Footprint: `lib/footprints.pretty/21-0141I_T4866-1_MXM.kicad_mod` (TQFN-48 6×6mm with exposed pad — 49 pads verified = 48 pins + 1 EP). Three pad-density variants shipped (MXM nominal, MXM-L large, MXM-M medium); symbol references the nominal MXM.
+  - 3D model: **Not available** from Ultra Librarian for this part. Note for layout — 3D will be missing for MAX9880A in the KiCad 3D view. Acceptable (footprint + symbol are what matter for schematic/layout).
+  - *Sourcing*: Still needs Mouser consignment — MAX9880AETM+T is not on LCSC. BOM has Mouser stock (2,250 units, $2.23 qty 1). Buy from Mouser, ship to JLC with the PCB fab order.
+- **Impact on assembly**: Consignment parts reduced from 2 → 1 (only MAX9880A). Simplifies JLC ordering — one consignment shipment instead of two.
+- **Revisit prompt status**: A1 (MAX9880A) and A2 (TPS63021) both resolved. Parts-sourcing prompt now 3 of 13 items resolved (B5 switches, A1, A2). Next priority per the prompt: C13 (display panel pick, blocks J7), then B7 (L1 inductor — now needs TPS63021 datasheet specs, not the phantom TPS630201).
+- **Docs updated**: `pcb/PARTS_TRACKING.md` (U3 + U4 rows filled in, L1 row + decision #8 reference updated), `docs/bom.md` (item 10 part number/link/notes + verification checklist), `docs/constraints.md` (Power section), `docs/research-notes.md` (component table), `docs/block-diagram.md` (3 occurrences), `AGENTS.md` (Power architecture key decision), `docs/revisit-prompts/parts-sourcing-revisit.md` (A1/A2 marked resolved, B7 L1 spec reference corrected), `docs/revisit-prompts/README.md` (parts-sourcing summary updated). Historical entries in project-log.md (2026-06-28 documentation review, 2026-07-19 parts library build) left as-is per the SIM7600A-H→NA-H precedent — the decision intent was always "fixed 3.3V buck-boost"; only the part number was wrong.
+- **`pcb/JLCPCB_BOM.xls` deleted**: Binary Excel BOM was stale (last modified 2026-07-19 14:04, before today's U3/U4 corrections) and redundant with `pcb/PARTS_TRACKING.md`, which is now the single source of truth for C-numbers and sourcing status. The XLS will be regenerated from PARTS_TRACKING.md at JLC order time (JLC's PCBA order form accepts a CSV upload anyway — an .xls is not the right format for that). References in the revisit prompt updated to point only to PARTS_TRACKING.md. Historical project-log.md entry (2026-07-19 parts library build) left as-is per the no-rewrite-history rule.
+
+### 2026-07-19: ~~Outer Display Selection — Wisevision N114-2413THBIG01-H13 (LOCKED)~~
+
+**SUPERSEDED 2026-07-19**: The Wisevision N114 panel uses a **0.7mm FPC pitch**, which is not a standard connector pitch — no 0.7mm ZIF connectors are stocked on LCSC/JLCPCB. This made J10 unsourceable for JLC assembly. Replaced by the EastRising ER-TFT1.14-2 (BuyDisplay), which uses a standard 8-pin 0.5mm FPC. See "2026-07-19: Outer Display Re-Selection — ER-TFT1.14-2" entry below.
+
+- **Context**: The flip form factor (locked 2026-07-19) calls for an outer display on the lid for closed-phone info (time, caller ID, notifications). Initially explored small I2C OLED (SSD1306/SH1106/SH1107). The user-sourced candidate (Newvisio N130-6428TSWOG01-H13, C2890613) was a raw SH1107 OLED panel requiring 9V VPP (external boost converter on the daughterboard) — adding significant complexity to what was supposed to be a trivial daughterboard. Pivoted to small TFT panels, which run on 3.3V only (transmissive display, no high voltage).
+- **Decision**: ~~**Outer display = Wisevision N114-2413THBIG01-H13** (LCSC C2890618). **LOCKED 2026-07-19.**~~ **SUPERSEDED** — 0.7mm FPC pitch has no JLC-stocked connectors.
+  - *Specs*: 1.14" IPS TFT, 240×135 (landscape), ST7789V3 controller (**same driver family as the main display** — Zephyr `solomon,st7789v`), 4-wire SPI, 65K color. Outline 17.6×31.0×1.6mm. Active area 14.86×24.91mm. 13-pin FPC. Backlight: 1 white LED, 3.2V, 20mA (PWM dimmable). Supply 2.4–3.3V (3.3V rail compatible). Brightness 400 cd/m². IPS full viewing angle.
+  - *Sourcing*: LCSC C2890618 — **463 in stock**, $2.54 qty 1, $2.14 qty 10. Wisevision/Newvisio OEM. EasyEDA footprint available.
+  - *Why TFT over OLED*: Raw OLED panels need 7-16V VPP (external boost converter + support components on the daughterboard — ~10-15 extra components). Raw TFT panels run on 3.3V only — daughterboard stays trivial (ZIF connector + decoupling cap). The ST7789V3 controller is the same family as the main display's ST7789T3, so the same Zephyr driver (`display_st7789v.c`) handles both — just different CS/DC pins.
+  - *Hinge flex impact*: Shares the SPI bus with the main display. Only 2 new hinge flex signals (CS2, DC2). RST can be shared. Backlight can tie to 3.3V or share the main display's PWM. Hinge flex stays at ~14 pins.
+- **Alternatives evaluated**:
+  - **Newvisio N130-6428TSWOG01-H13 (C2890613)** — 1.3" SH1107 OLED, I2C. Rejected: requires 9V VPP external supply (boost converter on daughterboard). 13-pin complex pinout (VPP, VCOMH, IREF, IM1). Adds ~10-15 daughterboard components. Defeats the "trivial daughterboard" design goal.
+  - **HS HS96S01A (C7471924)** — 0.96" ST7735 TFT. Rejected: turned out to be a breakout board (with PCB), not a raw panel. Too thick for a flip phone lid.
+  - **4-pin I2C OLED breakout modules** (Adafruit 938, etc.) — have onboard charge pump (no external VPP), but are thick (~6-11mm with PCB + components). Too thick for a flip phone lid.
+- **What is NOT decided here** (deferred):
+  - ~~**J10 ZIF connector** — 13-pin, pitch TBD from datasheet (likely 0.7mm based on similar Wisevision panels). Source from LCSC.~~ **SUPERSEDED** — 0.7mm pitch not available on LCSC/JLC. See ER-TFT1.14-2 re-selection below.
+  - ~~**Exact FPC pinout** — need to download datasheet and verify 13-pin pinout (LED+, LED-, VCC, GND, SCL, SDA, DC, CS, RST, etc.).~~ **Verified then superseded.**
+  - **KiCad model** — download via easyeda2kicad.
+- **Docs updated**: `docs/project-log.md` (this entry + progress tracking), `docs/bom.md` (new item 7c), `docs/constraints.md` (Form Factor section — outer display specified), `docs/block-diagram.md` (hinge flex table + daughterboard description), `pcb/PARTS_TRACKING.md` (J10 updated), `AGENTS.md` (outer display key decision).
+
+### 2026-07-19: Outer Display Re-Selection — EastRising ER-TFT1.14-2 (LOCKED)
+
+- **Context**: The Wisevision N114-2413THBIG01-H13 (locked earlier 2026-07-19) was found to use a **0.7mm FPC pitch**. Standard FPC connector pitches are 0.3, 0.5, 0.8, 1.0, 1.25, 1.27, 2.54mm — 0.7mm is not standard and no 0.7mm ZIF connectors are stocked on LCSC or JLCPCB. This made J10 unsourceable for JLC assembly, blocking the daughterboard design. The user also evaluated an HS96F04 (SSD1315 OLED, 0.96" 128×64) which has an internal charge pump (no boost IC needed, unlike the rejected SH1107) but still requires ~12 support components (charge pump caps, VCOMH cap, IREF resistor, FET power switch) and routes LiPo VBAT through the hinge flex — adding unnecessary complexity to the daughterboard.
+- **Decision**: **Outer display = EastRising ER-TFT1.14-2** (BuyDisplay). **LOCKED 2026-07-19.**
+  - *Specs*: 1.14" IPS TFT, 135×240, ST7789V controller (**same driver family as the main display** — Zephyr `solomon,st7789v`), 4-wire SPI, 65K/262K color. Outline 17.6×31.0×1.6mm. Active area 14.86×24.91mm. **8-pin 0.5mm pitch FPC (top contact)** — standard JLC-stockable connector. Backlight: 1 white LED, 3.0V, 15mA (PWM dimmable). Supply 2.5–3.3V (3.3V rail compatible). Brightness 400 cd/m². IPS full viewing angle (80° all directions). Contrast 500:1.
+  - *Pinout* (verified from datasheet page 7): 1=LEDA, 2=GND, 3=RESET, 4=RS(DC), 5=SDA, 6=SCL, 7=VDD, 8=CS.
+  - *Sourcing*: BuyDisplay (EastRising) — $3.27 qty 1, $2.93 qty 100. In stock. 10-year continuity supply promise. **Not on LCSC/JLC — purchased separately from the PCB and assembled by the user** (ZIF FPC plugs in post-PCB-assembly, no soldering needed).
+  - *Why ER-TFT1.14-2 over the alternatives*:
+    - **vs Wisevision N114** (superseded): Same panel specs (1.14" IPS, 135×240, ST7789V family), but ER-TFT1.14-2 uses standard 0.5mm FPC pitch (JLC-stockable connector) vs N114's 0.7mm (unobtainable). $0.73 more expensive ($3.27 vs $2.54) but solves the connector blocker entirely.
+    - **vs HS96F04 OLED** (considered, rejected): OLED has better contrast (true black) but requires ~12 support components on the daughterboard (charge pump caps, VCOMH cap, IREF resistor, 2 FETs for VBAT power switching) and routes LiPo VBAT through the hinge flex. ER-TFT1.14-2 keeps the daughterboard trivial (ZIF connector + 1 decoupling cap) and uses 3.3V only.
+  - *Hinge flex impact*: Same as the previous Wisevision selection — shares SPI bus with main display, only 2 new hinge flex signals (CS2, DC2). RST can be shared. 8-pin FPC is simpler than the old 13-pin (fewer signals to route on the daughterboard).
+  - *Assembly model*: **Both display panels (main + outer) are purchased separately from the PCB and assembled by the user.** The ZIF connectors are JLC-assembled on the PCB; the display panels plug into the ZIF connectors post-assembly. This decouples display sourcing (BuyDisplay/LCSC) from PCB assembly (JLC) — JLC doesn't need to source the panels.
+- **Docs updated**: `docs/project-log.md` (this entry + superseded prior entry + progress tracking), `docs/bom.md` (item 7c replaced), `docs/constraints.md` (Form Factor section — outer display + assembly model), `docs/block-diagram.md` (hinge flex table + daughterboard description), `pcb/PARTS_TRACKING.md` (J10 updated — 8-pin 0.5mm), `docs/reference/README.md` (ER-TFT1.14-2 datasheet added, Wisevision marked superseded), `AGENTS.md` (outer display key decision).
+
+### 2026-07-19: FPC ZIF Connectors Locked — HDGC 0.5K-HX Series (J7/J8/J9/J10)
+
+- **Context**: All three display/hinge connectors (J7 main display, J10 outer display, J8/J9 hinge FFC) need 0.5mm pitch ZIF receptacles in 12-pin, 8-pin, and 14-pin respectively. User requested keeping connectors in the same series to simplify the BOM and KiCad library work. User also identified that display FPC cables fold under the panel (contacts face down toward PCB), requiring bottom-contact connectors — and disliked the bulky slide-lock look of the JUSHUO AFC07 series initially considered.
+- **Decision**: **All four FPC connectors = HDGC 0.5K-HX series** (hinged lid, double-sided contacts, 1mm height). **LOCKED 2026-07-19.**
+  - *J7* (main display, 12-pin): HDGC 0.5K-HX-12PWB — JLC C2919494
+  - *J10* (outer display, 8-pin): HDGC 0.5K-HX-8PWB — JLC C2919492
+  - *J8* (hinge flex, main board, 14-pin): HDGC 0.5K-HX-14PWB — JLC C2919495
+  - *J9* (hinge flex, daughterboard, 14-pin): HDGC 0.5K-HX-14PWB — JLC C2919495 (same as J8)
+  - *Why HDGC 0.5K-HX*:
+    - **Double-sided contacts** (top AND bottom) — the FPC works regardless of contact orientation. This eliminates the top/bottom contact risk entirely, which was unresolved for the main display (HS20HS072RX mechanical drawing was image-only — couldn't verify contact side). The outer display datasheet specified "top contact" but double-sided works either way.
+    - **1mm height** — half the profile of the 2mm alternatives (JUSHUO AFC01/AFC07). Critically important for a thin flip phone lid.
+    - **Hinged lid** (flip-lock) — cleaner look than slide-lock connectors, no slider protruding.
+    - **Same series across all four connectors** — one KiCad footprint family, consistent look, simplified BOM.
+    - **Wide temp range** (-55 to +85°C).
+  - *Why not JUSHUO AFC01* (the alternative): Hinged lid + bottom contact + all three pin counts available, but 2mm height (thicker) and bottom-contact-only (if main display FPC is actually top-contact, would need to swap to the ECA variant — a BOM change, not a respin, but still a risk). AFC06 (gold-plated, butterfly lock) was also considered but doesn't have 8-pin or 14-pin variants.
+  - *Contact orientation rationale*: In a flip phone, the display FPC exits the panel and folds under it to reach the connector on the PCB. When the FPC folds under, the contact side (which faces the glass/display side) faces down toward the PCB. This means bottom-contact connectors are the correct choice for fold-under FPC configurations. Double-sided contacts eliminate this concern entirely.
+- **What is NOT decided here** (deferred):
+  - **Hinge FFC cable** — need a matching 14-pin 0.5mm FFC cable (same pitch, 0.3mm thickness, double-sided compatible). Source from LCSC/JLC or custom-order.
+  - **KiCad models** — download via easyeda2kicad for all three pin counts (8, 12, 14).
+- **Docs updated**: `docs/project-log.md` (this entry + progress tracking), `docs/bom.md` (items 20a/20b/20c added), `pcb/PARTS_TRACKING.md` (J7/J8/J9/J10 updated with locked part numbers).
+
+### 2026-07-19: Display Panel Selection + Flip Form Factor Locked
+
+#### Display Panel: HS HS20HS072RX (C5329582) — LOCKED
+
+- **Context**: Revisit prompt item C13 (display panel pick) — the display *type* (ST7789V SPI 2.0" 240×320) was locked 2026-06-28, but the specific raw panel for PCB integration was not. The Waveshare 2" LCD Module (SKU 17344, item 7 in BOM) remains the prototyping display. Item 7b (raw panel) needed a specific part with a ZIF-compatible FPC.
+- **Decision**: **Main display panel = HS HS20HS072RX** (LCSC C5329582). **LOCKED 2026-07-19.**
+  - *Specs*: 2.0" IPS TFT, 240×RGB×320, ST7789T3 driver (compatible variant of ST7789V — same Zephyr `display_st7789v.c` driver), 4-wire SPI, 262K color. Outline 51.80×36.20×2.1mm. Active area 40.80×30.6mm. Viewing: ALL (full angle IPS). Backlight: 4 parallel white LEDs, 80mA total, Vf 3.0V (enables PWM dimming via external FET — no boost driver needed). Operating temp -20 to +70°C. Supply: IOVCC 1.65–3.3V, VCI 2.4–3.3V (3.3V rail compatible).
+  - *FPC*: **12-pin, 0.5mm pitch, ZIF plug-in type** ("FPC插接" — confirmed on JLCEDA component page). Pinout: GND, NC, NC, RS/DC, NC, SDA, LEDK, GND, IOVCC, LEDA, SCL, CS, RST (exact RST pin position TBD from mechanical drawing — PDF table extraction was jumbled). Backlight LEDs broken out as LEDA/LEDK (not a logic BLK pin) — enables PWM dimming per project constraints. FPC cable length ~20mm (sufficient for single-board rev1; for flip form factor, panel sits on display daughterboard in lid — 20mm reaches daughterboard ZIF, hinge flex is separate).
+  - *Sourcing*: LCSC C5329582 — **1,786 in stock**, $3.42 qty 1, $2.10 qty 1000. JLC-assemblable (C5329582 on JLC, "Extended" pre-order — JLC sources from LCSC on demand). EasyEDA schematic symbol + PCB footprint available (convertible to KiCad).
+  - *JLC assembly*: The panel is SMD-placed by JLC (or manually inserted post-reflow — TBD at order time). The ZIF receptacle on the PCB is a separate SMD part sourced independently (see J7 connector sourcing).
+- **Alternatives evaluated**:
+  - **HS HS280S030RX (C5329584)** — 2.8" panel from same manufacturer. Rejected: wrong size (2.8" vs 2.0" — 2× the area, blows enclosure budget). Also has 4-wire resistive touch (not in scope).
+  - **JLC TFTLCD_2.0 (C9900274827)** — JLC's own assembly-branded display. Rejected: no public specs (can't verify ST7789V/240×320/SPI), SMD-22 package doesn't match standard 8-pin or 12-pin SPI pinout, "Extended" pre-order, unknown pinout. Would need to order one first to reverse-engineer.
+  - **Waveshare 2" LCD Module (SKU 17344)** — the prototyping display. Rejected for PCB: thick breakout board (~5mm+ vs 2.1mm raw panel), PH2.0 8-pin connector (not FPC), 58×35mm footprint, not phone-like. Remains the prototyping display (item 7 in BOM).
+  - **ZJY200S0800TG01** (SparkFun/TinyTronics) — 8-pin module-level pinout (BLK logic pin, no PWM dimming). Rejected: module-level, not raw panel.
+  - **Chance Display W200QVC012-A** — 15-pin SPI, LEDA/LEDK broken out. Viable alternative, but not LCSC-stocked (direct from manufacturer, MOQ may apply). HS20HS072RX preferred for LCSC/JLC availability.
+- **Tradeoffs accepted**:
+  - **ST7789T3 vs ST7789V/V2**: The panel uses ST7789T3, a compatible variant. The Zephyr `display_st7789v.c` driver covers the ST7789 family. Pre-PCB: verify ST7789T3 works with the driver (should be fine — same command set).
+  - **FPC cable length 20mm**: Sufficient for single-board (panel adjacent to PCB) and flip (panel on daughterboard in lid, hinge flex is separate). Not a concern for rev1.
+  - **Exact RST pin position**: PDF table extraction jumbled the pin order. Needs confirmation from the mechanical drawing (page 10 of datasheet — image-based, not text-extractable). Will verify before finalizing the ZIF connector pinout in KiCad.
+- **What is NOT decided here** (deferred):
+  - **J7 ZIF connector** — 12-pin 0.5mm pitch SMD receptacle. LCSC has many options (BOOMELE 0.5-8P C66953, JUSHUO AFC01-S08FCA-00 C262657, etc. — need 12-pin variant). Source separately.
+  - **Outer OLED display** (for closed-phone display) — user is sourcing. Small I2C OLED (0.96" or 1.3" SSD1306/SH1106). Adds 2 hinge flex signals (I2C SDA + SCL).
+  - **KiCad model download** — EasyEDA footprint available, needs conversion to KiCad (via easyeda2kicad or manual).
+
+#### Flip Form Factor — LOCKED (supersedes 2026-06-28 deferral)
+
+- **Context**: The project originally specified flip/clamshell (project-log.md 2026-06-28 initial decision), then superseded it to "form factor deferred, single-board first" on 2026-06-28. User now strongly leaning flip after working through the display panel selection — the form factor decision drives board architecture, hinge flex signal count, and connector selection, so it can't be deferred further.
+- **Decision**: **Flip/clamshell form factor with two PCBs connected via hinge flex cable. LOCKED 2026-07-19.** This supersedes the 2026-06-28 "form factor deferred" decision.
+  - *Board architecture*: **Main board** (base: MCU, modem, codec, keypad, battery, power, USB, SIM, SD, antennas, microphone, loudspeaker) + **display daughterboard** (lid: main display panel + outer OLED + earpiece speaker). Connected by hinge flex cable (FFC) through the hinge mechanism.
+  - *Hinge flex signals* (~12-14 pins, 0.5mm pitch FFC):
+    - Main display SPI: SDA, SCL, CS, DC, RST (5)
+    - Display power: VCC (3.3V), GND (2)
+    - Backlight: LEDA, LEDK (2) — PWM dimming via FET on main board
+    - Earpiece speaker: SPK+, SPK- (2) — differential audio from MAX9880A
+    - Outer OLED: I2C SDA, SCL (2) — shared I2C bus
+    - **Total: ~13 signals** → 14-pin 0.5mm FFC (1 spare)
+  - *Camera*: **Out of scope for rev1.** Camera (DCMI, rated 6 on wishlist) deferred to a future respin. Camera will go in the **base** (not lid) — DCMI parallel bus (11 pins + 1 power) stays on the main board, no hinge flex signals needed. If camera-in-lid is ever desired later, it would need a custom FPC with ground plane (signal integrity for 50MHz parallel data through 40-60mm hinge flex) — not worth the complexity for rev1. The 41 spare GPIO on LQFP-144 already accounts for DCMI in the GPIO budget.
+  - *No camera pins reserved in hinge flex.* If camera goes in base later: no flex change. If camera goes in lid later: custom FPC needed anyway (signal integrity), so reserving pins in a standard FFC is pointless.
+- **Rationale**: The display daughterboard is trivial (2 ZIF connectors + earpiece speaker pad + maybe a decoupling cap — ~5 components). The main board is the same complexity either way — the only difference is whether the display connector is a ZIF for the panel's FPC (single-board) or a ZIF for the hinge FFC (flip). The extra complexity of flip-from-rev1 is just the trivial daughterboard + a hinge FFC connector. This avoids a respin when transitioning from single-board prototype to flip.
+- **Supersedes**: The 2026-06-28 "Form factor deferred, single-board first" decision (project-log.md line 22-23) and the original flip decision (line 189-191, already superseded once). Both are retained for history.
+- **What is NOT decided here** (deferred to Phase 7 mechanical design):
+  - **Hinge mechanism** — salvage from existing flip phone, custom 3D printed, off-the-shelf metal hinge, or CNC machined. User has FDM/SLA/CNC access. Phase 7 concern.
+  - **Hinge flex cable** — specific FFC part (14-pin 0.5mm, 40-60mm length). Source from LCSC.
+  - **Enclosure design** — 3D model in CAD, fit-check with PCBs. Phase 7.
+  - **Keypad feel** — keycap/overlay design. Phase 7.
+- **Docs updated**: `docs/project-log.md` (this entry + progress tracking), `docs/constraints.md` (Display section + new Form Factor section), `docs/bom.md` (item 7b → LOCKED with specific part), `docs/research-notes.md` (display panel resolved), `docs/block-diagram.md` (two-board architecture + hinge flex), `AGENTS.md` (form factor key decision), `pcb/PARTS_TRACKING.md` (J7 blocker resolved — panel picked), `docs/revisit-prompts/parts-sourcing-revisit.md` (C13 resolved), `docs/revisit-prompts/README.md` (summary updated).
+
 ## Phase Breakdown & Effort Estimate
 
 ### Phase 1: Research & Component Selection (~2-3 weeks, part-time)
@@ -438,7 +590,7 @@
 
 ### Phase 7: Mechanical Design & Enclosure (~3-6 weeks, part-time)
 - 3D model the enclosure in CAD
-- Design form factor (flip, candybar, etc. — decision made by this phase)
+- ~~Design form factor (flip, candybar, etc. — decision made by this phase)~~ **Form factor LOCKED 2026-07-19**: flip/clamshell, two PCBs + hinge flex. This phase designs the hinge mechanism + enclosure, not the form factor decision.
 - Design keypad integration
 - 3D print / CNC iterations, fit-check with PCB
 - **Deliverable**: Functional enclosure, assembled phone
@@ -504,3 +656,9 @@
 | 2026-07-18 | **Full UI port: all 10 mockup screens migrated to firmware with mock data.** Migrated every screen from the HTML mockup to LVGL firmware: (1) **Dialer** — digits + blinking cursor, A=call, C=backspace, D=menu; (2) **Menu** — CONTACTS/MESSAGES/SETTINGS, 2/8 scroll, A select, B back; (3) **Contacts list** — 5 mock contacts, 2/8 scroll, A open, B back; (4) **Contact detail** — name + number + 4 actions (CALL/TEXT/EDIT/DELETE), CALL places real `ATD` call; (5) **Messages list** — 3 mock conversations with last-message preview; (6) **Conversation** — message thread (`<` incoming, `>` outgoing), C=compose, B=back; (7) **SMS Compose** — mock text entry with blinking cursor, A=send (logs only, no real `AT+CMGS`); (8) **In-call** — call timer (MM:SS) counting up from connect; (9) **Incoming** — INCOMING label + number, A=answer, B=reject; (10) **Calling** — CALLING... label + number, B=cancel. Architecture: unified `ui_render()` function replaces per-screen `ui_show()`/`ui_show_menu()` — hides all content labels then shows+populates only the ones needed. 5 flexible content labels (title/hero/list/timer/cursor) cover all screens. Blinking cursor via LVGL `lv_anim_t` (500ms cycle). Call timer via `k_uptime_get()` in main loop. All contacts/messages data are hardcoded arrays (real persistence + real SMS are future work). Build: 306,136 B flash (14.60%), 56,980 B RAM (10.87%). | Done |
 | 2026-07-19 | **Phase 3 (Schematic Design) kickoff — pre-schematic decisions settled.** Approach: block-diagram-first → KiCad hierarchical sheets. Four pre-schematic decisions made: (1) modem USB HS port → unpopulated connector footprint on rev1 (preserves tethering + modem FW update + diagnostics + GNSS-over-USB + ecosystem options); (2) GNSS antenna → include U.FL footprint on rev1 (board may be final version, low cost, can't add without respin); (3) loudspeaker → include earpiece + loudspeaker (MAX9880A stereo outputs, both transducers); (4) SIM + microSD → defer combo-vs-separate to sourcing (both blocks in diagram, decide at BOM finalization based on availability). USB-C connector type formally locked (was effectively decided, pending formal lock). See project-log.md 2026-07-19 decision entry. | In Progress |
 | 2026-07-19 | **SIM7600 variant selection for PCB + part name correction.** "SIM7600A-H" was a misnomer — SIMCom's actual product code is `SIM7600NA-H` (North America H-series, 119-pin LCC+LGA). Old LCSC link (C2995537) pointed to non-H `SIM7600A` (87-pin LCC, different package) — a doc error since 2026-06-28. Band comparison from SIMCom spec: B71 is only on NA-H (T-Mobile 600MHz, locked requirement). G-H (in stock, same package) lacks B71 — footprint fallback only, do not buy. SA-H/E-H are 87-pin LCC (different package) + no B71 — disqualified. **Purchase**: SIM7600NA-H via JLC pre-order (C5380303, $31.42). **Footprint**: NA-H from JLC; G-H as fallback (same 119-pin LCC+LGA). JLC pre-order mechanics documented. All docs updated (bom, constraints, AGENTS, README, block-diagram, research-notes, reference/README). | Done |
+| 2026-07-19 | **Keypad switch selection — ALPS SKQGABE010 (LOCKED).** Resolved revisit-prompt item B5 (SW1–SW20). User-driven selection: force 160–180gf, lifecycle 1M target, minimize height, accept 0.25mm travel. Picked ALPS SKQGABE010 (C115351): 5.2×5.2×1.5mm SMD, 1.57N, 0.25mm travel, 1M cycles, $0.089 @ 50+ qty. Beats the 6×6×3.5mm C&K PTS645 class on every dimension except travel. Same 5.2×5.2mm footprint across SKQG stem-height variants — swap up without respin if feel is too snappy. KiCad symbol+footprint+3D downloaded via easyeda2kicad. "Non washable" marking investigated — non-issue for JLC's no-clean default flow. Side buttons (power/volume) deferred. See project-log.md 2026-07-19 Keypad Switch Selection. | Done |
+| 2026-07-19 | **U4 buck-boost correction: TPS630201 → TPS63021DSJR (LOCKED) + U3 MAX9880A integrated.** "TPS630201" was a phantom part number (TI never made it) — carried in docs since 2026-06-28. Real part is TPS63021DSJR (fixed 3.3V, 4A switches, VSON-14/DSJ, LCSC C202140, in stock at JLC). Eliminates U4 as a consignment part — only MAX9880A still needs Mouser consignment. KiCad model downloaded via easyeda2kicad. MAX9880A Ultra Librarian files integrated into `pcb/phone/lib/` (TQFN-48, 49 pads verified). Revisit prompt A1/A2 resolved (3 of 13 items done). | Done |
+| 2026-07-19 | **Display panel selected (HS HS20HS072RX, C5329582) + flip form factor LOCKED.** Panel: 2.0" IPS TFT, 240×320, ST7789T3, SPI 4-wire, 12-pin 0.5mm ZIF FPC, 4 parallel LEDs (PWM dimming), $3.42, 1786 in stock at LCSC, JLC-assemblable. Replaces W200QVC016-A candidate. Form factor: flip/clamshell re-locked (supersedes 2026-06-28 deferral). Two PCBs: main board (base) + display daughterboard (lid: main display + outer OLED + earpiece). Hinge flex ~13 signals (display SPI + backlight + speaker + I2C OLED) on 14-pin 0.5mm FFC. Camera out of scope for rev1 (will go in base when added — no hinge flex reservation). Outer OLED (small I2C, for closed-phone display) — user sourcing. See project-log.md 2026-07-19 Display Panel + Flip Form Factor entry. | Done |
+| 2026-07-19 | ~~**Outer display selected (Wisevision N114-2413THBIG01-H13, C2890618) — LOCKED.**~~ **SUPERSEDED** — 0.7mm FPC pitch has no JLC-stocked connectors. See next entry. | Done |
+| 2026-07-19 | **Outer display re-selected (EastRising ER-TFT1.14-2, BuyDisplay) — LOCKED.** 1.14" IPS TFT, 135×240, ST7789V (same driver family), SPI 4-wire, **8-pin 0.5mm FPC** (standard JLC-stockable connector — HDGC C2919539). $3.27 from BuyDisplay. Replaces Wisevision N114 (0.7mm pitch — unobtainable connector). Same panel specs, standard pitch. Daughterboard stays trivial. **Both display panels purchased separately from PCB and assembled by user** (ZIF plugs in post-assembly). See project-log.md 2026-07-19 Outer Display Re-Selection. | Done |
+| 2026-07-19 | **FPC ZIF connectors locked — HDGC 0.5K-HX series (J7/J8/J9/J10).** Same series across all four connectors: hinged lid, double-sided contacts (eliminates top/bottom orientation risk), 1mm height (thinnest available). J7=C2919494 (12-pin), J10=C2919492 (8-pin), J8/J9=C2919495 (14-pin, 2 qty). User requested same-series + cleaner look than slide-lock AFC07. Double-sided contacts solve the unresolved main display contact orientation question. See project-log.md 2026-07-19 FPC ZIF Connectors. | Done |

@@ -448,7 +448,7 @@ E-ink's real advantages (ultra-low power, bistable, sunlight readable) are genui
 ### Pre-PCB Verification Items
 
 1. **Zephyr ST7789v driver on STM32H7**: Confirm `display_st7789v.c` works on STM32H7 with the target Zephyr version. The MIPI DBI API conversion (issue #73750) had teething issues (SPI word size, data transfer) — verify on a dev board (e.g., STM32H743 Nucleo + ST7789 breakout) before committing to PCB.
-2. **Panel selection**: Select a specific module with documented ST7789V + 240×320 + SPI, available from LCSC/DigiKey/Adafruit/Waveshare. Confirm FPC/connector footprint for PCB.
+2. ~~**Panel selection**: Select a specific module with documented ST7789V + 240×320 + SPI, available from LCSC/DigiKey/Adafruit/Waveshare. Confirm FPC/connector footprint for PCB.~~ **RESOLVED 2026-07-19**: HS HS20HS072RX (LCSC C5329582) — 2.0" IPS TFT, ST7789T3 (compatible variant), 12-pin 0.5mm ZIF FPC, 4 parallel LEDs (PWM dimming confirmed), $3.42, 1786 in stock. JLC-assemblable. See project-log.md 2026-07-19 Display Panel Selection. Remaining: verify ST7789T3 works with `display_st7789v.c` driver, confirm exact RST pin position from mechanical drawing.
 3. **SPI clock**: Confirm panel max SPI clock (typically 40MHz for ST7789V) and that STM32H7 SPI peripheral can drive it at the needed rate for acceptable UI/camera-preview framerate.
 4. **Backlight PWM**: Plan backlight PWM control on a timer-output GPIO for dimming and power management (display off during standby per FR-4.3).
 
@@ -474,7 +474,7 @@ Components that are implied by the architecture but not yet explicitly listed in
 |-----------|---------|-------|
 | Nano-SIM socket | SIM card holder for SIM7600 | LGA/SMD, typically Molex 786470-3001 or similar |
 | Battery fuel gauge IC | Battery level monitoring (FR-4.2) | I2C. **Selected: MAX17048** (ModelGauge, coulomb counting, ~$2.50). Shares I2C bus with MAX9880A. See `docs/bom.md` item 12 and `docs/constraints.md` Power section. |
-| 3.3V buck-boost regulator | MCU/system rail from LiPo | **Selected: TPS630201** (3.3V fixed, 2A, ~$3.50). LiPo 3.0–4.2V → 3.3V. See `docs/bom.md` item 10 and `docs/constraints.md` Power section. |
+| 3.3V buck-boost regulator | MCU/system rail from LiPo | **Selected: TPS63021DSJR** (fixed 3.3V, 4A switches / ~3A output, VSON-14/DSJ, LCSC C202140, ~$3.50 — LOCKED 2026-07-19). LiPo 3.0–4.2V → 3.3V. *Correction: docs previously said "TPS630201" — phantom part number, corrected to TPS63021DSJR.* See `docs/bom.md` item 10 and `docs/constraints.md` Power section. |
 | ESD protection diodes | USB-C, SIM, microSD data lines | **Selected: USBLC6-2SC6** (USB) + **ESDA6V1-5SC6** (SIM/SD), ~$1 total. See `docs/bom.md` items 23-24 and `docs/constraints.md` PCB Design section. |
 | Modem PWRKEY/STATUS GPIO | Power-cycle SIM7600 from MCU | 2 GPIO pins (PWRKEY output + STATUS input). See `docs/constraints.md` MCU section. |
 | Display backlight driver | Raw panel LED backlight (FET + resistors) | N-FET + current-limiting resistors + PWM GPIO for parallel-LED panels. Verify panel config before PCB. See `docs/constraints.md` Display section. |
