@@ -105,11 +105,13 @@ These need a decision before the corresponding part can be sourced. Present the 
     - Search JLC for both options and compare availability/price/footprint size
     - Check if the SIM7600 HW Design Manual has a recommended socket part
 
-13. **J7: Display FPC connector** ~~(BLOCKED — needs specific ST7789V panel pick)~~ — **RESOLVED 2026-07-19**
+13. **J7/J8/J9/J10: FPC ZIF connectors** ~~(BLOCKED — needs specific ST7789V panel pick)~~ — **RESOLVED 2026-07-19**
     - ~~The display is locked as ST7789V SPI 2.0" 240×320, but the specific module/panel determines the FPC pin count and pitch~~
     - ~~Decision needed: which specific ST7789V module?~~ **RESOLVED**: HS HS20HS072RX (LCSC C5329582) — 2.0" IPS TFT, ST7789T3, 12-pin 0.5mm ZIF FPC, 4 parallel LEDs, $3.42, 1786 in stock. JLC-assemblable. See project-log.md 2026-07-19 Display Panel Selection.
-    - **Flip form factor also locked 2026-07-19**: two PCBs (main + display daughterboard) + hinge FFC. New connectors J8-J10 added to PARTS_TRACKING.md (hinge FFC 14-pin + outer OLED). See project-log.md 2026-07-19 Flip Form Factor entry.
-    - **Remaining**: source the 12-pin 0.5mm ZIF receptacle for J7, 14-pin 0.5mm ZIF + FFC for J8/J9, and OLED connector for J10.
+    - **Flip form factor also locked 2026-07-19**: two PCBs (main + display daughterboard) + hinge FFC. New connectors J8-J10 added to PARTS_TRACKING.md (hinge FFC 14-pin + outer display). See project-log.md 2026-07-19 Flip Form Factor entry.
+    - **All four FPC connectors LOCKED 2026-07-19**: HDGC 0.5K-HX series (hinged lid, double-sided contacts, 1mm height — same series for all four). J7=C2919494 (12-pin), J10=C2919492 (8-pin), J8/J9=C2919495 (14-pin, 2 qty). KiCad models downloaded via easyeda2kicad (14-pin has no 3D model — acceptable). Double-sided contacts eliminate top/bottom orientation risk. See project-log.md 2026-07-19 FPC ZIF Connectors.
+    - **Outer display re-selected 2026-07-19**: Wisevision N114 (0.7mm pitch — no JLC connectors) replaced by EastRising ER-TFT1.14-2 (BuyDisplay, 8-pin 0.5mm FPC, ST7789V, $3.27). Both display panels purchased separately from PCB and assembled by user (ZIF plugs in post-assembly). See project-log.md 2026-07-19 Outer Display Re-Selection.
+    - **Remaining**: hinge FFC cable (14-pin 0.5mm, 0.3mm thick) — deferred to Phase 7 (length depends on hinge geometry).
 
 ### Workflow
 
@@ -123,7 +125,7 @@ For each item:
 ### Priority order
 
 1. ~~**A1, A2** (MAX9880A, TPS630201) — these are the only missing ICs; block schematic completion~~ **RESOLVED 2026-07-19**: A1 (MAX9880A) integrated from Ultra Librarian → `pcb/phone/lib/`. A2 (TPS630201→TPS63021DSJR) — phantom part number corrected, downloaded from JLC (C202140). Both ICs now have KiCad models. See project-log.md 2026-07-19.
-2. ~~**C13** (display panel pick) — blocks J7, which blocks layout planning~~ **RESOLVED 2026-07-19**: HS HS20HS072RX (C5329582) selected. 12-pin 0.5mm ZIF FPC. Flip form factor also locked (two boards + hinge FFC). J7 blocker cleared. New connectors J8-J10 added (hinge FFC + outer OLED). See project-log.md 2026-07-19.
+2. ~~**C13** (display panel pick) — blocks J7, which blocks layout planning~~ **RESOLVED 2026-07-19**: HS HS20HS072RX (C5329582) selected. 12-pin 0.5mm ZIF FPC. Flip form factor also locked (two boards + hinge FFC). J7 blocker cleared. All four FPC connectors (J7/J8/J9/J10) locked to HDGC 0.5K-HX series + KiCad models downloaded. Outer display re-selected to ER-TFT1.14-2 (BuyDisplay). See project-log.md 2026-07-19.
 3. **B7** (inductor L1) — critical for power design, needs TPS63021DSJR datasheet verification *(part ref corrected from TPS630201)*
 4. **C11, C12** (J2, J3/J4 decisions) — block connector sourcing
 5. **B3-B10** (remaining mechanical parts) — can proceed in parallel once decisions are made
