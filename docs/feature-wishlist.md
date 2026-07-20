@@ -19,7 +19,7 @@ These ratings inform **component selection** — we should ensure the MCU, cellu
 | MMS (picture messages) | 6 | Requires data connection + camera. Module-dependent. |
 | Group chat (with smartphone users) | 6 | Strong want. Three implementation paths evaluated (2026-07-05): (1) **SMS broadcast** — easy firmware, but recipients see individual texts with no group context, replies only go to sender; (2) **MMS group messaging** — real group thread on smartphones (green bubble experience), but MMS PDU encoding is complex and carrier-specific (MMSC URL, MMS proxy, binary SMIL format); SIM7600 has MMS AT commands but poorly documented; weeks of work; (3) **IP bridge** — phone SMS relays to a server that bridges to Telegram/Discord/Matrix; zero friction for smartphone users but requires maintaining a server and is a relay hack, not native group chat. No hardware impact — firmware/software only. Post-daily-driver feature. |
 | Voicemail | 3 | Carrier-side feature. Phone just needs to dial voicemail number. Minimal hardware impact. |
-| Speakerphone | 3 | Firmware + audio routing. Needs speaker capable of louder output. **Rev1 hardware decision (2026-07-19)**: loudspeaker included on rev1 — MAX9880A stereo outputs drive earpiece + loudspeaker at no extra codec cost. Speakerphone is firmware-only once the loudspeaker transducer is present. |
+| Speakerphone | 3 | Firmware + audio routing. Needs speaker capable of louder output. **Rev1 hardware decision (2026-07-19)**: loudspeaker included on rev1 — ALC5651 stereo outputs drive earpiece + loudspeaker at no extra codec cost. Speakerphone is firmware-only once the loudspeaker transducer is present. |
 | Call recording | 1 | Not wanted. |
 
 ## Connectivity

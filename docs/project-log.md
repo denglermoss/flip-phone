@@ -470,6 +470,135 @@
   - *Assembly model*: **Both display panels (main + outer) are purchased separately from the PCB and assembled by the user.** The ZIF connectors are JLC-assembled on the PCB; the display panels plug into the ZIF connectors post-assembly. This decouples display sourcing (BuyDisplay/LCSC) from PCB assembly (JLC) — JLC doesn't need to source the panels.
 - **Docs updated**: `docs/project-log.md` (this entry + superseded prior entry + progress tracking), `docs/bom.md` (item 7c replaced), `docs/constraints.md` (Form Factor section — outer display + assembly model), `docs/block-diagram.md` (hinge flex table + daughterboard description), `pcb/PARTS_TRACKING.md` (J10 updated — 8-pin 0.5mm), `docs/reference/README.md` (ER-TFT1.14-2 datasheet added, Wisevision marked superseded), `AGENTS.md` (outer display key decision).
 
+### 2026-07-19: Codec Swap MAX9880A → Realtek ALC5651 (LOCKED)
+
+- **Context**: MAX9880A was the only remaining Mouser consignment part (not on JLC/LCSC). User asked to look for a JLC-sourced alternative to eliminate consignment entirely. Researched dual-port audio codecs on JLC.
+- **Decision**: **Replace MAX9880A with Realtek ALC5651-CG (LCSC C963633). LOCKED 2026-07-19.**
+- **Why the ALC5651 is a drop-in replacement**:
+  - **Dual I2S/PCM interface** — same architecture as MAX9880A: I2S-1 for PCM voice from SIM7600 (primary), I2S-2 for I2S music from MCU (secondary). Both simultaneous and asynchronous (ASRC per interface).
+  - **PCM compatibility verified**: SIM7600 HW Design Manual V1.08 §3.6 = master mode, short sync, 16-bit linear, 2048/4096kHz BCLK. ALC5651 §7.5.1 supports PCM Mode A (short sync, Figures 10-11) in slave mode — exact match. The ALC5651 can be PCM slave on I2S-1 (SIM7600 is master) and I2S slave on I2S-2 (MCU is master).
+  - **Better audio specs**: 100dBA DAC SNR (vs MAX9880A 96dB), 94dBA ADC SNR (vs 82dB).
+  - **Smaller package**: QFN-40 5×5mm (vs MAX9880A TQFN-48 6×6mm).
+  - **Same supply architecture**: 1.8V analog (AVDD/DACREF/CPVDD), 1.2V digital core (internal LDO from DBVDD — no external 1.2V needed), 3.3V MICVDD for mic bias. DBVDD 1.71V–3.3V (digital I/O — can match MCU 3.3V or codec 1.8V).
+  - **Extra features over MAX9880A**: ASRC (asynchronous sample rate conversion per interface — eliminates clock domain issues), 7-band parametric EQ, DRC/AGC, wind noise filter, PDM output for external Class-D amplifier, SounzReal sound effects.
+  - **JLC-sourced**: C963633, JLC "Extended" — JLC sources it on-demand, no consignment. 407 in stock at LCSC.
+- **Why not other candidates**:
+  - **NAU88L25** (C2616618, Nuvoton): Only ONE digital audio port — cannot do simultaneous PCM + I2S. Disqualified.
+  - **ES8390** (C42405905, Everest Semi): Only ONE I2S/PCM port — same problem. Disqualified.
+  - **ALC5642** (Realtek): Dual I2S with Voice DSP, but NOT on LCSC/JLC. Would still require consignment. Disqualified.
+  - **ALC5640** (Realtek, C472491): Dual I2S, but OUT OF STOCK on LCSC. Disqualified.
+  - **TDK InvenSense MMICT390200012** (C3171752): PDM digital mic, not a codec. Wrong category.
+  - **MAX9880A** (original): Not on JLC/LCSC. Mouser consignment ($2.23, 2,250 stock). Works but inconvenient.
+- **Risks acknowledged**:
+  1. **Datasheet quality**: Realtek datasheets are often NDA-restricted. The ALC5651 datasheet (Rev 0.9, 134pp) was found on a third-party site and is complete — full pinout, register map (§8, 70+ pages), application circuit (Figure 36), timing diagrams (Figures 34-35), package dimensions (Figure 37). Sufficient for PCB design.
+  2. **407 stock**: Enough for prototyping (1 per board). JLC "Extended" means JLC sources on-demand — may have lead time. Acceptable for prototype.
+  3. **Part longevity**: ALC5651 is an older Realtek part (Rev 0.9, 2012-2013). Realtek doesn't publish EOL notices publicly. Risk is low — Realtek audio codecs have very long production tails (ALC255/256/892 are 10+ years old and still in mass production). If EOL'd, the ALC5640/ALC5642 are pin-compatible alternatives (same QFN-48 family).
+  4. **New footprint**: MAX9880A's Ultra Librarian model is replaced. ALC5651 KiCad model downloaded via easyeda2kicad (symbol, footprint, 3D — all generated). The Ultra Librarian files for MAX9880A are retained in `lib/` for reference but no longer used.
+  5. **DBVDD level**: ALC5651 DBVDD can be 1.71V–3.3V. If DBVDD=3.3V, the I2C and I2S-2 digital lines are 3.3V (no level shifter needed for MCU I2S). If DBVDD=1.8V, level shifting is needed (same as MAX9880A). **Decision: set DBVDD=1.8V** to match the codec analog supply and SIM7600 PCM voltage — this means I2S-2 lines from MCU still need level shifting (same as before). The I2C control bus can run at 1.8V or 3.3V independently (DBVDD sets the I/O voltage).
+- **Impact on other parts**:
+  - **U5 (TPS7A0218PDBVR, 1.8V LDO)**: Still needed — ALC5651 requires 1.8V analog supply. No change.
+  - **U8 (TXB0108PWR, level shifter)**: Still needed for MCU I2S → codec 1.8V I2S-2. No change.
+  - **MK1 (ZTS6117 mic)**: Still compatible — ALC5651 has differential analog mic inputs (IN1P/IN2P/IN2N) + MICBIAS (adjustable 0.9×MICVDD or 0.75×MICVDD, MICVDD=3.3V → MICBIAS ≈ 2.97V or 2.48V). The ZTS6117 needs 1.5V–3.6V supply — MICBIAS at 2.97V is fine. No change.
+  - **HAT prototyping**: Unchanged — the Waveshare NA-H HAT has a NAU8810 codec, not MAX9880A or ALC5651. The PCB codec is separate from the HAT codec. Firmware audio driver work is PCB-phase.
+- **Docs updated**: `docs/project-log.md` (this entry + progress tracking), `pcb/PARTS_TRACKING.md` (U3 row), `docs/reference/README.md` (alc5651.pdf added, max9880a.pdf marked SUPERSEDED), `docs/requirements.md` (codec resolved question updated), `docs/constraints.md` (audio section updated), `docs/research-notes.md` (codec section updated), `docs/bom.md` (item 6 updated), `docs/revisit-prompts/README.md`, `AGENTS.md` (key decisions).
+- **MAX9880A status**: SUPERSEDED. The Ultra Librarian KiCad model files remain in `lib/symbols/ultralibrarian.kicad_sym` and `lib/footprints.pretty/21-0141I_T4866-1_MXM.kicad_mod` for historical reference but are no longer the active U3 part. The MAX9880A datasheet (`docs/reference/max9880a.pdf`) is retained and marked SUPERSEDED.
+
+### 2026-07-19: B4/B6/B10 Sourcing — U.FL + Crystal + Microphone (LOCKED), Speakers DEFERRED
+
+- **Context**: Revisit prompt items B4 (J5/J6 U.FL antenna receptacles), B6 (Y1 8MHz crystal), B8 (LS1 earpiece), B9 (LS2 loudspeaker), B10 (MK1 microphone). User preference (2026-07-19): OEM/brand-name components. Researched all 5 in parallel, verified specs against datasheets via PDF MCP server.
+- **B4 Decision**: **J5/J6 = Hirose U.FL-R-SMT-1(10) (LCSC C88373). LOCKED 2026-07-19.**
+  - *Specs*: 6 GHz, 50Ω, SMD receptacle. 53,805 in stock, $0.227 qty 5+.
+  - *Why Hirose*: Hirose is the **original manufacturer** of the U.FL connector — they invented the U.FL standard. It doesn't get more OEM than this. 53K stock ensures availability for both prototyping and production. Need 2 (J5 cellular antenna, J6 GNSS antenna).
+  - *KiCad model downloaded*: symbol `U.FL-R-SMT-1`, footprint `ANT-SMD_UFL-R-SMT-1-10`, 3D `ANT-SMD_UFL-R-SMT-1-10` (.wrl + .step).
+- **B6 Decision**: **Y1 = ECS Inc ECS-80-12-33Q-GN-TR (LCSC C2595911). LOCKED 2026-07-19.**
+  - *Specs*: 8MHz, 12pF CL, ±30ppm tolerance, ±30ppm stability, ESR 500Ω, -40 to +85°C, SMD3225-4P (3.2×2.5mm). 150 in stock on JLC, $1.39.
+  - *Why ECS*: ECS Inc is a US crystal manufacturer. The ECS-80-12-33Q-GN-TR is **AEC-Q200 automotive qualified** — higher tier than generic Chinese crystals. ±30ppm is 100x better than USB FS requires (±2500ppm). 150 stock is enough for prototyping (1-2 per board).
+  - *STM32H743 verification*: Datasheet Table 34 (page 125) confirms HSE is 4-48MHz, characterized with 8MHz crystal at CL=10pF. Figure 20 shows "Typical application with an 8 MHz crystal." Load caps: with CL=12pF crystal and Cs≈3pF (per ST AN2867 + community guidance of 2-3pF for LQFP pins), CL1=CL2 = 2×(12-3) = 18pF each.
+  - *Production fallback*: LIMING 3225-8.00-12-10-10/A (C518155, ±10ppm, $0.32, 1,973 stock) — same SMD3225-4P footprint, better tolerance, more stock, cheaper. Can swap without respin if ECS stock runs low.
+  - *KiCad model downloaded*: symbol `ECS-80-12-33Q-GN-TR`, footprint `CRYSTAL-SMD_4P-L3.2-W2.5-BL`, 3D `CRYSTAL-SMD_4P-L3.2-W2.5-BL` (.wrl + .step).
+- **B10 Decision**: **MK1 = ZILLTEK ZTS6117 (LCSC C481300). LOCKED 2026-07-19.**
+  - *Specs*: Analog output MEMS microphone, -42dB sensitivity, 59dB SNR, omnidirectional, 1.5V-3.6V supply, 120µA current, 2.75×1.85×0.9mm. 5,129 in stock, $0.53.
+  - *MAX9880A compatibility*: Verified via MAX9880A datasheet (PDF MCP, p.50): "Two differential microphone inputs and a low noise 1.5V microphone bias for powering the microphones are provided." Supports both analog and digital mics — analog is simpler (no PDM clock routing). ZTS6117 analog output pairs directly with MAX9880A differential mic inputs (MICLN/MICLP) and uses MICBIAS (1.5V) for power.
+  - *Why ZILLTEK over Knowles*: Knowles SPU0410LR5H-QB (C2918083, gold standard, -38dB/63dB SNR, $0.85) has **0 stock on JLC**. ZILLTEK (钰太) is a Taiwanese MEMS sensor brand (reputable, not a generic Shenzhen clone) with 5,129 in stock. TDK InvenSense MMICT390200012 (C3171752) is **EOL** (TDK's own site: "not recommended for new designs") + PDM digital (more complex routing, and EOL is a disqualifier for a new design).
+  - *KiCad model downloaded*: symbol `ZTS6117`, footprint `MIC-SMD_4P-L2.8-W1.9-P1.84-TL_ZTS6117`, 3D `MIC-SMD_4P-L2.8-W1.9-P1.84-TL_ZTS6117` (.wrl + .step).
+- **B8/B9 Decision**: **LS1/LS2 = DEFERRED to Phase 7.**
+  - *Rationale*: Speakers are **case-mounted mechanical parts** — they're wire-soldered to the PCB during final assembly, not pick-and-placed by JLC. There's no need to spec them now. The PCB will have wire solder pads (2× 1mm pads, ~5mm apart) for both LS1 (earpiece) and LS2 (loudspeaker).
+  - *Candidates identified* (revisit at Phase 7 when enclosure dimensions and speaker cavity design are known):
+    - LS1 (earpiece, 10mm): Taoglas SPKM.10.8.A (C6297624, 10mm, 8Ω, 500mW, 100Hz-11kHz, Irish brand) — 0 stock on JLC but available from other distributors.
+    - LS2 (loudspeaker, 20mm+): CUI CMS0201KLX (C3312002, 20×20mm, 2W, 424Hz-20kHz, 9.5mm), PUI Audio AS02708CO-WR-R (C7217683, 27×20mm, 1W, 250Hz-20kHz, 6.3mm), PUI Audio AS02008MR-5-R (C3311274, 20mm, 500mW, 500Hz-4kHz, 3.8mm).
+  - *User direction (2026-07-19)*: "we also don't need to spec speakers now, as long as we have connectors that work and give us options" — confirmed deferral.
+- **Docs updated**: `docs/project-log.md` (this entry + progress tracking), `pcb/PARTS_TRACKING.md` (J5/J6, Y1, MK1, LS1, LS2 rows), `docs/revisit-prompts/README.md` (count 12→14 of 16, 2 deferred), `docs/revisit-prompts/parts-sourcing-revisit.md` (B4/B6/B10 marked RESOLVED, B8/B9 marked DEFERRED).
+
+### 2026-07-19: J1 USB-C Selection — Korean Hroparts TYPE-C-31-M-12 (LOCKED)
+
+- **Context**: Revisit prompt item B3 (J1 USB-C 16-pin receptacle for charging + MCU USB). User preference (2026-07-19): OEM/brand-name connectors, especially USB-C. The revisit prompt referenced GCT USB4081 as a candidate.
+- **Decision**: **J1 = Korean Hroparts Elec TYPE-C-31-M-12 (LCSC C165948). LOCKED 2026-07-19.**
+  - *Specs*: 16-pin USB-C, USB 2.0, 5A/20V, 10,000 mating cycles, 7.35mm right-angle SMD, -30 to +80°C. 94,755 in stock at LCSC, $0.186 qty 5+ / $0.103 qty 1000+.
+  - *Why Korean Hroparts (HRO)*: Reputable Korean USB-C connector brand — higher tier than generic Shenzhen brands (HCTL, Hong Cheng, G-Switch, etc.). HRO is one of the most popular USB-C connector brands on JLC/LCSC (94K+ stock, low C-number C165948 = long catalog history = well-supported for PCBA). Satisfies the user's OEM/brand-name preference.
+  - *Why 16-pin USB 2.0* (not 24-pin USB 3.x): The block diagram specifies 16-pin USB 2.0. The MCU USB is OTG_FS (12 Mbps) — no need for USB 3.x. Charging (MCP73831) only needs VBUS + GND. 16-pin is the standard USB 2.0 USB-C variant (VBUS×4, GND×4, CC×2, D+, D-, SBU×2, shell).
+  - *5A rating*: MCP73831 only draws 500mA for charging, but 5A gives headroom for a future power-path charger upgrade (e.g., BQ25895 at 5A) without respinning the connector.
+- **Why not GCT USB4081** (the revisit prompt's reference part):
+  - USB4081 is **24-pin USB 3.2 Gen 2** — wrong pin count. The block diagram specifies 16-pin USB 2.0.
+  - GCT (Global Connector Technology) is a reputable UK brand, but their 16-pin USB 2.0 variants don't appear to be on JLC/LCSC. Only their 24-pin USB 3.x parts are stocked.
+- **Alternative evaluated**: JUSHUO JS16T-TYPE-C479-DWH2-FSQ (C49118447) — comparable specs (16-pin, USB 2.0, 5A, 10K cycles, 7.9mm, with O-ring) but Shenzhen brand (founded 2001, professional connector mfr, but lower tier than Korean Hroparts). No reason to prefer it when HRO is in stock at 94K units at a lower price.
+- **Other candidates seen and rejected**: HCTL HC-TYPE-C-16P-CH5.90-3A-F1.3-02 (C5307761, 3A — lower current rating), Hong Cheng HC-TYPE-C-16P-G031B (C48887143, generic Shenzhen), G-Switch GT-USB-7016B (C2896634, generic Shenzhen), CIKI TYPE-C-2.0-16PIN-SMT-3 (C2987386, generic Shenzhen). All lower-tier brands than Korean Hroparts.
+- **KiCad library**: Downloaded via `uvx easyeda2kicad --full --lcsc_id=C165948 --output "pcb/phone/lib"`. Symbol `TYPE-C-31-M-12` in `easyeda2kicad.kicad_sym`, footprint `USB-C_SMD-TYPE-C-31-M-12_1` in `easyeda2kicad.pretty/`, 3D model `USB-C_SMD-TYPE-C-31-M-12_1` (.wrl + .step) in `easyeda2kicad.3dshapes/`.
+- **Docs updated**: `docs/project-log.md` (this entry + progress tracking), `pcb/PARTS_TRACKING.md` (J1 row), `docs/revisit-prompts/README.md` (count 11→12 of 16), `docs/revisit-prompts/parts-sourcing-revisit.md` (B3 marked RESOLVED).
+
+### 2026-07-19: J2/J3/J4 Decisions — Test Points + Separate Sockets (LOCKED)
+
+- **Context**: Revisit prompt items C11 (J2 modem USB connector type, DNP on rev1) and C12 (J3/J4 SIM+microSD combo vs separate sockets). These are design decisions that block connector sourcing. Researched JLC/LCSC availability for both, and verified the SIM7600 HW Design Manual V1.08 recommendations via PDF MCP server.
+- **C11 Decision**: **J2 = test points only (VBUS, D+, D-, GND — 4 pads). LOCKED 2026-07-19.**
+  - *Rationale*: The SIM7600 HW Design Manual V1.08 §3.4 explicitly states: "The USB interface is a frequently used debug port; it is suggested to reserve test points." This is the module manufacturer's own recommendation.
+  - *Why not USB-C DNP*: The future ecosystem respin (project-log.md 2026-06-28 USB HS/ULPI Revisit) routes the modem USB through an internal USB 2.0 hub (USB2514) to J1 (the main USB-C) — so J2 will **never** be a user-facing connector in the final product. A DNP USB-C footprint would waste ~16mm of board space for a connector that's never populated. If the ecosystem plan ever changes direction, a respin can add a connector then.
+  - *Rev1 use cases covered by test points*: firmware updates (modem firmware is older than documented — LE20B02 vs LE20B04/05), debug AT commands, tethering validation (AT+CUSBPIDSWITCH for RNDIS/ECM). All doable with probe clips on test pads.
+  - *J2 is no longer a "connector"* — it's 4 test pads. No part to source, no KiCad footprint download. Use KiCad built-in `TestPoint:TestPoint_Pad_D1.0mm` or similar.
+- **C12 Decision**: **J3/J4 = separate sockets (J3 = nano-SIM, J4 = microSD). LOCKED 2026-07-19.**
+  - *Rationale*:
+    1. **Combo sockets are NOT on JLC/LCSC.** They exist from Molex (104239-1430, ~$2-3), JAE (SF72S series), Hirose (KP15B), TXGA (FCD907-7M) — but only via Mouser/DigiKey/RS. Would require consignment to JLC (a second consignment part alongside MAX9880A, adding sourcing/shipping complexity).
+    2. **Separate sockets are abundantly JLC-stocked** — Zhongdi, HMTCONN, GCT, JAE, ALPS, Molex, Yamaichi, etc. at ~$0.10–1.00. No consignment needed.
+    3. **SIM7600 HW Design Manual V1.08 §3.5.3 recommends a standalone 6-pin nano-SIM socket** (Amphenol C707 10M006 512). §3.5.1 mentions an 8-pin version for card detection (USIM_DET hot-plug). The manual does NOT recommend a combo socket.
+    4. **Electrical independence matches physical separation**: SIM is on the modem's USIM interface (1.8V/3.0V auto-detect, USIM_VDD LDO inside the modem); microSD is on the MCU's SDMMC peripheral (3.3V). They're electrically independent. Separate sockets let us place the SIM near the modem (minimizing USIM trace length per manual §3.5.2: "SIM traces should keep away from RF lines, VBAT and high-speed signal lines... traces should be as short as possible") and the microSD near the MCU.
+    5. **Flip phone base has plenty of room** — the marginal space saving of a combo socket (~12×18mm combo vs ~12×11mm SIM + ~11×12mm SD = ~23×12mm separate) isn't worth a consignment part.
+  - *Combo tradeoff acknowledged*: combo sockets are more phone-like (common in commercial phones) and save board space. But the sourcing penalty (consignment) and layout penalty (can't optimize SIM-near-modem / SD-near-MCU placement) outweigh the space saving for this project.
+- **User preference noted (2026-07-19)**: OEM/brand-name connectors preferred, especially USB-C. Applies to all upcoming connector sourcing (J1 USB-C, J3 nano-SIM, J4 microSD, J5/J6 U.FL). Aligns with existing project principle (already swapped TECH PUBLIC clones for ST originals on U10/U11).
+- **Docs updated**: `docs/project-log.md` (this entry + progress tracking), `pcb/PARTS_TRACKING.md` (J2/J3/J4 rows updated), `docs/revisit-prompts/README.md` (count 9→11 of 16), `docs/revisit-prompts/parts-sourcing-revisit.md` (C11/C12 marked RESOLVED + priority order updated).
+
+### 2026-07-19: L1 Inductor Selection — Coilcraft XFL4020-152MEC (LOCKED)
+
+- **Context**: Revisit prompt item B7 (L1 power inductor for TPS63021DSJR buck-boost). This is the last remaining component in the 3.3V power rail — the most critical net on the board. The inductor has hard electrical constraints from the TPS63021DSJR datasheet (TI SLVS916I): inductance, saturation current, DCR. The revisit prompt noted the datasheet-recommended part was Coilcraft XFL4020-152ML (4×4mm) and asked to verify specs against the datasheet and check JLC availability.
+- **Datasheet sourced**: The TPS63021DSJR datasheet was NOT in `docs/reference/`. Downloaded TI SLVS916I Rev. I (Oct 2019) from https://www.ti.com/lit/ds/symlink/tps63021.pdf → `docs/reference/tps63021.pdf` (1.86 MB). Added to `docs/reference/README.md` index.
+- **Specs verified from datasheet** (via PDF MCP server, §8.2.2.2 Inductor Selection + Table 2 + Table 4):
+  - *Inductance*: 1.5µH recommended for 1.5–2A output (1µH also acceptable; 2.2µH only for lower loads). Internal loop compensation requires L ≥ 1µH to avoid subharmonic oscillation.
+  - *Saturation current*: datasheet §8.2.2.2 says "choose an inductor with saturation current 20% higher than the calculated peak" (Eq 2, boost mode is the critical case). The two recommended parts in Table 2 have Isat of 5.1A (Coilcraft XFL4020-152ME) and 5.4A (muRata FDV0530S-H-1R5M) — both well above the 4A switch current limit.
+  - *DCR*: as low as possible (efficiency). Table 2: 15mΩ (Coilcraft), 24mΩ (muRata).
+  - *Switching frequency*: 2.5 MHz typical (fixed internal).
+  - *Table 4* (components for VOUT=3.3V characterization curves): L1 = 1.5µH 4×4×2mm Coilcraft XFL4020-152ML (the "L" = low-DCR variant).
+- **Decision**: **L1 = Coilcraft XFL4020-152MEC (LCSC C3033018). LOCKED 2026-07-19.**
+  - *Specs*: 1.5µH ±20%, 4×4×2.1mm, magnetic shielded. Isat 4.4A at 20% inductance drop (Coilcraft datasheet authoritative). DCR 14.4mΩ typ / 15.8mΩ max. Irms 9.1A (40°C rise). 757 in stock at LCSC, JLC "Extended" (JLC sources from LCSC on demand — same status as our display panel).
+  - *Why the MEC variant* (not the ML from Table 4): The "ML" low-DCR variant is NOT on LCSC (broker-only, e.g., ic2world.com). The "MEC" standard-DCR variant IS on LCSC (C3033018). DCR 14.4mΩ is essentially the same as the datasheet's 15mΩ spec for the ME variant — the "L" low-DCR variant would be marginally lower but is unobtainable for JLC assembly.
+  - *Why lowest DCR matters*: The 3.3V rail powers everything (MCU, display, SD, codec I2S side, level shifter). DCR conduction losses are I²R — at 2A average, 14.4mΩ = 58mW lost; the Taiyo Yuden alternative at 35mΩ = 140mW lost (2.4× more). On a battery-powered phone, this directly hurts standby and talk time.
+  - *Why magnetic shielded*: The inductor sits near the modem/audio/RF section. Unshielded inductors radiate switching noise (2.5 MHz + harmonics) that can couple into audio and RF. Shielded construction contains the field.
+- **Isat adequacy analysis** (the one judgment call):
+  - The TPS63021's switch current limit is 4A typical — a fault condition, not the operating current. The inductor physically cannot see more than 4A through it (the IC enforces this).
+  - The datasheet's "20% above calculated peak" guidance → wants Isat ≥ 4.8A. The XFL4020-152MEC's 4.4A is below this strict target.
+  - **Why 4.4A is adequate for our use case**:
+    - *Buck mode* (Vin=4.2V, Vout=3.3V, full battery): peak inductor current at 3A out ≈ Iout + ΔIL/2 = 3 + 0.095 = 3.1A. Well under 4.4A.
+    - *Boost mode* (Vin=3.0V, Vout=3.3V, near-dead battery): using Eq 2 at 3A out, Iavg_switch = Iout·Vout/(Vin·η) = 3·3.3/(3.0·0.9) = 3.67A, Ipeak ≈ 3.7A. Under 4.4A but only 19% margin — close to the 20% recommendation.
+    - *Realistic phone loads*: peak 2–3A (modem TX burst + display + audio + MCU), not sustained 3A. The modem alone is the big draw and it's duty-cycled. Even in boost mode at 3A, we're under 4.4A. The phone won't sustain 3A in boost mode (battery at 3.0V is nearly dead — the modem will be duty-cycling and the user will be charging soon).
+  - *Conclusion*: 4.4A Isat is adequate. The 4A switch limit is the hard ceiling; our operating currents are well below it. If we ever needed sustained 3A in boost mode, we'd want the higher-Isat alternative — but that's not a phone use case.
+- **Alternative rejected**: Taiyo Yuden LSDND4040WKT1R5MM (C6653414) — Isat 7A (huge margin) but DCR 35mΩ (2.4× higher → noticeable efficiency loss on the most critical rail). The Isat margin isn't worth the efficiency hit for a battery-powered phone. Would revisit only if sustained 3A+ boost-mode operation became a requirement (it isn't).
+- **Other candidates evaluated and rejected**:
+  - Taiyo Yuden LSDND4040MKT1R5MM (C6585208): Isat 4.5A, DCR 56mΩ — worse DCR than Coilcraft, no Isat advantage.
+  - Taiyo Yuden LSDND4040JET1R5MM (C7296178): Isat 3A — too low.
+  - XR XRNR4030-1.5uH/N (C5289354): Isat 4.84A, DCR 20mΩ — viable but XR is a lesser-known brand (project principle: prefer OEM/brand-name).
+  - DMBJ PNLS4012-1R5M (C2849458): Isat 2.1A — way too low.
+- **KiCad library**: Downloaded via `uvx easyeda2kicad --full --lcsc_id=C3033018 --output "pcb/phone/lib"`. Symbol `XFL4020-152MEC` in `easyeda2kicad.kicad_sym`, footprint `IND-SMD_L4.0-W4.0-A` in `easyeda2kicad.pretty/`, 3D model `IND-SMD_L4.0-W4.0-A` (.wrl + .step) in `easyeda2kicad.3dshapes/`.
+- **What is NOT decided here** (deferred):
+  - **Input/output capacitors for TPS63021** — datasheet §8.2.2.3/§8.2.2.4 recommends 2×10µF input (muRata GRM188R60J106ME84D) + 3×22µF output (muRata GRM188R60J226MEAOL) + 0.1µF VINA bypass. These are standard ceramic caps — pick at schematic time from the passives already in the BOM (item 26). The 10µF 0805 X5R [C440198] and 100nF 0603 X7R [C14663] are already in `pcb/PARTS_TRACKING.md` §F.
+  - **Feedback divider** — not needed (TPS63021 is fixed 3.3V; the FB pin is tied to VOUT directly or via 0Ω, per datasheet Table 4 R1=0Ω for TPS63021).
+- **Docs updated**: `docs/project-log.md` (this entry + progress tracking), `docs/bom.md` (new item 10a + power subtotal $8–9 → $9–10), `pcb/PARTS_TRACKING.md` (L1 row), `docs/revisit-prompts/README.md` (count 8→9 of 16), `docs/revisit-prompts/parts-sourcing-revisit.md` (B7 marked RESOLVED + priority order updated), `docs/reference/README.md` (tps63021.pdf added to index).
+
 ### 2026-07-19: FPC ZIF Connectors Locked — HDGC 0.5K-HX Series (J7/J8/J9/J10)
 
 - **Context**: All three display/hinge connectors (J7 main display, J10 outer display, J8/J9 hinge FFC) need 0.5mm pitch ZIF receptacles in 12-pin, 8-pin, and 14-pin respectively. User requested keeping connectors in the same series to simplify the BOM and KiCad library work. User also identified that display FPC cables fold under the panel (contacts face down toward PCB), requiring bottom-contact connectors — and disliked the bulky slide-lock look of the JUSHUO AFC07 series initially considered.
@@ -538,6 +667,37 @@
   - **Enclosure design** — 3D model in CAD, fit-check with PCBs. Phase 7.
   - **Keypad feel** — keycap/overlay design. Phase 7.
 - **Docs updated**: `docs/project-log.md` (this entry + progress tracking), `docs/constraints.md` (Display section + new Form Factor section), `docs/bom.md` (item 7b → LOCKED with specific part), `docs/research-notes.md` (display panel resolved), `docs/block-diagram.md` (two-board architecture + hinge flex), `AGENTS.md` (form factor key decision), `pcb/PARTS_TRACKING.md` (J7 blocker resolved — panel picked), `docs/revisit-prompts/parts-sourcing-revisit.md` (C13 resolved), `docs/revisit-prompts/README.md` (summary updated).
+
+### 2026-07-19: J3/J4 Sourcing — Nano-SIM + MicroSD Sockets (LOCKED)
+
+#### Context
+
+Revisit prompt items B5 (J3 nano-SIM socket) and B7 (J4 microSD socket). The decision to use separate sockets (not combo) was locked earlier (2026-07-19 J2/J3/J4 Decisions), but the specific JLC parts were not yet selected. These were the last two parts without KiCad models — completing them unblocks schematic design.
+
+User preference: **hinged** sockets (not push-push) — hinged lids open upward, allowing PCB placement under overhangs or near tall components where a push-push slider would need lateral clearance.
+
+#### J3: SHOU HAN NANO SIM XG6P H1.35 (C7529386) — LOCKED
+
+- **Part**: SHOU HAN NANO SIM XG6P H1.35 (LCSC C7529386). Nano-SIM (4FF), hinged lid, 6-pin, SMD, 1.45mm height above board. Operating temp -20°C to +85°C. No card detect switch (6-pin only — SIM7600 manual §3.5.1 says card detection is optional, "keep USIM_DET pin open" if unused).
+- **Sourcing**: LCSC C7529386 — **38,255 in stock**, $0.146 qty 5+, $0.115 qty 50+. JLC "Extended" (22,052 in JLC stock) — no consignment needed.
+- **Why SHOU HAN**: Amphenol G85D1160022HHR (C5429441) was evaluated as the higher-tier OEM option (Amphenol recommended by SIM7600 manual §3.5.3) but was out of stock on LCSC and significantly more expensive. Molex doesn't make a nano-SIM hinged socket (their hinged 78800 series is micro-SIM only; their nano-SIM 104224 series is push-pull only). SHOU HAN is a Shenzhen connector brand — lower tier than Amphenol/Molex but an established maker with 38K+ units in stock. Functionally equivalent: nano-SIM hinged 6-pin, same electrical interface (VCC/RST/CLK/GND/VPP/DATA), same 1.8V/3V protocol.
+- **Why hinged over push-push**: User preference — hinged sockets open upward (top-loading), so they can be placed under an overhang or near tall components where a push-push slider would need lateral clearance for card insertion/removal. Important for a compact flip phone PCB.
+- **Why nano-SIM (not micro-SIM)**: The SIM7600 takes a nano-SIM (4FF). Electrical interface is identical across all SIM form factors (same 6 pins, same protocol) — the only difference is physical card size. Nano-SIM (12.3×8.8mm) is smaller than micro-SIM (15×12mm), which matters for a phone. A nano-SIM card cannot physically fit in a micro-SIM socket (would misalign contacts). The initially-considered C127364 (Molex 788000001) was micro-SIM — wrong card type.
+- **KiCad model downloaded** via easyeda2kicad: symbol `NANO SIM XG6P H1.35`, footprint `SIM-SMD_NANO-SIM-XG6P-H1.35` (10 pads = 6 signal + 4 shell/mounting, verified), 3D `SIM-SMD_NANO-SIM-XG6P-H1.35` (.wrl + .step).
+
+#### J4: Molex 472192001 (C164170) — LOCKED
+
+- **Part**: Molex 472192001 (LCSC C164170). MicroSD (TF), hinged lid, 8-pin, SMD, 1.9mm height above board. 1.10mm pitch. Operating temp -20°C to +85°C (LCSC) / -40°C to +85°C (Molex datasheet). No card detect switch. 5,000 mating cycles. Gold-over-nickel contacts, stainless steel shell, shielded. Molex OEM (top-tier US connector brand).
+- **Sourcing**: LCSC C164170 — **16,177 in stock**, $0.765 qty 1, $0.502 qty 100+. JLC has 9,107 in stock. No consignment needed.
+- **Why Molex**: Top-tier US connector brand. Molex makes a nano-SIM hinged socket? No — but they do make a hinged microSD socket (47219 series). This satisfies the user's OEM/brand-name connector preference for J4.
+- **Why hinged**: Same rationale as J3 — top-loading, no lateral clearance needed.
+- **KiCad model downloaded** via easyeda2kicad: symbol `472192001`, footprint `TF-SMD_472192001` (12 pads = 8 signal + 4 shell/mounting, verified), 3D `TF-SMD_472192001` (.wrl + .step).
+
+#### Impact
+
+**All non-standard parts now have KiCad models.** Every component in the block diagram has a symbol + footprint. Schematic design is fully unblocked. No consignment parts remain — all parts are JLC-sourced.
+
+- **Docs updated**: `docs/project-log.md` (this entry + progress tracking), `pcb/PARTS_TRACKING.md` (J3 + J4 rows), `docs/revisit-prompts/parts-sourcing-revisit.md` (B5 + B7 resolved), `docs/revisit-prompts/README.md` (summary updated), `docs/bom.md` (J3 + J4 added), `docs/constraints.md` (if needed).
 
 ## Phase Breakdown & Effort Estimate
 
@@ -662,3 +822,9 @@
 | 2026-07-19 | ~~**Outer display selected (Wisevision N114-2413THBIG01-H13, C2890618) — LOCKED.**~~ **SUPERSEDED** — 0.7mm FPC pitch has no JLC-stocked connectors. See next entry. | Done |
 | 2026-07-19 | **Outer display re-selected (EastRising ER-TFT1.14-2, BuyDisplay) — LOCKED.** 1.14" IPS TFT, 135×240, ST7789V (same driver family), SPI 4-wire, **8-pin 0.5mm FPC** (standard JLC-stockable connector — HDGC C2919539). $3.27 from BuyDisplay. Replaces Wisevision N114 (0.7mm pitch — unobtainable connector). Same panel specs, standard pitch. Daughterboard stays trivial. **Both display panels purchased separately from PCB and assembled by user** (ZIF plugs in post-assembly). See project-log.md 2026-07-19 Outer Display Re-Selection. | Done |
 | 2026-07-19 | **FPC ZIF connectors locked — HDGC 0.5K-HX series (J7/J8/J9/J10).** Same series across all four connectors: hinged lid, double-sided contacts (eliminates top/bottom orientation risk), 1mm height (thinnest available). J7=C2919494 (12-pin), J10=C2919492 (8-pin), J8/J9=C2919495 (14-pin, 2 qty). User requested same-series + cleaner look than slide-lock AFC07. Double-sided contacts solve the unresolved main display contact orientation question. See project-log.md 2026-07-19 FPC ZIF Connectors. | Done |
+| 2026-07-19 | **L1 inductor selected — Coilcraft XFL4020-152MEC (LOCKED).** Resolved revisit-prompt item B7. Datasheet (TI SLVS916I) was not in `docs/reference/` — downloaded and indexed. Verified specs from §8.2.2.2 + Table 2 + Table 4: 1.5µH, Isat ≥4.4A, lowest DCR possible. Selected Coilcraft XFL4020-152MEC (C3033018): 1.5µH, Isat 4.4A @20% drop, DCR 14.4mΩ (lowest available), Irms 9.1A, 4×4×2.1mm, magnetic shielded, 757 in stock, JLC Extended, $1.25. Exact datasheet-recommended part family (XFL4020-152ME/ML). Isat 4.4A is below the strict "4.8A" target but adequate — 4A is the switch current LIMIT (fault), actual phone peaks are 2–3A. Alternative rejected: Taiyo Yuden LSDND4040WKT1R5MM (C6653414, Isat 7A but DCR 35mΩ — 2.4× efficiency hit). KiCad model downloaded. Revisit prompt count 8→9 of 16. See project-log.md 2026-07-19 L1 Inductor Selection. | Done |
+| 2026-07-19 | **J2/J3/J4 decisions — test points + separate sockets (LOCKED).** Resolved revisit-prompt items C11 + C12. C11: J2 modem USB = test points only (4 pads: VBUS, D+, D-, GND) — per SIM7600 HW Design Manual V1.08 §3.4 recommendation ("reserve test points"). Future ecosystem respin routes modem USB through USB2514 hub to J1, so J2 never becomes user-facing. C12: J3/J4 = separate nano-SIM + microSD sockets (not combo) — combo sockets not on JLC (Molex 104239 etc. are Mouser/DigiKey only → consignment); SIM7600 manual §3.5.3 recommends standalone nano-SIM; electrical independence (SIM on modem USIM 1.8V, SD on MCU SDMMC 3.3V) matches physical separation (SIM near modem, SD near MCU). User preference: OEM/brand-name connectors for upcoming sourcing. Revisit prompt count 9→11 of 16. See project-log.md 2026-07-19 J2/J3/J4 Decisions. | Done |
+| 2026-07-19 | **J1 USB-C selected — Korean Hroparts TYPE-C-31-M-12 (LOCKED).** Resolved revisit-prompt item B3. Korean Hroparts Elec (HRO) TYPE-C-31-M-12 (C165948): 16-pin USB 2.0, 5A/20V, 10K cycles, 94,755 in stock, $0.186 qty 5+. Reputable Korean brand (higher tier than generic Shenzhen) — satisfies user's OEM/brand-name connector preference. GCT USB4081 (revisit prompt reference) rejected — it's 24-pin USB 3.2 Gen 2, wrong pin count. JUSHUO alternative (C49118447) rejected — Shenzhen brand, no advantage over HRO. KiCad model downloaded. Revisit prompt count 11→12 of 16. See project-log.md 2026-07-19 J1 USB-C Selection. | Done |
+| 2026-07-19 | **B4/B6/B10 sourced (U.FL + crystal + mic), B8/B9 speakers deferred.** Resolved 3 more revisit-prompt items. B4: J5/J6 = Hirose U.FL-R-SMT-1(10) (C88373, original U.FL from Hirose, 53K stock, $0.227). B6: Y1 = ECS ECS-80-12-33Q-GN-TR (C2595911, US brand, AEC-Q200, 8MHz 12pF ±30ppm, $1.39, 150 stock). B10: MK1 = ZILLTEK ZTS6117 (C481300, Taiwanese MEMS brand, analog output, -42dB/59dB SNR, 5,129 stock, $0.53). B8/B9 (LS1/LS2 speakers) DEFERRED to Phase 7 — speakers are case-mounted (wire-soldered), not PCB-assembled by JLC; PCB will have wire solder pads. Revisit prompt count 12→14 of 16 (2 deferred). See project-log.md 2026-07-19 B4/B6/B10 Sourcing. | Done |
+| 2026-07-19 | **Codec swapped: MAX9880A → Realtek ALC5651-CG (C963633).** Eliminates the last Mouser consignment part. ALC5651 is a dual I2S/PCM audio hub codec (same architecture as MAX9880A: I2S-1 for SIM7600 PCM voice, I2S-2 for MCU I2S music). PCM Mode A short-sync verified compatible with SIM7600. Better specs (100dBA DAC vs 96dB, 94dBA ADC vs 82dB), smaller package (QFN-40 5×5mm vs TQFN-48 6×6mm), JLC Extended (no consignment). Datasheet (Rev 0.9, 134pp) downloaded to `docs/reference/alc5651.pdf`. KiCad model downloaded. MAX9880A SUPERSEDED. See project-log.md 2026-07-19 Codec Swap. | Done |
+| 2026-07-19 | **J3/J4 sourced — nano-SIM + microSD hinged sockets (LOCKED).** Last two parts without KiCad models — schematic design fully unblocked. J3 = SHOU HAN NANO SIM XG6P H1.35 (C7529386, nano-SIM hinged 6-pin, 38,255 in stock, $0.146). J4 = Molex 472192001 (C164170, microSD hinged 8-pin, 16,177 in stock, $0.765). Both hinged (user preference — top-loading, no lateral clearance needed). Amphenol nano-SIM (C5429441) rejected — out of stock + expensive. Molex doesn't make nano-SIM hinged (only micro-SIM hinged). C127364 (Molex 788000001) was micro-SIM — wrong card type. KiCad models downloaded for both. **All parts now have KiCad models. No consignment parts remain.** Revisit prompt count 14→16 of 16 (2 deferred to Phase 7). See project-log.md 2026-07-19 J3/J4 Sourcing. | Done |

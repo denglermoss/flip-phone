@@ -15,7 +15,7 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 | `VBUS` | 5V | USB-C connector | MCP73831 charger input, MCU VBUS sense |
 | `VBAT` | 3.4–4.3V (LiPo) | LiPo battery (direct, no regulator) | SIM7600 VBAT pins, TPS63021DSJR input, MAX17048 sense |
 | `+3V3` | 3.3V | TPS63021DSJR buck-boost output | MCU, display, SD card, codec I2S side, level shifter 3.3V side, fuel gauge |
-| `+1V8` | 1.8V | TPS7A0218 LDO output (from +3V3) | MAX9880A codec, level shifter 1.8V side (modem UART/PCM) |
+| `+1V8` | 1.8V | TPS7A0218 LDO output (from +3V3) | ALC5651 codec analog (AVDD/DACREF/CPVDD), level shifter 1.8V side (modem UART/PCM) |
 | `GND` | 0V | Common ground | All blocks |
 
 > **`VBAT` is separate from `+3V3`** — modem 2A bursts must not droop the MCU rail. LiPo connects directly to `VBAT` (no regulator). Bulk capacitance (100–470µF ceramic + tantalum) at modem VBAT pins, physically close to the modem.
@@ -136,7 +136,7 @@ In practice: use **net labels** (`L`) on both sides of the level shifter rather 
 
 ## Section: Modem (full pinout + SIM + antenna + USB) — *to be specified*
 
-## Section: Codec (MAX9880A + PCM + I2S + transducers) — *to be specified*
+## Section: Codec (ALC5651 + PCM + I2S + transducers) — *to be specified*
 
 ## Section: Display (ST7789V + SPI + backlight) — *panel locked 2026-07-19*
 
@@ -165,8 +165,8 @@ In practice: use **net labels** (`L`) on both sides of the level shifter rather 
 | `GND` | — | Common | Common | Return for SPI + power |
 | `LEDA` | Main → Lid | 3.3V rail | Display panel LEDA | Backlight anode (common) |
 | `LEDK` | Main → Lid | PWM FET → GND | Display panel LEDK | Backlight cathode (PWM dimming) |
-| `SPK+` | Main → Lid | MAX9880A earpiece out+ | Earpiece speaker + | Differential audio |
-| `SPK-` | Main → Lid | MAX9880A earpiece out- | Earpiece speaker - | Differential audio |
+| `SPK+` | Main → Lid | ALC5651 earpiece out+ | Earpiece speaker + | Differential audio |
+| `SPK-` | Main → Lid | ALC5651 earpiece out- | Earpiece speaker - | Differential audio |
 | `OUTER_CS` | Main → Lid | MCU GPIO | Outer display CS2 | Active low (shared SPI bus with main display) |
 | `OUTER_DC` | Main → Lid | MCU GPIO | Outer display DC2 | Data/command (shared SPI bus) |
 | *(spare)* | — | — | — | 14th pin on FFC — unused / spare GND |

@@ -73,11 +73,11 @@ Ecosystem modules are future scope.
 - [Project Log](docs/project-log.md) — Decision log and progress tracking
 - [UI Design](docs/ui-design.md) — Screen map, input model, visual style (in progress)
 - [Bill of Materials](docs/bom.md) — Component list with prices, links, and cost estimates (preliminary)
-- [Revisit Prompts](docs/revisit-prompts/) — Prompts for open questions requiring dedicated discussion. **All resolved and archived** (2026-06-28): modem (SIM7600 locked), codec (MAX9880A selected), display (ST7789V SPI TFT selected), USB HS/ULPI (dropped — SIM7600's own USB 2.0 HS port does tethering directly, bypassing the MCU; no USB3300 needed). Archived prompts in `docs/revisit-prompts/archive/`; see `docs/revisit-prompts/README.md` for the archive index.
+- [Revisit Prompts](docs/revisit-prompts/) — Prompts for open questions requiring dedicated discussion. **All resolved and archived** (2026-06-28): modem (SIM7600 locked), codec (~~MAX9880A~~ → ALC5651 selected 2026-07-19), display (ST7789V SPI TFT selected), USB HS/ULPI (dropped — SIM7600's own USB 2.0 HS port does tethering directly, bypassing the MCU; no USB3300 needed). Archived prompts in `docs/revisit-prompts/archive/`; see `docs/revisit-prompts/README.md` for the archive index.
 
 ## Status
 
-**Phase 1 (Research & Component Selection) — Complete.** All guiding hardware decisions locked: MCU (STM32H743ZI), modem (SIM7600NA-H), codec (MAX9880A), display (ST7789V SPI TFT), keypad (SMD tactile switches), USB architecture (modem-direct tethering, no ULPI). **Zephyr development environment set up (2026-06-29)** — toolchain verified by building blinky for `nucleo_h753zi`.
+**Phase 1 (Research & Component Selection) — Complete.** All guiding hardware decisions locked: MCU (STM32H743ZI), modem (SIM7600NA-H), codec (ALC5651-CG), display (ST7789V SPI TFT), keypad (SMD tactile switches), USB architecture (modem-direct tethering, no ULPI). **Zephyr development environment set up (2026-06-29)** — toolchain verified by building blinky for `nucleo_h753zi`.
 
 **Phase 2 (HAT-Based Prototype) — In Progress (2026-07-18).** All prototyping hardware received. **MVP achieved (2026-07-13)**: MCU firmware places and receives VoLTE calls with audio on Mint LTE. **Keypad integrated + verified (2026-07-18)**: 4×4 matrix keypad wired to Nucleo GPIO via Zephyr's `gpio-kbd-matrix` input driver — user types arbitrary phone numbers and places calls (A=Call, B=End, C=Backspace). Functional test passed: real VoLTE call to a user-typed number, no PC involvement. Standalone-dialer milestone reached. Remaining MVP items: signal indicator (`AT+CSQ` polling — doable now), battery indicator (PCB-phase — needs MAX17048 fuel gauge). See `docs/project-log.md` Phase Breakdown.
 

@@ -85,12 +85,12 @@ Four architectures were evaluated, not just module models:
 
 | Architecture | Example | Audio | MCU/RTOS Learning | Prototyping | Selected? |
 |-------------|---------|-------|-------------------|-------------|-----------|
-| A: Cat 4 + MCU + codec | SIM7600 + STM32 + MAX9880A | PCM→codec primary (voice) + I2S→codec secondary (music), dual-port | Full | Waveshare HAT ready | **Yes** |
+| A: Cat 4 + MCU + codec | SIM7600 + STM32 + ALC5651 | PCM→codec I2S-1 (voice) + I2S→codec I2S-2 (music), dual-port | Full | Waveshare HAT ready | **Yes** |
 | B: Cat 1 voice module + MCU | EG912U-GL + STM32 | Module analog (voice) + external DAC (music), two paths | Full | Needs carrier board | No |
 | C: OpenCPU smart module | EG912U/EC600M + QuecPython | Built-in | None (Python on module) | EVB available | No (eliminates learning goal) |
 | D: Premium certified module | LARA-R6401 + STM32 + codec | I2S→codec | Full | DigiKey available | No (**911 not supported**) |
 
-**Key insight**: The music player goal (rated 6 on wishlist) is what makes Architecture A win over B. The selected codec (**MAX9880A**, see Codec Selection section below) has two independent digital audio ports — voice (PCM from module on primary port) and music (I2S from MCU on secondary port) — so both run simultaneously through one codec without the MCU in the voice path. Architecture B's built-in analog audio is voice-quality only — music still needs a separate DAC, creating two audio paths and more complexity. **Note**: The original claim that common codecs like WM8960 "unify" PCM and I2S into one audio path was **incorrect** — WM8960, NAU8810, NAU8822, and all common single-port codecs can only accept one digital audio stream at a time. The MAX9880A (dual-port) is what makes the unified architecture actually work. See Codec Selection / Audio Path Architecture section.
+**Key insight**: The music player goal (rated 6 on wishlist) is what makes Architecture A win over B. The selected codec (**ALC5651**, see Codec Selection section below) has two independent digital audio ports — voice (PCM from module on I2S-1) and music (I2S from MCU on I2S-2) — so both run simultaneously through one codec without the MCU in the voice path. Architecture B's built-in analog audio is voice-quality only — music still needs a separate DAC, creating two audio paths and more complexity. **Note**: The original claim that common codecs like WM8960 "unify" PCM and I2S into one audio path was **incorrect** — WM8960, NAU8810, NAU8822, and all common single-port codecs can only accept one digital audio stream at a time. The ALC5651 (dual-port) is what makes the unified architecture actually work. See Codec Selection / Audio Path Architecture section.
 
 ### SIM Cards
 
@@ -194,7 +194,7 @@ Worst-case GPIO budget for the phone (all peripherals populated):
 |-----------|------|-------|
 | UART to SIM7600 | 4 | TX, RX, RTS, CTS (hardware flow control) |
 | Debug UART | 2 | TX, RX |
-| SAI to audio codec (I2S) | 4 | SCK, FS, SD, MCLK — MCU→MAX9880A secondary port (music). Voice PCM goes SIM7600↔MAX9880A primary port directly, NOT through MCU. |
+| SAI to audio codec (I2S) | 4 | SCK, FS, SD, MCLK — MCU→ALC5651 I2S-2 (music). Voice PCM goes SIM7600↔ALC5651 I2S-1 directly, NOT through MCU. |
 | Display (SPI) | 6 | MOSI, SCK, CS, DC, RESET, backlight |
 | SD card (SDMMC, 4-bit) | 6 | CMD, CLK, D0-D3 |
 | USB OTG_FS | 2 | D+, D- (built-in PHY) |
@@ -455,7 +455,7 @@ E-ink's real advantages (ultra-low power, bistable, sunlight readable) are genui
 ## Open Research Questions
 
 - [x] **RESOLVED (2026-07-12)**: Does VoLTE "just work" via AT commands, or is there significant configuration? — **Yes, VoLTE works.** `AT+voltesetting=1` on LE20B02 firmware returned OK. IMS PDP context (cid=2) auto-created by the network. `AT+CNSMOD: 0,8` confirms LTE mode (not CSFB). Test call connected successfully on Mint/T-Mobile. No firmware update needed — LE20B02 supports VoLTE despite being older than the documented LE20B04/05 versions. The IMS PDP context quirk (cid=2 conflict with cid=1 data) is specific to `AT+NETOPEN` and does not affect this project (uses CMUX+PPP). Validated empirically with Waveshare NA-H HAT + Mint SIM.
-- [ ] **RESOLVED**: Can we use the module's built-in audio path or do we need an external codec? — SIM7600 (LCC package) exposes PCM digital audio only, no analog pins. External codec required. **MAX9880A selected** (dual-port: PCM + I2S). See Codec Selection section. The EG912U-GL has analog audio but was rejected for the two-audio-path problem with music playback.
+- [ ] **RESOLVED**: Can we use the module's built-in audio path or do we need an external codec? — SIM7600 (LCC package) exposes PCM digital audio only, no analog pins. External codec required. **ALC5651 selected** (dual-port: PCM + I2S). See Codec Selection section. The EG912U-GL has analog audio but was rejected for the two-audio-path problem with music playback.
 - [x] **RESOLVED (2026-07-12)**: Which carriers allow VoLTE on non-certified devices with prepaid SIMs? — **Mint/T-Mobile allows VoLTE on the SIM7600NA-H.** VoLTE call connected successfully with `AT+voltesetting=1` on a Mint Mobile SIM. The SIM7600NA-H's T-Mobile certification likely helps. No IMEI whitelisting issues encountered. AT&T/Verizon remain untested but are stricter — not needed since Mint works.
 - [ ] What's the minimum antenna design for LTE? Can we use a small chip antenna or stamped antenna?
 - [ ] **RESOLVED (2026-06-28, second round)**: Can the SIM7600 maintain simultaneous VoLTE call + data tethering? — **Not a requirement.** Simultaneous VoLTE+data is a future ecosystem feature (tethering while on a call), not needed for MVP or daily driver. The PDP context conflict is confirmed in the `AT+NETOPEN` code path only; the project uses CMUX+PPP which bypasses it. CMUX+PPP is the standard pattern for simultaneous data + AT commands (SMS, calls) on the SIM7600, proven in Linux n_gsm, RT-Thread, and ESP-IDF. Whether data stays active *during* a live VoLTE call via PPP is unverified but likely (3GPP bearers should coexist). **Fallback: pause data during calls — acceptable for all current and planned use cases.** This is no longer a modem selection factor.
@@ -463,7 +463,7 @@ E-ink's real advantages (ultra-low power, bistable, sunlight readable) are genui
 - [x] **RESOLVED (2026-07-12, partial)**: Does SIM7600 GNSS work standalone or only when module is registered on network? — **GNSS works while module is registered on the network.** `AT+CGPS=1` → `AT+CGPSINFO` returned a valid fix (42.35°N, -76.43°W, Ithaca NY area) in ~60 seconds from cold start. Whether GNSS works *without* network registration was not tested (modem was registered the whole time). For the ecosystem use case (car module uses phone GPS), the phone will always have network registration when in use, so this is sufficient. GNSS antenna must be connected.
 - [ ] **RESOLVED**: Which ESP32 variants have USB OTG? (ESP32-S2, ESP32-S3 have native USB; original ESP32 does not) — Moot; STM32H743 selected.
 - [x] **RESOLVED (2026-06-28)**: Which display type should the phone use? — **ST7789V SPI color TFT, 2.0" 240×320, RGB565.** Five options evaluated: (1) SPI color TFT ST7789V — **SELECTED**; (2) SPI color OLED SSD1351 — rejected (actually HIGHER power than TFT at ~57–71mA, 3–5x cost at $15–24, 128×128 too low, not in Zephyr main tree); (3) E-ink — **DISQUALIFIED** (blocks three 5+ features: camera preview 6 at ~0.5–3fps refresh, photo capture 6 with spot-color only no blue/green, video 5; true color e-ink not available at 1.5–2.4"); (4) LTDC parallel RGB — rejected (20–28 GPIO, needs external SDRAM, overkill res); (5) SPI TFT ST7735 1.8" 128×160 — rejected (too low res). ST7789v driver (`display_st7789v.c`) is the most mature SPI display driver in Zephyr main tree with native LVGL support. 6 GPIO pins, 150KB framebuffer fits internal 1MB SRAM (no external SDRAM), ~$5–8, color-capable, lower power than the OLED alternative. Pre-PCB: verify ST7789v driver on STM32H7 + target Zephyr version (MIPI DBI API conversion had teething issues). See Display Options section and project-log.md 2026-06-28 Display Selection.
-- [x] **RESOLVED (2026-06-28)**: Which codec best supports both PCM (voice from SIM7600) and I2S (music from MCU) inputs? — **MAX9880A selected.** Key findings: (1) All common codecs (WM8960, NAU8810, NAU8822, SGTL5000, TLV320AIC3204/3104, ES8316/8388) have only ONE digital audio input port — they cannot accept PCM and I2S simultaneously. The original "single codec unifies voice and music" claim was false for these parts. (2) The **MAX9880A** (Maxim/ADI, ~$1.70, TQFN-48) has two truly independent digital audio ports (primary for voiceband PCM/TDM, secondary for stereo I2S/TDM) that run simultaneously and asynchronously — designed exactly for smartphone voice+media. (3) The SIM7600 outputs PCM only (fixed master mode, short-frame sync, 16-bit linear, 2048/4096kHz) — no I2S mode, not configurable. (4) With the MAX9880A, the MCU is NOT in the voice audio path during calls (SIM7600→PCM→codec primary→speaker directly), matching real smartphone architecture. (5) Fallback if MAX9880A is unavailable: MCU bridge (SAI1 PCM slave + SAI2 I2S master + single-port codec like NAU8822) — feasible but adds ~8-10ms latency and depends on Zephyr H7 SAI driver maturity. See Codec Selection / Audio Path Architecture section and project-log.md 2026-06-28 Codec Selection.
+- [x] **RESOLVED (2026-06-28, updated 2026-07-19)**: Which codec best supports both PCM (voice from SIM7600) and I2S (music from MCU) inputs? — ~~MAX9880A selected~~ **SUPERSEDED 2026-07-19** — replaced by **Realtek ALC5651-CG** (LCSC C963633, QFN-40 5×5mm, JLC Extended — no consignment). Key findings: (1) All common codecs (WM8960, NAU8810, NAU8822, SGTL5000, TLV320AIC3204/3104, ES8316/8388) have only ONE digital audio input port — they cannot accept PCM and I2S simultaneously. The original "single codec unifies voice and music" claim was false for these parts. (2) Dual-port codecs are rare: MAX9880A (Maxim/ADI, TQFN-48) and ALC5651/ALC5640/ALC5642 (Realtek, QFN-40/48). (3) The SIM7600 outputs PCM only (fixed master mode, short-frame sync, 16-bit linear, 2048/4096kHz) — no I2S mode, not configurable. (4) With the ALC5651, the MCU is NOT in the voice audio path during calls (SIM7600→PCM→codec I2S-1→speaker directly), matching real smartphone architecture. (5) ALC5651 selected over MAX9880A because it's JLC-sourced (no Mouser consignment), has better specs (100dBA DAC vs 96dB, 94dBA ADC vs 82dB), smaller package (QFN-40 5×5mm vs TQFN-48 6×6mm), and ASRC per interface. (6) Fallback if ALC5651 is unavailable: MCU bridge (SAI1 PCM slave + SAI2 I2S master + single-port codec like NAU8822) — feasible but adds ~8-10ms latency and depends on Zephyr H7 SAI driver maturity. See Codec Selection / Audio Path Architecture section and project-log.md 2026-07-19 Codec Swap.
 - [x] **RESOLVED (2026-06-28)**: Is Zephyr's STM32H7 USB OTG_HS + ULPI support mature enough for the ecosystem tethering path? — **Yes, it is viable (mainline since Dec 2022, PR #52772; bugs #61464/#75119 fixed; works on STM32H747I-DISCO), BUT it is no longer needed.** The SIM7600's own USB 2.0 HS port (480 Mbps) does tethering directly via RNDIS/ECM (`AT+CUSBPIDSWITCH`), bypassing the MCU entirely — a better architecture that eliminates the MCU USB bottleneck, the USB3300 ULPI transceiver, the Zephyr USB HS stack risk, and the 12 ULPI GPIO pins. **Decision: drop USB3300/ULPI; use MCU USB OTG_FS (12 Mbps) for MCU-originated USB (firmware, files, debug); route the modem's USB to the ecosystem connector (via an internal USB hub on a future respin) for tethering.** The "USB HS via ULPI is a board-level upgrade path preserved by LQFP-144" claim is superseded. See "USB HS / ULPI Revisit" section and project-log.md 2026-06-28 USB HS/ULPI Revisit.
 
 ## Component Checklist (BOM items not yet specified in docs)
@@ -473,7 +473,7 @@ Components that are implied by the architecture but not yet explicitly listed in
 | Component | Purpose | Notes |
 |-----------|---------|-------|
 | Nano-SIM socket | SIM card holder for SIM7600 | LGA/SMD, typically Molex 786470-3001 or similar |
-| Battery fuel gauge IC | Battery level monitoring (FR-4.2) | I2C. **Selected: MAX17048** (ModelGauge, coulomb counting, ~$2.50). Shares I2C bus with MAX9880A. See `docs/bom.md` item 12 and `docs/constraints.md` Power section. |
+| Battery fuel gauge IC | Battery level monitoring (FR-4.2) | I2C. **Selected: MAX17048** (ModelGauge, coulomb counting, ~$2.50). Shares I2C bus with ALC5651. See `docs/bom.md` item 12 and `docs/constraints.md` Power section. |
 | 3.3V buck-boost regulator | MCU/system rail from LiPo | **Selected: TPS63021DSJR** (fixed 3.3V, 4A switches / ~3A output, VSON-14/DSJ, LCSC C202140, ~$3.50 — LOCKED 2026-07-19). LiPo 3.0–4.2V → 3.3V. *Correction: docs previously said "TPS630201" — phantom part number, corrected to TPS63021DSJR.* See `docs/bom.md` item 10 and `docs/constraints.md` Power section. |
 | ESD protection diodes | USB-C, SIM, microSD data lines | **Selected: USBLC6-2SC6** (USB) + **ESDA6V1-5SC6** (SIM/SD), ~$1 total. See `docs/bom.md` items 23-24 and `docs/constraints.md` PCB Design section. |
 | Modem PWRKEY/STATUS GPIO | Power-cycle SIM7600 from MCU | 2 GPIO pins (PWRKEY output + STATUS input). See `docs/constraints.md` MCU section. |
@@ -482,10 +482,10 @@ Components that are implied by the architecture but not yet explicitly listed in
 | USB-C connector | Data + charging + ecosystem interconnect | USB-C recommended over micro-USB. Connector type still TBD in requirements.md. |
 | Earpiece transducer | Call audio (held to ear) | Separate from loudspeaker. See constraints.md audio topology note. |
 | Loudspeaker | Ringtones, speakerphone (rated 3) | Codec has separate speaker output. |
-| Audio codec | PCM voice (from SIM7600) + I2S music (from MCU) | **MAX9880AETM+ selected** (TQFN-48, ~$1.70). Dual-port: primary PCM, secondary I2S. 1.8V supply. See Codec Selection section. |
+| Audio codec | PCM voice (from SIM7600) + I2S music (from MCU) | **Realtek ALC5651-CG selected** (QFN-40 5×5mm, ~$1.00, LCSC C963633). Dual I2S/PCM: I2S-1 = PCM, I2S-2 = I2S. 1.8V analog + 1.2V digital (internal LDO) + 3.3V MICVDD. See Codec Selection section. |
 | Color TFT display | Phone UI, camera preview, photo viewer | **ST7789V selected** (2.0" 240×320, 4-wire SPI, RGB565, ~$5–8). 6 GPIO pins. 150KB framebuffer fits internal SRAM. IPS variant preferred. See Display Options section. |
-| 1.8V LDO regulator | MAX9880A supply | From 3.3V or battery rail. |
-| I2S level shifter | 3.3V MCU → 1.8V MAX9880A secondary port | Unidirectional (SCK, FS, SD, MCLK). Voltage divider or TXB010x. |
+| 1.8V LDO regulator | ALC5651 analog supply | From 3.3V rail. |
+| I2S level shifter | 3.3V MCU → 1.8V ALC5651 I2S-2 | Unidirectional (SCK, FS, SD, MCLK). Voltage divider or TXB010x. |
 
 ## Modem Revisit Findings
 
@@ -708,9 +708,13 @@ Pins: PCM_OUT (73), PCM_IN (74), PCM_SYNC (75), PCM_CLK (76). No I2S pins, no AT
 | SGTL5000 | 1 port | NO | QFN-20/32 | Obsolete | Yes |
 | ES8316/8388 | 1 port | NO | QFN | ~$1-2 | Yes |
 | **MAX9880A** | **2 independent ports** | **YES** | **TQFN-48 (6×6mm)** | **~$1.70** | **Yes (30mW diff, 10mW capless)** |
+| **ALC5651** | **2 independent ports (I2S/PCM/TDM)** | **YES** | **QFN-40 (5×5mm)** | **~$1.00** | **Yes (20mW/ch cap-free HP + line out + PDM)** |
+| ALC5640/ALC5642 | 2 independent ports | YES | QFN-48 | ~$1.00 | Yes (Class D + HP) |
 | TLV320AIC34 | 2 independent ports | YES | BGA-87 (6×6mm) | ~$10.43 | Yes (4 headphone amps) |
 
-**Key finding**: All popular hobbyist codecs have only ONE digital audio port. The MAX9880A (Maxim/ADI) is the only hobbyist-accessible codec with two truly independent digital audio interfaces — primary for voiceband (PCM/TDM), secondary for stereo audio (I2S/TDM), running simultaneously and asynchronously. The TLV320AIC34 is also dual-port but BGA-only (not hand-solderable). The TLV320AIC3106's "alternate bus" is pin multiplexing, not a second independent port (confirmed by TI forum).
+**Key finding**: All popular hobbyist codecs have only ONE digital audio port. Dual-port codecs are rare: MAX9880A (Maxim/ADI, TQFN-48), ALC5651/ALC5640/ALC5642 (Realtek, QFN-40/48), and TLV320AIC34 (TI, BGA-87). The TLV320AIC3106's "alternate bus" is pin multiplexing, not a second independent port (confirmed by TI forum).
+
+**Codec selection update (2026-07-19)**: ~~MAX9880A selected~~ **SUPERSEDED** — replaced by **Realtek ALC5651-CG** (LCSC C963633). Rationale: MAX9880A is not on JLC/LCSC (Mouser consignment only); ALC5651 is JLC Extended (no consignment). ALC5651 has better specs (100dBA DAC vs 96dB, 94dBA ADC vs 82dB), smaller package (QFN-40 5×5mm vs TQFN-48 6×6mm), and ASRC (asynchronous sample rate conversion per interface — eliminates clock domain issues between SIM7600 PCM and MCU I2S). PCM compatibility verified: ALC5651 §7.5.1 PCM Mode A (short sync, Figures 10-11) in slave mode = SIM7600 §3.6 (master, short sync, 16-bit, 2048/4096kHz). The ALC5640 (C472491) and ALC5642 are the same Realtek dual-I2S family but were out of stock / not on LCSC at selection time. See project-log.md 2026-07-19 Codec Swap MAX9880A→ALC5651.
 
 ### Finding 3: MCU Bridge Feasibility (Fallback Architecture)
 
@@ -724,43 +728,56 @@ If a single-port codec is used, the MCU must bridge PCM↔I2S: SIM7600→PCM→S
 - **Risk**: Zephyr STM32H7 SAI driver maturity. The driver (`drivers/i2s/i2s_stm32_sai.c`) supports F4/G4/L5/H5 but H7 support was in progress (PR #92887). If not merged, requires porting or direct HAL usage. This is the primary "hard" part.
 - **Cache coherency**: DMA buffers need non-cached SRAM or cache clean/invalidate operations (D-cache present on H7).
 
-**Verdict**: Feasible-but-hard. Works if Zephyr H7 SAI driver is ready or willing to port. Adds latency and firmware complexity the MAX9880A avoids.
+**Verdict**: Feasible-but-hard. Works if Zephyr H7 SAI driver is ready or willing to port. Adds latency and firmware complexity the ALC5651 avoids.
 
-### Decision: MAX9880A (Dual-Port Codec) — LOCKED 2026-06-28
+### Decision: ~~MAX9880A (Dual-Port Codec)~~ → ALC5651 (Dual I2S/PCM Audio Hub) — LOCKED 2026-06-28, updated 2026-07-19
 
-**Selected codec: MAX9880AETM+ (Maxim/ADI, TQFN-48, ~$1.70).**
+~~**Selected codec: MAX9880AETM+ (Maxim/ADI, TQFN-48, ~$1.70).**~~ **SUPERSEDED 2026-07-19**: Replaced by **Realtek ALC5651-CG** (LCSC C963633, QFN-40 5×5mm, ~$1.00, JLC Extended — no consignment). See project-log.md 2026-07-19 Codec Swap MAX9880A→ALC5651.
+
+**Selected codec: Realtek ALC5651-CG (QFN-40 5×5mm, ~$1.00).**
 
 Architecture:
 ```
 Voice path (calls):
-  SIM7600 PCM_OUT/IN/SYNC/CLK → MAX9880A primary port (PCM)
-  MAX9880A → earpiece/speaker (analog out)
-  Mic → MAX9880A (analog in) → PCM_IN → SIM7600
+  SIM7600 PCM_OUT/IN/SYNC/CLK → ALC5651 I2S-1 (PCM slave, Mode A short-sync)
+  ALC5651 → earpiece/speaker (analog out — HPO_L/R or LOUTL/P + LOUTR/N)
+  Mic → ALC5651 (IN1P/IN2P/IN2N analog in) → I2S-1 ADCDAT → SIM7600 PCM_IN
   [MCU NOT in voice audio path]
 
 Music path (MP3 playback):
-  STM32H743 SAI (I2S) → MAX9880A secondary port (I2S)
-  MAX9880A → loudspeaker/headphones (analog out)
+  STM32H743 SAI (I2S) → ALC5651 I2S-2 (I2S slave)
+  ALC5651 → loudspeaker/headphones (analog out or PDM → ext Class-D)
 
 Simultaneous voice + music:
-  MAX9880A mixes internally (e.g., call waiting tone over music)
+  ALC5651 mixes internally (ASRC per interface — independent sample rates OK)
 ```
 
-Why MAX9880A over MCU bridge:
+Why ALC5651 over MCU bridge:
 1. **MCU not in voice path** — voice works even if MCU is loaded or rebooting. Matches real smartphone architecture (modem↔codec direct PCM, AP only for media).
 2. **Lower voice latency** — no bridge latency (direct PCM→codec).
 3. **Simpler firmware** — no real-time DMA bridging task, no cache coherency work, no codec rate switching.
-4. **Cheaper** — $1.70 vs WM8960 ($6-12, obsolete) or NAU8822 + bridge complexity.
-5. **Designed for exactly this use case** — smartphone voice (cellular PCM) + media (processor I2S).
+4. **Cheaper** — ~$1.00 vs WM8960 ($6-12, obsolete) or NAU8822 + bridge complexity.
+5. **Designed for exactly this use case** — smartphone voice (cellular PCM) + media (processor I2S). Realtek dominates PC/mobile audio.
 6. **No Zephyr SAI driver risk** for the voice path (codec talks directly to module; MCU I2S for music is simpler and more tolerant).
+7. **ASRC** — asynchronous sample rate conversion per interface eliminates clock domain issues between SIM7600 PCM (2048/4096kHz BCLK) and MCU I2S (e.g., 11.2896MHz MCLK for 44.1kHz). MAX9880A lacked this.
+8. **JLC-sourced** — no Mouser consignment (MAX9880A was the last consignment part).
+
+Why ALC5651 over MAX9880A:
+1. **JLC Extended (no consignment)** — MAX9880A was Mouser-only (not on JLC/LCSC).
+2. **Better specs** — 100dBA DAC SNR (vs 96dB), 94dBA ADC SNR (vs 82dB).
+3. **Smaller package** — QFN-40 5×5mm (vs TQFN-48 6×6mm).
+4. **ASRC per interface** — MAX9880A had no ASRC.
+5. **Extra features** — 7-band EQ, DRC/AGC, wind noise filter, PDM output for ext Class-D amp.
 
 Risks / pre-PCB verification items:
-1. **PCM short-frame sync compatibility — RESOLVED 2026-06-29**: **CONFIRMED COMPATIBLE.** The MAX9880A datasheet explicitly documents "TDM Short-Sync" mode (register settings: TDM = 1, FSW = 0) with timing parameters for both master and slave modes. PCM short-frame sync is electrically identical to TDM with 1 timeslot — the FS pulse is short (1 bit clock wide), marking the start of each 16-bit sample. The MAX9880A's TDM clock frequency range is 128–2048 kHz (datasheet spec), and the SIM7600 outputs BCLK at 2048 kHz — exactly the top of the range. The SIM7600 is always PCM master (generates BCLK + FS); the MAX9880A primary port in slave mode (MAS = 0) accepts these external clocks. The primary interface is explicitly "intended for voiceband applications" (8/16kHz, 16-bit). Register configuration at schematic time: TDM = 1, FSW = 0, MAS = 0 (slave), 16-bit slot width. ~~Schematic-time check: verify SIM7600 PCM pin I/O voltage matches MAX9880A's 1.8V~~ **RESOLVED 2026-06-30: 1.8V confirmed** (see item 3 below).
-2. **Stock availability — RESOLVED 2026-06-29**: **AVAILABLE.** Mouser has 2,250 in stock (part # 700-MAX9880AETM+T, $2.23 qty 1, $1.52 qty 50+). DigiKey is temporarily out of stock (normal for ADI/Maxim parts — cycles in/out). Part is **active** (not discontinued), manufacturer lead time 6–13 weeks. Chinese brokers have 4,896–64,286 pcs. No supply risk for the PCB phase — order from Mouser when ready.
-3. **1.8V supply — documented, no change**: MAX9880A operates on 1.8V (1.65–1.95V range). The MCU's 3.3V I2S lines need level shifting (simple voltage divider or level shifter IC; I2S from MCU is output-only, so unidirectional shifting is easy). **SIM7600 PCM pin voltage — RESOLVED 2026-06-30: 1.8V CONFIRMED.** Verified directly from the SIM7600 Hardware Design Manual V1.03 via PDF extraction (MCP `mcp-pdf` server): (1) Table 32 "1.8V Digital I/O characteristics" (page 47) — VOH = 1.35–1.8V, VIH = 1.17–2.1V, covering all digital I/O pins including PCM_OUT (73), PCM_IN (74), PCM_SYNC (75), PCM_CLK (76); (2) §3.6.2 PCM Application Guide (page 35) — the reference design wires PCM directly to a NAU8810 codec powered by the module's own VDD_1V8 pin (1.8V LDO, max 50mA) with no level shifter on the PCM lines. **Conclusion: PCM lines connect directly to MAX9880A (also 1.8V) — no level shifter needed on PCM. Only the MCU's 3.3V I2S lines need level shifting (already planned).**
-4. **Not on Waveshare HAT** — the HAT has NAU8810 (single-port PCM). The MAX9880A can't be prototyped on the HAT. The HAT validates SIM7600 PCM voice output (the riskiest unknown); the MAX9880A is committed for the final PCB.
+1. **PCM short-frame sync compatibility — RESOLVED 2026-07-19**: **CONFIRMED COMPATIBLE.** ALC5651 datasheet §7.5.1 documents PCM Mode A (Figures 10-11) with short sync pulse (1 BCLK wide) — exactly matches SIM7600's PCM short-frame sync (HW Design Manual V1.08 §3.6: master mode, short sync, 16-bit linear, 2048/4096kHz BCLK). ALC5651 I2S-1 in slave mode accepts SIM7600's external BCLK + SYNC. The ALC5651 PLL can generate the system clock from BCLK1 (2.048–40MHz PLL input range — §7.4.1).
+2. **Stock availability — RESOLVED 2026-07-19**: **AVAILABLE.** LCSC C963633, 407 in stock. JLC "Extended" — JLC sources on-demand, no consignment needed.
+3. **1.8V supply — documented**: ALC5651 operates on 1.8V analog (AVDD/DACREF/CPVDD, 1.71–1.9V), 1.2V digital core (internal LDO from DBVDD — no external 1.2V needed), 3.3V MICVDD for mic bias. DBVDD (digital I/O) set to 1.8V to match codec analog and SIM7600 PCM. MCU's 3.3V I2S lines need level shifting (same as MAX9880A). SIM7600 PCM pin voltage = 1.8V confirmed 2026-06-30 (HW Design Manual V1.03 Table 32 + §3.6.2 ref design). PCM lines connect directly to ALC5651 — no level shifter on PCM.
+4. **Datasheet completeness — VERIFIED 2026-07-19**: Rev 0.9, 134pp — full pinout (Figure 4), register map (§8, 70+ pages), application circuit (Figure 36), I2S/PCM timing (Figures 34-35), package dimensions (Figure 37). Sufficient for PCB design.
+5. **Part longevity**: ALC5651 is an older Realtek part (Rev 0.9, 2012-2013). Realtek audio codecs have very long production tails (ALC255/256/892 are 10+ years old and still in mass production). If EOL'd, ALC5640/ALC5642 are pin-compatible alternatives (same QFN-48 family — would need footprint change).
+6. **Not on Waveshare HAT** — the HAT has NAU8810 (single-port PCM). The ALC5651 can't be prototyped on the HAT. The HAT validates SIM7600 PCM voice output (the riskiest unknown); the ALC5651 is committed for the final PCB.
 
-**Fallback architecture (if MAX9880A unavailable or incompatible)**: MCU bridge with NAU8822 (single-port I2S codec, ~$1.20). SAI1 as PCM slave (SIM7600), SAI2 as I2S master (codec). Run codec at 8/16kHz during calls, 48kHz for music. ~8-10ms latency. Requires Zephyr H7 SAI driver. See Finding 3 above.
+**Fallback architecture (if ALC5651 unavailable or incompatible)**: MCU bridge with NAU8822 (single-port I2S codec, ~$1.20). SAI1 as PCM slave (SIM7600), SAI2 as I2S master (codec). Run codec at 8/16kHz during calls, 48kHz for music. ~8-10ms latency. Requires Zephyr H7 SAI driver. See Finding 3 above.
 
 ### Prototyping Impact
 
@@ -770,9 +787,9 @@ The Waveshare NA-H HAT prototyping step is **unchanged** — it validates the SI
 
 | Component | Purpose | Notes |
 |-----------|---------|-------|
-| MAX9880AETM+ | Audio codec (dual-port: PCM voice + I2S music) | TQFN-48, ~$1.70–2.23. **Pre-PCB verification COMPLETE 2026-06-29**: PCM short-frame sync confirmed compatible (TDM short-sync slave mode, 128–2048 kHz matches SIM7600's 2048 kHz); Mouser has 2,250 in stock ($2.23 qty 1). 1.8V supply — add level shifter for MCU I2S. Schematic-time: verify SIM7600 PCM pin I/O voltage. |
-| 1.8V regulator | MAX9880A supply | LDO from 3.3V or battery rail. |
-| I2S level shifter | 3.3V MCU → 1.8V MAX9880A secondary port | Unidirectional, 3-4 lines (SCK, FS, SD, MCLK). Simple voltage divider or TXB010x. |
+| ALC5651-CG | Audio codec (dual I2S/PCM: PCM voice + I2S music) | QFN-40 5×5mm, ~$1.00, LCSC C963633. **Pre-PCB verification COMPLETE 2026-07-19**: PCM Mode A short-sync confirmed compatible with SIM7600 §3.6; 407 in stock at LCSC (JLC Extended); 1.8V analog + 1.2V digital (internal LDO) + 3.3V MICVDD. ASRC per interface. Datasheet Rev 0.9 (134pp) — complete. |
+| 1.8V regulator | ALC5651 analog supply | LDO from 3.3V rail. |
+| I2S level shifter | 3.3V MCU → 1.8V ALC5651 I2S-2 | Unidirectional, 3-4 lines (SCK, FS, SD, MCLK). Simple voltage divider or TXB010x. |
 
 ## USB HS / ULPI Revisit (Zephyr STM32H7 OTG_HS + ULPI Maturity)
 
