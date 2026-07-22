@@ -10,6 +10,9 @@ __pycache__/
 docs/reference/*
 !docs/reference/README.md
 
+# KiCad user-local project rules (per-user UI state, not project config)
+*.kicad_prl
+
 # IDE
 .vscode/
 .idea/

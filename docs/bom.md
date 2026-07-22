@@ -131,7 +131,7 @@ These components are required for the phone but have not been formally locked in
 
 | # | Component | Status | Qty | Unit Price | Ext Price | Notes |
 |---|-----------|--------|-----|-----------|-----------|-------|
-| 25 | Bulk capacitance (100–470µF ceramic + tantalum for VBAT stability) | CANDIDATE | ~5–10 | ~$0.50–2 | ~$3–10 | CRITICAL for modem VBAT rail — direct from LiPo, separate net from 3.3V. See `docs/constraints.md`. |
+| 25 | Bulk capacitance (100–470µF ceramic + tantalum for +BATT stability) | CANDIDATE | ~5–10 | ~$0.50–2 | ~$3–10 | CRITICAL for modem VBAT rail — direct from LiPo, separate net (+BATT) from +3.3V. Deferred to modem schematic section. See `docs/constraints.md`. |
 | 26 | Decoupling caps, resistors, inductors (per IC) | CANDIDATE | ~30–50 | ~$0.05–0.50 | ~$5–15 | Standard SMD passives. |
 | 27 | Crystals (HSE 8MHz for MCU; module has own TCXO) | CANDIDATE | 1 | ~$0.50–1 | ~$0.50–1 | MCU needs HSE crystal for USB. No 32.768kHz RTC crystal (NITZ). |
 | 28 | LEDs (status, notification, backlight) | CANDIDATE | ~3 | ~$0.10–0.30 | ~$0.30–1 | Rated 2 on wishlist. |

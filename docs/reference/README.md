@@ -6,6 +6,18 @@ Local copies of vendor datasheets, reference manuals, hardware design docs, and 
 
 Download each file below into this directory (`docs/reference/`). Browser "Save Page As" creates an `.html` file plus a `_files/` subdirectory of assets — both belong here. The `.gitignore` excludes everything except this README, so the files stay local-only.
 
+## Mandatory: add missing datasheets before citing them
+
+**If you need to reference a datasheet that is not already in this directory, you MUST find and download it first — do not cite specs from memory, web search snippets, or session context alone.** The local PDF is the source of truth for every part used in this project.
+
+Workflow when a datasheet is missing:
+1. Find the official PDF on the vendor's website (manufacturer product page → "Datasheet" link) or a reputable mirror (LCSC product page, Mouser, DigiKey, Analog Devices, TI, ST, etc.).
+2. Download it into `docs/reference/` with a descriptive lowercase filename (e.g., `max17048.pdf`, `tps7a02.pdf`).
+3. Add a row to the "Index → PDFs" table below with the filename, part/document name (including revision if known), and source URL.
+4. Then cite the local PDF in project docs (e.g., `docs/reference/max17048.pdf §Pin Description`).
+
+This rule exists because datasheet specs vary by revision and package variant — citing from memory risks the kind of pinout/voltage/package errors that are expensive to catch after PCB fab. If a datasheet cannot be found (rare — most parts have public datasheets), say so explicitly in the project log and flag the spec as unverified.
+
 ## Index
 
 ### PDFs
@@ -17,6 +29,9 @@ Download each file below into this directory (`docs/reference/`). Browser "Save 
 | `max9880a.pdf` | Analog Devices MAX9880A datasheet (Rev 2) — dual-port codec, TQFN-48. **SUPERSEDED 2026-07-19**: MAX9880A replaced by ALC5651 (see below). Retained for historical reference. | https://www.analog.com/media/en/technical-documentation/data-sheets/MAX9880A.pdf |
 | `alc5651.pdf` | Realtek ALC5651 datasheet (Rev 0.9) — dual I2S/PCM audio hub codec, QFN-40 5×5mm. **Current codec (LOCKED 2026-07-19).** §7.5.1 Two I2S/PCM Interface (PCM Mode A = short sync, compatible with SIM7600). §7.4.1 PLL (2.048–40MHz input). §10 Application Circuit (Figure 36). Pinout Figure 4 (40-pin QFN). | https://www.lcsc.com/product-detail/C963633.html (datasheet link) |
 | `tps63021.pdf` | Texas Instruments TPS6302x (TPS63020/TPS63021) datasheet (SLVS916I, Rev. I, Oct 2019) — 4A-switch buck-boost converter, VSON-14 (DSJ). TPS63021 = fixed 3.3V out; TPS63020 = adjustable. Covers L1 inductor selection (§8.2.1, recommended 1.5µH Coilcraft XFL4020-152ML). | https://www.ti.com/lit/ds/symlink/tps63021.pdf |
+| `max17048.pdf` | Analog Devices/Maxim MAX17048-MAX17049 datasheet (Rev 7, Nov 2016, 19pp) — 3µA 1-Cell/2-Cell ModelGauge fuel gauge, TDFN-8 2×2mm + WLP. **MAX17048 senses battery voltage on VDD (pin 3); CELL (pin 2) is NC on the 1-cell part.** §Pin/Bump Descriptions p6, §Quick-Start p9, §Hibernate Mode p9. | https://www.analog.com/media/en/technical-documentation/data-sheets/MAX17048-MAX17049.pdf (mirror used: https://media.digikey.com/pdf/Data%20Sheets/Maxim%20PDFs/MAX17048-49_Rev7_Nov2016.pdf) |
+| `mcp73831.pdf` | Microchip MCP73831/MCP73832 datasheet (DS20001984H, Rev H, 2020, 29pp) — Li-Ion/Li-Po linear charge management controller. **DFN-8 2×3mm + SOT-23-5 variants** (LCSC C150772 maps to DFN-8 despite "/MC" suffix). Pinout p1, electrical characteristics §1.0 p3-4. | https://ww1.microchip.com/downloads/aemDocuments/documents/APID/ProductDocuments/DataSheets/MCP73831-Family-Data-Sheet-DS20001984H.pdf (mirror used: https://cdn.sparkfun.com/assets/5/b/0/3/1/MCP73831_Datasheet.pdf) |
+| `usblc6-2.pdf` | STMicroelectronics USBLC6-2 datasheet (DS4260 Rev 7, Dec 2021, 14pp) — very low capacitance ESD protection for USB 2.0. **Protects D+, D-, AND VBUS** (6-pin SOT-23-6: pins 1/6 = I/O1 D+, pins 3/4 = I/O2 D-, pin 2 = GND, pin 5 = VBUS). IEC 61000-4-2 Level 4 (±15kV air, ±8kV contact). 3.5pF max capacitance — USB 2.0 high-speed compatible. | https://www.st.com/content/ccc/resource/technical/document/datasheet/06/1d/48/9c/6c/20/4a/b2/CD00050750.pdf/files/CD00050750.pdf/jcr:content/translations/en.CD00050750.pdf (mirror used: https://file.huaqiu.com/web1/M00/7F/9E/pIYBAFwjN3uAIFePAANr_4V7kNY752.pdf?filename=USBLC6-2_ST.pdf) |
 | `stm32h743zi.pdf` | STMicroelectronics STM32H743ZI datasheet (LQFP-144 electrical/mechanical/pinout) | https://www.st.com/resource/en/datasheet/stm32h743zi.pdf |
 | `dm00314099-stm32h742-stm32h743753-and-stm32h750-value-line-advanced-armbased-32bit-mcus-stmicroelectronics.pdf` | STMicroelectronics RM0433 Rev 8 — STM32H742/H743/753/H750 reference manual (peripheral registers, 3353 pp) | https://www.st.com/resource/en/reference_manual/dm00314099-stm32h742-stm32h743753-and-stm32h750-value-line-advanced-armbased-32bit-mcus-stmicroelectronics.pdf |
 | `dm00499160-stm32h7-nucleo144-boards-mb1364-stmicroelectronics.pdf` | STMicroelectronics UM2407 Rev 5 — STM32H7 Nucleo-144 boards (MB1364) user manual (board schematics, jumper config, ST-Link) | https://www.st.com/resource/en/user_manual/dm00499160-stm32h7-nucleo144-boards-mb1364-stmicroelectronics.pdf |
