@@ -427,9 +427,9 @@
   - *KiCad library*: Downloaded via `uvx easyeda2kicad --full --lcsc_id=C202140 --output "pcb/phone/lib"`. Symbol `TPS63021DSJR` in `easyeda2kicad.kicad_sym`, footprint `VSON-14_L4.0-W3.0-P0.50-BL-EP_TI_DSJ` (confirms DSJ package, 4×3mm, 0.5mm pitch, exposed pad), 3D model `VSON-14_L4.0-W3.0-H1.0-P0.50` (.wrl + .step).
 - **Alternative considered (TPS63020DSJR, C15483)**: Adjustable version, in stock at LCSC, same DSJ package. Would need 2 external resistors to set 3.3V output. Rejected because TPS63021 (fixed 3.3V) matches the BOM spec exactly and is available at JLC — no reason to add a feedback divider when the fixed-output variant is sourced.
 - **U3 MAX9880A integrated**: User downloaded the Ultra Librarian KiCad v6 package for MAX9880AETM+T. Files integrated into `pcb/phone/lib/`:
-  - Symbol: `lib/symbols/ultralibrarian.kicad_sym` (separate lib from `easyeda2kicad.kicad_sym` — Ultra Librarian parts kept distinct for organizational clarity).
-  - Footprint: `lib/footprints.pretty/21-0141I_T4866-1_MXM.kicad_mod` (TQFN-48 6×6mm with exposed pad — 49 pads verified = 48 pins + 1 EP). Three pad-density variants shipped (MXM nominal, MXM-L large, MXM-M medium); symbol references the nominal MXM.
-  - 3D model: **Not available** from Ultra Librarian for this part. Note for layout — 3D will be missing for MAX9880A in the KiCad 3D view. Acceptable (footprint + symbol are what matter for schematic/layout).
+  - ~~Symbol: `lib/symbols/ultralibrarian.kicad_sym`~~ **Removed 2026-07-22** (library rebuild — MAX9880A superseded by ALC5651, ultralibrarian files deleted to avoid confusion).
+  - ~~Footprint: `lib/footprints.pretty/21-0141I_T4866-1_MXM.kicad_mod`~~ **Removed 2026-07-22** (same reason).
+  - 3D model: **Not available** from Ultra Librarian for this part.
   - *Sourcing*: Still needs Mouser consignment — MAX9880AETM+T is not on LCSC. BOM has Mouser stock (2,250 units, $2.23 qty 1). Buy from Mouser, ship to JLC with the PCB fab order.
 - **Impact on assembly**: Consignment parts reduced from 2 → 1 (only MAX9880A). Simplifies JLC ordering — one consignment shipment instead of two.
 - **Revisit prompt status**: A1 (MAX9880A) and A2 (TPS63021) both resolved. Parts-sourcing prompt now 3 of 13 items resolved (B5 switches, A1, A2). Next priority per the prompt: C13 (display panel pick, blocks J7), then B7 (L1 inductor — now needs TPS63021 datasheet specs, not the phantom TPS630201).
@@ -501,7 +501,7 @@
   - **MK1 (ZTS6117 mic)**: Still compatible — ALC5651 has differential analog mic inputs (IN1P/IN2P/IN2N) + MICBIAS (adjustable 0.9×MICVDD or 0.75×MICVDD, MICVDD=3.3V → MICBIAS ≈ 2.97V or 2.48V). The ZTS6117 needs 1.5V–3.6V supply — MICBIAS at 2.97V is fine. No change.
   - **HAT prototyping**: Unchanged — the Waveshare NA-H HAT has a NAU8810 codec, not MAX9880A or ALC5651. The PCB codec is separate from the HAT codec. Firmware audio driver work is PCB-phase.
 - **Docs updated**: `docs/project-log.md` (this entry + progress tracking), `pcb/PARTS_TRACKING.md` (U3 row), `docs/reference/README.md` (alc5651.pdf added, max9880a.pdf marked SUPERSEDED), `docs/requirements.md` (codec resolved question updated), `docs/constraints.md` (audio section updated), `docs/research-notes.md` (codec section updated), `docs/bom.md` (item 6 updated), `docs/revisit-prompts/README.md`, `AGENTS.md` (key decisions).
-- **MAX9880A status**: SUPERSEDED. The Ultra Librarian KiCad model files remain in `lib/symbols/ultralibrarian.kicad_sym` and `lib/footprints.pretty/21-0141I_T4866-1_MXM.kicad_mod` for historical reference but are no longer the active U3 part. The MAX9880A datasheet (`docs/reference/max9880a.pdf`) is retained and marked SUPERSEDED.
+- **MAX9880A status**: SUPERSEDED. ~~The Ultra Librarian KiCad model files remain in `lib/symbols/ultralibrarian.kicad_sym` and `lib/footprints.pretty/21-0141I_T4866-1_MXM.kicad_mod` for historical reference~~ **Removed 2026-07-22** (library rebuild — deleted to avoid confusion since MAX9880A is no longer the active U3 part). The MAX9880A datasheet (`docs/reference/max9880a.pdf`) is retained and marked SUPERSEDED.
 
 ### 2026-07-19: B4/B6/B10 Sourcing — U.FL + Crystal + Microphone (LOCKED), Speakers DEFERRED
 

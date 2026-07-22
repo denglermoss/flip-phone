@@ -15,8 +15,8 @@
 > properties (<20 char), and consistent property ordering. The original single
 > `easyeda2kicad.kicad_sym` was split into 4 categorized libraries. Schematic
 > references updated from `easyeda2kicad:SYM` to `passives:/ics:/connectors:SYM`.
-> Old `easyeda2kicad.kicad_sym`, `missing_parts.kicad_sym`, and `ultralibrarian.kicad_sym`
-> (superseded MAX9880A) removed.
+> Old `easyeda2kicad.kicad_sym` and `missing_parts.kicad_sym` removed
+> (superseded by the 4 split libraries).
 >
 > **How to use**: When you download a part from JLC/SnapEDA/etc., drop the files into the appropriate `lib/` subfolder and check the boxes below. Record the JLC part # (C-number) so the BOM can be filled in later.
 
@@ -130,7 +130,7 @@ These block the parts marked [!] above:
 
 1. Search JLC for each part below.
 2. Download the KiCad footprint + symbol + 3D model (JLC offers these on each part page).
-3. Drop files into `pcb/phone/lib/{symbols,footprints.pretty,3dshapes}/`.
+3. Drop files into `pcb/phone/lib/` (symbols into `.kicad_sym` libs, footprints into `easyeda2kicad.pretty/`, 3D into `easyeda2kicad.3dshapes/`).
 4. Record the JLC C# in the table above.
 5. Check the Symbol/Footprint/3D boxes.
 6. Once all parts are sourced, import the libraries into KiCad (Preferences → Manage Libraries → add project-local `lib/` paths).
