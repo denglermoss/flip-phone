@@ -3,9 +3,20 @@
 > **Purpose**: Track the sourcing status of every part for the phone PCB. Update this as you download footprints/symbols/3D models from JLC, SnapEDA, Ultra Librarian, or create them from datasheets.
 >
 > **Library location**: `pcb/phone/lib/` — project-local KiCad library
-> - `lib/symbols/` — `.kicad_sym` symbol libraries
-> - `lib/footprints.pretty/` — footprint libraries (KiCad `.pretty` format)
-> - `lib/3dshapes/` — 3D STEP/WRL models
+> - `lib/passives.kicad_sym` — resistors, capacitors, inductors, ferrite beads, LEDs (16 symbols)
+> - `lib/ics.kicad_sym` — ICs: MCU, modem, codec, power, level shifters, ESD, mic (12 symbols)
+> - `lib/connectors.kicad_sym` — USB-C, SIM, microSD, U.FL, FPC, battery connectors (8 symbols)
+> - `lib/electromech.kicad_sym` — tactile switches, crystals (2 symbols)
+> - `lib/easyeda2kicad.pretty/` — footprint libraries (KiCad `.pretty` format)
+> - `lib/easyeda2kicad.3dshapes/` — 3D STEP/WRL models
+>
+> **Library rebuild 2026-07-22**: All 38 symbols have correct pin electrical types
+> (were all `unspecified`/`input` from easyeda2kicad auto-generation), `ki_description`
+> properties (<20 char), and consistent property ordering. The original single
+> `easyeda2kicad.kicad_sym` was split into 4 categorized libraries. Schematic
+> references updated from `easyeda2kicad:SYM` to `passives:/ics:/connectors:SYM`.
+> Old `easyeda2kicad.kicad_sym`, `missing_parts.kicad_sym`, and `ultralibrarian.kicad_sym`
+> (superseded MAX9880A) removed.
 >
 > **How to use**: When you download a part from JLC/SnapEDA/etc., drop the files into the appropriate `lib/` subfolder and check the boxes below. Record the JLC part # (C-number) so the BOM can be filled in later.
 
