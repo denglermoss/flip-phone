@@ -1,9 +1,10 @@
-import re
+import re, sys
 
-with open('easyeda2kicad.kicad_sym', 'r', encoding='utf-8') as f:
-    content = f.read()
-with open('missing_parts.kicad_sym', 'r', encoding='utf-8') as f:
-    content += '\n' + f.read()
+files = sys.argv[1:] or ['easyeda2kicad.kicad_sym', 'missing_parts.kicad_sym']
+content = ''
+for f in files:
+    with open(f, 'r', encoding='utf-8') as fh:
+        content += fh.read() + '\n'
 
 symbol_pattern = re.compile(r'\(symbol "([^"]+)"', re.MULTILINE)
 symbols = symbol_pattern.findall(content)

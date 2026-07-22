@@ -1,4 +1,7 @@
 (sym_lib_table
   (version 7)
-  (lib (name "easyeda2kicad")(type "KiCad")(uri "${KIPRJMOD}/lib/easyeda2kicad.kicad_sym")(options "")(descr "JLC/LCSC parts downloaded via easyeda2kicad"))
+  (lib (name "passives")(type "KiCad")(uri "${KIPRJMOD}/lib/passives.kicad_sym")(options "")(descr "Resistors, capacitors, inductors, ferrite beads, LEDs"))
+  (lib (name "ics")(type "KiCad")(uri "${KIPRJMOD}/lib/ics.kicad_sym")(options "")(descr "ICs: MCU, modem, codec, power, level shifters, ESD, mic"))
+  (lib (name "connectors")(type "KiCad")(uri "${KIPRJMOD}/lib/connectors.kicad_sym")(options "")(descr "USB-C, SIM, microSD, U.FL, FPC, battery connectors"))
+  (lib (name "electromech")(type "KiCad")(uri "${KIPRJMOD}/lib/electromech.kicad_sym")(options "")(descr "Tactile switches, crystals"))
 )
