@@ -41,6 +41,7 @@ This rule exists because datasheet specs vary by revision and package variant �
 | `ER-TFT1.14-2-outer-display.pdf` | EastRising ER-TFT1.14-2 panel datasheet — 1.14" IPS TFT, 135×240, ST7789V, 8-pin 0.5mm FPC top contact (outer display, LOCKED 2026-07-19). Pinout: 1=LEDA, 2=GND, 3=RESET, 4=RS(DC), 5=SDA, 6=SCL, 7=VDD, 8=CS. Purchased from BuyDisplay (not LCSC) — assembled by user post-PCB-assembly. | https://www.buydisplay.com/1-14-inch-tft-lcd-display-ips-panel-screen-135x240-for-smart-watch |
 | `N114-2413THBIG01-H13-outer-display-superseded.pdf` | Wisevision N114-2413THBIG01-H13 panel datasheet — 1.14" IPS TFT, 240×135, ST7789V3, 13-pin 0.7mm FPC (**SUPERSEDED 2026-07-19**: 0.7mm pitch has no JLC-stocked connectors — replaced by ER-TFT1.14-2 with standard 0.5mm pitch). | https://lcsc.com/product-detail/C2890618.html |
 | `N130-6428TSWOG01-H13-OLED-rejected.pdf` | Wisevision N130-6428TSWOG01-H13 panel datasheet — 1.3" SH1107 OLED, 128×64, 13-pin 0.7mm FPC (REJECTED 2026-07-19: requires 9V VPP external boost converter) | https://lcsc.com/product-detail/C2890613.html |
+| `sn74axc4t774.pdf` | TI SN74AXC4T774 datasheet (SCES898C, Rev C, May 2022) — 4-bit dual-supply bus transceiver with independent direction control. TSSOP-16 (PWR suffix). Used as U9 for I2S-2 level shifting (3.3V↔1.8V) between MCU and ALC5651 codec. Direction-controlled (not auto-sensing like TXB0108 — TXB0108 is NOT recommended for I2S per TI SCEA135). LCSC C1849453. | https://www.ti.com/lit/ds/symlink/sn74axc4t774.pdf |
 
 ### Saved wiki pages (HTML + `_files/` subdirectory)
 

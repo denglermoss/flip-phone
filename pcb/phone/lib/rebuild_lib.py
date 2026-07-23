@@ -31,6 +31,7 @@ ICS = {
     "STM32H743ZIT6", "SIM7600NA-H", "ALC5651-CG",
     "TPS63021DSJR", "TPS7A0218PDBVR", "MCP73831-2ACI_MC",
     "MAX17048G+T10", "TXB0104D", "TXB0108PWR",
+    "SN74AXC4T774PWR",
     "USBLC6-2SC6", "ESDA6V1-5SC6", "ZTS6117",
 }
 
@@ -75,6 +76,7 @@ DESCRIPTIONS = {
     "MAX17048G+T10": "Fuel gauge I2C TDFN-8",
     "TXB0104D": "4-ch level shifter SOIC14",
     "TXB0108PWR": "8-ch level shifter TSSOP20",
+    "SN74AXC4T774PWR": "4-bit dir shifter TSSOP16",
     "USBLC6-2SC6": "USB2 ESD protection SOT23-6",
     "ESDA6V1-5SC6": "5-line ESD SOT23-6",
     "ZTS6117": "MEMS analog microphone",
@@ -327,6 +329,18 @@ def get_pin_type(sym_name, pin_name):
         if pin_name == "NC":
             return "no_connect"
         # A* and B* pins → bidirectional
+        if re.match(r'^[AB]\d', pin_name):
+            return "bidirectional"
+        return "passive"
+
+    # SN74AXC4T774PWR — 4-bit dual-supply bus transceiver with direction control
+    if sym_name == "SN74AXC4T774PWR":
+        if pin_name in ("VCCA", "VCCB", "GND"):
+            return "power_in"
+        if pin_name.startswith("DIR"):
+            return "input"
+        if pin_name == "~{OE}":
+            return "input"
         if re.match(r'^[AB]\d', pin_name):
             return "bidirectional"
         return "passive"
