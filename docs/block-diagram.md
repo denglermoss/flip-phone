@@ -315,50 +315,45 @@ USB-C J1 (A6+B6, A7+B7) → USBLC6-2 ESD (U10) → MCU USB OTG_FS (D+, D-)
 
 ## Section: MCU ↔ Modem Link
 
-The most signal-dense interface in the design. Every phone function (dial, answer, hang up, SMS, signal, data) goes through this UART. The MCU also controls modem power (PWRKEY) and monitors modem status (STATUS). All signals cross a 1.8V↔3.3V voltage boundary and need level shifting.
+The most signal-dense interface in the design. Every phone function (dial, answer, hang up, SMS, signal, data) goes through this UART. The MCU also controls modem reset (PERST#) and monitors modem events (WAKE#). All signals cross a 1.8V↔3.3V voltage boundary and need level shifting.
+
+> **MPCIe-specific simplification**: The MPCIe variant has no PWRKEY pin (the card likely auto-powers on VCC application — power-on method TBD with Techship) and no DCD pin (not on edge connector). This reduces the control signal count to exactly 8 (6 UART + RST + STATUS), fitting one TXB0108 with zero spare bits and no second shifter. The LGA variant needs 10+ signals (adds PWRKEY + DCD) and would need a second shifter — see the LGA pin mapping table in the Modem section for reference if pivoting.
 
 ### Voltage domains
 | Side | Voltage | Device |
 |------|---------|--------|
 | MCU side | 3.3V (`+3.3V`) | STM32H743ZI UART/GPIO pins |
-| Modem side | 1.8V (`+1V8`) | SIM7600NA-H UART/GPIO pins (absolute max 2.1V — 3.3V would damage) |
+| Modem side | 1.8V (`+1V8`) | SIM7600NA-H-PCIE MPCIe edge connector pins (absolute max 2.1V — 3.3V would damage) |
 
-> **Source**: SIM7600 HW Design Manual V1.03 §3.3.1 + Table 30 (absolute max 2.1V for digital pins) + Table 32 (VIH 1.17–2.1V, VOH 1.35–1.8V). Confirmed 2026-07-13 from datasheet.
+> **Source**: SIM7600 PCIE HW Design Manual V1.03 §3.8 Table 11 (1.8V DC characteristics: VIH 1.17–2.1V, VOH 1.35–1.8V). Confirmed 2026-07-22.
 
 ### Components
 | Ref | Part | Package | Notes |
 |-----|------|---------|-------|
 | U_MCU | STM32H743ZIT6 | LQFP-144 | 3.3V I/O. UART + control GPIOs on MCU side. |
-| U_MODEM | SIM7600NA-H | LCC+LGA 30×30mm | 1.8V I/O. UART + control pins on modem side. |
-| U_LVL | TXB0108D | TSSOP-20 | 8-bit bidirectional auto-direction-sensing level shifter. A side = 1.8V (modem), B side = 3.3V (MCU). **VCCA ≤ VCCB is required** — so A = 1.8V, B = 3.3V. |
+| U_MODEM | SIM7600NA-H-PCIE | MPCIe card (50.8×31mm) in SOFNG PCIE-52P40H socket (C444926) | 1.8V I/O on edge connector pins. |
+| U_LVL | TXB0108D | TSSOP-20 | 8-bit bidirectional auto-direction-sensing level shifter. A side = 1.8V (modem), B side = 3.3V (MCU). **VCCA ≤ VCCB required** (1.8 ≤ 3.3 ✓). All 8 bits used — no spare. |
 
-> **Why TXB0108**: 8 bits covers all UART signals (7) + 1 spare (e.g. modem RESET or an extra GPIO). Auto-direction sensing works for UART (each signal is unidirectional). The project-log (2026-07-13) already calls out TXB0108 for this link. Alternative: SN74LVC8T245 (direction-controlled, more robust but needs direction pins). Stick with TXB0108 unless a signal-integrity issue emerges.
+> **Why TXB0108**: 8 bits covers all MPCIe control signals (6 UART + RST + STATUS = 8). Auto-direction sensing works for UART (each signal is unidirectional). Alternative: SN74LVC8T245 (direction-controlled, more robust but needs direction pins). Stick with TXB0108 unless a signal-integrity issue emerges.
 
-### UART signals (7)
+### Signal mapping (8 signals → one TXB0108, all bits used)
 
-| Signal | Direction | MCU side (3.3V) | Level shifter | Modem side (1.8V) | Modem pin # | Notes |
-|--------|-----------|-----------------|---------------|---------------------|-------------|-------|
-| `UART_TX` | MCU → modem | MCU UART TX | B1 → A1 | modem RXD | 68 | MCU sends AT commands |
-| `UART_RX` | MCU ← modem | MCU UART RX | B2 ← A2 | modem TXD | 71 | Modem sends responses/URCs |
-| `UART_RTS` | MCU → modem | MCU UART RTS | B3 → A3 | modem CTS | 67 | MCU requests to send |
-| `UART_CTS` | MCU ← modem | MCU UART RX | B4 ← A4 | modem RTS | 66 | Modem clear to send |
-| `UART_DTR` | MCU → modem | MCU GPIO (out) | B5 → A5 | modem DTR | 72 | Toggle for modem sleep/wake (`AT+CSCLK=1`) |
-| `UART_RI` | MCU ← modem | MCU GPIO interrupt | B6 ← A6 | modem RI | 69 | Ring indicator — wakes MCU on incoming call |
-| `UART_DCD` | MCU ← modem | MCU GPIO (in) | B7 ← A7 | modem DCD | 70 | Data carrier detect — optional, can leave NC if unused |
+| Bit | A-side (1.8V) | Global label (modem) | MPCIe pin # | Pin name | B-side (3.3V) | Global label (MCU) | MCU pin | Direction | Notes |
+|-----|---------------|----------------------|-------------|----------|---------------|---------------------|---------|-----------|-------|
+| 1 | A1 | `MODEM_TXD` | 19 | UART_TXD | B1 | `MCU_UART_RX` | LPUART1_RX | Modem → MCU | Modem transmits AT responses/URCs |
+| 2 | A2 | `MODEM_RXD` | 17 | UART_RXD | B2 | `MCU_UART_TX` | LPUART1_TX | MCU → Modem | MCU sends AT commands |
+| 3 | A3 | `MODEM_RTS` | 13 | UART_RTS | B3 | `MCU_UART_CTS` | LPUART1_CTS | Modem → MCU | Modem RTS → MCU CTS (hw flow control) |
+| 4 | A4 | `MODEM_CTS` | 11 | UART_CTS | B4 | `MCU_UART_RTS` | LPUART1_RTS | MCU → Modem | MCU RTS → Modem CTS (hw flow control) |
+| 5 | A5 | `MODEM_RI` | 44 | UART_RI | B5 | `MCU_RI_IRQ` | GPIO (int) | Modem → MCU | Ring indicator — wakes MCU on incoming call |
+| 6 | A6 | `MODEM_DTR` | 46 | UART_DTR | B6 | `MCU_DTR` | GPIO (out) | MCU → Modem | Sleep control (`AT+CSCLK=1`) |
+| 7 | A7 | `MODEM_RST` | 22 | PERST# | B7 | `MCU_MODEM_RST` | GPIO (out) | MCU → Modem | Active-low hard reset (PCIe PERST# name) |
+| 8 | A8 | `MODEM_STATUS` | 1 | WAKE# | B8 | `MCU_MODEM_STATUS` | GPIO (int) | Modem → MCU | WAKE# — stays high, goes low on event (SMS/call/URC). **Interrupt, not a ready indicator** — see note below |
 
-> **Modem pin numbers** from SIM7600 HW Design Manual V1.03 (confirmed 2026-07-13). TXD=71, RXD=68, RTS=66, CTS=67, RI=69, DCD=70, DTR=72.
+> **WAKE# vs LGA STATUS**: The LGA STATUS pin (pin 49) is "high = powered on + firmware ready" — a level-ready signal. The MPCIe WAKE# (pin 1) is an interrupt — "stays high, goes low on event." Different semantics. The MCU should treat WAKE# as a **falling-edge interrupt** (wake from STOP on falling edge), not a level-ready signal. To detect "modem ready," the MCU sends an AT command and checks for `OK` response (or polls `AT+CPIN?` / `AT+CREG?`).
 
-> **TXB0108 bit 8 (spare)**: Could route modem RESET (if the SIM7600 has a RESET pin) or an extra GPIO. Or leave unused (tie input to GND with a pulldown per TXB0108 datasheet — floating auto-sense inputs can oscillate and waste power).
+> **No PWRKEY on MPCIe**: The LGA variant has PWRKEY (pin 3) — active-low pulse to power on/off. The MPCIe edge connector has no PWRKEY equivalent. The card likely auto-powers on when VCC is applied. Power-off would be via AT command (`AT+CPOWD=1`) or cutting +3.3V to the modem (load switch or MCU-controlled regulator). **Open item: confirm power-on/off method with Techship.**
 
-### Control GPIOs (not through UART — separate signals)
-
-| Signal | Direction | MCU side | Level shifter? | Modem side | Modem pin | Notes |
-|--------|-----------|----------|----------------|------------|-----------|-------|
-| `PWRKEY` | MCU → modem | MCU GPIO (out) | Yes (3.3V→1.8V) | modem PWRKEY | (check manual) | Pulse low (~1s) to power on/off. **Required** — MCU cannot power-cycle modem without it. |
-| `STATUS` | MCU ← modem | MCU GPIO (in) | Yes (1.8V→3.3V) | modem STATUS | (check manual) | High = modem ready. **Required** — MCU needs to know modem state. |
-| `RESET` | MCU → modem | MCU GPIO (out) | Yes (3.3V→1.8V) | modem RESET | (check manual) | Hard reset — rarely needed, optional. Could use TXB0108 bit 8. |
-
-> **PWRKEY and STATUS are mandatory** (per constraints.md). RESET is optional. These can go through the same TXB0108 (if bits are spare) or a smaller separate shifter (TXB0104 for 3-4 signals). Your call on how to group them.
+> **No DCD on MPCIe**: The LGA variant exposes DCD (pin 70). The MPCIe edge connector does not. DCD is a legacy UART signal not needed for AT command communication — the prototype (Nucleo + HAT) didn't use it. No impact.
 
 ### Power for the level shifter
 | Pin | Net | Notes |
@@ -379,45 +374,41 @@ The most signal-dense interface in the design. Every phone function (dial, answe
 
 **Recommendation**: Keep LPUART1 for firmware compatibility. Verify RTS/CTS pin availability on LQFP-144 before finalizing the pin map.
 
-### Schematic layout (flat, one region)
+### Schematic layout (flat, global labels)
 
 ```
     ┌─── MCU region ───────────────────┐         ┌─── Level shifter ─────────┐         ┌─── Modem region ──────────────┐
-    │                                  │         │  TXB0108                   │         │  SIM7600NA-H                   │
-    │  LPUART1_TX  ──────────────────┐ │         │  VCCA=+1V8  VCCB=+3.3V      │         │  pin 68 RXD                   │
-    │  LPUART1_RX  ◀────────────────┐│ │         │  OE=+3.3V (pullup)          │         │  pin 71 TXD                   │
-    │  LPUART1_RTS ────────────────┐││ │         │                            │         │  pin 67 CTS                   │
-    │  LPUART1_CTS ◀──────────────┐│││ │         │  B1 ── A1  (TX  →)         │───────▶│  pin 66 RTS                   │
-    │  GPIO_DTR    ──────────────┐││││ │         │  B2 ── A2  (RX  ←)         │◀───────│  pin 72 DTR                   │
-    │  GPIO_RI_IRQ ◀────────────┐│││││ │         │  B3 ── A3  (RTS →)         │───────▶│  pin 69 RI                    │
-    │  GPIO_DCD    ◀───────────┐││││││ │         │  B4 ── A4  (CTS  ←)        │◀───────│  pin 70 DCD                   │
-    │  GPIO_PWRKEY ───────────┐│││││││ │         │  B5 ── A5  (DTR  →)        │───────▶│  PWRKEY pin                   │
-    │  GPIO_STATUS ◀────────┐││││││││ │         │  B6 ── A6  (RI   ←)        │◀───────│  STATUS pin                   │
-    │                      │││││││││ │         │  B7 ── A7  (DCD  ←)        │◀───────│                               │
-    │                      │││││││││ │         │  B8 ── A8  (spare/RESET →) │───────▶│  RESET pin (optional)         │
-    └──────────────────────┼┼┼┼┼┼┼┼─┘         └────────────────────────────┘         └───────────────────────────────┘
-                           ││││││││
-                           ▼▼▼▼▼▼▼▼  (net labels: UART_TX, UART_RX, UART_RTS, etc. — labeled wires, not direct)
+    │                                  │         │  U_LVL: TXB0108D           │         │  U_MODEM: MPCIe socket         │
+    │  MCU_UART_RX  ◀──────────────────┼─────────┤ B1 ── A1  (TX  ←)         │◄────────┤  pin 19 UART_TXD  [MODEM_TXD] │
+    │  MCU_UART_TX  ───────────────────┼─────────┤ B2 ── A2  (RX  →)         │────────►│  pin 17 UART_RXD  [MODEM_RXD] │
+    │  MCU_UART_CTS ◀──────────────────┼─────────┤ B3 ── A3  (RTS ←)         │◄────────┤  pin 13 UART_RTS  [MODEM_RTS] │
+    │  MCU_UART_RTS ───────────────────┼─────────┤ B4 ── A4  (CTS  →)        │────────►│  pin 11 UART_CTS  [MODEM_CTS] │
+    │  MCU_RI_IRQ    ◀─────────────────┼─────────┤ B5 ── A5  (RI   ←)        │◄────────┤  pin 44 UART_RI   [MODEM_RI]  │
+    │  MCU_DTR       ──────────────────┼─────────┤ B6 ── A6  (DTR  →)        │────────►│  pin 46 UART_DTR  [MODEM_DTR] │
+    │  MCU_MODEM_RST ──────────────────┼─────────┤ B7 ── A7  (RST  →)        │────────►│  pin 22 PERST#    [MODEM_RST] │
+    │  MCU_MODEM_STATUS ◀──────────────┼─────────┤ B8 ── A8  (WAKE ←)        │◄────────┤  pin 1  WAKE#     [MODEM_STATUS]│
+    │                                  │         │  VCCA=+1V8  VCCB=+3.3V      │         │  VCC = +3.3V (not +BATT!)     │
+    └──────────────────────────────────┘         │  OE=+3.3V (pullup)          │         │  GND = GND                    │
+                                                  └────────────────────────────┘         └────────────────────────────────┘
 ```
 
-In practice: use **net labels** (`L`) on both sides of the level shifter rather than drawing long wires. MCU pins get labels like `UART_TX_MCU`, level shifter B1 gets `UART_TX_MCU`, A1 gets `UART_TX_MOD`, modem RXD pin gets `UART_TX_MOD`. KiCad connects same-named labels automatically.
+In practice: use **global labels** on both sides of the level shifter. MCU pins get `MCU_*` labels, level shifter B-side gets the same `MCU_*` labels, A-side gets `MODEM_*` labels, modem MPCIe pins get the same `MODEM_*` labels. KiCad connects same-named global labels across the sheet automatically — no long wires needed. The level shifter is the boundary between the `MCU_*` and `MODEM_*` net namespaces.
 
 ### Pre-draw checklist
+- [ ] Place MPCIe socket symbol (`connectors:PCIE-52P40H_C444926`) in modem region
+- [ ] Place TXB0108D (`ics:TXB0108PWR`) between MCU and modem regions
 - [ ] Place STM32H743 symbol in MCU region (just the UART + control GPIO pins for now — full pin map comes later)
-- [ ] Place SIM7600NA-H symbol in modem region (need to find or create the symbol — SIM7600 may not be in KiCad's default libraries; check LCSC/JLCPCB for a footprint)
-- [ ] Place TXB0108D between them
-- [ ] Wire UART signals (7) through the level shifter
-- [ ] Wire PWRKEY + STATUS (through level shifter or separate shifter)
+- [ ] Wire 8 signals through the level shifter with global labels on both sides (`MODEM_*` on A-side, `MCU_*` on B-side)
 - [ ] Add power symbols: `+1V8` on VCCA, `+3.3V` on VCCB, `GND` on GND
 - [ ] Add OE pullup to `+3.3V`
-- [ ] Add net labels on both sides of the shifter
+- [ ] Wire MPCIe VCC pins (2, 24, 39, 41, 52) to `+3.3V` power symbol (NOT `+BATT` — MPCIe is 3.3V only)
+- [ ] Wire MPCIe GND pins (4, 9, 15, 18, 21, 26, 27, 29, 34, 35, 37, 40, 43, 50) to `GND`
 - [ ] Run ERC
 
 ### Open questions for this section
 - [ ] **LPUART1 RTS/CTS pins on LQFP-144**: need to look up the alternate-function table in RM0433 to confirm which pins carry LPUART1_RTS and LPUART1_CTS. (Can do via the PDF MCP server against the local reference manual.)
-- [ ] **SIM7600 PWRKEY and STATUS pin numbers**: confirmed in HW Design Manual but not captured in project-log — need to look up.
-- [ ] **SIM7600 symbol for KiCad**: check if it exists in KiCad's default libraries, LCSC symbol library, or needs to be created from the datasheet pinout.
-- [ ] **PWRKEY/STATUS through TXB0108 or separate shifter**: TXB0108 has 1 spare bit (bit 8) — could fit RESET but not both PWRKEY and STATUS. Options: (a) use TXB0108 for UART (7 bits) + RESET (1 bit), and a separate TXB0104 for PWRKEY + STATUS; (b) use two TXB0108s; (c) use simple voltage dividers for the 3 unidirectional control signals (PWRKEY is MCU→modem, STATUS is modem→MCU, RESET is MCU→modem — all unidirectional, so a resistor divider or single-gate buffer works).
+- [ ] **MPCIe power-on/off method**: No PWRKEY pin on edge connector. Confirm with Techship whether the card auto-powers on VCC application, and how to power it off (`AT+CPOWD=1`? VCC removal via load switch?).
+- [ ] **WAKE# vs RI usage**: Both WAKE# and RI can wake the MCU on events. WAKE# is general-purpose (any URC), RI is call-specific. Decide in firmware whether to use both or just one. Hardware wires both regardless — firmware choice.
 
 ---
 
@@ -425,7 +416,241 @@ In practice: use **net labels** (`L`) on both sides of the level shifter rather 
 
 ## Section: MCU (full pin map) — *to be specified*
 
-## Section: Modem (full pinout + SIM + antenna + USB) — *to be specified*
+## Section: Modem (full pinout + SIM + antenna + USB)
+
+> **Status**: Pin mappings verified 2026-07-22 from vendor PDFs via MCP extraction. **MPCIe is the primary form factor** being schemed (flat sheet + global labels). LGA pin mapping retained as a **fallback reference** — pivot only if MPCIe proves difficult during layout. Same global label set on both variants.
+>
+> **Sources**: LGA pinout from `docs/reference/SIM7600 Series Hardware Design_V1.03.pdf` §2.1-2.2 (pp 13-17). MPCIe pinout from `docs/reference/SIM7600_Series_PCIE_Hardware_Design_V1.03.pdf` §2.2 (pp 13-15). KiCad symbol pin numbers verified against `lib/ics.kicad_sym` (SIM7600NA-H, 135 pins) and `lib/connectors.kicad_sym` (PCIE-52P40H_C444926, 54 pins).
+
+### Global labels (MPCIe primary, LGA fallback)
+
+Most labels are shared between variants, but **3 labels are LGA-only** (`MODEM_PWRKEY`, `GNSS_ANT`, `MAIN_ANT` — not placed in MPCIe wiring) and the **power label differs** (`+3.3V` for MPCIe, `+BATT` for LGA). The SIM socket and its passives (100nF cap, ESD diode) live on the **flat sheet** — both variants expose USIM_* labels and the flat sheet wires them to a single SIM socket:
+
+| Global label | Shape | Signal | Notes |
+|--------------------|-------|--------|-------|
+| `MODEM_TXD` | output | Modem UART TX → MCU | 1.8V, needs level shifter |
+| `MODEM_RXD` | input | Modem UART RX ← MCU | 1.8V, needs level shifter |
+| `MODEM_CTS` | input | Modem UART CTS ← MCU | 1.8V, needs level shifter |
+| `MODEM_RTS` | output | Modem UART RTS → MCU | 1.8V, needs level shifter |
+| `MODEM_RI` | output | Ring indicator → MCU (wake on call) | 1.8V, needs level shifter |
+| `MODEM_DTR` | input | DTE ready ← MCU (sleep control) | 1.8V, needs level shifter |
+| `PCM_CLK` | output | PCM bit clock → ALC5651 I2S-1 | 1.8V, direct to codec (no shifter) |
+| `PCM_OUT` | output | PCM data out → ALC5651 I2S-1 | 1.8V, direct to codec |
+| `PCM_IN` | input | PCM data in ← ALC5651 I2S-1 (mic) | 1.8V, direct from codec |
+| `PCM_SYNC` | output | PCM frame sync → ALC5651 I2S-1 | 1.8V, direct to codec |
+| `MODEM_USB_DP` | bidirectional | Modem USB 2.0 HS D+ | To optional modem USB connector. **Renamed from `USB_DP`** to avoid conflict with MCU USB global label in power schematic |
+| `MODEM_USB_DN` | bidirectional | Modem USB 2.0 HS D- | To optional modem USB connector. **Renamed from `USB_DN`** to avoid conflict with MCU USB global label in power schematic |
+| `MODEM_RST` | input | Reset ← MCU | 1.8V, needs level shifter |
+| `MODEM_STATUS` | output | Module ready → MCU | 1.8V, needs level shifter |
+| `MODEM_PWRKEY` | input | Power key ← MCU | **LGA only** — MPCIe has no PWRKEY pin. Do not place this label in MPCIe wiring |
+| `NET_STATUS` | output | Network LED | Drives status LED via transistor |
+| `GNSS_ANT` | passive | GNSS antenna U.FL | **LGA only** — MPCIe has onboard U.FL. Do not place this label in MPCIe wiring |
+| `MAIN_ANT` | passive | Cellular antenna U.FL | **LGA only** — MPCIe has onboard U.FL. Do not place this label in MPCIe wiring |
+| `+BATT` / `+3.3V` | power | Modem supply | **NOT shared** — LGA uses `+BATT` (3.4–4.3V LiPo direct), MPCIe uses `+3.3V` (3.0–3.6V regulated). See power supply note below |
+| `GND` | power | Ground | Power symbol, global net |
+| `USIM_VDD` | output | SIM card power (1.8V or 3.0V, modem-controlled) | → flat sheet SIM socket VCC. 100nF cap at socket |
+| `USIM_DATA` | bidirectional | SIM card data | → flat sheet SIM socket DATA. Internal 10kΩ pullup to USIM_VDD in modem |
+| `USIM_CLK` | output | SIM card clock | → flat sheet SIM socket CLK. Rise/fall < 40ns required |
+| `USIM_RST` | output | SIM card reset | → flat sheet SIM socket RST |
+| `USIM_DET` | bidirectional | SIM card detect (hot-plug) | → flat sheet SIM socket DET. Internal pullup to 1.8V in modem. Optional — leave NC if 6-pin socket |
+
+### Pin mapping — LGA variant — *fallback reference*
+
+**Symbol**: `ics:SIM7600NA-H` (135 pins, LCC+LGA 30×30mm). Pin numbers from SIM7600 HW Design V1.03 §2.2, verified against KiCad symbol.
+
+| Global label | Modem pin name | Pin # | I/O | Notes |
+|--------------------|---------------|-------|-----|-------|
+| `MODEM_TXD` | TXD | 71 | DO | Modem transmits to MCU |
+| `MODEM_RXD` | RXD | 68 | DI | Modem receives from MCU |
+| `MODEM_RTS` | RTS | 66 | DOL | Modem RTS → MCU CTS |
+| `MODEM_CTS` | CTS | 67 | DI | Modem CTS ← MCU RTS |
+| `MODEM_RI` | RI | 69 | DOH | Ring indicator (wakes MCU) |
+| `MODEM_DTR` | DTR | 72 | DI | Sleep control (`AT+CSCLK=1`) |
+| `PCM_CLK` | PCM_CLK | 76 | DO | → ALC5651 I2S-1 BCLK |
+| `PCM_OUT` | PCM_OUT | 73 | DO | → ALC5651 I2S-1 DACDAT (rx from modem) |
+| `PCM_IN` | PCM_IN | 74 | DI | ← ALC5651 I2S-1 ADCDAT (mic to modem) |
+| `PCM_SYNC` | PCM_SYNC | 75 | DO | → ALC5651 I2S-1 LRCK |
+| `MODEM_USB_DP` | USB_DP | 13 | I/O | USB 2.0 HS D+ (renamed to avoid MCU USB conflict) |
+| `MODEM_USB_DN` | USB_DN | 12 | I/O | USB 2.0 HS D- (renamed to avoid MCU USB conflict) |
+| `MODEM_RST` | RESET | 4 | DI | Active low. Internal 40kΩ pullup to 1.8V |
+| `MODEM_STATUS` | STATUS | 49 | DO | High = powered on + firmware ready |
+| `MODEM_PWRKEY` | PWRKEY | 3 | DI | Active low pulse (~1s) to power on/off |
+| `NET_STATUS` | NETLIGHT | 51 | DO | LED control output (network status) |
+| `GNSS_ANT` | GNSS_ANT | 79 | AI | GNSS antenna soldering pad → U.FL |
+| `MAIN_ANT` | MAIN_ANT | 82 | AIO | Main antenna soldering pad → U.FL |
+| `+BATT` | VBAT | 38, 39, 62, 63 | PI | 4 pins — 3.4–4.3V, 2A bursts. Add 100–470µF bulk caps here |
+| `GND` | GND | 1,2,5,10,14,37,40,41,43,57,58,60,61,64,65,77,78,80,81 | — | 19 GND pins + exposed pad |
+| `USIM_VDD` | USIM_VDD | 20 | PO | → flat sheet SIM socket VCC |
+| `USIM_DATA` | USIM_DATA | 17 | BIDI | → flat sheet SIM socket DATA (internal 10kΩ pullup to USIM_VDD) |
+| `USIM_RST` | USIM_RST | 18 | DO | → flat sheet SIM socket RST |
+| `USIM_CLK` | USIM_CLK | 19 | DO | → flat sheet SIM socket CLK |
+| `USIM_DET` | USIM_DET | 53 | BIDI | → flat sheet SIM socket DET (optional hot-plug detect) |
+
+**LGA-only pins (not in global labels — wire locally):**
+
+| Pin name | Pin # | Notes |
+|----------|-------|-------|
+| VDD_1V8 | 15 | 1.8V LDO output (50mA max). **Tentative: leave open** — using our own TPS7A0218 (see block-diagram.md §+1V8 open question) |
+| VDD_AUX | 44 | 2.85V LDO output (150mA). Leave open if unused |
+| USB_VBUS | 11 | USB detection input (3.0–5.25V). Connect to VBAT or leave open (modem USB is optional) |
+| USB_ID | 16 | USB ID input. Leave open |
+| AUX_ANT | 59 | Auxiliary antenna pad. Leave open (diversity RX optional) |
+| FLIGHTMODE | 54 | Flight mode control. Leave open (normal mode = high/open) |
+| SCL | 55 | I2C clock. Leave open or pull up to 1.8V via 2.2kΩ |
+| SDA | 56 | I2C data. Leave open or pull up to 1.8V via 2.2kΩ |
+| DBG_TXD | 42 | Debug UART TX. Leave open or add test point |
+| RXDDBG | 106 | Debug UART RX. Leave open or add test point |
+| SD_CMD/DATA0-3/CLK | 21-26 | SD card interface. **Not supported on NA-H** — leave open |
+| SDIO_* | 27-32 | SDIO interface. Leave open (not used) |
+| SPI_* | 6-9 | SPI LCD interface. Leave open (not used) |
+| GPIO3/6/41/43/77 | 33,34,52,50,87 | General GPIO. Leave open |
+| ISINK | 45 | Current sink. Leave open |
+| ADC1/ADC2 | 47,46 | ADC inputs. Leave open |
+| SD_DET | 48 | SD detect. Leave open |
+| COEX1/2/3 | 83,84,86 | RF coexistence (Wi-Fi/LTE). Leave open. **Do NOT pull up during power-up** |
+| BOOT_CFG0 (USB_BOOT) | 85 | Boot config. Leave open (normal boot). **Do NOT pull up during power-up** |
+| HSIC_STROBE/DATA | 35,36 | HSIC interface. Leave open |
+| SGMII_* | 108-117 | SGMII interface. Leave open |
+| RESERVED | 88-92,99-105,107,111 | No connection |
+
+### Pin mapping — MPCIe variant — *primary*
+
+**Symbol**: `connectors:PCIE-52P40H_C444926` (54 pins = 52 edge + 2 mounting). Pin numbers from SIM7600 PCIE HW Design V1.03 §2.2 (pp 13-15). The socket symbol pins are numbered 1-52 (signal) + 53-54 (mounting pads).
+
+| Global label | MPCIe edge pin name | Pin # | I/O | Notes |
+|--------------------|---------------------|-------|-----|-------|
+| `MODEM_TXD` | UART_TXD | 19 | DO | Modem transmits to MCU |
+| `MODEM_RXD` | UART_RXD | 17 | DI | Modem receives from MCU |
+| `MODEM_RTS` | UART_RTS | 13 | DO | Modem RTS → MCU CTS |
+| `MODEM_CTS` | UART_CTS | 11 | DI | Modem CTS ← MCU RTS |
+| `MODEM_RI` | UART_RI | 44 | DO | Ring indicator (wakes MCU) |
+| `MODEM_DTR` | UART_DTR | 46 | DI | Sleep control |
+| `PCM_CLK` | PCM_CLK | 45 | DO | → ALC5651 I2S-1 BCLK |
+| `PCM_OUT` | PCM_OUT | 47 | DO | → ALC5651 I2S-1 DACDAT |
+| `PCM_IN` | PCM_IN | 49 | DI | ← ALC5651 I2S-1 ADCDAT (mic) |
+| `PCM_SYNC` | PCM_SYNC | 51 | DO | → ALC5651 I2S-1 LRCK |
+| `MODEM_USB_DP` | USB_DP | 38 | I/O | USB 2.0 HS D+ (renamed to avoid MCU USB conflict) |
+| `MODEM_USB_DN` | USB_DN | 36 | I/O | USB 2.0 HS D- (renamed to avoid MCU USB conflict) |
+| `MODEM_RST` | PERST# | 22 | DI | Active low reset (PCIe standard name) |
+| `MODEM_STATUS` | WAKE# | 1 | I/O | Wake host interrupt (stays high, goes low on event). **Different semantics from LGA STATUS** — see note below |
+| ~~`MODEM_PWRKEY`~~ | — | — | — | **Not used in MPCIe** — no PWRKEY pin on edge connector. Do not place this label. Power-on method TBD (confirm with Techship) |
+| `NET_STATUS` | LED_WWAN# | 42 | DO | Network status LED (active low — drives LED cathode) |
+| ~~`GNSS_ANT`~~ | — | — | — | **Not used in MPCIe** — onboard U.FL on card. Do not place this label |
+| ~~`MAIN_ANT`~~ | — | — | — | **Not used in MPCIe** — onboard U.FL on card. Do not place this label |
+| `+3.3V` | VCC | 2, 24, 39, 41, 52 | PI | 5 VCC pins — 3.0–3.6V (3.3V typical). **Use `+3.3V` net, NOT `+BATT`** — raw LiPo would damage the card. See power supply note below |
+| `GND` | GND | 4,9,15,18,21,26,27,29,34,35,37,40,43,50 | — | 14 GND pins |
+| `USIM_VDD` | USIM_VDD | 8 | PO | → flat sheet SIM socket VCC |
+| `USIM_DATA` | USIM_DATA | 10 | BIDI | → flat sheet SIM socket DATA |
+| `USIM_CLK` | USIM_CLK | 12 | DO | → flat sheet SIM socket CLK |
+| `USIM_RST` | USIM_RST | 14 | DO | → flat sheet SIM socket RST |
+| `USIM_DET` | USIM_DET | 16 | BIDI | → flat sheet SIM socket DET (optional hot-plug detect) |
+
+**MPCIe-only pins (not in global labels — wire locally or leave open):**
+
+| Edge pin name | Pin # | Notes |
+|---------------|-------|-------|
+| W_DISABLE# | 20 | RF disable control. Leave open (normal mode) |
+| SCL | 30 | I2C clock (1.8V, pulled up in-module via 2.2kΩ). Leave open |
+| SDA | 32 | I2C data (1.8V, pulled up in-module). Leave open |
+| MICN | 3 | NC on PCIE variant (analog mic- on PCIEA only). Leave open |
+| EARP | 5 | NC on PCIE variant (earpiece+ on PCIEA only). Leave open |
+| EARN | 7 | NC on PCIE variant (earpiece- on PCIEA only). Leave open |
+| NC | 6, 23, 25, 28, 31, 33, 48 | No connection. Leave open |
+
+> **SIM socket (corrected 2026-07-22)**: The PCIE manual §3.7 says "SIM7600 series PCIE modules provide SIM socket on board product, so the external socket can be saved, for the detail please contact local sales." However, the Techship spec sheet lists the embedded SIM socket as `o` (optional) for all H-PCIE variants including NA-H-PCIE. The manual's own footnote says "contact local sales for details" — meaning it's not standard. The stock card does **not** have an onboard SIM socket. **Both variants need a SIM socket on our PCB.** The SIM socket and its passives (100nF cap on USIM_VDD, ESD protection) live at the **flat sheet level** — both variants expose `USIM_VDD`/`USIM_DATA`/`USIM_CLK`/`USIM_RST`/`USIM_DET` as global labels, and the flat sheet wires them to a single SIM socket. This avoids duplicating the SIM socket in both variants and means the socket survives a variant swap.
+
+**Mounting pads (not signal):**
+
+| Pad | Pin # | Notes |
+|-----|-------|-------|
+| Mounting | 53 | SMD pad (left side, 2.3×3.2mm) |
+| Mounting | 54 | SMD pad (right side, 2.3×3.2mm) |
+
+### Key differences between the two variants
+
+| Factor | LGA (bare module) | MPCIe (socketed card) |
+|--------|-------------------|----------------------|
+| **Power supply** | VBAT = 3.4–4.3V (direct LiPo, `+BATT` net) | VCC = 3.0–3.6V (3.3V typical). **Cannot use raw LiPo** — needs regulated 3.3V. Use `+3.3V` net, not `+BATT` |
+| **PWRKEY** | Pin 3 — active low pulse to power on/off | **No PWRKEY pin.** Power-on method TBD (likely auto-on at VCC application, or onboard button). Confirm with Techship |
+| **STATUS** | Pin 49 — high = ready, low = off | WAKE# (pin 1) — high = idle, low = interrupt (SMS/call/URC). **Different semantics** — WAKE# is an interrupt, not a ready indicator |
+| **RESET** | Pin 4 — RESET (active low) | PERST# (pin 22) — PCIe reset name, same active-low function |
+| **Network LED** | NETLIGHT (pin 51) — active high (sources current) | LED_WWAN# (pin 42) — active low (sinks current). **LED circuit differs** — LED anode to +3.3V, cathode to pin 42 via resistor |
+| **Antennas** | Soldering pads on module → PCB U.FL connectors | Onboard U.FL connectors on the MPCIe card itself. **No PCB antenna connectors needed** |
+| **SIM socket** | USIM pins 17/18/19/20/53 → global labels → flat sheet SIM socket | USIM edge pins 8/10/12/14/16 → global labels → flat sheet SIM socket. **Same SIM socket** — flat sheet component, not duplicated |
+| **I2C** | SCL=55, SDA=56 (external pullup needed) | SCL=30, SDA=32 (pulled up in-module via 2.2kΩ). No external pullup needed |
+| **Debug UART** | DBG_TXD=42, RXDDBG=106 (add test points) | Not exposed on edge connector. **No debug UART access** |
+| **GPIOs** | GPIO1/2/3/4/6/19/41/43/54/77 (10 GPIO pins) | Not exposed on edge connector. **No GPIO access** |
+| **VDD_1V8 output** | Pin 15 (1.8V, 50mA) — could power codec | Not exposed on edge connector. Use our own TPS7A0218 LDO |
+| **VDD_AUX output** | Pin 44 (2.85V, 150mA) — auxiliary LDO | Not exposed on edge connector |
+| **ADC inputs** | ADC1=47, ADC2=46 | Not exposed on edge connector |
+| **Footprint** | 30×30mm LGA (119 pads, 1.0mm pitch) | 50.8×31mm card + ~30×9mm socket keepout (52 pads, 0.8mm pitch) |
+| **Assembly** | LGA reflow (hardest DIY step, ~70-85% success) | SMD socket reflow (standard SMD, no special reflow) + plug in card after |
+
+### Power supply note (critical difference)
+
+The LGA module's VBAT accepts **3.4–4.3V** (direct LiPo range) — the `+BATT` net works directly.
+
+The MPCIe card's VCC requires **3.0–3.6V (3.3V typical)** — **raw LiPo (up to 4.3V) would damage the card.** The MPCIe variant must power the modem from the **`+3.3V` net** (TPS63021 buck-boost output), not `+BATT`.
+
+**Implementation**: The MPCIe variant uses `+3.3V` (not `+BATT`) for the modem VCC pins. The LGA variant uses `+BATT` (direct LiPo). This is a fundamental difference — the two variants are NOT pin-compatible on the power pin. In the flat sheet, the MPCIe socket's VCC pins connect directly to the `+3.3V` power symbol.
+
+**Current handling**: The TPS63021 is rated for ~3A output. The modem can draw 2A peaks during TX. The MCU + display + codec + SD card draw ~200-400mA. Total peak ~2.4A — within the TPS63021's capability but with less margin than the LGA variant (where the modem draws directly from the battery, bypassing the buck-boost). The MPCIe variant may need additional bulk capacitance on `+3.3V` near the modem socket.
+
+### Schematic layout
+
+```
+  MPCIe variant (primary)                        LGA variant (fallback reference)
+  ┌────────────────────────────────┐            ┌────────────────────────────────┐
+  │  PCIE-52P40H_C444926            │            │  SIM7600NA-H (135 pins)         │
+  │  (52 edge pins + 2 mounting)    │            │  (119 signal pads + GND/EP)     │
+  │                                 │            │                                 │
+  │  pin 19 UART_TXD ── MODEM_TXD   │            │  pin 71 TXD ────── MODEM_TXD    │
+  │  pin 17 UART_RXD ── MODEM_RXD   │            │  pin 68 RXD ────── MODEM_RXD    │
+  │  pin 13 UART_RTS ── MODEM_RTS   │            │  pin 66 RTS ────── MODEM_RTS    │
+  │  pin 11 UART_CTS ── MODEM_CTS   │            │  pin 67 CTS ────── MODEM_CTS    │
+  │  pin 44 UART_RI  ── MODEM_RI    │            │  pin 69 RI ──────── MODEM_RI    │
+  │  pin 46 UART_DTR ── MODEM_DTR   │            │  pin 72 DTR ─────── MODEM_DTR   │
+  │  pin 45 PCM_CLK  ── PCM_CLK     │            │  pin 76 PCM_CLK ─── PCM_CLK     │
+  │  pin 47 PCM_OUT  ── PCM_OUT     │            │  pin 73 PCM_OUT ─── PCM_OUT     │
+  │  pin 49 PCM_IN   ── PCM_IN      │            │  pin 74 PCM_IN ──── PCM_IN      │
+  │  pin 51 PCM_SYNC ── PCM_SYNC    │            │  pin 75 PCM_SYNC ── PCM_SYNC    │
+  │  pin 38 USB_DP   ── MODEM_USB_DP│            │  pin 13 USB_DP ─── MODEM_USB_DP │
+  │  pin 36 USB_DN   ── MODEM_USB_DN│            │  pin 12 USB_DN ─── MODEM_USB_DN │
+  │  pin 22 PERST#   ── MODEM_RST   │            │  pin 4 RESET ────── MODEM_RST   │
+  │  pin 1  WAKE#    ── MODEM_STATUS│            │  pin 49 STATUS ──── MODEM_STATUS│
+  │  (no PWRKEY)     ── (not placed)│            │  pin 3 PWRKEY ───── MODEM_PWRKEY│
+  │  pin 42 LED_WWAN#── NET_STATUS  │            │  pin 51 NETLIGHT ── NET_STATUS  │
+  │  (onboard U.FL)  ── (not placed)│            │  pin 79 GNSS_ANT ── GNSS_ANT    │
+  │  (onboard U.FL)  ── (not placed)│            │  pin 82 MAIN_ANT ── MAIN_ANT    │
+  │  pin 2,24,39,    ── +3.3V (NOT  │            │  pin 38,39,62,63 ── +BATT       │
+  │    41,52 VCC        +BATT!)     │            │    VBAT            (direct LiPo)│
+  │  pin 4,9,15,...  ── GND         │            │  pin 1,2,5,... ──── GND         │
+  │                                 │            │                                 │
+  │  USIM pins → USIM_* labels      │            │  USIM pins → USIM_* labels      │
+  │    (SIM socket at flat sheet)   │            │    (SIM socket at flat sheet)   │
+  │  Local: SCL/SDA leave open      │            │  Local: SCL/SDA leave open      │
+  │         (pulled up in-module)   │            │         (pull up to 1.8V)       │
+  │  Local: W_DISABLE# leave open   │            │  Local: FLIGHTMODE leave open   │
+  │  Local: MICN/EARP/EARN = NC     │            │  Local: VDD_1V8 leave open      │
+  │         (PCIE variant)          │            │         (using TPS7A0218)        │
+  └────────────────────────────────┘            └────────────────────────────────┘
+```
+
+### Pre-wire checklist (MPCIe — primary)
+
+- [ ] Place modem symbol (MPCIe socket — primary) in center-left of the flat sheet
+- [ ] Place global labels on right edge (already done — 20 labels at x=207.01)
+- [ ] Wire UART 6 signals to labels
+- [ ] Wire PCM 4 signals to labels
+- [ ] Wire USB 2 signals to labels (`MODEM_USB_DP`, `MODEM_USB_DN` — NOT `USB_DP`/`USB_DN`, those are the MCU USB)
+- [ ] Wire control signals (RST, STATUS, NET_STATUS) to labels — no PWRKEY on MPCIe
+- [ ] Antennas: MPCIe has onboard U.FL — no PCB antenna connectors needed (LGA fallback: wire GNSS_ANT/MAIN_ANT to U.FL)
+- [ ] Wire power pins: VCC to `+3.3V` (NOT `+BATT` — MPCIe is 3.3V only) and GND to power symbols
+- [ ] Add bulk capacitance (100–470µF) at modem power pins — **deferred to after placement**
+- [ ] SIM socket + USIM passives (100nF cap, ESD diode) — **flat sheet**, wired to USIM_* labels from both variants
+- [ ] Add U.FL connectors for antennas (LGA only)
+- [ ] Add network status LED circuit (note: active-high on LGA, active-low on MPCIe)
+- [ ] Run ERC — fix unconnected pins (mark unused as no-connect)
 
 ## Section: Codec (ALC5651 + PCM + I2S + transducers) — *to be specified*
 
