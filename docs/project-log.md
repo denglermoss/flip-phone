@@ -990,6 +990,48 @@ User preference: **hinged** sockets (not push-push) — hinged lids open upward,
 - **Pre-draw/pre-wire checklists updated**: Both the MCU↔Modem Link pre-draw checklist and the Modem pre-wire checklist now reflect MPCIe specifics: `+3.3V` not `+BATT`, `MODEM_USB_*` not `USB_*`, no PWRKEY, no antenna labels, 8 signals in one TXB0108.
 - **Docs updated**: `docs/block-diagram.md` (MCU↔Modem Link section rewritten, Modem section fixes for USB naming + power label + LGA-only labels + section titles + checklists), `docs/project-log.md` (this entry).
 
+### 2026-07-22: KiCad Studio Kit + kicad-mcp-pro MCP Server Setup + AI Write-Mode Rules
+
+- **Decision**: Install and configure the KiCad Studio Kit VS Code extension + `kicad-mcp-pro` MCP server to enable AI-assisted KiCad schematic/PCB workflows (inspection, DRC/ERC, BOM, editing) directly from Devin/Windsurf.
+  - *Rationale*: The project is in the schematic phase (power section done, ~10 sections remaining). AI-assisted KiCad editing with governed write access accelerates schematic/PCB work while keeping the user in control of all design decisions. The MCP server lets the AI agent run DRC/ERC, inspect designs, generate BOMs, and make edits through structured tools rather than raw file manipulation.
+- **Components installed/verified**:
+  - KiCad Studio Kit v1.9.5 (`oaslananka.kicadstudiokit`) — Devin extension at `~/.devin/extensions/`. Provides schematic/PCB viewers, DRC/ERC integration, BOM/netlist/export commands, MCP dashboard.
+  - `kicad-mcp-pro` v3.28.0 via uvx — MCP server exposing KiCad tools to AI clients. Within extension's supported range (`>=3.5.2 <4.0.0`).
+  - KiCad 10.0 CLI at `C:\Users\dengle\AppData\Local\Programs\KiCad\10.0\bin\kicad-cli.exe` — needed for export tools. Passed via `KICAD_MCP_KICAD_CLI` env var (server defaulted to wrong path `C:\Program Files\KiCad\11.0\...`).
+- **MCP configuration**: Added `kicad` server entry to `~/.codeium/windsurf/mcp_config.json` (alongside existing `pdf` server). Profile `agent_full` (full tool surface), mode `write` (agent can modify KiCad files), project dir pinned to `pcb/phone`. Auto-imported by Devin at session start.
+  - *Tradeoff (profile)*: `agent_full` chosen over `schematic_only` or `review` — the project will move to PCB layout, and reconfiguring later is a one-line edit. Largest tool surface, but governed by the ruleset below.
+  - *Tradeoff (mode)*: `write` chosen over `readonly` — user wants AI assistance with schematic authoring, not just inspection. Governed by a ruleset (user owns decisions; AI plans, implements, validates, reports).
+- **AI write-mode governance** (the user owns all decisions; this is the tradeoff for write access):
+  - `pcb/AGENTS.md` — 13 rules: clean tree before changes, read-before-write, consequential-change confirmation (with autonomous-mode git checkpoints), no silent renames, scope discipline, validate-after-edit, git hygiene, library integrity, protected sections (power section locked), documentation sync, no autonomous manufacturing outputs, report every write, stop on uncertainty.
+  - `.devin/agents/kicad-inspector/AGENT.md` — read-only subagent (DRC/ERC, BOM, inspection). Model: GLM-5.2 High (free, 200k context). Safe to parallelize.
+  - `.devin/agents/kicad-author/AGENT.md` — write-capable subagent (schematic/PCB edits). Model: GLM-5.2 High. `max-nesting: 2` (can spawn kicad-inspector child to validate its own work). Plans before implementing; stops for consequential changes unless explicitly autonomous; creates git checkpoints for autonomous work.
+  - 5 skills in `.devin/skills/`: `kicad-checkpoint` (git rollback point), `kicad-review` (DRC/ERC + inspection), `kicad-schematic-edit` (governed .kicad_sch writes), `kicad-pcb-edit` (governed .kicad_pcb writes), `kicad-bom` (BOM gen + cross-check). All user + model invocable.
+  - *Subagent nesting decision*: `max-nesting: 2` on kicad-author (root → author → inspector → stop). Deeper nesting gets expensive fast; this limit covers the key pattern (author edits, inspector validates) without unbounded cost.
+  - *Model choice*: GLM-5.2 High (free tier, 200k context) for both subagent profiles — the MCP tools do the heavy lifting, so a free model suffices for orchestration/reporting. Model flag `glm-5-2-high` is a best guess — verify via `/model` if subagents fail to spawn.
+- **Subagent safety pattern**: Subagents can only request an edit (plan → review against rules → implement only if autonomous or approved). Git checkpoints ensure work is never lost. Subagents can't ask the user questions (`ask_user_question` withheld) — they report back and the parent agent asks.
+- **Docs updated**: `AGENTS.md` (new "KiCad Studio Kit + kicad-mcp-pro MCP Server" section), `pcb/AGENTS.md` (created — KiCad AI interaction rules), `docs/project-log.md` (this entry), `docs/constraints.md` (new "AI-Assisted KiCad Editing" constraint), `.devin/agents/kicad-inspector/AGENT.md` + `.devin/agents/kicad-author/AGENT.md` (created), `.devin/skills/kicad-{checkpoint,review,schematic-edit,pcb-edit,bom}/SKILL.md` (created).
+
+### 2026-07-22: Task Tracker Created + Comprehensive Plan to Assembled PCB
+
+- **Decision**: Create a dedicated task tracking document (`docs/task-tracker.md`) covering Phase 3 (schematic completion) → Phase 4 (PCB layout) → Phase 5 (ordering + DIY assembly), with the goal of "assembled PCB in hand."
+  - *Rationale*: The project needed a single, actionable, checkbox-tracked document covering the remaining path to a physical board. The existing phase breakdown in project-log.md is high-level; the task tracker provides granular per-section/per-phase task lists with open-question gates.
+- **Plan parameters (user-confirmed)**:
+  - **Assembly path**: Full DIY assembly (no JLC PCBA) — learning goal, not just cost savings. 1 board, 2-3 qty parts for spares.
+  - **Scope**: Hardware-only (schematic → layout → fab → assembly). Firmware port to custom PCB is a separate later effort.
+  - **Endpoint**: Assembled PCB in hand (soldered, parts on board — no power-on/bring-up in this scope).
+- **MPCIe PCM CONFIRMED** (high confidence ~90%, via subagent research): Part S2-109KS-Z30G9 ends in "PCIE" (not "PCIEA"), Techship lists PCM as "o" (supported), V1.03 manual confirms PCIE variant = PCM active on pins 45/47/49/51 (master/short-sync/16-bit/2048kHz), PCIEA variant = PCM NC (onboard NAU8810 codec instead). Optional Techship email for 100% certainty before purchase — not a blocker for schematic work.
+- **13 open questions/decisions documented** (O1-O13) with gates:
+  - O1: MPCIe PCM (resolved — high confidence)
+  - O2: MPCIe power-on method — no PWRKEY pin (gate: modem schematic)
+  - O3: MCU peripheral-to-pin mapping (gate: all non-power schematic — critical path)
+  - O4/O5: ALC5651 DBVDD pinout + analog current (gate: codec schematic)
+  - O6: 4-layer vs 2-layer stackup (gate: layout — 4-layer recommended)
+  - O7-O9: Board outline, hinge flex position, daughterboard scope (gate: layout)
+  - O10: Modem source — Techship MPCIe recommended (gate: ordering)
+  - O11-O13: Solder paste type, board qty, surface finish (gate: ordering)
+- **Cost estimate**: $545-774 total (tools $303-477 + fab $45-80 + parts $197-217). Tools amortize over future projects.
+- **Docs updated**: `docs/task-tracker.md` (created), `docs/project-log.md` (this entry + progress row), `README.md` (index + status), `AGENTS.md` (docs table).
+
 ## Phase Breakdown & Effort Estimate
 
 ### Phase 1: Research & Component Selection (~2-3 weeks, part-time)
@@ -1129,3 +1171,4 @@ User preference: **hinged** sockets (not push-push) — hinged lids open upward,
 | 2026-07-22 | **Board size estimate (MPCIe variant).** First-pass: ~100×65mm (conservative). Revised: ~55×78mm (aggressive 2-sided, MCU on bottom under keypad). **User target: < 2×3 inches (~50×76mm).** Deferred to KiCad layout for real numbers. See project-log.md 2026-07-22 Board Size Estimate. | Done |
 | 2026-07-22 | **MPCIe PCM verified from V1.03 manual** (pins 45/47/49/51, master/short-sync/16-bit/2048kHz = ALC5651 PCM Mode A). SMT socket correction (all MPCIe sockets are SMD, not TH). Additional findings: SIM socket NOT onboard (Techship spec lists it as optional `o` — both variants need PCB SIM socket), 1.8V UART (same as LGA), no PWRKEY pin (TBD how MPCIe powers on). "Try both in layout" decision — continue PCB work, evaluate both MPCIe + LGA footprints in KiCad before locking form factor. PCIE Hardware Design V1.03 PDF added to `docs/reference/`. | In Progress |
 | 2026-07-22 | **Schematic approach + MPCIe primary + progress status.** (1) Schematic structure: **flat sheet + global labels** (supersedes 2026-07-19 hierarchical-sheets approach — board is ~30-40 parts, hierarchical overhead not worth it). (2) **MPCIe is the primary form factor** for the schematic + PCB layout; LGA retained as fallback reference (pivot only if MPCIe proves difficult). Supersedes the "try both in layout before locking" framing. Locked modem decision (SIM7600NA-H, B71, PCM, VoLTE) unchanged. (3) **Progress: power section schemed + reviewed; no other sections schemed yet.** Next: modem (MPCIe) section. See project-log.md 2026-07-22 Schematic Approach entry. | In Progress |
+| 2026-07-22 | **Task tracker created + comprehensive plan to assembled PCB.** Created `docs/task-tracker.md` — a new task tracking document covering Phase 3 (schematic completion) → Phase 4 (PCB layout) → Phase 5 (ordering + DIY assembly), with the goal of "assembled PCB in hand." Plan parameters (user-confirmed): **full DIY assembly** (no JLC PCBA — learning goal), **hardware-only scope** (no firmware port in this plan), **endpoint = assembled board** (no power-on/bring-up). Plan built via 4 parallel subagents: (1) MPCIe PCM verification, (2) schematic completion breakdown, (3) PCB layout breakdown, (4) DIY assembly + ordering breakdown. **MPCIe PCM CONFIRMED** (high confidence ~90%): S2-109KS-Z30G9 ends in "PCIE" (not "PCIEA"), Techship lists PCM as "o" (supported), V1.03 manual confirms PCIE variant = PCM active on pins 45/47/49/51, PCIEA = PCM NC. Optional Techship email for 100% certainty before purchase (not a blocker). 13 open questions/decisions documented (O1-O13) with gates — key gates: O2 (MPCIe power-on method, no PWRKEY pin), O3 (MCU pin assignment, critical path), O4/O5 (ALC5651 DBVDD + current), O6 (4-layer stackup), O10 (modem source = Techship MPCIe recommended). Total cost estimate: $545-774 (tools + fab + parts). See `docs/task-tracker.md`. | Done |

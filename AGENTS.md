@@ -20,6 +20,7 @@ This project is documentation-driven. The docs are the source of truth for decis
 | `docs/research-notes.md` | Research findings, component analysis, open research questions |
 | `docs/feature-wishlist.md` | Features rated 1-10, ecosystem implications, component selection guide |
 | `docs/project-log.md` | Decision log (dated), phase breakdown, progress tracking |
+| `docs/task-tracker.md` | Comprehensive plan to assembled PCB (Phase 3-5: schematic → layout → DIY assembly). Created 2026-07-22. |
 | `docs/bom.md` | Bill of Materials — component list with prices, links, cost estimates |
 | `README.md` | Project overview, documentation index, status |
 
@@ -113,3 +114,22 @@ The Zephyr dev environment is installed on Windows (native, not WSL — WSL flas
 - **Known gap**: Zephyr SDK Windows host tools (QEMU, OpenOCD) are not available. Install OpenOCD separately (xpack-openocd or winget) before flashing via ST-Link. Building works now; flashing needs this extra step.
 - **Firmware app**: `firmware/` directory in the phone repo — Zephyr application with `CMakeLists.txt` (build manifest), `prj.conf` (Kconfig features), `app.overlay` (devicetree hardware config), `src/main.c` (application code). Skeleton created 2026-07-05, builds successfully. See `docs/project-log.md` 2026-07-05 entry.
 - **Path constraint**: The project directory must NOT contain spaces — Zephyr's devicetree preprocessor splits paths at spaces and fails. Directory renamed from `Personal Projects` to `personal_projects` on 2026-07-05 for this reason.
+
+## KiCad Studio Kit + kicad-mcp-pro MCP Server (set up 2026-07-22)
+
+KiCad Studio Kit (`oaslananka.kicadstudiokit` v1.9.5) is installed as a Devin extension — provides schematic/PCB viewers, DRC/ERC integration, BOM/netlist/export commands, and an MCP dashboard in Windsurf. The companion MCP server `kicad-mcp-pro` (v3.28.0) exposes KiCad tools (inspection, DRC/ERC, BOM, exports, schematic/PCB editing) to AI clients.
+
+- **MCP config**: `~/.codeium/windsurf/mcp_config.json` → `kicad` server entry (auto-imported by Devin at session start)
+- **KiCad CLI**: `C:\Users\dengle\AppData\Local\Programs\KiCad\10.0\bin\kicad-cli.exe` (via `KICAD_MCP_KICAD_CLI` env var)
+- **Profile**: `agent_full` (full tool surface) · **Mode**: `write` (agent can modify KiCad files)
+- **KiCad project**: `pcb/phone/phone.kicad_pro`
+
+**KiCad AI interaction rules** are in `pcb/AGENTS.md` (loaded lazily when working in `pcb/`). They govern write-mode access: clean tree before changes, read-before-write, consequential-change confirmation (with autonomous-mode git checkpoints), no silent renames, validate-after-edit, protected sections (power section locked), documentation sync, and no autonomous manufacturing outputs.
+
+**Custom subagent profiles** (`.devin/agents/`):
+- `kicad-inspector` — read-only inspection (DRC/ERC, BOM, netlist). Model: GLM-5.2 High (free, 200k context). Safe to parallelize.
+- `kicad-author` — write-capable schematic/PCB edits. Model: GLM-5.2 High. `max-nesting: 2` (can spawn a kicad-inspector child to validate its own work). Plans before implementing; stops and reports back for consequential changes unless explicitly autonomous.
+
+**Skills** (`.devin/skills/`): `/kicad-checkpoint` (git rollback point), `/kicad-review` (DRC/ERC + inspection), `/kicad-schematic-edit` (governed .kicad_sch writes), `/kicad-pcb-edit` (governed .kicad_pcb writes), `/kicad-bom` (BOM generation + cross-check against `docs/bom.md`). All invocable by user (`/name`) and model (when relevant).
+
+See `docs/project-log.md` 2026-07-22 KiCad Studio Kit + kicad-mcp-pro Setup entry for full rationale.

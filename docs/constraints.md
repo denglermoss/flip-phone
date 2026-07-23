@@ -161,9 +161,20 @@
 - User has: microcontroller experience, simple PCB design, soldering.
 - User needs to learn (or deepen): RF PCB layout, cellular AT command protocols, audio circuits, power management for RF loads. Mechanical/CAD for enclosure deferred.
 - **Tools needed**:
-  - KiCad (free, open-source PCB EDA)
+  - KiCad (free, open-source PCB EDA) — KiCad 10.0 installed at `C:\Users\dengle\AppData\Local\Programs\KiCad\10.0\`
   - 3D CAD for enclosure (FreeCAD, Fusion 360)
   - Oscilloscope (helpful for debugging audio/UART)
   - Soldering iron (have), possibly hot air station for SMD
   - Multimeter (have, presumably)
   - Logic analyzer (cheap USB ones work fine for UART/SPI debugging)
+
+## AI-Assisted KiCad Editing Constraints (set up 2026-07-22)
+
+The `kicad-mcp-pro` MCP server (profile `agent_full`, mode `write`) gives the AI agent write access to `.kicad_sch` / `.kicad_pcb` files. This access is governed by a ruleset — the user owns all design decisions; the AI implements, verifies, and explains.
+
+- **Governance rules**: `pcb/AGENTS.md` (13 rules, loaded lazily when working in `pcb/`). Key constraints: clean git tree before changes, read-before-write, consequential-change confirmation (with autonomous-mode git checkpoints), no silent renames, validate-after-edit (ERC/DRC), protected sections (power section locked), documentation sync, no autonomous manufacturing outputs.
+- **Subagent profiles**: `kicad-inspector` (read-only, GLM-5.2 High) and `kicad-author` (write-capable, GLM-5.2 High, `max-nesting: 2`). Authors must plan before implementing and stop for consequential changes unless explicitly autonomous. Subagents can't ask the user questions — they report back.
+- **Git safety**: Autonomous work requires checkpoint commits before edits. Never commit without user approval. Never force-push.
+- **Protected sections**: Power section is locked (schemed + reviewed 2026-07-22). Any change requires explicit approval + project-log rationale. Other sections become protected as reviewed.
+- **MCP server availability**: The `kicad` MCP server is available to Devin sessions starting after the config edit (auto-imported from `~/.codeium/windsurf/mcp_config.json` at session start). If the server is missing or incompatible, KiCad-only features (viewers, manual CLI) still work but AI tools are disabled.
+- **Model flag caveat**: Subagent profiles pin `model: glm-5-2-high` (GLM-5.2 High, free tier, 200k context). This flag name is a best guess — verify via `/model` if subagents fail to spawn, and update the AGENT.md files if needed.
