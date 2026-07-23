@@ -420,32 +420,23 @@
         "filename": "phone.kicad_sch",
         "name": "power",
         "uuid": "451c3b43-1616-42cb-bf96-d436f4db82c2"
-      },
-      {
-        "filename": "main.kicad_sch",
-        "name": "main",
-        "uuid": "62994620-c56d-480f-878e-e2de9b229025"
       }
     ],
-    "used_designators": "CN1,#PWR1-29,D1,L1,U1-4,USBC1,C1-11,R1-7,LED1",
+    "used_designators": "CN1,#PWR1-29,D1,L1,U1-4,U8,USBC1,C1-11,C31-32,R1-7,R11,LED1",
     "variants": []
   },
   "sheets": [
-    [
-      "62994620-c56d-480f-878e-e2de9b229025",
-      "main"
-    ],
     [
       "451c3b43-1616-42cb-bf96-d436f4db82c2",
       "power"
     ],
     [
-      "4afb99ca-f7d2-406b-a144-c590f24ede5b",
-      "modem_mpcie"
+      "d692f43a-094c-48db-863f-ce7b80cfd81e",
+      "MCU"
     ],
     [
-      "7349921a-b3f3-4f7d-bdec-84fa69967eba",
-      "modem_lga"
+      "2b7de758-71cc-4198-8a01-5d2c6e01f5f1",
+      "Modem"
     ]
   ],
   "text_variables": {},

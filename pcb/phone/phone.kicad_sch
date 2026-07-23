@@ -12091,27 +12091,100 @@
 		)
 	)
 	(sheet
+		(at 254 250.19)
+		(size 30.48 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "2b7de758-71cc-4198-8a01-5d2c6e01f5f1")
+		(property "Sheetname" "Modem"
+			(at 254 249.19 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "modem.kicad_sch"
+			(at 254 271.19 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
 		(at 254 200)
 		(size 55 25)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
 		(fields_autoplaced yes)
-		(stroke (width 0.1524) (type solid) (color 0 0 0 0))
-		(fill (type none) (color 0 0 0 0))
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
 		(uuid "d692f43a-094c-48db-863f-ce7b80cfd81e")
 		(property "Sheetname" "MCU"
 			(at 254 199 0)
-			(effects (font (size 1.27 1.27)) (justify left bottom))
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
 		)
 		(property "Sheetfile" "mcu.kicad_sch"
 			(at 254 226 0)
-			(effects (font (size 1.27 1.27)) (justify left top))
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
+					(page "2")
+				)
+			)
 		)
 	)
 	(sheet_instances
-		(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
+		(path "/"
 			(page "1")
-		)
-		(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/d692f43a-094c-48db-863f-ce7b80cfd81e"
-			(page "2")
 		)
 	)
 	(embedded_fonts no)
