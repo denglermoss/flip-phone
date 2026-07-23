@@ -1,0 +1,2 @@
+Found 114 violations
+Saved ERC Report to erc_test5.txt

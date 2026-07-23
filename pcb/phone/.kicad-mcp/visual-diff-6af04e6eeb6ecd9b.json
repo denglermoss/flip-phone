@@ -1,0 +1,38 @@
+{
+  "status": "ready",
+  "schematic_path": "C:\\Users\\dengle\\Documents\\personal_projects\\phone\\pcb\\phone\\modem.kicad_sch",
+  "before_snapshot": "C:\\Users\\dengle\\Documents\\personal_projects\\phone\\pcb\\phone\\.kicad-mcp\\visual-diff-6af04e6eeb6ecd9b-before.kicad_sch",
+  "before_sha256": "942a9e850edd820aacbe119880a9476de564ae9c37e4463186affc5d27367926",
+  "after_sha256": "bf38914a49641c203e5eb39b184204c9fe860f4367ab9f5b4264289466948a14",
+  "changed_objects": [
+    {
+      "id": "symbol:R11:unit=1",
+      "kind": "symbol",
+      "change": "added",
+      "before": null,
+      "after": {
+        "kind": "symbol",
+        "lib_id": "passives:RC0603JR-0710KL",
+        "reference": "R11",
+        "value": "10k",
+        "footprint": "",
+        "properties": {
+          "Reference": "R11",
+          "Value": "10k",
+          "Footprint": "",
+          "Datasheet": "~"
+        },
+        "dnp": false,
+        "in_bom": true,
+        "x": 165.1,
+        "y": 85.09,
+        "rotation": 0,
+        "unit": 1
+      }
+    }
+  ],
+  "changed_refs": [
+    "R11"
+  ],
+  "changed_nets": []
+}

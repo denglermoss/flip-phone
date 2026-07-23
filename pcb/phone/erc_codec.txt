@@ -1,0 +1,474 @@
+ERC report (2026-07-23T13:41:05, Encoding UTF8)
+Report includes: Errors, Warnings
+
+***** Sheet /
+[power_pin_not_driven]: Input Power pin not driven by any Output Power pins
+    ; error
+    @(36.83 mm, 46.99 mm): Symbol #PWR2 Pin 1 [Power input, Line]
+[power_pin_not_driven]: Input Power pin not driven by any Output Power pins
+    ; error
+    @(52.07 mm, 153.67 mm): Symbol #PWR16 Pin 1 [Power input, Line]
+[pin_to_pin]: Pins of type Power output and Power output are connected
+    ; error
+    @(81.28 mm, 153.67 mm): Symbol U6 Pin 3 [VBAT, Power output, Line]
+    @(81.28 mm, 156.21 mm): Symbol U6 Pin 4 [VBAT, Power output, Line]
+[pin_to_pin]: Pins of type Power output and Power output are connected
+    ; error
+    @(118.11 mm, 36.83 mm): Symbol U4 Pin 4 [VOUT, Power output, Line]
+    @(118.11 mm, 34.29 mm): Symbol U4 Pin 5 [VOUT, Power output, Line]
+[power_pin_not_driven]: Input Power pin not driven by any Output Power pins
+    ; error
+    @(118.11 mm, 44.45 mm): Symbol U4 Pin 1 [VINA, Power input, Line]
+[pin_to_pin]: Pins of type Power output and Power output are connected
+    ; error
+    @(194.31 mm, 38.10 mm): Symbol U5 Pin 5 [OUT, Power output, Line]
+    @(167.94 mm, 152.86 mm): Symbol U3 Pin 22 [CPVEE, Power output, Line]
+[lib_symbol_mismatch]: Symbol 'XFL4020-152MEC' doesn't match copy in library 'passives'
+    ; warning
+    @(104.14 mm, 17.78 mm): Symbol L1 [XFL4020-152MEC]
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(172.72 mm, 101.60 mm): Global Label 'MCU_MODEM_PWR_EN'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(172.72 mm, 175.26 mm): Global Label 'VBUS_SENSE'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(195.58 mm, 193.04 mm): Global Label 'DISP_SCK'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(208.28 mm, 78.74 mm): Global Label 'DISP_MOSI'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(210.82 mm, 78.74 mm): Global Label 'DISP_CS'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(213.36 mm, 78.74 mm): Global Label 'DISP_DC'
+[lib_symbol_mismatch]: Symbol 'STM32H743ZIT6' doesn't match copy in library 'ics'
+    ; warning
+    @(231.14 mm, 134.62 mm): Symbol U1 [STM32H743ZIT6]
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(233.68 mm, 78.74 mm): Global Label 'OUTER_DC'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(236.22 mm, 78.74 mm): Global Label 'OUTER_CS'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(238.76 mm, 193.04 mm): Global Label 'KEY_ROW0'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(241.30 mm, 193.04 mm): Global Label 'KEY_ROW1'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(243.84 mm, 193.04 mm): Global Label 'KEY_ROW2'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(251.46 mm, 193.04 mm): Global Label 'KEY_ROW3'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(254.00 mm, 193.04 mm): Global Label 'KEY_ROW4'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(256.54 mm, 78.74 mm): Global Label 'SD_CMD'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(256.54 mm, 193.04 mm): Global Label 'KEY_COL0'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(259.08 mm, 193.04 mm): Global Label 'KEY_COL1'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(261.62 mm, 193.04 mm): Global Label 'KEY_COL2'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(264.16 mm, 78.74 mm): Global Label 'SD_CK'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(264.16 mm, 193.04 mm): Global Label 'KEY_COL3'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(266.70 mm, 78.74 mm): Global Label 'SD_D3'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(269.24 mm, 78.74 mm): Global Label 'SD_D2'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(271.78 mm, 78.74 mm): Global Label 'DISP_RST'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(274.32 mm, 78.74 mm): Global Label 'SWCLK'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(287.02 mm, 99.06 mm): Global Label 'SWDIO'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(287.02 mm, 111.76 mm): Global Label 'BL_PWM'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(287.02 mm, 114.30 mm): Global Label 'SD_D1'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(287.02 mm, 116.84 mm): Global Label 'SD_D0'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(76.20 mm, 85.09 mm): Global Label 'USIM_VDD'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(78.74 mm, 85.09 mm): Global Label 'USIM_DATA'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(81.28 mm, 85.09 mm): Global Label 'USIM_CLK'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(83.82 mm, 85.09 mm): Global Label 'USIM_RST'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(86.36 mm, 85.09 mm): Global Label 'USIM_DET'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(111.76 mm, 85.09 mm): Global Label 'MODEM_USB_DN'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(114.30 mm, 85.09 mm): Global Label 'MODEM_USB_DP'
+[isolated_pin_label]: Label connected to only one pin
+    ; warning
+    @(119.38 mm, 85.09 mm): Global Label 'NET_STATUS'
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(56.19 mm, 108.57 mm): Symbol #PWR415 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(56.19 mm, 113.65 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(56.19 mm, 126.35 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(56.19 mm, 131.43 mm): Symbol #PWR414 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(56.19 mm, 138.57 mm): Symbol #PWR417 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(56.19 mm, 143.65 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(56.19 mm, 156.35 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(56.19 mm, 161.43 mm): Symbol #PWR416 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(63.81 mm, 118.73 mm): Horizontal Wire, length 26.19 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(63.81 mm, 118.73 mm): Symbol J_SPK Pin 2 [2, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(63.81 mm, 121.27 mm): Horizontal Wire, length 21.19 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(63.81 mm, 148.73 mm): Horizontal Wire, length 26.19 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(63.81 mm, 148.73 mm): Symbol J_MIC Pin 2 [2, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(63.81 mm, 151.27 mm): Horizontal Wire, length 21.19 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(79.92 mm, 170.00 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(79.92 mm, 170.00 mm): Symbol C33 Pin 1 [1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(79.92 mm, 175.08 mm): Symbol #PWR418 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(85.00 mm, 121.27 mm): Vertical Wire, length 1.11 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(85.00 mm, 122.38 mm): Horizontal Wire, length 27.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(85.00 mm, 145.24 mm): Horizontal Wire, length 27.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(85.00 mm, 151.27 mm): Vertical Wire, length 6.03 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(90.00 mm, 118.73 mm): Vertical Wire, length 6.19 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(90.00 mm, 124.92 mm): Horizontal Wire, length 22.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(90.00 mm, 148.73 mm): Vertical Wire, length 1.59 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(90.00 mm, 150.32 mm): Horizontal Wire, length 22.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(90.08 mm, 164.92 mm): Symbol #PWR419 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(90.08 mm, 170.00 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(94.92 mm, 170.00 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(94.92 mm, 170.00 mm): Symbol C34 Pin 1 [1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(94.92 mm, 175.08 mm): Symbol #PWR420 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(105.00 mm, 109.68 mm): Symbol #PWR404 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(105.00 mm, 109.68 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(105.00 mm, 130.00 mm): Symbol #PWR403 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(105.00 mm, 130.00 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(105.00 mm, 132.54 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(105.00 mm, 132.54 mm): Symbol #PWR402 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(105.00 mm, 152.86 mm): Symbol #PWR401 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(105.00 mm, 152.86 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(105.08 mm, 164.92 mm): Symbol #PWR421 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(105.08 mm, 170.00 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(112.06 mm, 107.14 mm): Symbol U3 Pin 1 [MICVDD, Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 117.30 mm): Horizontal Wire, length 27.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 119.84 mm): Horizontal Wire, length 22.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 122.38 mm): Horizontal Wire, length 17.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 124.92 mm): Horizontal Wire, length 12.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 127.46 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 130.00 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 132.54 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 135.08 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 140.16 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 142.70 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 150.32 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 152.86 mm): Horizontal Wire, length 12.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(167.94 mm, 155.40 mm): Horizontal Wire, length 7.06 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(174.92 mm, 74.92 mm): Symbol #PWR408 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(174.92 mm, 80.00 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(174.92 mm, 80.00 mm): Symbol R12 Pin 1 [1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(175.00 mm, 150.32 mm): Symbol #PWR405 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(175.00 mm, 155.40 mm): Symbol #PWR407 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(180.00 mm, 124.92 mm): Vertical Wire, length 16.51 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(180.00 mm, 141.43 mm): Horizontal Wire, length 27.30 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(180.00 mm, 152.86 mm): Symbol #PWR406 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(185.00 mm, 122.38 mm): Vertical Wire, length 13.97 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(185.00 mm, 136.35 mm): Horizontal Wire, length 22.30 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(185.08 mm, 80.00 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(190.00 mm, 119.84 mm): Vertical Wire, length 13.97 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(190.00 mm, 133.81 mm): Horizontal Wire, length 17.30 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(194.92 mm, 74.92 mm): Symbol #PWR409 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(194.92 mm, 80.00 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(194.92 mm, 80.00 mm): Symbol R13 Pin 1 [1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(195.00 mm, 117.30 mm): Vertical Wire, length 13.97 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(195.00 mm, 131.27 mm): Horizontal Wire, length 12.30 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(200.00 mm, 118.57 mm): Horizontal Wire, length 7.30 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(200.00 mm, 118.57 mm): Symbol #PWR411 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(200.00 mm, 138.89 mm): Symbol #PWR410 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(200.00 mm, 138.89 mm): Horizontal Wire, length 7.30 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(204.92 mm, 170.00 mm): Symbol C35 Pin 1 [1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(204.92 mm, 170.00 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(204.92 mm, 175.08 mm): Symbol #PWR422 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(205.08 mm, 80.00 mm): Horizontal Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(207.30 mm, 131.27 mm): Symbol U9 Pin 6 [A5, Bidirectional, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(215.08 mm, 164.92 mm): Symbol #PWR423 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(215.08 mm, 170.00 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(219.92 mm, 170.00 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(219.92 mm, 170.00 mm): Symbol C36 Pin 1 [1, Passive, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(219.92 mm, 175.08 mm): Symbol #PWR424 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(230.08 mm, 164.92 mm): Symbol #PWR425 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(230.08 mm, 170.00 mm): Vertical Wire, length 5.08 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(232.70 mm, 118.57 mm): Horizontal Wire, length 7.30 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(232.70 mm, 131.27 mm): Horizontal Wire, length 7.62 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(232.70 mm, 133.81 mm): Horizontal Wire, length 7.62 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(232.70 mm, 136.35 mm): Horizontal Wire, length 7.62 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(232.70 mm, 138.89 mm): Horizontal Wire, length 7.30 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(232.70 mm, 141.43 mm): Horizontal Wire, length 7.62 mm
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(240.00 mm, 118.57 mm): Symbol #PWR413 Pin 1 [Power input, Line]
+[endpoint_off_grid]: Symbol pin or wire end off connection grid
+    ; warning
+    @(240.00 mm, 138.89 mm): Symbol #PWR412 Pin 1 [Power input, Line]
+
+***** Sheet /MCU/
+
+***** Sheet /Modem/
+
+***** Sheet /Codec/
+[pin_to_pin]: Pins of type Power output and Power output are connected
+    ; error
+    @(112.06 mm, 109.68 mm): Symbol U3 Pin 2 [MICBIAS1, Power output, Line]
+    @(167.94 mm, 152.86 mm): Symbol U3 Pin 22 [CPVEE, Power output, Line]
+[power_pin_not_driven]: Input Power pin not driven by any Output Power pins
+    ; error
+    @(112.06 mm, 150.32 mm): Symbol U3 Pin 18 [CPVDD, Power input, Line]
+[pin_to_pin]: Pins of type Power output and Power output are connected
+    ; error
+    @(112.06 mm, 152.86 mm): Symbol U3 Pin 19 [CPVPP, Power output, Line]
+    @(118.11 mm, 34.29 mm): Symbol U4 Pin 5 [VOUT, Power output, Line]
+[pin_not_connected]: Pin not connected
+    ; error
+    @(112.06 mm, 155.40 mm): Symbol U3 Pin 20 [CPVREF, Passive, Line]
+[pin_to_pin]: Pins of type Output and Power output are connected
+    ; error
+    @(167.94 mm, 150.32 mm): Symbol U3 Pin 23 [HPO_L, Output, Line]
+    @(167.94 mm, 152.86 mm): Symbol U3 Pin 22 [CPVEE, Power output, Line]
+[power_pin_not_driven]: Input Power pin not driven by any Output Power pins
+    ; error
+    @(232.70 mm, 141.43 mm): Symbol U9 Pin 11 [GND, Power input, Line]
+[no_connect_dangling]: Unconnected "no connection" flag
+    ; warning
+    @(112.06 mm, 104.60 mm): No Connect
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(207.30 mm, 118.57 mm): Symbol U9 Pin 1 [A1, Bidirectional, Line]
+    @(167.94 mm, 152.86 mm): Symbol U3 Pin 22 [CPVEE, Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(207.30 mm, 138.89 mm): Symbol U9 Pin 9 [A8, Bidirectional, Line]
+    @(167.94 mm, 152.86 mm): Symbol U3 Pin 22 [CPVEE, Power output, Line]
+[pin_to_pin]: Pins of type Bidirectional and Power output are connected
+    ; warning
+    @(232.70 mm, 138.89 mm): Symbol U9 Pin 12 [B8, Bidirectional, Line]
+    @(112.06 mm, 152.86 mm): Symbol U3 Pin 19 [CPVPP, Power output, Line]
+
+ ** ERC messages: 149  Errors 12  Warnings 137
+
+ ** Ignored checks:
+    - Global label only appears once in the schematic
+    - Four connection points are joined together
+    - SPICE model issue
+    - Assigned footprint doesn't match footprint filters
