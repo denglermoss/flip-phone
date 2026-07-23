@@ -38,6 +38,7 @@ CONNECTORS = {
     "TYPE-C-31-M-12", "NANOSIMXG6PH1.35", "472192001",
     "U.FL-R-SMT-1", "0.5K-HX-8PWB", "0.5K-HX-12PWB",
     "0.5K-HX-14PWB", "S2B-PH-SM4-TB",
+    "PCIE-52P40H_C444926",
 }
 
 ELECTROMECH = {
@@ -86,6 +87,7 @@ DESCRIPTIONS = {
     "0.5K-HX-12PWB": "12-pin 0.5mm FPC connector",
     "0.5K-HX-14PWB": "14-pin 0.5mm FPC connector",
     "S2B-PH-SM4-TB": "JST-PH 2-pin battery conn",
+    "PCIE-52P40H_C444926": "Mini PCIe socket 52-pin SMD",
     # Electromech
     "SKQGABE010": "Tactile switch 5.2mm SMD",
     "ECS-80-12-33Q-GN-TR": "8MHz crystal SMD3225",

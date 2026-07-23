@@ -254,7 +254,11 @@
   "libraries": {
     "pinned_footprint_libs": [],
     "pinned_symbol_libs": [
-      "easyeda2kicad"
+      "easyeda2kicad",
+      "connectors",
+      "passives",
+      "ics",
+      "electromech"
     ]
   },
   "meta": {
@@ -414,17 +418,34 @@
     "top_level_sheets": [
       {
         "filename": "phone.kicad_sch",
-        "name": "phone",
+        "name": "power",
         "uuid": "451c3b43-1616-42cb-bf96-d436f4db82c2"
+      },
+      {
+        "filename": "main.kicad_sch",
+        "name": "main",
+        "uuid": "62994620-c56d-480f-878e-e2de9b229025"
       }
     ],
-    "used_designators": "CN1,#PWR1-23,D1,L1,U1-4,USBC1,C1-11,R1-7,LED1",
+    "used_designators": "CN1,#PWR1-29,D1,L1,U1-4,USBC1,C1-11,R1-7,LED1",
     "variants": []
   },
   "sheets": [
     [
+      "62994620-c56d-480f-878e-e2de9b229025",
+      "main"
+    ],
+    [
       "451c3b43-1616-42cb-bf96-d436f4db82c2",
-      "phone"
+      "power"
+    ],
+    [
+      "4afb99ca-f7d2-406b-a144-c590f24ede5b",
+      "modem_mpcie"
+    ],
+    [
+      "7349921a-b3f3-4f7d-bdec-84fa69967eba",
+      "modem_lga"
     ]
   ],
   "text_variables": {},

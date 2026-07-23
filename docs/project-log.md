@@ -854,6 +854,109 @@ User preference: **hinged** sockets (not push-push) — hinged lids open upward,
 - **Tooling scripts added**: `rebuild_lib.py` (transformation script — reads source libs, fixes pin types/names/descriptions/footprint prefixes, writes 4 split libs), `extract_pins.py` (audit — lists all pins with types per symbol), `verify_lib.py` (verification — counts pin types and ki_descriptions), `update_sch_refs.py` (updates schematic symbol references to new library names).
 - **Docs updated**: `pcb/PARTS_TRACKING.md` (library location section rewritten for 4-lib structure), `docs/project-log.md` (this entry + progress-tracking row).
 
+### 2026-07-22: Modem Sourcing + Assembly Approach + MPCIe Form Factor Evaluation
+
+- **Context**: User received broker quotes for SIM7600NA-H bare modules and asked for advice on suppliers, assembly approach, and whether an MPCIe socketed module could eliminate the LGA reflow risk. This was a multi-topic session covering sourcing, PCBA cost estimation, DIY assembly feasibility, and a form factor pivot evaluation.
+
+- **JLC price correction**: The docs recorded SIM7600NA-H at $31.42 (JLC pre-order, from 2026-07-19). User reports the **current JLC price is $59.00/ea** with 8-day lead time. The $31.42 was stale. This changes the cost comparison significantly — brokers are now substantially cheaper than JLC.
+
+- **Broker quotes received (3 pcs each)**:
+  | Supplier | Unit | 3-pc total | Lead time | Date code | Shipping | Notes |
+  |----------|------|-----------|-----------|-----------|----------|-------|
+  | JLC pre-order (current) | $59.00 | $177.00 | 8 days | current | none (stays at JLC) | Integrated with PCBA |
+  | UniKey | $35.00 | $105.00 | 5–8 working days | DC 26+ (newer) | EXW Hong Kong (you arrange DHL/UPS/FedEx) | "New & Original", limited stock |
+  | Worldway (Sally Cheng) | $41.00 | $123.00 | 3–4 days | DC 23+ (older) | not stated | "New & Original" |
+
+- **Assembly approach decision (preliminary)**: User leaning toward **full DIY assembly** — no JLC PCBA. Rationale: (1) learning is a project goal; (2) eliminates JLC fees (~$85 fixed); (3) only 1 board needed (no MOQ 2 if not using JLC PCBA); (4) the riskiest part (LGA reflow) may be solved by MPCIe. Plan: buy 1 modem module + 2–3 board quantity of everything else (spares for DIY mistakes). Tools needed: reflow oven (T-962 ~$150) + preheater ($50-100) + stencil ($20-40) + solder paste ($15-30) + USB microscope ($30-50) + hot-air station ($50-100). Total one-time tool investment ~$250-400.
+
+- **2-sided board reality**: Phone layout requires 2-sided PCB — keypad on one face, components on the other. Top (heavy): modem, MCU, codec, connectors, large caps. Bottom (light): ~20 ALPS keypad switches + small passives. DIY sequence: JLC fab ships bare board → user stencils + populates + reflows bottom (easy parts, surface tension holds) → flips → stencils + populates + reflows top. If using MPCIe socket, the socket is through-hole on top — iron-solderable, no reflow needed for the modem.
+
+- **MPCIe form factor evaluation — SIM7600NA-H-PCIE**:
+  - **Discovery**: SIMCom makes the SIM7600NA-H in Mini PCIe form factor (`SIM7600NA-H-PCIE`, SIMCom ordering code `S2-109KS-Z30G9`). Techship (Sweden) has ~4 in stock at ~$50/ea. Firmware: `LE20B01SIM7600NA_210506` (same LE20 branch as the HAT's LE20B02 — VoLTE validated).
+  - **Verified from SIMCom H-PCIE spec sheet**: NA-H-PCIE has B71 ✅, B66 ✅, VoLTE ✅, GNSS ✅, PCM ✅ (listed as "o" = supported). Same RF bands as the LGA NA-H. Dimensions: 50.8×31×5.35mm (vs LGA 30×30×1.5mm).
+  - **PCM on edge connector**: SIM7600 Series PCIE Hardware Design V1.03 (2020, covers G-H) documents PCM on MPCIe pins 45 (PCM_CLK), 47 (PCM_OUT), 49 (PCM_IN), 51 (PCM_SYNC) — same PCM spec as LGA (master mode, short sync, 16-bit, 2048kHz). Note: "The PCM interface cannot be used if Audio Codec chip is mounted on PCIE board" — i.e. PCIE variant (no onboard codec) exposes PCM; PCIEA variant (onboard NAU8810) uses analog audio instead. The NA-H-PCIE (not PCIEA) is the PCM variant. The E-H-PCIE V1.01 manual (2022) shows pins 45/47/49/51 as NC for the E-H variant specifically — but the H-PCIE spec sheet lists PCM: o for NA-H-PCIE, and the V1.03 manual (covering G-H) has PCM. **PCM presence on NA-H-PCIE needs final confirmation** from Techship or the NA-H-PCIE-specific manual before purchasing.
+  - **PCIE vs PCIEA distinction (critical)**: PCIE = no onboard codec, PCM digital audio on edge connector (what we want). PCIEA = onboard NAU8810 codec, analog audio out (breaks ALC5651 architecture). Part number `S2-109KS-Z30G9` ends in PCIE (not PCIEA) — should be the PCM variant. Confirm with Techship.
+  - **MPCIe socket options**: Amphenol G633A0520022YEU (LCSC C357792, 1,589 in stock, 0.8mm pitch, right-angle SMD); SOFNG PCIE-52P40H (LCSC C444926, 3,039 in stock, 4mm height); JLC has generic MPCIe sockets (C9900004522, C9900012606). Socket is ~$2-5, through-hole or SMD, iron-solderable.
+  - **What changes if MPCIe is adopted**: Schematic swaps LGA footprint for MPCIe edge connector. Same signals (UART, USB, PCM, USIM, power, PWRKEY/STATUS→PERST#/LED_WWAN#) route through edge connector pins. Firmware unchanged (same AT commands, same PCM interface). Audio architecture unchanged (ALC5651 + PCM from modem + I2S from MCU). Board grows ~21mm in length + ~5mm in height. Modem becomes swappable (no reflow, no respin to replace/upgrade).
+  - **What stays the same**: MCU, codec, power, display, keypad, all passives. Firmware. Audio path. B71 coverage. VoLTE. T-Mobile/Mint compatibility.
+
+- **DIY assembly difficulty tiers (full board, ~130 placements)**:
+  - **Easy** (iron or basic hot-air): ALPS switches (20), 0603/0805 passives (~80), LEDs (3), U.FL (2), USBLC6/ESDA6V1 (2), TPS7A0218 (1), crystal (1)
+  - **Medium** (reflow or skilled hot-air, inspectable): STM32H743 LQFP-144 (1), TXB0108/TXB0104 (2), USB-C/SIM/microSD connectors (3), battery connector (1), MCP73831 DFN-8 (1), MAX17048 TDFN-8 (1), mic (1)
+  - **Hard** (reflow + stencil + preheater): ~~SIM7600NA-H LGA 119-pin~~ → **eliminated if MPCIe adopted** (socket instead); ALC5651 QFN-40 (1); TPS63021 VSON-14 (1); FPC connectors J7-J10 0.5mm pitch (4)
+
+- **Cost comparison (1 board, DIY assembly)**:
+  | Approach | Modem | Other parts | Tools (one-time) | Total |
+  |----------|-------|-------------|------------------|-------|
+  | LGA + JLC PCBA (2-board MOQ) | $118 (2×$59) | ~$73 | $0 | ~$276 + JLC fees ~$85 = ~$361 |
+  | LGA + DIY reflow (1 board) | $35-59 (1× UniKey/JLC) | ~$40 | ~$300 | ~$375-400 (first board, tools amortized) |
+  | **MPCIe + DIY (1 board)** | **~$50 (1× Techship)** | **~$40** | **~$300** | **~$390 (first board, tools amortized)** |
+
+  MPCIe + DIY is comparable in first-board cost to LGA + DIY, but eliminates the LGA reflow risk. Second board (if needed) drops to ~$90 (parts only, tools already owned).
+
+- **Open items before committing to MPCIe**:
+  1. **Confirm PCM on NA-H-PCIE edge connector** — ask Techship: "Does S2-109KS-Z30G9 expose PCM on pins 45/47/49/51? Is this the PCIE variant (PCM digital audio) or PCIEA (analog audio)?"
+  2. **Download NA-H-PCIE specific hardware design manual** (if it exists separately from the E-H-PCIE manual) — for the exact edge connector pinout
+  3. **Confirm Techship stock + shipping to US** — 4 in stock, need to verify they'll ship 1 pc
+  4. **MPCIe socket selection** — Amphenol C357792 vs SOFNG C444926 vs JLC generic; check footprint availability for KiCad
+  5. **Board size impact** — 50.8×31mm modem + socket vs 30×30mm LGA; verify it fits the flip phone base layout
+
+- **No decisions locked yet** — this session was evaluation/advisory. User owns the decision on: (a) LGA vs MPCIe, (b) JLC PCBA vs DIY, (c) which modem supplier. Docs updated to record the findings and open items. The locked modem decision (SIM7600NA-H, B71, PCM, VoLTE) is unchanged — only the form factor (LGA vs MPCIe) and assembly method are under evaluation.
+
+- **Docs updated**: `docs/project-log.md` (this entry), `docs/bom.md` (JLC price correction + broker quotes + MPCIe option), `docs/constraints.md` (assembly approach + MPCIe option).
+
+### 2026-07-22: Board Size Estimate — MPCIe Variant
+
+- **Context**: Quick first-pass board size estimate for the MPCIe modem variant (SIM7600NA-H-PCIE, 50.8×31×5.35mm card + Amphenol G633A0520022U socket, ~54×32mm keepout). Informs the still-open MPCIe vs LGA decision (open item #5 above).
+- **Method**: Summed actual component footprint areas from BOM/constraints data, split top/bottom placement on a 2-sided 4-layer board, applied packing factor for routing/keepouts/ground planes. Verified against PinePhone (~100×55mm with EG25-G LGA + A64 BGA) as a sanity check.
+- **First-pass estimate (conservative)**: ~100×65mm main board. This was too conservative — assumed most components on top, keypad on bottom only.
+- **Revised estimate (aggressive 2-sided)**: ~55×78mm main board (~4300mm²) by stacking MPCIe + keypad on top (they share the 54mm width), and moving MCU + most ICs + loudspeaker + bulk caps to the bottom (under keypad zone and around MPCIe pin keepout). Display daughterboard unchanged at ~55×42mm.
+- **User target**: **Under 2×3 inches (~50×76mm, ~3800mm²)** with a more comfortable layout. Believes the aggressive estimate still has slack — more components can move to the bottom, layout can be tighter.
+- **Status**: Not recalculated — deferred to layout time in KiCad. Recorded as a target to revisit: **main board < 2×3 inches**. The MPCIe modem is the largest single block (54×32mm keepout), so the board cannot be smaller than ~54mm in one dimension unless the modem is rotated or the keypad is split around it.
+- **Height note (free data point)**: MPCIe socket+card stackup is ~10.5mm (5mm socket + 5.35mm card) — the tallest point on the board. vs LGA modem at 1.5mm + shield. The modem end of the base will be ~12-13mm thick with enclosure walls; keypad end ~7mm. A tapered base would feel natural.
+- **No decisions locked** — estimate only. Will revisit once layout starts in KiCad and actual placement reveals the real constraint.
+
+### 2026-07-22: MPCIe PCM Verified + SMT Socket Correction + Try-Both-in-Layout Decision
+
+- **Context**: Follow-up to the MPCIe evaluation session. User directed: (1) use a surface-mount MPCIe socket (not through-hole — I had incorrectly characterized MPCIe sockets as through-hole only); (2) continue PCB work and try both modem footprints (MPCIe + bare LGA) in KiCad layout before locking the form factor. User provided the SIM7600 Series PCIE Hardware Design V1.03 PDF for verification.
+
+- **PCM on PCIE edge connector — CONFIRMED from V1.03 manual** (not just "likely"):
+  - §2.2 Pin Description (p14): "PCM interface (Only supported at SIM7600 Series-PCIE, these are NC pins for SIM7600 Series-PCIEA product)" — Pin 45=PCM_CLK (O), Pin 47=PCM_OUT (O), Pin 49=PCM_IN (I), Pin 51=PCM_SYNC (O). Note: "The PCM interface cannot be used if Audio Codec chip is mounted on PCIE board."
+  - §3.10.1 PCM Interface (p29): "SIM7600 Series-PCIE provides hardware PCM interface for external codec. SIM7600 Series-PCIE PCM interface can be used in short sync master mode only, and only supports 16 bits linear format." Table 13: Linear, 16-bit, Master Mode, 2048kHz, Short sync, MSB. Table 14: 1.8V DC characteristics (VIH 1.17–2.1V, VOH 1.35–1.8V).
+  - **This is an exact match to ALC5651 §7.5.1 PCM Mode A** (short sync, 16-bit, 2048kHz) and to the bare LGA SIM7600 PCM spec. The MPCIe variant is functionally identical for our audio architecture.
+  - **Document ambiguity (p15)**: The NC pin list includes "6,23,25,28,31,33,45,47,48,49,51" — the same pins listed as PCM in §2.2. This NC list is for the **PCIEA variant** (where the onboard codec makes PCM NC). The document covers both PCIE and PCIEA in one table. For the PCIE variant (S2-109KS-Z30G9), pins 45/47/49/51 are PCM. Still worth confirming with Techship, but the manual is clear.
+  - **Open item #1 from the previous session (confirm PCM with Techship) is substantially de-risked** — the V1.03 manual explicitly documents PCM on the PCIE variant. Techship confirmation is now a nice-to-have, not a blocker.
+
+- **SMT MPCIe socket correction**: I incorrectly stated MPCIe sockets are through-hole (iron-solderable). In reality, **all MPCIe socket options on LCSC are SMD** (0.8mm pitch, right-angle, surface mount). They reflow with the rest of the board — no iron work, no separate assembly step. This makes MPCIe even more attractive on the assembly axis: the socket is just another SMD part for the reflow pass.
+  - **Socket options (all SMD, 0.8mm pitch, right-angle)**:
+    | Part | LCSC | Stock | Height | Notes |
+    |------|------|-------|--------|-------|
+    | Amphenol G633A0520022U | C357792 | 1,589 | ~5mm | Name-brand, well-documented |
+    | SOFNG PCIE-52P40H | C444926 | 3,039 | 4mm | "With column", lower profile |
+    | Hanbo PCI-E-H52-52P | C3039346 | — | — | Budget option |
+    | JLC generic | C9900027618 | — | 5.2mm | **JLC basic part** — no extended fee if going JLC PCBA |
+
+- **Additional findings from V1.03 manual (differences from bare LGA)**:
+  1. **Onboard SIM socket** (§3.7 p23): "SIM7600 series PCIE modules provide SIM socket on board product, so the external socket can be saved." If the NA-H-PCIE has an onboard SIM slot, **no SIM socket needed on our PCB** — saves space + a component. Needs Techship confirmation (may be variant-specific).
+  2. **UART is 1.8V** (§3.8 Table 11 p26) — same as bare LGA. Level shifter (TXB0108 or similar) needed either way for 3.3V MCU. No difference between form factors.
+  3. **Pin mapping differs from bare LGA**: MPCIe uses standard Mini PCIe control pins — PERST# (pin 22, reset active-low), WAKE# (pin 1, wake host interrupt), W_DISABLE# (pin 20, RF disable), LED_WWAN# (pin 42, network status LED). **No PWRKEY pin** — the MPCIe card likely auto-powers on VCC application or has its own power button. This is a key difference to verify with Techship: how is the module powered on/off?
+  4. **I2C at 1.8V** (§3.9 p28) — SDA/SCL pulled up to 1.8V via 2.2KΩ in-module. Note: "Since the I2C is connected to the audio codec chip on board, the users should choose the I2C device whose address is not the same with the audio codec (0x34). If the audio codec chip is not mounted on board, users could ignore this." — Confirms PCIE = no codec, PCIEA = codec at 0x34.
+  5. **USB 2.0 HS** (§3.6 p22) — same as bare LGA. USB_DN/USB_DP on pins 36/38. VBUS connected to VBAT internally (no external VBUS needed). 90Ω±10% differential impedance routing required.
+
+- **Decision: try both in layout** — user directed to continue PCB work and evaluate both footprints (MPCIe edge connector + bare LGA) in KiCad layout before locking the form factor. This directly resolves the "deferred to KiCad layout for real numbers" item from the board size estimate. No form factor locked yet — the locked decision (SIM7600NA-H, B71, PCM, VoLTE) is unchanged; only the package (LGA vs MPCIe) is under evaluation.
+
+- **PDF added to reference**: `SIM7600_Series_PCIE_Hardware_Design_V1.03.pdf` copied to `docs/reference/` and indexed in `docs/reference/README.md`.
+
+- **Docs updated**: `docs/reference/README.md` (PDF index), `docs/project-log.md` (this entry), `docs/constraints.md` (MPCIe section: SMT socket, PCM confirmed, onboard SIM, pin mapping, 1.8V UART), `docs/bom.md` (MPCIe socket options updated — all SMT, JLC basic part added).
+
+- **Remaining open items for MPCIe**:
+  1. ~~Confirm PCM on NA-H-PCIE edge connector~~ — **substantially confirmed** from V1.03 manual. Techship confirmation is now a nice-to-have.
+  2. **Confirm onboard SIM socket** on NA-H-PCIE with Techship — saves a PCB component if present.
+  3. **Confirm PWRKEY equivalent** — how is the MPCIe module powered on/off? No PWRKEY pin on the edge connector.
+  4. **Confirm Techship stock + shipping to US** — 4 in stock, verify 1pc shipment.
+  5. **MPCIe socket selection** — Amphenol C357792 vs SOFNG C444926 vs JLC basic C9900027618; KiCad footprint availability.
+  6. **Board size impact** — deferred to KiCad layout (this session's "try both" approach).
+
 ## Phase Breakdown & Effort Estimate
 
 ### Phase 1: Research & Component Selection (~2-3 weeks, part-time)
@@ -989,3 +1092,6 @@ User preference: **hinged** sockets (not push-push) — hinged lids open upward,
 | 2026-07-21 | **All remaining power open questions resolved (PG, EN, ALRT, I2C, R_PROG).** 5 decisions locked in one batch: (1) TPS63021 PG → wire to MCU (EXTI + 10kΩ pullup, net `PG_3V3`) — there's a ~1.2V window between PG threshold (~2.97V) and MCU BOR (~1.7V) where the MCU can take defensive action; (2) TPS7A02 EN → tie to IN (always-on) — ALC5651 datasheet says cutting 1.8V causes leakage, standby is handled via I2C registers not rail cutting; (3) MAX17048 ALRT → wire to MCU (EXTI + 10kΩ pullup, net `ALRT_BATT`) — low-SOC warning, undervoltage safety shutdown, overvoltage charger-runaway detection; (4) I2C address conflict → NO conflict (MAX17048 = 0x36, ALC5651 = 0x1A, verified from both datasheets); (5) R_PROG = 2kΩ (500mA = 0.42C on 1200mAh LiPo, USB 2.0 standard port match). All 7 open questions from the 2026-07-21 power session now resolved. See project-log.md 2026-07-21 Remaining Power Open Questions. | Done |
 | 2026-07-22 | **Power schematic review: ERC + datasheet verification + doc fixes.** Reviewed completed power schematic using KiCad ERC (98 violations — mostly easyeda2kicad symbol pin types, not hardware issues), netlist export, and datasheet verification via PDF MCP (TPS63021, MCP73831, MAX17048, USBLC6-2). Two parallel subagents reviewed block-diagram consistency + power architecture. Cross-checked all findings against datasheets — 2 subagent "CRITICAL" findings were wrong (they trusted docs over schematic). **Fixed**: C1 PG pull-up rail (+BATT→+3.3V, overvoltage risk — user fixed in KiCad). **Deferred to MCU section**: C2 I2C pull-ups, VBUS sense divider. **Deferred to modem section**: C3 modem VBAT bulk caps (100–470µF). **Doc fixes**: M1 MCP73831 pinout (was wrong in docs, schematic was correct), M2 STAT behavior (was inverted in docs, LED circuit was correct), M4/M5 net names (+BATT/+3.3V) + ref designators (USBC1→J1, CN1→J_BATT, D1→U10 in KiCad) + signal names (3V3_OK, FUEL_ALERT). All IC pinouts, decoupling, charge current, buck-boost config, ESD protection, USB-C wiring verified correct per datasheets. See project-log.md 2026-07-22 Power Schematic Review. | Done |
 | 2026-07-22 | **KiCad symbol library rebuild: pin types + descriptions + split into 4 libs.** All 38 symbols had incorrect pin types (`unspecified`/`input` from easyeda2kicad auto-generation) causing 98 ERC violations. Fixed all ~400 pin electrical types (datasheet-verified for power/NC pins, conventions for signals): 195 bidirectional, 102 power_in, 33 input, 29 passive, 18 no_connect, 17 output, 11 power_out, 3 open_collector. Added `ki_description` property (<20 char) to all 38 symbols. Split single `easyeda2kicad.kicad_sym` into 4 categorized libraries: `passives` (16), `ics` (12), `connectors` (8), `electromech` (2). Merged 13 missing symbols (S2B-PH-SM4-TB, 3 caps, 8 resistors, 1 ferrite bead). Updated `sym-lib-table` + 46 schematic references. Removed old `easyeda2kicad.kicad_sym`, `missing_parts.kicad_sym`, superseded MAX9880A `ultralibrarian.kicad_sym` + footprints. See project-log.md 2026-07-22 Library Rebuild. | Done |
+| 2026-07-22 | **Modem sourcing + assembly approach + MPCIe form factor evaluation.** JLC price corrected: $59/ea (was $31.42 in docs — stale). Broker quotes: UniKey $35/ea (DC 26+, 5-8d), Worldway $41/ea (DC 23+, 3-4d). User leaning toward full DIY assembly (1 board, 2-3 qty parts, no JLC PCBA). Evaluated SIM7600NA-H-PCIE (MPCIe, Techship ~$50, S2-109KS-Z30G9, LE20B01 firmware) — has B71+B66+VoLTE+GNSS, spec sheet lists PCM: o. MPCIe socket eliminates LGA reflow (hardest DIY step). PCM on edge connector likely present (V1.03 manual shows pins 45/47/49/51 = PCM_CLK/OUT/IN/SYNC for Series PCIE; E-H-PCIE V1.01 shows NC — variant difference). **Open: confirm PCM on NA-H-PCIE with Techship before buying.** No decisions locked — evaluation session. See project-log.md 2026-07-22 MPCIe evaluation. | In Progress |
+| 2026-07-22 | **Board size estimate (MPCIe variant).** First-pass: ~100×65mm (conservative). Revised: ~55×78mm (aggressive 2-sided, MCU on bottom under keypad). **User target: < 2×3 inches (~50×76mm).** Deferred to KiCad layout for real numbers. See project-log.md 2026-07-22 Board Size Estimate. | Done |
+| 2026-07-22 | **MPCIe PCM verified from V1.03 manual** (pins 45/47/49/51, master/short-sync/16-bit/2048kHz = ALC5651 PCM Mode A). SMT socket correction (all MPCIe sockets are SMD, not TH). Additional findings: onboard SIM socket (§3.7), 1.8V UART (same as LGA), no PWRKEY pin (TBD how MPCIe powers on). "Try both in layout" decision — continue PCB work, evaluate both MPCIe + LGA footprints in KiCad before locking form factor. PCIE Hardware Design V1.03 PDF added to `docs/reference/`. | In Progress |
