@@ -1184,7 +1184,7 @@
 		)
 		(wire
 			(pts
-				(xy 133.81 109.68) (xy 133.81 104.60)
+				(xy 133.81 108.41) (xy 133.81 104.60)
 			)
 			(stroke
 				(width 0)
@@ -1194,7 +1194,7 @@
 		)
 		(wire
 			(pts
-				(xy 133.81 151.59) (xy 133.81 156.67)
+				(xy 133.81 150.32) (xy 133.81 156.67)
 			)
 			(stroke
 				(width 0)
@@ -2123,8 +2123,6 @@
 			(pin "12" (uuid "8c8d1ff1-954e-4d3f-bcd6-76494b5f4944"))
 			(pin "13" (uuid "8af5c83e-6d62-4f0d-acfa-c4f680ef336a"))
 			(pin "14" (uuid "74927217-dec5-4ba6-bfdf-aa902987be4a"))
-			(pin "15" (uuid "48d19d6e-9cac-4b6c-8772-c11763b3452a"))
-			(pin "16" (uuid "5bda5de3-45e3-40ac-96ac-6fb25dfebaa3"))
 			(instances (project "phone" (path "/451c3b43-1616-42cb-bf96-d436f4db82c2/d7f57b90-9db7-4266-b1f1-7949b1054009" (reference "J_HINGE") (unit 1))))
 		)
 		(symbol
