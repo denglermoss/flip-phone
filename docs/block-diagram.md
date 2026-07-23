@@ -14,8 +14,8 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 |----------|---------|--------|-----------|
 | `VBUS` | 5V | USB-C connector (J1) | MCP73831 charger input (U6), MCU VBUS sense (via divider — deferred to MCU section) |
 | `+BATT` | 3.4–4.3V (LiPo) | LiPo via battery connector (J_BATT, JST S2B-PH-SM4-TB, C295747) | SIM7600 VBAT pins (U2), TPS63021DSJR input (U4), MAX17048 VDD (U7 — power + voltage sense) |
-| `+3.3V` | 3.3V | TPS63021DSJR buck-boost output (U4) | MCU, display, SD card, codec MICVDD/DBVDD(3V3 side), level shifter VCCB |
-| `+1V8` | 1.8V | TPS7A0218 LDO output (U5, from +3.3V) | ALC5651 codec analog (AVDD/DACREF/CPVDD), codec DBVDD (PCM side), level shifter VCCA |
+| `+3.3V` | 3.3V | TPS63021DSJR buck-boost output (U4) | MCU, display, SD card, codec MICVDD, level shifter VCCB (U9 SN74AXC4T774) |
+| `+1V8` | 1.8V | TPS7A0218 LDO output (U5, from +3.3V) | ALC5651 codec analog (AVDD/DACREF/CPVDD), codec DBVDD (shared single pin — both I2S ports), level shifter VCCA (U9), I2C pullups |
 | `GND` | 0V | Common ground (USB-C GND, LiPo −, all ICs) | All blocks |
 
 > **`+BATT` is separate from `+3.3V`** — modem 2A bursts must not droop the MCU rail. LiPo connects directly to `+BATT` (no regulator). Bulk capacitance (100–470µF ceramic + tantalum) at modem VBAT pins, physically close to the modem. **Deferred to modem schematic section** — the power schematic has ~25µF on `+BATT` (C2/C3=10µF, C10=4.7µF); the modem section must add the 100–470µF bulk caps close to the modem's VBAT pins.
@@ -67,7 +67,7 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 | MCU (STM32H743ZI) | VDD (multiple), VDDA (analog), VBAT (RTC — not used, tie to +3.3V) | Bulk + 100nF decoupling per VDD pair. VDDA via ferrite bead + 1µF (analog isolation). |
 | Display (main + outer, via hinge flex J8) | IOVCC/VCC, LEDA (backlight anode) | Through hinge flex. Backlight LEDA also from +3.3V via current-limit resistors. |
 | microSD socket (J4) | VDD | SD card power (3.3V). Card detects its own voltage. |
-| ALC5651 codec (U3) | MICVDD, DBVDD (3.3V I/O side) | MICVDD is always 3.3V (mic bias). DBVDD on I2S-2 (MCU side) is 3.3V. **Open question**: does DBVDD split per port, or is there one DBVDD? Check ALC5651 datasheet pinout. |
+| ALC5651 codec (U3) | MICVDD, DBVDD | MICVDD is always 3.3V (mic bias). DBVDD is a **single shared pin (pin 39)** — both I2S-1 and I2S-2 use the same 1.8V domain. **RESOLVED 2026-07-22**: DBVDD=1.8V, I2S-2 (MCU side) goes through SN74AXC4T774 level shifter (U9). |
 | Level shifter (U8 TXB0108) | VCCB (pin 19) | 3.3V side — MCU-facing. |
 | MAX17048 fuel gauge (U7) | VDD (pin 3) | Power + voltage sense input. Connect to +BATT (raw LiPo). MAX17048 senses battery voltage on VDD, not on a separate CELL pin. |
 | USB-C CC1/CC2 pull-downs (J1) | 5.1kΩ to GND on each CC pin | Identifies the phone as a UFP (upstream-facing port / device). Not a rail consumer per se, but lives on the USB-C connector. |
@@ -83,8 +83,8 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 | Consumer | Pin | Notes |
 |----------|-----|-------|
 | ALC5651 codec (U3) | AVDD, DACREF, CPVDD (analog supply) | 1.8V analog. The codec's digital core (1.2V) comes from an internal LDO — no external 1.2V rail needed. |
-| ALC5651 codec (U3) | DBVDD (for I2S-1 / PCM port — modem side) | 1.8V digital I/O for the PCM port facing the SIM7600. Matches SIM7600's 1.8V PCM lines (no level shifter needed on PCM). |
-| Level shifter (U8 TXB0108) | VCCA (pin 2) | 1.8V side — modem-facing. VCCA ≤ VCCB is required (1.8V ≤ 3.3V ✓). |
+| ALC5651 codec (U3) | DBVDD (shared — both I2S-1 and I2S-2) | 1.8V digital I/O for both I2S ports, I2C, MCLK, GPIOs. Single shared pin (pin 39). I2S-1 (PCM/modem) is direct 1.8V↔1.8V. I2S-2 (MCU) goes through SN74AXC4T774 level shifter (U9). **RESOLVED 2026-07-22**. |
+| Level shifter (U9 SN74AXC4T774) | VCCA (pin 1) | 1.8V side — codec-facing. 4-bit direction-controlled shifter for I2S-2 (BCLK2/LRCK2/DACDAT2/ADCDAT2). |
 
 **Open question — modem VDD_1V8 pin:** The SIM7600 has its own VDD_1V8 output pin (1.8V LDO, 50mA max) that the reference design (HW Design Manual §3.6.2) uses to power the codec. Do we use the modem's VDD_1V8 (saves the TPS7A0218) or our own U5 (guarantees 200mA headroom, independent of modem state)? **Tentative: use U5** — the ALC5651 may draw more than 50mA, and relying on the modem's LDO couples codec power to modem power state. Confirm at schematic time by checking ALC5651 analog supply current in the datasheet.
 

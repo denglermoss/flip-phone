@@ -36,44 +36,38 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
   - **Resolved by**: Subagent verification 2026-07-22 (this session).
 
 - **O2 — MPCIe power-on method** *(gate: before modem schematic section finalized)*
-  - MPCIe has **no PWRKEY pin** (unlike LGA). How does the card power on/off? Auto-on at VCC application? Onboard button? AT command over UART?
-  - **Action**: Email Techship or check V1.03 manual §3.x for power-on sequence. May need a GPIO to toggle VCC (load switch on +3.3V to modem VCC) if auto-on is not acceptable.
-  - **Blocks**: Modem section power wiring, MCU GPIO allocation (PWRKEY equivalent).
+  - **Status**: RESOLVED 2026-07-22. SIM7600 MPCIe auto-powers on when 3.3V is applied — no PWRKEY pin. Load switch on +3.3V to modem, controlled by MCU GPIO `MCU_MODEM_PWR_EN` (PE6, pin 5), recommended for power control and graceful shutdown.
+  - **Blocks**: ~~Modem section power wiring, MCU GPIO allocation~~ — unblocked.
 
 - **O3 — MCU peripheral-to-pin mapping** *(gate: before any non-power schematic section)*
-  - Which UART, I2C, SPI, I2S, SDIO instances map to which LQFP-144 pins? This is the critical path — everything connects to the MCU.
-  - **Action**: Create a pin assignment spreadsheet mapping all peripherals to specific pins. Verify alternate function mapping against STM32H743 datasheet / RM0433. Consider: LPUART1 (modem UART, already used on Nucleo), SPI1 (displays), I2C (codec + fuel gauge), I2S2 (codec music), SDMMC (microSD), USB OTG_FS, GPIO (keypad 9, modem control 4-6, display control 5, power monitoring 2, backlight PWM 1).
-  - **Blocks**: All schematic sections except power.
+  - **Status**: RESOLVED 2026-07-22. Full pin assignment in `docs/mcu-pin-assignment.md` (73 pins assigned, ~60 spare). All pin numbers verified against STM32H743ZI datasheet DS12110 Rev 11 Table 9.
+  - **Blocks**: ~~All schematic sections except power~~ — unblocked.
 
 - **O4 — ALC5651 DBVDD pinout** *(gate: before codec schematic section)*
-  - Does ALC5651 have separate DBVDD pins per I2S port (one 1.8V for PCM/modem side, one 3.3V for I2S/MCU side), or one shared DBVDD? Check ALC5651 datasheet pinout (`docs/reference/alc5651.pdf`).
-  - **Action**: Extract pinout from datasheet via PDF MCP. Document in block-diagram.md codec section.
-  - **Blocks**: Codec power wiring.
+  - **Status**: RESOLVED 2026-07-22. DBVDD is a SINGLE shared pin (pin 39) — both I2S ports share one voltage domain. Decision: DBVDD=1.8V. I2S-1 direct to modem, I2S-2 via SN74AXC4T774 level shifter (U9). I2C uses 1.8V pullups.
+  - **Blocks**: ~~Codec power wiring~~ — unblocked.
 
 - **O5 — ALC5651 analog supply current** *(gate: before codec schematic section)*
-  - Is ALC5651 analog current <50mA (could use modem's VDD_1V8 output, saving U5) or >50mA (must use our TPS7A0218)? Tentative decision: use U5.
-  - **Action**: Check ALC5651 datasheet power consumption specs. Confirm tentative U5 decision.
-  - **Blocks**: Codec power wiring (confirms U5 stays or goes).
+  - **Status**: RESOLVED 2026-07-22. Power consumption ≤13mW (~7mA at 1.8V) — well under 50mA. U5 (TPS7A0218) retained (MPCIe doesn't expose VDD_1V8, and decoupling codec from modem power state is desirable).
+  - **Blocks**: ~~Codec power wiring~~ — unblocked.
 
 ### Gates before PCB layout (Phase 4)
 
 - **O6 — Layer stackup: 2-layer vs 4-layer** *(gate: before layout starts)*
-  - **Recommendation**: 4-layer (RF impedance control for 50Ω antenna traces, power distribution for 2A modem bursts, solid ground reference for high-speed USB/SPI, fine-pitch fanout). Cost difference ~$20-30 at JLCPCB for this size — negligible for one-off.
+  - **Status**: CONFIRMED 2026-07-22. 4-layer (RF impedance control for 50Ω antenna traces, power distribution for 2A modem bursts, solid ground reference for high-speed USB/SPI, fine-pitch fanout).
   - **4-layer stackup**: L1 Top (signals/components) / L2 Inner1 (solid GND plane) / L3 Inner2 (+3.3V power plane, +BATT polygon) / L4 Bottom (signals/components).
   - **Blocks**: All layout tasks.
 
 - **O7 — Board outline dimensions** *(gate: before placement)*
-  - **Target**: < 2×3 inches (~50×76mm). Minimum dimension ~54mm (MPCIe socket width). Conservative estimate ~55×78mm.
-  - **Action**: Confirm target range; final dimensions set during KiCad placement.
+  - **Status**: OVERRIDDEN 2026-07-22. Target 60×85mm (55×78mm was too aggressive for DIY assembly — need room for hand-soldering iron access, rework, connector clearance). Final dimensions set during KiCad placement.
   - **Blocks**: Board outline definition, placement.
 
 - **O8 — Hinge flex connector position** *(gate: before placement, may use placeholder)*
-  - 14-pin 0.5mm FFC connector on main board edge. Position depends on enclosure hinge point (mechanical design, Phase 7).
-  - **Action**: Use placeholder position for rev1, finalize in Phase 7. Confirm this is acceptable.
+  - **Status**: CONFIRMED 2026-07-22. Placeholder position for rev1 — mechanical constraints (enclosure hinge point, Phase 7) dominate. 14-pin 0.5mm FFC connector on main board edge.
   - **Blocks**: Connector placement, daughterboard layout.
 
 - **O9 — Daughterboard layout scope** *(gate: before layout)*
-  - **Recommendation**: Lay out daughterboard in same KiCad project as separate board. It's trivial (~5 components + 3 ZIF connectors, ~55×42mm). Efficient, shares design rules.
+  - **Status**: CONFIRMED 2026-07-22. Same KiCad project, separate board. Daughterboard is trivial (~5 components + 3 ZIF connectors, ~55×42mm). Efficient, shares design rules.
   - **Blocks**: Layout project setup.
 
 ### Gates before ordering (Phase 5 prep)
@@ -84,16 +78,15 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
   - **Blocks**: Parts ordering.
 
 - **O11 — Solder paste: leaded vs lead-free** *(gate: before tool ordering)*
-  - **Recommendation**: Leaded 63/37 for first DIY attempt (183°C melt, more forgiving). Switch to lead-free (SAC305, 217°C) for production if needed.
+  - **Status**: CONFIRMED 2026-07-22. Leaded 63/37 for first DIY attempt (183°C melt, more forgiving). Switch to lead-free (SAC305, 217°C) for production if needed.
   - **Blocks**: Tool procurement, assembly process.
 
 - **O12 — PCB quantity** *(gate: before fab ordering)*
-  - JLCPCB MOQ is 5 boards for bare PCB. User wants 1 but DIY mistakes are likely.
-  - **Recommendation**: Order 5 boards (marginal cost minimal, cheap insurance for DIY errors).
+  - **Status**: CONFIRMED 2026-07-22. Order 5 boards (JLCPCB MOQ, marginal cost minimal, cheap insurance for DIY errors).
   - **Blocks**: Fab ordering.
 
 - **O13 — Surface finish: ENIG vs HASL** *(gate: before fab ordering)*
-  - **Recommendation**: ENIG (flat surface, better for fine-pitch 0.5mm FPC + QFN-40). HASL is cheaper but uneven surface risks tombstoning.
+  - **Status**: CONFIRMED 2026-07-22. ENIG (flat surface, critical for fine-pitch 0.5mm FPC + QFN-40). HASL is cheaper but uneven surface risks tombstoning.
   - **Blocks**: Fab ordering.
 
 ---
@@ -106,10 +99,10 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 
 ### 3.1 Resolve schematic-blocking open questions
 
-- [ ] **O2**: Confirm MPCIe power-on method (email Techship or check V1.03 manual)
-- [ ] **O3**: Create MCU pin assignment spreadsheet (peripherals → LQFP-144 pins)
-- [ ] **O4**: Verify ALC5651 DBVDD pinout from datasheet (PDF MCP on `docs/reference/alc5651.pdf`)
-- [ ] **O5**: Verify ALC5651 analog supply current from datasheet (confirm U5 decision)
+- [x] **O2**: Confirm MPCIe power-on method — RESOLVED (auto-on at 3.3V, load switch + MCU_MODEM_PWR_EN)
+- [x] **O3**: Create MCU pin assignment spreadsheet — RESOLVED (`docs/mcu-pin-assignment.md`, 73 pins assigned)
+- [x] **O4**: Verify ALC5651 DBVDD pinout — RESOLVED (single shared pin 39, DBVDD=1.8V, I2S-2 via SN74AXC4T774)
+- [x] **O5**: Verify ALC5651 analog supply current — RESOLVED (≤13mW, U5 retained)
 - [ ] **O1** (optional): Email Techship for 100% PCM confirmation (not a blocker)
 
 ### 3.2 MCU section (STM32H743ZI full pin map) — CRITICAL PATH, do first
