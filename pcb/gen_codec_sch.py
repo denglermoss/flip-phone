@@ -72,11 +72,11 @@ lib_symbols_list.append(extract_power_symbol("GND"))
 lib_symbols_list.append(extract_power_symbol("+1V8"))
 lib_symbols_text = '\n'.join(lib_symbols_list)
 
-# Component positions
-U3_X, U3_Y = 140, 130
+# Component positions (grid-aligned to 1.27mm)
+U3_X, U3_Y = 139.70, 129.54  # 110*1.27, 102*1.27
 U3_LEFT_X = U3_X - 27.94
 U3_RIGHT_X = U3_X + 27.94
-U9_X, U9_Y = 220, 130
+U9_X, U9_Y = 219.71, 129.54  # 173*1.27, 102*1.27
 U9_LEFT_X = U9_X - 12.70
 U9_RIGHT_X = U9_X + 12.70
 

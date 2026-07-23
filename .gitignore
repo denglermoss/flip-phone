@@ -13,6 +13,23 @@ docs/reference/*
 # KiCad user-local project rules (per-user UI state, not project config)
 *.kicad_prl
 
+# KiCad MCP working files (visual diffs, temp state)
+pcb/phone/.kicad-mcp/
+
+# KiCad export output (schematic renders, etc. — regenerable)
+pcb/phone/output/
+
+# ERC reports and kicad-cli temp output (regenerable, not source of truth)
+pcb/phone/erc_*.txt
+pcb/phone/kicad_err*.txt
+pcb/phone/kicad_out*.txt
+pcb/phone/kicad_stderr*.txt
+pcb/phone/kicad_stdout*.txt
+
+# Temp Python scripts used during schematic generation (kept only while working)
+pcb/phone/uuids.txt
+pcb/phone/lib_symbols_template.txt
+
 # IDE
 .vscode/
 .idea/
