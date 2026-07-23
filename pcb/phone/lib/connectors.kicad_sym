@@ -1,4 +1,4 @@
-﻿(kicad_symbol_lib
+(kicad_symbol_lib
   (version 20211014)
   (generator https://github.com/uPesy/easyeda2kicad.py)
 
@@ -35,7 +35,7 @@
     )
     (property
       "Manufacturer"
-      "HDGC(åŽå¾·å…±åˆ›)"
+      "HDGC(华德共创)"
       (id 4)
       (at 0 -31.75 0)
       (effects (font (size 1.27 1.27) ) hide)
@@ -202,7 +202,7 @@
     )
     (property
       "Manufacturer"
-      "HDGC(åŽå¾·å…±åˆ›)"
+      "HDGC(华德共创)"
       (id 4)
       (at 0 -33.02 0)
       (effects (font (size 1.27 1.27) ) hide)
@@ -381,7 +381,7 @@
     )
     (property
       "Manufacturer"
-      "HDGC(åŽå¾·å…±åˆ›)"
+      "HDGC(华德共创)"
       (id 4)
       (at 0 -26.67 0)
       (effects (font (size 1.27 1.27) ) hide)
@@ -679,7 +679,7 @@
     )
     (property
       "Manufacturer"
-      "SHOU HAN(é¦–éŸ©)"
+      "SHOU HAN(首韩)"
       (id 4)
       (at 0 -19.05 0)
       (effects (font (size 1.27 1.27) ) hide)
@@ -929,7 +929,7 @@
     )
     (property
       "Manufacturer"
-      "éŸ©å›½éŸ©è£"
+      "韩国韩荣"
       (id 4)
       (at 0 -26.67 0)
       (effects (font (size 1.27 1.27) ) hide)
@@ -1102,7 +1102,7 @@
     )
     (property
       "Manufacturer"
-      "HRS(å¹¿æ¿‘)"
+      "HRS(广濑)"
       (id 4)
       (at 0 -17.78 0)
       (effects (font (size 1.27 1.27) ) hide)
@@ -1130,7 +1130,7 @@
     )
     (property
       "ki_description"
-      "3310472210ï¼ŒIPE-X IPXï¼Œ"
+      "3310472210，IPE-X IPX，"
       (id 9)
       (at 0 -27.94 0)
       (effects (font (size 1.27 1.27) ) hide)
@@ -1197,7 +1197,7 @@
     )
     (property
       "Manufacturer"
-      "SOFNG(ç¡•æ–¹)"
+      "SOFNG(硕方)"
       (id 4)
       (at 0 -22.86 0)
       (effects (font (size 1.27 1.27) ) hide)
@@ -1221,6 +1221,13 @@
       "Card Edge Connectors"
       (id 8)
       (at 0 -30.48 0)
+      (effects (font (size 1.27 1.27) ) hide)
+    )
+    (property
+      "ki_description"
+      "Mini PCIe socket 52-pin SMD"
+      (id 9)
+      (at 0 -33.02 0)
       (effects (font (size 1.27 1.27) ) hide)
     )
     (symbol "PCIE-52P40H_C444926_0_1"
