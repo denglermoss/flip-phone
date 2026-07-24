@@ -10,6 +10,19 @@ __pycache__/
 erc_report.*
 erc_final_report.*
 drc_report.*
+erc_*.txt
+drc_*.txt
+
+# KiCad lock files
+~*.lck
+
+# Generated netlists / BOM exports
+*.net
+*_bom.csv
+bom_test.csv
+
+# One-off analysis/fix scripts (not kept in git)
+# (gen_*.py scripts ARE tracked in pcb/phone/scripts/)
 
 
 # Reference docs (vendor PDFs/datasheets — only README.md is tracked)
