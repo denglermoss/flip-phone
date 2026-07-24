@@ -1727,7 +1727,7 @@
 	)
 	(wire
 		(pts
-			(xy 89.92 130) (xy 84.84 130)
+			(xy 90.17 129.54) (xy 85.09 129.54)
 		)
 		(stroke
 			(width 0)
@@ -1757,7 +1757,7 @@
 	)
 	(wire
 		(pts
-			(xy 200 145.08) (xy 200 150.16)
+			(xy 199.39 144.78) (xy 199.39 149.86)
 		)
 		(stroke
 			(width 0)
@@ -1807,7 +1807,7 @@
 	)
 	(wire
 		(pts
-			(xy 100.08 130) (xy 105.16 130)
+			(xy 100.33 129.54) (xy 105.41 129.54)
 		)
 		(stroke
 			(width 0)
@@ -1967,7 +1967,7 @@
 	)
 	(wire
 		(pts
-			(xy 200 134.92) (xy 200 129.84)
+			(xy 199.39 134.62) (xy 199.39 129.54)
 		)
 		(stroke
 			(width 0)
@@ -2353,7 +2353,7 @@
 	)
 	(global_label "USIM_DATA"
 		(shape bidirectional)
-		(at 105.16 130 0)
+		(at 105.41 129.54 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -2363,7 +2363,7 @@
 		)
 		(uuid "77a3e166-a6dd-4979-a489-d9a9f0c3bae8")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 105.16 130 0)
+			(at 105.41 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2425,7 +2425,7 @@
 	)
 	(global_label "USIM_VDD"
 		(shape bidirectional)
-		(at 84.84 130 180)
+		(at 85.09 129.54 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -2435,7 +2435,7 @@
 		)
 		(uuid "87d58580-fc60-44a6-859d-fd9489228b1f")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 84.84 130 0)
+			(at 85.09 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2627,7 +2627,7 @@
 		)
 		(uuid "f1d51f4b-04ec-4784-8ccf-96fd02a42e37")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 133.35 109.9011 90)
+			(at 133.35 110.49 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2778,7 +2778,7 @@
 		(fields_autoplaced yes)
 		(uuid "0da59eab-cd9c-4112-8a67-c805ee326780")
 		(property "Reference" "J_SIM"
-			(at 135.89 90.25 0)
+			(at 135.89 90.17 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2788,7 +2788,7 @@
 			)
 		)
 		(property "Value" "NANOSIMXG6PH1.35"
-			(at 135.89 100.25 0)
+			(at 135.89 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2872,7 +2872,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 200 129.84 0)
+		(at 199.39 129.54 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2883,7 +2883,7 @@
 		(fields_autoplaced yes)
 		(uuid "11b3c97b-3bb2-48f8-a8e2-593fd116e1bf")
 		(property "Reference" "#PWR163"
-			(at 200 129.84 0)
+			(at 199.39 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2894,7 +2894,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 200 129.84 0)
+			(at 199.39 129.54 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2904,7 +2904,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 200 129.84 0)
+			(at 199.39 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2915,7 +2915,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 200 129.84 0)
+			(at 199.39 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2926,7 +2926,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 200 129.84 0)
+			(at 199.39 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3028,7 +3028,7 @@
 	)
 	(symbol
 		(lib_id "passives:CC0603KRX7R9BB104")
-		(at 200 140 90)
+		(at 199.39 139.7 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3039,7 +3039,7 @@
 		(fields_autoplaced yes)
 		(uuid "4b583c97-eaad-4768-8aad-52a1f43d8108")
 		(property "Reference" "C39"
-			(at 200 135 0)
+			(at 199.39 134.62 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3049,7 +3049,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 200 145 0)
+			(at 199.39 144.78 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3059,7 +3059,7 @@
 			)
 		)
 		(property "Footprint" "easyeda2kicad:C0603"
-			(at 200 140 0)
+			(at 199.39 139.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3070,7 +3070,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 200 140 0)
+			(at 199.39 139.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3081,7 +3081,7 @@
 			)
 		)
 		(property "Description" "100nF SD card decoupling cap"
-			(at 200 140 0)
+			(at 199.39 139.7 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3275,7 +3275,7 @@
 		(fields_autoplaced yes)
 		(uuid "6f3cf60e-874b-43fa-b55b-605d6c70a044")
 		(property "Reference" "J_SD"
-			(at 187.96 90.25 0)
+			(at 187.96 90.17 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3285,7 +3285,7 @@
 			)
 		)
 		(property "Value" "472192001"
-			(at 187.96 100.25 0)
+			(at 187.96 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3386,7 +3386,7 @@
 		(fields_autoplaced yes)
 		(uuid "7cccd17e-029f-4c59-a3f9-3ba652c9c653")
 		(property "Reference" "U10"
-			(at 68.58 90.25 0)
+			(at 68.58 90.17 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3396,7 +3396,7 @@
 			)
 		)
 		(property "Value" "ESDA6V1-5SC6"
-			(at 68.58 100.25 0)
+			(at 68.58 100.33 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3713,7 +3713,7 @@
 		(fields_autoplaced yes)
 		(uuid "96bf455b-6a28-425d-8e8b-649cd69d987a")
 		(property "Reference" "U11"
-			(at 250.19 91.52 0)
+			(at 250.19 91.44 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3723,7 +3723,7 @@
 			)
 		)
 		(property "Value" "ESDA6V1-5SC6"
-			(at 250.19 101.52 0)
+			(at 250.19 101.6 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3962,7 +3962,7 @@
 		(fields_autoplaced yes)
 		(uuid "d0b089ee-18ca-4d79-b360-1abfed5b6253")
 		(property "Reference" "C38"
-			(at 133.35 128.35 0)
+			(at 133.35 128.27 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3972,7 +3972,7 @@
 			)
 		)
 		(property "Value" "100nF"
-			(at 133.35 138.35 0)
+			(at 133.35 138.43 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4031,7 +4031,7 @@
 	)
 	(symbol
 		(lib_id "passives:RC0603JR-0710KL")
-		(at 95 130 0)
+		(at 95.25 129.54 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4042,7 +4042,7 @@
 		(fields_autoplaced yes)
 		(uuid "d80f0262-577b-45fe-b226-d003077969a3")
 		(property "Reference" "R15"
-			(at 95 125 0)
+			(at 95.25 124.46 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4052,7 +4052,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 95 135 0)
+			(at 95.25 134.62 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4062,7 +4062,7 @@
 			)
 		)
 		(property "Footprint" "easyeda2kicad:R0603"
-			(at 95 130 0)
+			(at 95.25 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4073,7 +4073,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 95 130 0)
+			(at 95.25 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4084,7 +4084,7 @@
 			)
 		)
 		(property "Description" "10k SIM data pull-up resistor"
-			(at 95 130 0)
+			(at 95.25 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4111,7 +4111,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 200 150.16 0)
+		(at 199.39 149.86 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4122,7 +4122,7 @@
 		(fields_autoplaced yes)
 		(uuid "e4169018-bf07-422e-aa46-b9fed3ec0494")
 		(property "Reference" "#PWR164"
-			(at 200 150.16 0)
+			(at 199.39 149.86 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4133,7 +4133,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 200 150.16 0)
+			(at 199.39 149.86 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4143,7 +4143,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 200 150.16 0)
+			(at 199.39 149.86 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4154,7 +4154,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 200 150.16 0)
+			(at 199.39 149.86 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4165,7 +4165,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 200 150.16 0)
+			(at 199.39 149.86 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
