@@ -30,6 +30,32 @@ pcb/phone/kicad_stdout*.txt
 pcb/phone/uuids.txt
 pcb/phone/lib_symbols_template.txt
 
+# Temp analysis/fix scripts (one-off ERC debugging, not part of the build)
+pcb/phone/analyze_*.py
+pcb/phone/categorize_*.py
+pcb/phone/check_*.py
+pcb/phone/extract_pins_temp.py
+pcb/phone/find_*.py
+pcb/phone/fix_all_easyeda_symbols.py
+pcb/phone/fix_codec_symbols.py
+pcb/phone/fix_keypad_*.py
+pcb/phone/fix_lib_mismatch.py
+pcb/phone/fix_off_grid.py
+pcb/phone/flip_*.py
+pcb/phone/gen_display_sch.py
+pcb/phone/gen_keypad_sch.py
+pcb/phone/gen_modem_sch.py
+pcb/phone/gen_sim_sd.py
+pcb/phone/inspect_keypad.py
+pcb/phone/list_pwr.py
+pcb/phone/parse_erc.py
+pcb/phone/parse_keypad.py
+pcb/phone/remove_keypad_nc.py
+pcb/phone/rewire_keypad.py
+pcb/phone/trace_codec_nets.py
+pcb/phone/cleanup_mcu*.py
+pcb/phone/bom_test.csv
+
 # IDE
 .vscode/
 .idea/
