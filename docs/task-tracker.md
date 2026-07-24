@@ -481,15 +481,19 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 |------|-----------|--------|
 | 2026-07-22 | Task tracker created — comprehensive plan to assembled PCB | Done |
 | 2026-07-22 | MPCIe PCM verified (high confidence, subagent research) | Done |
-| | Phase 3: Resolve open questions O2-O5 | Pending |
-| | Phase 3: MCU schematic section | Pending |
-| | Phase 3: Modem schematic section | Pending |
-| | Phase 3: Codec schematic section | Pending |
-| | Phase 3: Display schematic section | Pending |
-| | Phase 3: SIM schematic section | Pending |
-| | Phase 3: SD card schematic section | Pending |
-| | Phase 3: Keypad schematic section | Pending |
-| | Phase 3: Final schematic review + ERC clean | Pending |
+| 2026-07-22 | Phase 3: Resolve open questions O2-O5 | Done |
+| 2026-07-23 | Phase 3: Power schematic section | Done |
+| 2026-07-23 | Phase 3: MCU schematic section | Done |
+| 2026-07-23 | Phase 3: Modem schematic section | Done |
+| 2026-07-23 | Phase 3: Codec schematic section | Done |
+| 2026-07-23 | Phase 3: Display + daughterboard schematic section | Done |
+| 2026-07-23 | Phase 3: SIM/SD schematic section | Done |
+| 2026-07-23 | Phase 3: Keypad schematic section | Done |
+| 2026-07-23 | Phase 3: Power section moved to power.kicad_sch sub-sheet | Done |
+| 2026-07-23 | Phase 3: J_HINGE2 added to display daughterboard | Done |
+| 2026-07-23 | Phase 3: ERC cleanup — 196→3 warnings (0 errors) | Done |
+| | Phase 3: Add deferred components (SWD header, load switch, VBUS divider, LED, test points) | Pending |
+| | Phase 3: Final schematic review + ERC fully clean | Pending |
 | | Phase 4: Pre-layout setup (stackup, rules, outline) | Pending |
 | | Phase 4: Placement | Pending |
 | | Phase 4: Routing | Pending |
