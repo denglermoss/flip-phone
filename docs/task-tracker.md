@@ -36,7 +36,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
   - **Resolved by**: Subagent verification 2026-07-22 (this session).
 
 - **O2 — MPCIe power-on method** *(gate: before modem schematic section finalized)*
-  - **Status**: RESOLVED 2026-07-22. SIM7600 MPCIe auto-powers on when 3.3V is applied — no PWRKEY pin. Load switch on +3.3V to modem, controlled by MCU GPIO `MCU_MODEM_PWR_EN` (PE6, pin 5), recommended for power control and graceful shutdown.
+  - **Status**: RESOLVED 2026-07-22, **UPDATED 2026-07-24**. SIM7600 MPCIe auto-powers on when 3.3V is applied — no PWRKEY pin. ~~Load switch on +3.3V to modem, controlled by MCU GPIO `MCU_MODEM_PWR_EN` (PE6, pin 5), recommended for power control and graceful shutdown.~~ **SUPERSEDED 2026-07-24**: No load switch — SIM7600 has robust sleep mode (<5mA, maintains call/SMS reception) + dedicated PWRKEY pin. Load switch is redundant. MCU_MODEM_PWR_EN (PE6) is now no_connect. System on/off is controlled by a slide switch (SW1) on the TPS63021 EN pin instead.
   - **Blocks**: ~~Modem section power wiring, MCU GPIO allocation~~ — unblocked.
 
 - **O3 — MCU peripheral-to-pin mapping** *(gate: before any non-power schematic section)*
@@ -133,7 +133,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [ ] Place MPCIe socket symbol (SOFNG PCIE-52P40H or selected socket)
 - [ ] Wire power: VCC pins (2, 24, 39, 41, 52) → **+3.3V** (NOT +BATT — MPCIe is 3.3V only)
 - [ ] Wire GND pins (14 pins) → GND
-- [ ] Add bulk capacitance (100–470µF ceramic + tantalum) at VCC pins — deferred from power section
+- [x] Add bulk capacitance (470µF tantalum polymer C40 + 2× 10µF ceramic C41/C42) at VCC pins — DONE 2026-07-24
 - [ ] Wire UART: TXD, RXD, RTS, CTS, RI, DTR → level shifter A-side (1.8V)
 - [ ] Wire PCM: CLK, OUT, IN, SYNC → ALC5651 I2S-1 (direct, 1.8V, no shifter)
 - [ ] Wire USB: DP, DN → test points (J2, DNP rev1)
@@ -493,6 +493,9 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 | 2026-07-23 | Phase 3: J_HINGE2 added to display daughterboard | Done |
 | 2026-07-23 | Phase 3: ERC cleanup — 196→3 warnings (0 errors) | Done |
 | 2026-07-24 | Phase 3: Add deferred components — VBUS divider (R12/R13), MCU_MODEM_PWR_EN pull-down (R11), SWD header (J3), NET_STATUS LED (R12+LED1) | Done |
+| 2026-07-24 | Phase 3: Power switch (SW1 ALPS SSSS811101) added to power sheet — controls TPS63021 EN pin | Done |
+| 2026-07-24 | Phase 3: Modem bulk caps (C40 470µF + C41/C42 10µF) added near MPCIe VCC pins | Done |
+| 2026-07-24 | Phase 3: Load switch reversed — R11 removed, no_connect on PE6, temp libraries registered | Done |
 | | Phase 3: Final schematic review + ERC fully clean | Pending |
 | | Phase 4: Pre-layout setup (stackup, rules, outline) | Pending |
 | | Phase 4: Placement | Pending |

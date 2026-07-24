@@ -6,6 +6,12 @@ __pycache__/
 *.pyc
 .venv/
 
+# KiCad ERC/DRC reports (generated, not source)
+erc_report.*
+erc_final_report.*
+drc_report.*
+
+
 # Reference docs (vendor PDFs/datasheets — only README.md is tracked)
 docs/reference/*
 !docs/reference/README.md

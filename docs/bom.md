@@ -131,12 +131,14 @@ These components are required for the phone but have not been formally locked in
 
 | # | Component | Status | Qty | Unit Price | Ext Price | Notes |
 |---|-----------|--------|-----|-----------|-----------|-------|
-| 25 | Bulk capacitance (100–470µF ceramic + tantalum for +BATT stability) | CANDIDATE | ~5–10 | ~$0.50–2 | ~$3–10 | CRITICAL for modem VBAT rail — direct from LiPo, separate net (+BATT) from +3.3V. Deferred to modem schematic section. See `docs/constraints.md`. |
+| 25 | Bulk capacitance — 470µF tantalum polymer (modem +3.3V rail) | SELECTED: Panasonic 6TPF470MAH (LCSC C403809) | 1 | ~$0.80 | ~$0.80 | C40 on modem sheet. Low ESR, handles 2A+ LTE bursts. |
+| 25a | Bulk capacitance — 10µF ceramic (modem +3.3V rail) | SELECTED: Samsung CL10A106KP8NNNC (LCSC C19702) | 2 | ~$0.03 | ~$0.06 | C41/C42 on modem sheet. High-freq decoupling. JLC Basic. |
+| 25b | Power slide switch (TPS63021 EN control) | SELECTED: ALPS SSSS811101 (LCSC C109335) | 1 | ~$0.30 | ~$0.30 | SW1 on power sheet. SPDT slide, 300mA@5V. |
 | 26 | Decoupling caps, resistors, inductors (per IC) | CANDIDATE | ~30–50 | ~$0.05–0.50 | ~$5–15 | Standard SMD passives. |
 | 27 | Crystals (HSE 8MHz for MCU; module has own TCXO) | CANDIDATE | 1 | ~$0.50–1 | ~$0.50–1 | MCU needs HSE crystal for USB. No 32.768kHz RTC crystal (NITZ). |
 | 28 | LEDs (status, notification, backlight) | CANDIDATE | ~3 | ~$0.10–0.30 | ~$0.30–1 | Rated 2 on wishlist. |
 | 29 | Test points, headers, misc hardware | CANDIDATE | — | — | ~$2–5 | For bring-up/debug. |
-| | **Passive/misc subtotal** | | | | **~$11–32** | |
+| | **Passive/misc subtotal** | | | | **~$12–33** | |
 
 ---
 

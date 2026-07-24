@@ -4134,6 +4134,10 @@
 		(uuid "2a9bc364-0597-4ab1-a516-a48016d14d68")
 	)
 	(no_connect
+		(at 172.72 101.6)
+		(uuid "b1c2d3e4-5678-4abc-9def-0123456789ab")
+	)
+	(no_connect
 		(at 172.72 106.68)
 		(uuid "2dc91f53-c1bf-4021-aabd-7bb17d16c4b4")
 	)
@@ -4806,16 +4810,6 @@
 			(type default)
 		)
 		(uuid "a1b2c3d4-2222-4222-8222-222222222222")
-	)
-	(wire
-		(pts
-			(xy 165.1 101.6) (xy 172.72 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a1b2c3d4-3333-4333-8333-333333333333")
 	)
 	(global_label "I2S2_BCLK"
 		(shape output)
@@ -12579,87 +12573,6 @@
 
 	(symbol
 		(lib_id "passives:RC0603JR-0710KL")
-		(at 160.02 101.6 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a1b2c3d4-5555-4555-8555-555555555555")
-		(property "Reference" "R11"
-			(at 160.02 96.52 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10k"
-			(at 160.02 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:R0603"
-			(at 160.02 101.6 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 160.02 101.6 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 160.02 101.6 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "a1b2c3d4-6666-4666-8666-666666666666")
-		)
-		(pin "1"
-			(uuid "a1b2c3d4-7777-4777-8777-777777777777")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/d692f43a-094c-48db-863f-ce7b80cfd81e"
-					(reference "R11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "passives:RC0603JR-0710KL")
 		(at 160.02 175.26 0)
 		(unit 1)
 		(body_style 1)
@@ -12816,84 +12729,6 @@
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/d692f43a-094c-48db-863f-ce7b80cfd81e"
 					(reference "R13")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 154.94 101.6 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "a1b2c3d4-eeee-4eee-8eee-eeeeeeeeeeee")
-		(property "Reference" "#PWR83"
-			(at 156.21 99.05999999999999 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 157.226 101.854 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 154.94 101.6 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 154.94 101.6 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 154.94 101.6 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a1b2c3d4-ffff-4fff-8fff-ffffffffffff")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/d692f43a-094c-48db-863f-ce7b80cfd81e"
-					(reference "#PWR83")
 					(unit 1)
 				)
 			)
