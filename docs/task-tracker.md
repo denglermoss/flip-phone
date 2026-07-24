@@ -492,7 +492,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 | 2026-07-23 | Phase 3: Power section moved to power.kicad_sch sub-sheet | Done |
 | 2026-07-23 | Phase 3: J_HINGE2 added to display daughterboard | Done |
 | 2026-07-23 | Phase 3: ERC cleanup — 196→3 warnings (0 errors) | Done |
-| | Phase 3: Add deferred components (SWD header, load switch, VBUS divider, LED, test points) | Pending |
+| 2026-07-24 | Phase 3: Add deferred components — VBUS divider (R12/R13), MCU_MODEM_PWR_EN pull-down (R11), SWD header (J3), NET_STATUS LED (R12+LED1) | Done |
 | | Phase 3: Final schematic review + ERC fully clean | Pending |
 | | Phase 4: Pre-layout setup (stackup, rules, outline) | Pending |
 | | Phase 4: Placement | Pending |

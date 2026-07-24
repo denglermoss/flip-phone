@@ -62,12 +62,12 @@
 ## Remaining Work (deferred to proper schematic editing session)
 
 These items were marked no_connect to clear ERC warnings. They need actual components:
-1. **SWD debug header** — 4-pin header (SWCLK, SWDIO, +3.3V, GND) on MCU sheet
-2. **Load switch** — on power sheet for modem +3.3V control via MCU_MODEM_PWR_EN
-3. **VBUS voltage divider** — 100kΩ/68kΩ divider on MCU or power sheet
-4. **Modem USB connector** — test points or connector on modem sheet (rev2)
-5. **Network status LED** — LED + resistor circuit on modem sheet
-6. **ALC5651-CG + TXB0108PWR library sync** — update library to match codec's Y-flipped versions
+1. ~~**SWD debug header** — 4-pin header (SWCLK, SWDIO, +3.3V, GND) on MCU sheet~~ **DONE 2026-07-24** (J3 Conn_01x04 added)
+2. **Load switch** — on power sheet for modem +3.3V control via MCU_MODEM_PWR_EN (still pending — R11 pull-down added, but load switch itself not yet)
+3. ~~**VBUS voltage divider** — 100kΩ/68kΩ divider on MCU or power sheet~~ **DONE 2026-07-24** (R12 100k + R13 47k on MCU sheet, 5V→1.6V)
+4. **Modem USB connector** — test points or connector on modem sheet (rev2 — intentionally deferred)
+5. ~~**Network status LED** — LED + resistor circuit on modem sheet~~ **DONE 2026-07-24** (R12 1k + LED1 LTST-C191TBKT on modem sheet)
+6. **ALC5651-CG + TXB0108PWR library sync** — update library to match codec's Y-flipped versions (still pending — intentional Y-flip, low priority)
 
 ---
 
@@ -83,3 +83,12 @@ These items were marked no_connect to clear ERC warnings. They need actual compo
 - Fixed all 9 isolated_pin_label by removing labels + adding no_connect (commit 2dd52cc)
 - Updated docs (this commit)
 - **Final ERC: 0 errors, 3 warnings** (down from 196)
+
+### 2026-07-24 Session
+- Added deferred components to replace temporary no_connect markers:
+  - **MCU sheet**: R11 (10k pull-down on MCU_MODEM_PWR_EN), R12 (100k) + R13 (47k) VBUS_SENSE voltage divider, J3 (Conn_01x04 SWD header)
+  - **Modem sheet**: R12 (1k) + LED1 (LTST-C191TBKT) NET_STATUS indicator LED
+- Key learning: KiCad power symbols connect by coordinate coincidence (place at pin position, no wire). All symbol instances need explicit pin UUIDs.
+- **Final ERC: 0 errors, 4 warnings** (3 pre-existing lib_symbol_mismatch + 1 new for J3)
+- Commit: `3ca5c11`
+- Remaining deferred: load switch (power sheet), modem USB connector (rev2), ALC5651/TXB0108 library sync (intentional Y-flip)
