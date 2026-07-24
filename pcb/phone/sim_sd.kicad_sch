@@ -2279,30 +2279,6 @@
 			)
 		)
 	)
-	(global_label "SD_DET"
-		(shape bidirectional)
-		(at 203.2 91.44 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "51b304ca-ab31-450e-9924-722d9642773b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 203.2 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-	)
 	(global_label "SD_D0"
 		(shape bidirectional)
 		(at 231.14 101.6 180)
@@ -4264,6 +4240,11 @@
 				)
 			)
 		)
+	)
+
+	(no_connect
+		(at 203.2 91.44)
+		(uuid "856ceb55-3851-4fb9-a32c-8200e4053285")
 	)
 	(sheet_instances
 		(path "/"

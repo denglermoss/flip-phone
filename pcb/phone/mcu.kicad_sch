@@ -4695,30 +4695,6 @@
 			)
 		)
 	)
-	(global_label "VBUS_SENSE"
-		(shape input)
-		(at 172.72 175.26 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "1ca5e9ab-a84a-4340-bf2c-32ea79e1859b")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 155.72 175.26 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-	)
 	(global_label "KEY_ROW0"
 		(shape bidirectional)
 		(at 238.76 193.04 270)
@@ -5439,54 +5415,6 @@
 			)
 		)
 	)
-	(global_label "SWCLK"
-		(shape bidirectional)
-		(at 274.32 78.74 90)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "c9aa6a92-406b-4cc5-8877-6cf5bea655a6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 274.32 68.4145 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-	)
-	(global_label "SWDIO"
-		(shape bidirectional)
-		(at 287.02 99.06 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "d121eb27-d621-402c-b743-bc17d6073e7d")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 296.52 99.06 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-	)
 	(global_label "SD_D3"
 		(shape bidirectional)
 		(at 266.7 78.74 90)
@@ -5572,30 +5500,6 @@
 		(uuid "ef30c5c8-d03e-4c35-a2d4-a2f0ef29767a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 241.3 206.8731 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-	)
-	(global_label "MCU_MODEM_PWR_EN"
-		(shape output)
-		(at 172.72 101.6 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "f3874895-7139-4258-ac42-bf82cc2807f6")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 146.72 101.6 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12405,6 +12309,26 @@
 				)
 			)
 		)
+	)
+
+	(no_connect
+		(at 274.32 78.74)
+		(uuid "e558dbb0-d6a8-43a8-9e1f-cb07f52a5f1e")
+	)
+
+	(no_connect
+		(at 287.02 99.06)
+		(uuid "89deab03-512a-4c1b-aac0-5ffdc1f6969b")
+	)
+
+	(no_connect
+		(at 172.72 175.26)
+		(uuid "cd24375d-3b3a-42fc-8d75-9447640dacde")
+	)
+
+	(no_connect
+		(at 172.72 101.6)
+		(uuid "5a2fba0c-4ad0-4514-8e53-de32d0a2497d")
 	)
 	(sheet_instances
 		(path "/"

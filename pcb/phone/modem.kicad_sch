@@ -3270,30 +3270,6 @@
 			)
 		)
 	)
-	(global_label "USIM_DET"
-		(shape bidirectional)
-		(at 86.36 85.09 90)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "03dc3041-657f-4313-8150-256cca770a0c")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 86.36 72.0431 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-	)
 	(global_label "MODEM_CTS"
 		(shape input)
 		(at 81.28 115.57 270)
@@ -3363,30 +3339,6 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
-			)
-		)
-	)
-	(global_label "NET_STATUS"
-		(shape output)
-		(at 119.38 85.09 90)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "1338687a-c149-4814-a194-ee618a954768")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 119.38 70.9168 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
 			)
 		)
 	)
@@ -3822,30 +3774,6 @@
 			)
 		)
 	)
-	(global_label "MODEM_USB_DP"
-		(shape bidirectional)
-		(at 114.3 85.09 90)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "c1027e71-771a-4877-9cd5-fb81b8df241c")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 114.3 66.056 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-	)
 	(global_label "MODEM_RXD"
 		(shape input)
 		(at 88.9 115.57 270)
@@ -3955,30 +3883,6 @@
 		(uuid "caf2c421-e4eb-4bd1-a35d-ca6f0794bf37")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 78.74 71.0149 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-	)
-	(global_label "MODEM_USB_DN"
-		(shape bidirectional)
-		(at 111.76 85.09 90)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "d191d2fc-cb78-4704-8ad3-d9d3c0d73310")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 111.76 65.9955 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6911,6 +6815,26 @@
 				)
 			)
 		)
+	)
+
+	(no_connect
+		(at 86.36 85.09)
+		(uuid "1ac10d55-9bd9-42d4-a62b-432d2b22c9d0")
+	)
+
+	(no_connect
+		(at 111.76 85.09)
+		(uuid "ae393267-7bda-4dcd-9877-ac16b732ad5e")
+	)
+
+	(no_connect
+		(at 114.3 85.09)
+		(uuid "32e8d694-b529-4902-b067-086096ce34ee")
+	)
+
+	(no_connect
+		(at 119.38 85.09)
+		(uuid "53163052-7322-4625-8e41-16e871818451")
 	)
 	(sheet_instances
 		(path "/"
