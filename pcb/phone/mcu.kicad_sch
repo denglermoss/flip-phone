@@ -4407,7 +4407,7 @@
 	)
 	(wire
 		(pts
-			(xy 190.5 193.04) (xy 193.04 200.66)
+			(xy 190.5 193.04) (xy 190.5 200.66)
 		)
 		(stroke
 			(width 0)
@@ -12252,7 +12252,7 @@
 	)
 	(symbol
 		(lib_id "power:+3.3V")
-		(at 193.04 200.66 0)
+		(at 190.5 200.66 180)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -12260,10 +12260,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "fe921747-2a2f-4c21-a47f-c523686c220a")
 		(property "Reference" "#PWR32"
-			(at 186.69 200.66 0)
+			(at 196.85 200.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12274,17 +12273,18 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 190.5 203.2 0)
+			(at 190.5 200.914 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify right)
 			)
 		)
 		(property "Footprint" ""
-			(at 193.04 200.66 0)
+			(at 190.5 200.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12295,7 +12295,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 193.04 200.66 0)
+			(at 190.5 200.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -12306,7 +12306,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 193.04 200.66 0)
+			(at 190.5 200.66 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

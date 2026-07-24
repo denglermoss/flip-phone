@@ -211,7 +211,7 @@
       "different_unit_net": "error",
       "duplicate_reference": "error",
       "duplicate_sheet_names": "error",
-      "endpoint_off_grid": "ignore",
+      "endpoint_off_grid": "warning",
       "extra_units": "error",
       "field_name_whitespace": "warning",
       "footprint_filter": "ignore",
@@ -219,11 +219,11 @@
       "four_way_junction": "ignore",
       "ground_pin_not_ground": "warning",
       "hier_label_mismatch": "error",
-      "isolated_pin_label": "ignore",
+      "isolated_pin_label": "warning",
       "label_dangling": "error",
       "label_multiple_wires": "warning",
       "lib_symbol_issues": "warning",
-      "lib_symbol_mismatch": "ignore",
+      "lib_symbol_mismatch": "warning",
       "missing_bidi_pin": "warning",
       "missing_input_pin": "warning",
       "missing_power_pin": "error",
@@ -422,7 +422,7 @@
         "uuid": "451c3b43-1616-42cb-bf96-d436f4db82c2"
       }
     ],
-    "used_designators": "CN1,#PWR1-29,D1,L1,U1-4,U8,USBC1,C1-11,C31-32,R1-7,R11,LED1",
+    "used_designators": "CN1,#PWR1-29,#PWR510-512,D1,L1,U1-4,U8,USBC1,C1-11,C31-32,R1-7,R11,R25-27,LED1,SW2-20",
     "variants": []
   },
   "sheets": [
@@ -451,12 +451,12 @@
       "Display"
     ],
     [
-      "7fc639d9-249c-4f41-85eb-7c2617f3c206",
-      "SIM_SD"
-    ],
-    [
       "6e22c91a-fb49-47df-bf31-2f484b0239c9",
       "Display_Daughter"
+    ],
+    [
+      "7fc639d9-249c-4f41-85eb-7c2617f3c206",
+      "SIM_SD"
     ]
   ],
   "text_variables": {},

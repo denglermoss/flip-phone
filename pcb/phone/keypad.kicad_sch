@@ -78,40 +78,7 @@
 					)
 				)
 			)
-			(property "ki_description" "Tactile switch 5.2mm SMD"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
 			(symbol "SKQGABE010_0_1"
-				(circle
-					(center 0.00 -2.03)
-					(radius 0.25)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 0.00 -0.51)
-					(radius 0.25)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
 				(polyline
 					(pts
 						(xy -2.54 1.27) (xy 2.54 1.27)
@@ -138,43 +105,65 @@
 				)
 				(polyline
 					(pts
-						(xy 0.00 1.27) (xy 0.00 0.25)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.00 -3.81) (xy 0.00 -2.03)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.00 0.25) (xy 0.00 -0.51)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
 						(xy -1.27 -0.25) (xy -0.25 -2.03)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 1.27) (xy 0 0.25)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0.25) (xy 0 -0.51)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 -0.51)
+					(radius 0.25)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 -2.03)
+					(radius 0.25)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -3.81) (xy 0 -2.03)
 					)
 					(stroke
 						(width 0)
@@ -636,378 +625,1718 @@
 		)
 	)
 	(junction
-		(at 55.88 56.27)
+		(at 57.15 81.28)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "e3da7f2b-5426-4ca6-b1da-36deb8a595d3")
+		(uuid "0f87fc16-b366-4a3f-aea8-dde2e3273391")
 	)
 	(junction
-		(at 66.04 54.61)
+		(at 116.84 158.75)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "01381abd-0276-4d3f-a56c-5c227fc38bdb")
+		(uuid "109405ab-c444-493f-ba2f-7c8cc2b1dcdf")
 	)
 	(junction
-		(at 55.88 58.81)
+		(at 116.84 57.15)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "8ba7a97b-2e19-4dcc-8e0f-67d97493759d")
+		(uuid "1268375c-175f-4293-a2a3-ad264fe29e33")
 	)
 	(junction
-		(at 81.28 56.27)
+		(at 142.24 82.55)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "10ea509b-28df-4084-b044-6ff1e9e6dfaf")
+		(uuid "160333eb-f03e-4462-b394-e0c6906a4e72")
 	)
 	(junction
-		(at 91.44 54.61)
+		(at 82.55 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "78ad0a1e-db71-44e6-8cd9-93a135c8722b")
+		(uuid "1abab61e-226b-48a0-a59d-973940e0d43b")
 	)
 	(junction
-		(at 81.28 58.81)
+		(at 107.95 81.28)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "34f0a120-6f9d-4874-98f4-066e12dddbf8")
+		(uuid "1ca580d5-2428-47ee-813f-1c18965d7978")
 	)
 	(junction
-		(at 106.68 56.27)
+		(at 110.49 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "532b77b5-46bd-47ec-8357-d10248a173f8")
+		(uuid "1d39b386-8290-40fa-81d8-4cbee730976f")
 	)
 	(junction
-		(at 116.84 54.61)
+		(at 91.44 67.31)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "0ec554ef-b2fb-4889-8238-a933bf32195e")
+		(uuid "1e094ed8-de27-488c-ae0d-915a79ef0815")
 	)
 	(junction
-		(at 106.68 58.81)
+		(at 57.15 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "43797155-b142-4881-8562-4d07df594e1e")
+		(uuid "1e62ea0b-415f-4e31-b9ad-05873c57ece8")
 	)
 	(junction
-		(at 132.08 56.27)
+		(at 135.89 81.28)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "464480a6-f4e4-4d3e-a5ce-82db0085f33e")
+		(uuid "214a5354-6bfc-433e-8605-148b55190cca")
 	)
 	(junction
-		(at 142.24 54.61)
+		(at 91.44 143.51)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "b7eaec7a-a1ce-4f91-89bc-4b8ce55dbd61")
+		(uuid "229680ed-1333-4d2e-b119-3237fec68624")
 	)
 	(junction
-		(at 132.08 58.81)
+		(at 142.24 107.95)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "8dc1318c-8e9d-465e-92b0-8caf7057afe8")
+		(uuid "248dfd5e-82bd-4261-8ac3-52da0fc474ce")
 	)
 	(junction
-		(at 55.88 81.27)
+		(at 91.44 133.35)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "d024657f-7905-4c71-ae82-ce0ea62db480")
+		(uuid "25e07d98-beb3-435a-94a9-b03e259fa755")
 	)
 	(junction
-		(at 66.04 80.01)
+		(at 116.84 143.51)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "dc2eb173-3a66-4e40-bf40-631bfbaa1506")
+		(uuid "2607ae49-09bf-4db2-999b-a74e4559f01c")
 	)
 	(junction
-		(at 55.88 83.81)
+		(at 116.84 168.91)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "67aafef1-9c71-445b-bd61-69a85ff7c931")
+		(uuid "2aa2c50b-baa4-4c47-a263-32364d42955e")
 	)
 	(junction
-		(at 81.28 81.27)
+		(at 66.04 133.35)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "09b66c23-bb31-4af0-9cbf-5283922cf485")
+		(uuid "2aaf6229-d001-4c9e-8fbf-83e0d9cf5167")
 	)
 	(junction
-		(at 91.44 80.01)
+		(at 116.84 67.31)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "4c17d845-3063-491b-96e1-e1bdf325e11a")
+		(uuid "2ad891e1-9503-4b96-b6ac-29d5d764ecf5")
 	)
 	(junction
-		(at 81.28 83.81)
+		(at 66.04 143.51)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "7d72d1c5-6cd0-4b50-bc06-8958b2e0eaa6")
+		(uuid "2e8134d6-faac-4367-8529-7e065f6f6cfd")
 	)
 	(junction
-		(at 106.68 81.27)
+		(at 133.35 157.48)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "c0fa0313-fded-4329-ace7-4e7dee83fa75")
+		(uuid "2eb70245-4778-436f-aed7-34d7e9b10d5b")
 	)
 	(junction
-		(at 116.84 80.01)
+		(at 66.04 92.71)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "658cf0d1-e719-4f91-8515-e799c283f15a")
+		(uuid "33ff8e96-0893-46c0-9344-fc91acadbe9a")
 	)
 	(junction
-		(at 106.68 83.81)
+		(at 110.49 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "af4f7bb2-7d84-43cb-84b6-dfe0994f2bee")
+		(uuid "37ae058e-a169-4f98-99ec-63396fbcf9d4")
 	)
 	(junction
-		(at 132.08 81.27)
+		(at 91.44 57.15)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "6691fd8e-6c03-4fa3-9e9e-0c097b9b2046")
+		(uuid "46a88ee0-7de9-48d0-bff7-990ac02ca590")
 	)
 	(junction
-		(at 142.24 80.01)
+		(at 110.49 81.28)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "394aeeab-36c6-4e2a-88c5-0904482a2268")
+		(uuid "4ec2c3ab-42a0-4103-abe6-867b69d81dbb")
 	)
 	(junction
-		(at 132.08 83.81)
+		(at 66.04 82.55)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "735ac72c-b103-4cc3-869e-9bb06a2c0fdb")
+		(uuid "4fb70428-41b1-423b-bae3-6b0cf82c7110")
 	)
 	(junction
-		(at 55.88 106.27)
+		(at 107.95 157.48)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "51b6f6bc-076f-4bd7-baec-8412d24c082f")
+		(uuid "587f537a-3e25-4552-8eae-5687f4f22eb2")
 	)
 	(junction
-		(at 66.04 105.41)
+		(at 85.09 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "31459367-f239-4814-af98-cf34d06a48de")
+		(uuid "5c95fa38-d28c-4188-84e6-d4f948af2c49")
 	)
 	(junction
-		(at 55.88 108.81)
+		(at 85.09 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "1969205e-b3fb-4bd5-bfa7-391636635e40")
+		(uuid "5fe0f078-acb0-4e99-819e-af5f569047f3")
 	)
 	(junction
-		(at 81.28 106.27)
+		(at 91.44 82.55)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "8a4ae193-be0f-4c50-b19a-aa55a637eb56")
+		(uuid "610e1a0f-4aa4-4197-a08f-dae4e30fbd02")
 	)
 	(junction
-		(at 91.44 105.41)
+		(at 59.69 81.28)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "d5fc136d-2c58-4be4-a155-653e290f0e64")
+		(uuid "61f5bf6f-d90a-4f19-ac97-314a23ac3d11")
 	)
 	(junction
-		(at 81.28 108.81)
+		(at 133.35 132.08)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "8c36ea9b-be1a-44e8-b47b-f5310838bdd1")
+		(uuid "644adeb9-b7b4-40eb-8705-34e54de4f1ef")
 	)
 	(junction
-		(at 106.68 106.27)
+		(at 116.84 92.71)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "be58b121-89c9-493d-82cd-fdd3b626571e")
+		(uuid "64b8ffc7-6552-45f4-87dc-98328c54fcd8")
 	)
 	(junction
-		(at 116.84 105.41)
+		(at 142.24 168.91)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "996b6ccc-c1f7-4023-8d27-28cdb582c984")
+		(uuid "68ba46e6-3d06-4e22-adb5-f7751bf0979a")
 	)
 	(junction
-		(at 106.68 108.81)
+		(at 59.69 132.08)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "b8c1a337-de8a-4014-9614-3ebf0b1ad30f")
+		(uuid "69049ad4-b324-4f1e-b5f6-fa93a9996414")
 	)
 	(junction
-		(at 132.08 106.27)
+		(at 142.24 92.71)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "57f7ebb8-0fde-4804-96bf-1fca6bde11b1")
+		(uuid "69d234ab-8f35-4b5c-abce-8553d298a4a6")
 	)
 	(junction
-		(at 142.24 105.41)
+		(at 91.44 107.95)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "3c39105c-a113-4ed2-8601-f5c08ef4acec")
+		(uuid "6a639651-a312-4620-8274-5194bc54ff42")
 	)
 	(junction
-		(at 132.08 108.81)
+		(at 85.09 132.08)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "ded691a6-a9f4-4a93-8439-67e583497f11")
+		(uuid "6e0b35df-52db-456d-bee8-0e0fb5ba91e5")
 	)
 	(junction
-		(at 55.88 131.27)
+		(at 85.09 157.48)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "55fb6cea-a668-4f24-813b-2f923447d4d8")
+		(uuid "6e42a5de-189b-4c9c-a390-1365507917e6")
 	)
 	(junction
-		(at 66.04 130.81)
+		(at 57.15 157.48)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "e86bcd4e-98d8-4098-959f-69f2c0fc4b71")
+		(uuid "6e742035-25f7-4e16-bca5-7748a5c95282")
 	)
 	(junction
-		(at 55.88 133.81)
+		(at 110.49 132.08)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "ba7f9187-27f0-4012-afe6-7ee03b7c39d8")
+		(uuid "72cd1cba-c9e0-4f41-b13b-4c4b70300ffb")
 	)
 	(junction
-		(at 81.28 131.27)
+		(at 59.69 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "384bcda8-2bc8-4634-b937-6a6965e6da4d")
+		(uuid "7971c7fb-1a00-4070-8077-23bdb6dd6216")
 	)
 	(junction
-		(at 91.44 130.81)
+		(at 116.84 133.35)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "2d0ec3ea-c1d8-4ed9-8bfb-253ac763e546")
+		(uuid "7d9ae101-c690-421a-bb66-774a025ad762")
 	)
 	(junction
-		(at 81.28 133.81)
+		(at 66.04 118.11)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "74662d6c-0deb-4538-ab56-fe72d29f370b")
+		(uuid "7e193689-8ac9-499e-9343-70cf4cbb8c43")
 	)
 	(junction
-		(at 106.68 131.27)
+		(at 57.15 132.08)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "453fb984-6ca9-496e-b1a8-25688c7e539b")
+		(uuid "8306cd3a-b086-462b-8807-9cf07c305e0c")
 	)
 	(junction
-		(at 116.84 130.81)
+		(at 66.04 107.95)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "6180f463-40f4-4c0b-9b64-6565be1d2377")
+		(uuid "835dd2a2-218c-4a1c-b50b-2a45dec8654f")
 	)
 	(junction
-		(at 106.68 133.81)
+		(at 91.44 118.11)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "633e42cc-8f1f-4908-b45b-b1e84be8de48")
+		(uuid "84f231bf-1be5-47f6-8f68-99a95d853105")
 	)
 	(junction
-		(at 132.08 131.27)
+		(at 116.84 107.95)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "bf81b441-7e02-4d16-89fe-92e434dec791")
+		(uuid "8522a888-cfd9-4dd7-9337-6be4d9dff42a")
 	)
 	(junction
-		(at 142.24 130.81)
+		(at 135.89 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "cb7918da-debb-4331-8733-a765d662fd51")
+		(uuid "87d80d5d-d069-4813-8d25-0cd9fc9a3a7b")
 	)
 	(junction
-		(at 132.08 133.81)
+		(at 107.95 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "d0d9cdcf-5014-42b5-b768-df4fd730515a")
+		(uuid "8dd52d3d-4e34-44c8-9e2b-eb947cb92ecd")
 	)
 	(junction
-		(at 55.88 156.27)
+		(at 142.24 133.35)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "33dd141c-5611-4950-964e-6f46ee5d5938")
+		(uuid "92278afc-badf-416d-8e18-f5406101f231")
 	)
 	(junction
-		(at 66.04 156.21)
+		(at 57.15 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "bce4a8ce-49f1-4b8c-a582-192f6d19bb50")
+		(uuid "92fa5bcd-e1f0-4591-aae7-46c1d3593371")
 	)
 	(junction
-		(at 55.88 161.29)
+		(at 82.55 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "8c81f01f-6495-4b83-8401-c7a9a42e2bf1")
+		(uuid "94180ef4-1b62-4732-b423-dbb2d3b39778")
 	)
 	(junction
-		(at 81.28 156.27)
+		(at 59.69 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "f6d0e628-cd4e-4445-bde1-2f86943395c0")
+		(uuid "9787ec7b-bc77-4e3d-95d4-3b58445ebd57")
 	)
 	(junction
-		(at 91.44 156.21)
+		(at 135.89 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "759d0894-041a-4393-a719-3ee41f0bdf31")
+		(uuid "9d48a40c-6d70-46f2-8e9f-8caca8aff669")
 	)
 	(junction
-		(at 81.28 161.29)
+		(at 133.35 106.68)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "b9bef52d-f8b2-43f9-9338-c8892ed3c01c")
+		(uuid "a1ce46b5-ca1b-400b-8a99-2c0b68f50dc5")
 	)
 	(junction
-		(at 106.68 156.27)
+		(at 82.55 132.08)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "be7f3ea1-d64c-44a3-b43f-66ec9644cc63")
+		(uuid "a990c9f9-7642-402a-b563-6a483cdc6749")
 	)
 	(junction
-		(at 116.84 156.21)
+		(at 66.04 57.15)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "e8ef9913-602c-4909-916c-70cadacf34fa")
+		(uuid "aaae2e6a-f8de-4d55-9ccd-776b99495da6")
 	)
 	(junction
-		(at 106.68 161.29)
+		(at 107.95 55.88)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "28587ea5-d0e7-4699-a467-a022eb31487a")
+		(uuid "ae70437b-04f3-4452-aa13-bc611889c27a")
 	)
 	(junction
-		(at 132.08 156.27)
+		(at 91.44 92.71)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "6f9aec88-782d-4e05-8d4a-55843f83247e")
+		(uuid "b4326dab-d3d4-4a9c-a524-75ed5b61d7f6")
 	)
 	(junction
-		(at 142.24 156.21)
+		(at 135.89 132.08)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "943a7cd5-ceb8-407b-a889-ff688e9b28d7")
+		(uuid "b8623fd3-79d2-49dd-bdd4-cf0e1925a6d5")
 	)
 	(junction
-		(at 132.08 161.29)
+		(at 85.09 81.28)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "d584ef95-79c6-4eaf-ade1-984e54534213")
+		(uuid "b9b46067-abf8-42a5-802d-e5dcba30ae8e")
 	)
-	(global_label "KEY_ROW0"
+	(junction
+		(at 142.24 57.15)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "bfd4cec3-b24b-4877-a3e8-4ba2d36e7c9e")
+	)
+	(junction
+		(at 66.04 67.31)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c3088540-433c-4a7d-8000-a31a0a21d00e")
+	)
+	(junction
+		(at 66.04 168.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ccdc74c6-1383-4680-8e30-292c475f08ea")
+	)
+	(junction
+		(at 116.84 82.55)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "cf0aa824-563a-4f50-9ce5-2f66207140f6")
+	)
+	(junction
+		(at 142.24 118.11)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "cfc4617a-338f-446a-9956-9c2830774e23")
+	)
+	(junction
+		(at 142.24 67.31)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d166f7b8-9428-470e-90bf-f7abe157ef13")
+	)
+	(junction
+		(at 133.35 55.88)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d28e93cc-fb1f-40f3-bd02-6cf282ca062d")
+	)
+	(junction
+		(at 82.55 157.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d931dd7c-9db7-432c-8c3e-c7a6da862679")
+	)
+	(junction
+		(at 142.24 158.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "db2d7a4f-932f-4994-acdc-724f5dba7671")
+	)
+	(junction
+		(at 110.49 157.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "dd0cd105-3a93-41fe-841b-73bd853bf02a")
+	)
+	(junction
+		(at 91.44 168.91)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "dd792587-927c-4617-943f-db75982a457e")
+	)
+	(junction
+		(at 135.89 157.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e09c81c6-d67e-407e-b617-1350bf5cdbf2")
+	)
+	(junction
+		(at 82.55 81.28)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e2e0a32b-719e-4227-9490-f3d6df6b8e21")
+	)
+	(junction
+		(at 142.24 143.51)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e5ff6528-fc88-48b9-bf8e-4d0c04a5ec1d")
+	)
+	(junction
+		(at 59.69 157.48)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "e7b3aa16-c5d2-4466-9f31-8c80c121e144")
+	)
+	(junction
+		(at 116.84 118.11)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "eadcb8fe-456e-4a47-bd19-af0f89602cdc")
+	)
+	(junction
+		(at 91.44 158.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "eaddcd6b-a921-45e9-816a-67eebdaf4e4e")
+	)
+	(junction
+		(at 107.95 132.08)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ee6f76bd-fdf5-40b3-a8b6-54589b5b6198")
+	)
+	(junction
+		(at 66.04 158.75)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "eea69939-5654-4c8b-acad-e24f8778f98d")
+	)
+	(junction
+		(at 133.35 81.28)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f75d9d4e-1e87-4908-8b9e-f76c82016b12")
+	)
+	(wire
+		(pts
+			(xy 90.17 118.11) (xy 91.44 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0086fad6-a409-4e06-8955-0c05e0d9645e")
+	)
+	(wire
+		(pts
+			(xy 140.97 168.91) (xy 142.24 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "041839b8-5e88-4eb4-bdfd-8f8db5e64522")
+	)
+	(wire
+		(pts
+			(xy 115.57 158.75) (xy 116.84 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "05c016eb-afde-4d3e-b73e-5fa8565c814a")
+	)
+	(wire
+		(pts
+			(xy 64.77 67.31) (xy 66.04 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0939178a-c5e3-4bc3-aa23-fdaf5c57c477")
+	)
+	(wire
+		(pts
+			(xy 85.09 106.68) (xy 85.09 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0ae95120-0d23-4db7-a4f6-dae931e9129d")
+	)
+	(wire
+		(pts
+			(xy 82.55 118.11) (xy 82.55 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0b3c66b5-ecfc-4b22-8844-a223b70b695d")
+	)
+	(wire
+		(pts
+			(xy 64.77 82.55) (xy 66.04 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0eae2b7b-c296-4e83-9d60-7e594366c0ea")
+	)
+	(wire
+		(pts
+			(xy 82.55 168.91) (xy 82.55 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "10101800-dc29-4cb9-91f7-41f3e696070f")
+	)
+	(wire
+		(pts
+			(xy 115.57 168.91) (xy 116.84 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "10371521-f495-451b-ba52-01fef5ea9dc3")
+	)
+	(wire
+		(pts
+			(xy 59.69 118.11) (xy 57.15 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1223c57e-f72d-427e-9afb-243f418a4dc8")
+	)
+	(wire
+		(pts
+			(xy 25.4 106.68) (xy 147.32 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "17f3f1ba-0a3e-427d-8069-edfadffcdf23")
+	)
+	(wire
+		(pts
+			(xy 140.97 92.71) (xy 142.24 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1a4aa7d6-e7e7-42cc-ba47-434d8422d34c")
+	)
+	(wire
+		(pts
+			(xy 140.97 82.55) (xy 142.24 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1b646ba8-3ca6-46d3-b509-c186aad26f53")
+	)
+	(wire
+		(pts
+			(xy 85.09 92.71) (xy 82.55 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "21b350f6-e00f-417e-b4d3-e43b57317a96")
+	)
+	(wire
+		(pts
+			(xy 85.09 132.08) (xy 85.09 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "29d791fa-d63d-4f94-9f83-5d5c0de2815a")
+	)
+	(wire
+		(pts
+			(xy 133.35 67.31) (xy 133.35 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "29e48605-fa69-4845-aa06-733f293018dc")
+	)
+	(wire
+		(pts
+			(xy 25.4 55.88) (xy 57.15 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2a11c018-b499-4dfe-a554-6c18b80a16fc")
+	)
+	(wire
+		(pts
+			(xy 85.09 168.91) (xy 82.55 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2a2b662e-3432-49b1-95f3-86ddad708f5e")
+	)
+	(wire
+		(pts
+			(xy 140.97 107.95) (xy 142.24 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2c979996-2177-41bd-9f86-15486c5719c2")
+	)
+	(wire
+		(pts
+			(xy 133.35 118.11) (xy 133.35 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2d61813a-03b5-4cf5-899f-dbe5272975ac")
+	)
+	(wire
+		(pts
+			(xy 59.69 67.31) (xy 57.15 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "30c4b734-1034-4e4a-8602-18dda1716f6b")
+	)
+	(wire
+		(pts
+			(xy 59.69 132.08) (xy 59.69 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3182ea31-d9f7-424a-994b-216872430b52")
+	)
+	(wire
+		(pts
+			(xy 133.35 168.91) (xy 133.35 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3653e8a5-a3f2-49a0-a50f-e200dc2954ca")
+	)
+	(wire
+		(pts
+			(xy 59.69 106.68) (xy 59.69 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3812a27b-c0f2-495e-80b1-a94dc2d4424a")
+	)
+	(wire
+		(pts
+			(xy 85.09 157.48) (xy 85.09 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ab719dc-1c96-4041-87b5-b5c83040040d")
+	)
+	(wire
+		(pts
+			(xy 110.49 106.68) (xy 110.49 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ae22d82-5626-46f0-bd30-9ffd9265db04")
+	)
+	(wire
+		(pts
+			(xy 115.57 57.15) (xy 116.84 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3e7ff56e-8418-4568-905e-9a9588edb6b8")
+	)
+	(wire
+		(pts
+			(xy 66.04 67.31) (xy 66.04 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ff62333-3141-49ca-ad5e-a8bc9423535d")
+	)
+	(wire
+		(pts
+			(xy 85.09 143.51) (xy 82.55 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "491b7164-d17c-4b80-af28-93b05f10d283")
+	)
+	(wire
+		(pts
+			(xy 90.17 92.71) (xy 91.44 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4961861a-8e84-4a73-87b6-619b65884094")
+	)
+	(wire
+		(pts
+			(xy 64.77 118.11) (xy 66.04 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4bcecbb7-3eb2-4163-93e2-18f2fde433e5")
+	)
+	(wire
+		(pts
+			(xy 147.32 54.61) (xy 147.32 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4e8b31b0-b9be-4939-8f01-2ee514e1be21")
+	)
+	(wire
+		(pts
+			(xy 147.32 80.01) (xy 147.32 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4ef9e5c4-3f9e-4d62-ac35-3122beaf0b0a")
+	)
+	(wire
+		(pts
+			(xy 59.69 55.88) (xy 147.32 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "50945c01-473c-43e3-ab14-e0549300f9c9")
+	)
+	(wire
+		(pts
+			(xy 140.97 143.51) (xy 142.24 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "526cb3e1-491a-4d58-8857-db1830047b79")
+	)
+	(wire
+		(pts
+			(xy 135.89 157.48) (xy 135.89 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "52bb062b-9444-4230-ab81-7fae809ba5bd")
+	)
+	(wire
+		(pts
+			(xy 110.49 132.08) (xy 110.49 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5361c9c3-6047-48de-9448-45dbf8cac31f")
+	)
+	(wire
+		(pts
+			(xy 85.09 55.88) (xy 85.09 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "54fb8afc-350b-406c-8821-5cef53f596b3")
+	)
+	(wire
+		(pts
+			(xy 59.69 55.88) (xy 59.69 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5546512a-54ae-469c-9c62-6001e18c2dd5")
+	)
+	(wire
+		(pts
+			(xy 25.4 157.48) (xy 147.32 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5842acdf-e516-4e45-834a-2604bebd04a0")
+	)
+	(wire
+		(pts
+			(xy 82.55 92.71) (xy 82.55 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "587fc170-530c-43e3-bcf1-e44181076b42")
+	)
+	(wire
+		(pts
+			(xy 140.97 158.75) (xy 142.24 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5a22a3c0-0e73-4ba9-b062-5f3c1668ce18")
+	)
+	(wire
+		(pts
+			(xy 64.77 57.15) (xy 66.04 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5bbfeacc-8082-4d04-812c-ab9ddc76bbd2")
+	)
+	(wire
+		(pts
+			(xy 64.77 107.95) (xy 66.04 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "60be854f-4e6c-4bec-9924-ff859d7a557d")
+	)
+	(wire
+		(pts
+			(xy 66.04 57.15) (xy 66.04 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6457d277-956d-46cd-a701-eab13f7ec154")
+	)
+	(wire
+		(pts
+			(xy 135.89 132.08) (xy 135.89 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "64ab7ddf-bf21-4243-b899-e7e5da65ee95")
+	)
+	(wire
+		(pts
+			(xy 110.49 118.11) (xy 107.95 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6966e78b-a002-48ee-8395-1461d1e346c3")
+	)
+	(wire
+		(pts
+			(xy 135.89 106.68) (xy 135.89 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6c0c6771-707e-4ecd-b0b2-0890b352a847")
+	)
+	(wire
+		(pts
+			(xy 59.69 168.91) (xy 57.15 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6edb3c37-fcf9-4f2b-9311-817e84203581")
+	)
+	(wire
+		(pts
+			(xy 91.44 40.64) (xy 91.44 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7121b6bc-f793-4c2a-aa48-63f585ee7f75")
+	)
+	(wire
+		(pts
+			(xy 140.97 118.11) (xy 142.24 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "72e3119a-f02e-401d-b861-40a2898457b9")
+	)
+	(wire
+		(pts
+			(xy 110.49 168.91) (xy 107.95 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "741b576a-830a-497c-940e-0947aba52325")
+	)
+	(wire
+		(pts
+			(xy 90.17 57.15) (xy 91.44 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "79a7399d-6b21-4fad-8a9c-2a0cfa28a3f7")
+	)
+	(wire
+		(pts
+			(xy 140.97 67.31) (xy 142.24 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7eb834a6-e04e-4b0a-a0d6-77e3e1f7ef49")
+	)
+	(wire
+		(pts
+			(xy 110.49 55.88) (xy 110.49 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "80af78af-ee7e-4360-ae99-db2cc1419799")
+	)
+	(wire
+		(pts
+			(xy 59.69 157.48) (xy 59.69 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "80b962c7-855a-4f76-8e28-3ebbd7307657")
+	)
+	(wire
+		(pts
+			(xy 90.17 133.35) (xy 91.44 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "822d9b67-9d0b-4b49-adf8-2bb8a1506537")
+	)
+	(wire
+		(pts
+			(xy 110.49 67.31) (xy 107.95 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "823ec868-e718-4bc3-b97d-cd32dbecbc05")
+	)
+	(wire
+		(pts
+			(xy 115.57 118.11) (xy 116.84 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "842df192-442a-4850-b7e0-d1bc645fce0b")
+	)
+	(wire
+		(pts
+			(xy 59.69 81.28) (xy 59.69 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "857f6ebb-9aae-480f-9a1a-0932f059b628")
+	)
+	(wire
+		(pts
+			(xy 142.24 40.64) (xy 142.24 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "868d4edb-80d4-4276-a73f-c7006f8f0b12")
+	)
+	(wire
+		(pts
+			(xy 57.15 118.11) (xy 57.15 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "881c238f-f9a0-4a4d-b59f-31db7565c25b")
+	)
+	(wire
+		(pts
+			(xy 110.49 81.28) (xy 110.49 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8854a777-c236-43af-9ba6-0ebc07fc3277")
+	)
+	(wire
+		(pts
+			(xy 107.95 118.11) (xy 107.95 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "88c05ff2-bb08-4ae2-abed-dd9dcb864ed2")
+	)
+	(wire
+		(pts
+			(xy 57.15 55.88) (xy 59.69 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "89657261-faf5-48c8-b693-20460bc4c2f1")
+	)
+	(wire
+		(pts
+			(xy 115.57 133.35) (xy 116.84 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8d982578-5f45-441b-91c7-fec941ef6691")
+	)
+	(wire
+		(pts
+			(xy 90.17 107.95) (xy 91.44 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8fbd07ad-1e8f-478c-a00b-7a42ba663a55")
+	)
+	(wire
+		(pts
+			(xy 64.77 158.75) (xy 66.04 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "90029684-2eec-4105-832c-cc13dca1a8af")
+	)
+	(wire
+		(pts
+			(xy 135.89 168.91) (xy 133.35 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "93460f7a-5691-4648-80dc-9d36df9324b3")
+	)
+	(wire
+		(pts
+			(xy 25.4 132.08) (xy 147.32 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9445ce51-44d4-44a7-b051-6f424cbb62f1")
+	)
+	(wire
+		(pts
+			(xy 82.55 143.51) (xy 82.55 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "95145969-9dd6-4374-9c44-c8374af43eb0")
+	)
+	(wire
+		(pts
+			(xy 147.32 105.41) (xy 147.32 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "958ae695-d34b-4296-83bd-1b7ebe559430")
+	)
+	(wire
+		(pts
+			(xy 140.97 57.15) (xy 142.24 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9693f5c9-c09a-4337-868f-564f5cc8f16f")
+	)
+	(wire
+		(pts
+			(xy 135.89 67.31) (xy 133.35 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "97d626e6-20d0-4144-9860-3a23999518d7")
+	)
+	(wire
+		(pts
+			(xy 116.84 143.51) (xy 116.84 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "98de1f3c-2d59-4ce9-920c-49717017043c")
+	)
+	(wire
+		(pts
+			(xy 116.84 133.35) (xy 116.84 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9abca9b9-d8c1-41e2-85db-579af179091b")
+	)
+	(wire
+		(pts
+			(xy 59.69 92.71) (xy 57.15 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9b87dcbd-774b-424e-abae-aff74ec8b507")
+	)
+	(wire
+		(pts
+			(xy 90.17 168.91) (xy 91.44 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9cdc741a-784d-4eb7-8d7d-f946e93aa84c")
+	)
+	(wire
+		(pts
+			(xy 57.15 143.51) (xy 57.15 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a0eb8e6d-f16c-422a-a1de-5e9cf19762cb")
+	)
+	(wire
+		(pts
+			(xy 135.89 143.51) (xy 133.35 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a5c64211-1842-459c-aa41-05a274ef703f")
+	)
+	(wire
+		(pts
+			(xy 85.09 118.11) (xy 82.55 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a60313d3-c1a3-494b-bd2f-4b8cdf36a1ff")
+	)
+	(wire
+		(pts
+			(xy 142.24 107.95) (xy 142.24 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa90a083-5989-4ee3-ab60-83b4150f508c")
+	)
+	(wire
+		(pts
+			(xy 59.69 143.51) (xy 57.15 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aac877c5-cb41-4668-b581-3ff7dc2e9ae0")
+	)
+	(wire
+		(pts
+			(xy 66.04 40.64) (xy 66.04 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ab05963b-fc24-41ce-a7f0-36d6283800f7")
+	)
+	(wire
+		(pts
+			(xy 64.77 168.91) (xy 66.04 168.91)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ac67576c-2fde-4bbb-a59b-856e63e951cb")
+	)
+	(wire
+		(pts
+			(xy 142.24 118.11) (xy 142.24 171.45)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ad6cda2d-5e1a-4e18-bf41-d04ef64d8d8f")
+	)
+	(wire
+		(pts
+			(xy 135.89 92.71) (xy 133.35 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ae808440-2428-47d6-aff5-36a74a39f33b")
+	)
+	(wire
+		(pts
+			(xy 90.17 158.75) (xy 91.44 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aed8e9fb-ee86-4987-b797-690a1e737f29")
+	)
+	(wire
+		(pts
+			(xy 64.77 143.51) (xy 66.04 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "af32b19e-cda6-472d-941f-5fdac9764eb5")
+	)
+	(wire
+		(pts
+			(xy 115.57 107.95) (xy 116.84 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b4ca5136-0749-4cf8-ba83-42b2615e9fc4")
+	)
+	(wire
+		(pts
+			(xy 64.77 92.71) (xy 66.04 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b4eb52db-8d3e-4001-8848-a9e66c584616")
+	)
+	(wire
+		(pts
+			(xy 147.32 130.81) (xy 147.32 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b4f4db5b-54ba-45bb-bd50-a1e709da1a29")
+	)
+	(wire
+		(pts
+			(xy 85.09 81.28) (xy 85.09 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b54851df-06c0-4ee9-8de4-9e247068bef6")
+	)
+	(wire
+		(pts
+			(xy 133.35 92.71) (xy 133.35 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b62481e0-ce40-4b5c-97bc-dbd7e100761d")
+	)
+	(wire
+		(pts
+			(xy 115.57 82.55) (xy 116.84 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b9894771-55e5-4622-abda-ac447c25d2f7")
+	)
+	(wire
+		(pts
+			(xy 110.49 92.71) (xy 107.95 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bcc676f6-8924-4bd5-8181-59953b09f035")
+	)
+	(wire
+		(pts
+			(xy 135.89 118.11) (xy 133.35 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bf7979a2-d89c-4bbc-8385-a0f74359f9f1")
+	)
+	(wire
+		(pts
+			(xy 115.57 92.71) (xy 116.84 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c2ef213e-f501-45e4-a575-425329b390e8")
+	)
+	(wire
+		(pts
+			(xy 133.35 143.51) (xy 133.35 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c3fe9989-c51b-48cd-b09a-e4b4d27987eb")
+	)
+	(wire
+		(pts
+			(xy 107.95 168.91) (xy 107.95 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c54e1469-130b-4688-aadd-bc8d3d7f1e49")
+	)
+	(wire
+		(pts
+			(xy 85.09 67.31) (xy 82.55 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "cb9a606a-9b0f-4e41-9ec5-249dfc6bacc5")
+	)
+	(wire
+		(pts
+			(xy 110.49 157.48) (xy 110.49 158.75)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d02c4ea0-9b2a-4b7b-9407-3fd2edbed80b")
+	)
+	(wire
+		(pts
+			(xy 90.17 143.51) (xy 91.44 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d05bef90-05f3-4c50-b1bf-2aed27dc2bcc")
+	)
+	(wire
+		(pts
+			(xy 107.95 92.71) (xy 107.95 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d256e891-4635-4d76-8565-ea06af2cb09f")
+	)
+	(wire
+		(pts
+			(xy 90.17 67.31) (xy 91.44 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d2d5e02f-90a2-4bf7-b664-486d48716509")
+	)
+	(wire
+		(pts
+			(xy 107.95 143.51) (xy 107.95 132.08)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d474c729-0647-456b-8d2f-2c63dbed7c83")
+	)
+	(wire
+		(pts
+			(xy 115.57 67.31) (xy 116.84 67.31)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d5e0f902-3572-4c0f-b878-d5d66024eca8")
+	)
+	(wire
+		(pts
+			(xy 82.55 67.31) (xy 82.55 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d9318a61-5626-4008-a17c-83cc8f569d3a")
+	)
+	(wire
+		(pts
+			(xy 135.89 55.88) (xy 135.89 57.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d9e16166-08ef-4cda-ae07-a267870e9feb")
+	)
+	(wire
+		(pts
+			(xy 57.15 67.31) (xy 57.15 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "da42962c-ff14-4279-9c4e-258c4543c085")
+	)
+	(wire
+		(pts
+			(xy 140.97 133.35) (xy 142.24 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "db7e8df5-26d8-4feb-a0f8-06875cf98fc9")
+	)
+	(wire
+		(pts
+			(xy 107.95 67.31) (xy 107.95 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e1eca945-5e69-4fd3-919e-58a39e67f891")
+	)
+	(wire
+		(pts
+			(xy 64.77 133.35) (xy 66.04 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e5c5be8a-b73f-4e18-8674-8706ce473969")
+	)
+	(wire
+		(pts
+			(xy 57.15 168.91) (xy 57.15 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e6e0616a-11a3-4f13-926b-02a78d6a9fee")
+	)
+	(wire
+		(pts
+			(xy 57.15 92.71) (xy 57.15 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eaa0d823-c8ae-44c6-8d71-c85ddcb6f716")
+	)
+	(wire
+		(pts
+			(xy 115.57 143.51) (xy 116.84 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "eba1060b-73ce-4bdf-b358-beb7f27dbc3c")
+	)
+	(wire
+		(pts
+			(xy 90.17 82.55) (xy 91.44 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ecfbd27a-ba0f-40f3-a4b0-0c787f0caf97")
+	)
+	(wire
+		(pts
+			(xy 116.84 40.64) (xy 116.84 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ef8e660a-04b5-4ce4-bffc-374839e7068d")
+	)
+	(wire
+		(pts
+			(xy 110.49 143.51) (xy 107.95 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f32bfe34-15e8-4d19-96d7-093d583014b5")
+	)
+	(wire
+		(pts
+			(xy 135.89 81.28) (xy 135.89 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f5462a3a-500b-4ccb-adaa-49a177b40f26")
+	)
+	(wire
+		(pts
+			(xy 25.4 81.28) (xy 147.32 81.28)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fa8ac36c-31f3-4698-86d4-baaed2b93eab")
+	)
+	(wire
+		(pts
+			(xy 147.32 156.21) (xy 147.32 157.48)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fef440f1-b11a-4efe-bb42-099018205a55")
+	)
+	(global_label "KEY_COL1"
 		(shape bidirectional)
-		(at 25.4 55.88 180)
+		(at 91.44 40.64 90)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
-		(uuid "eff42a8b-ef5e-4486-8884-0dc592520b12")
+		(uuid "0eb86066-89f4-42de-8427-3967b70d2475")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 25.4 54.61 0)
+			(at 81.28 40.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1041,42 +2370,19 @@
 			)
 		)
 	)
-	(global_label "KEY_ROW2"
+	(global_label "KEY_COL3"
 		(shape bidirectional)
-		(at 25.4 106.68 180)
+		(at 142.24 40.64 90)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right)
+			(justify left)
 		)
-		(uuid "cb23757a-295b-43e1-a287-6718dfc857bd")
+		(uuid "86a5a17d-f328-4370-9ce1-1504aeaaf45c")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 25.4 105.41 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "KEY_ROW3"
-		(shape bidirectional)
-		(at 25.4 132.08 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "a679e6dd-064c-4502-8445-d78eb744dd02")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 25.4 130.81 0)
+			(at 132.08 40.64 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1110,42 +2416,19 @@
 			)
 		)
 	)
-	(global_label "KEY_COL0"
+	(global_label "KEY_ROW3"
 		(shape bidirectional)
-		(at 66.04 40.64 90)
+		(at 25.4 132.08 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left)
+			(justify right)
 		)
-		(uuid "ef8d7051-60c4-4d80-9923-8f01b7000b27")
+		(uuid "a679e6dd-064c-4502-8445-d78eb744dd02")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 55.88 40.64 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-	)
-	(global_label "KEY_COL1"
-		(shape bidirectional)
-		(at 91.44 40.64 90)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "0eb86066-89f4-42de-8427-3967b70d2475")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 81.28 40.64 0)
+			(at 25.4 130.81 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1179,9 +2462,32 @@
 			)
 		)
 	)
-	(global_label "KEY_COL3"
+	(global_label "KEY_ROW2"
 		(shape bidirectional)
-		(at 142.24 40.64 90)
+		(at 25.4 106.68 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "cb23757a-295b-43e1-a287-6718dfc857bd")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 25.4 105.41 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "KEY_COL0"
+		(shape bidirectional)
+		(at 66.04 40.64 90)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -1189,9 +2495,32 @@
 			)
 			(justify left)
 		)
-		(uuid "86a5a17d-f328-4370-9ce1-1504aeaaf45c")
+		(uuid "ef8d7051-60c4-4d80-9923-8f01b7000b27")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 132.08 40.64 0)
+			(at 55.88 40.64 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+	)
+	(global_label "KEY_ROW0"
+		(shape bidirectional)
+		(at 25.4 55.88 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "eff42a8b-ef5e-4486-8884-0dc592520b12")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 25.4 54.61 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1203,8 +2532,8 @@
 		)
 	)
 	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 60.96 55.88 0)
+		(lib_id "power:+3.3V")
+		(at 147.32 146.05 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1213,29 +2542,109 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "481ffb89-a7e6-4d1e-861b-dc51e9f4d63c")
-		(property "Reference" "SW1"
-			(at 60.96 47.38 0)
+		(uuid "0ab0d0cd-5977-4911-a5f8-a4b02ec041cf")
+		(property "Reference" "#PWR505"
+			(at 147.32 141.03 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 147.32 138.49 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 147.32 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 147.32 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 147.32 146.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "06ab01bb-babe-4ab8-ab14-94c3013c1200")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "#PWR505")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 88.9 138.43 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "16cf5fc7-8611-401d-88e8-67f835685b36")
+		(property "Reference" "SW16"
+			(at 91.44 137.1599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 			)
 		)
 		(property "Value" "SKQGABE010"
-			(at 60.96 63.89 0)
+			(at 91.44 139.6999 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 60.96 66.43 0)
+			(at 78.35 138.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1246,7 +2655,7 @@
 			)
 		)
 		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 60.96 68.97 0)
+			(at 75.81 138.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1257,7 +2666,7 @@
 			)
 		)
 		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 60.96 55.88 0)
+			(at 88.9 138.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1268,7 +2677,7 @@
 			)
 		)
 		(property "Manufacturer" "ALPSALPINE"
-			(at 60.96 71.51 0)
+			(at 73.27 138.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1279,7 +2688,7 @@
 			)
 		)
 		(property "MPN" "SKQGABE010"
-			(at 60.96 74.05 0)
+			(at 70.73 138.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1290,7 +2699,769 @@
 			)
 		)
 		(property "LCSC Part" "C115351"
-			(at 60.96 76.59 0)
+			(at 68.19 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "067a54d7-cc7a-4a9a-9bb1-b9d53f2572ae")
+		)
+		(pin "2"
+			(uuid "8f9e48f4-5c16-4cfc-8961-1b768b94fcc8")
+		)
+		(pin "3"
+			(uuid "b8483480-d6b5-4d20-b3d3-11a57c6a1ef8")
+		)
+		(pin "4"
+			(uuid "437ddd96-1e3d-4883-8d8d-efe60ec79585")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW16")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 63.5 163.83 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "18efff24-a66c-42e1-8f14-3f4f13b9b87b")
+		(property "Reference" "SW14"
+			(at 66.04 162.5599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 66.04 165.0999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 52.95 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 50.41 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 63.5 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 47.87 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 45.33 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 42.79 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "001adf62-678f-4b24-b65c-16d7e6b6afde")
+		)
+		(pin "2"
+			(uuid "6fe23237-db69-47f2-bd4d-86ebdccb8fda")
+		)
+		(pin "3"
+			(uuid "34a3f75e-336f-43e6-b0fc-0396e3e502d8")
+		)
+		(pin "4"
+			(uuid "26f268af-4218-416a-85bc-aeed393362a1")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 66.04 179.07 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1e9c0366-8a35-464b-bd70-bd257ae2536d")
+		(property "Reference" "#PWR0512"
+			(at 55.88 174.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 55.88 179.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 66.04 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 66.04 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 66.04 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "674d0377-f94b-403f-94a3-27190326992c")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "#PWR0512")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 114.3 163.83 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "28fecf3a-47d8-4948-b74c-020de622b44c")
+		(property "Reference" "SW18"
+			(at 116.84 162.5599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 116.84 165.0999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 103.75 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 101.21 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 114.3 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 98.67 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 96.13 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 93.59 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d1fac045-b6bc-4fef-ad3e-b46b0beb9117")
+		)
+		(pin "2"
+			(uuid "7028f8fc-a550-4a3d-84ea-368c01d9b40d")
+		)
+		(pin "3"
+			(uuid "56a8cc6e-2446-4f91-899e-905e4c046ef6")
+		)
+		(pin "4"
+			(uuid "c90b05a6-a2a2-4877-bf29-84bb5c758c33")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 88.9 62.23 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "34487a7f-74d2-4647-94cd-648c4d3654c7")
+		(property "Reference" "SW2"
+			(at 91.44 60.9599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 91.44 63.4999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 78.35 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 75.81 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 88.9 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 73.27 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 70.73 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 68.19 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "4706603e-98ef-4e6b-acef-d6319aa5390b")
+		)
+		(pin "2"
+			(uuid "9df45459-91ee-4c5c-ada3-e0e2d1df22d2")
+		)
+		(pin "3"
+			(uuid "31b8dba4-40bf-42c3-9875-3f9bef200453")
+		)
+		(pin "4"
+			(uuid "6e0af43f-9673-455e-8fb4-9b22108a2ee3")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 147.32 44.45 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "3ca16324-4a75-43a9-872c-aca25c2f10ac")
+		(property "Reference" "#PWR501"
+			(at 147.32 41.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 147.32 38.49 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 147.32 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 147.32 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 147.32 44.45 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "064eaf71-0d9a-437a-88a0-e21ea316ec8f")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "#PWR501")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 114.3 113.03 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "46d9e6aa-2ec4-48d5-a1b2-a202445f4836")
+		(property "Reference" "SW10"
+			(at 116.84 111.7599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 116.84 114.2999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 103.75 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 101.21 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 114.3 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 98.67 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 96.13 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 93.59 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "0e001d62-d578-40aa-8994-07836f4406c1")
+		)
+		(pin "2"
+			(uuid "2d9d0397-07a1-47f5-83ca-20757814fec2")
+		)
+		(pin "3"
+			(uuid "0202ee74-c3ce-438f-89aa-9446e77b790c")
+		)
+		(pin "4"
+			(uuid "84af75db-8e64-408f-a7b1-d962132fecea")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 63.5 62.23 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "481ffb89-a7e6-4d1e-861b-dc51e9f4d63c")
+		(property "Reference" "SW1"
+			(at 66.04 60.9599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 66.04 63.4999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 52.95 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 50.41 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 63.5 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 47.87 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 45.33 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 42.79 62.23 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1322,8 +3493,8 @@
 		)
 	)
 	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 86.36 55.88 0)
+		(lib_id "power:+3.3V")
+		(at 147.32 69.85 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1332,29 +3503,9 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "90e2d0f0-d678-407e-9862-ee97ebb79ae8")
-		(property "Reference" "SW2"
-			(at 86.36 47.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 86.36 63.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 86.36 66.43 0)
+		(uuid "4865d5dc-57ac-4d5b-a410-00edad5f4f4c")
+		(property "Reference" "#PWR502"
+			(at 147.32 66.03 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1364,8 +3515,18 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 86.36 68.97 0)
+		(property "Value" "+3.3V"
+			(at 147.32 63.49 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 147.32 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1375,8 +3536,8 @@
 				)
 			)
 		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 86.36 55.88 0)
+		(property "Datasheet" "~"
+			(at 147.32 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1386,30 +3547,8 @@
 				)
 			)
 		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 86.36 71.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 86.36 74.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 86.36 76.59 0)
+		(property "Description" ""
+			(at 147.32 69.85 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1420,2163 +3559,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "9e893af5-9c23-4ee2-a01f-82f1ee1dfe06")
-		)
-		(pin "2"
-			(uuid "8659ba1f-d8e8-43af-8fb0-f469ecb33653")
-		)
-		(pin "3"
-			(uuid "d819e5d2-3dde-4933-ac01-2c1c73cc5744")
-		)
-		(pin "4"
-			(uuid "5e0a8b33-5392-44c0-b7c7-23183fec2ea6")
+			(uuid "d22e6f44-8565-4937-88b8-25e0ec267766")
 		)
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 111.76 55.88 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e35a796b-f16c-4885-88e6-d9efa3112584")
-		(property "Reference" "SW3"
-			(at 111.76 47.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 111.76 63.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 111.76 66.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 111.76 68.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 111.76 55.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 111.76 71.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 111.76 74.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 111.76 76.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "b783dd23-9880-4279-871b-da9e06f933c6")
-		)
-		(pin "2"
-			(uuid "923c4bf0-a9fd-40f1-9284-e9aaf1a51223")
-		)
-		(pin "3"
-			(uuid "2f880f59-205a-405c-b835-078c68a988bc")
-		)
-		(pin "4"
-			(uuid "c01b49b3-f74c-4af6-b5ab-590d6ae7ed82")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW3")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 137.16 55.88 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "be86e75b-e345-4c8a-a163-2a0ba0a77d49")
-		(property "Reference" "SW4"
-			(at 137.16 47.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 137.16 63.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 137.16 66.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 137.16 68.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 137.16 55.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 137.16 71.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 137.16 74.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 137.16 76.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1897ce31-81e6-4171-a306-1fc25cc6c70f")
-		)
-		(pin "2"
-			(uuid "cf58bacd-1640-4ed5-b916-5d07814b1707")
-		)
-		(pin "3"
-			(uuid "d9a97887-5770-48a4-b50e-938435070b86")
-		)
-		(pin "4"
-			(uuid "3691255e-9bcc-4d1d-b00a-39319b4ae707")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 60.96 81.28 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "059ab939-a519-48f4-9611-ef02b6e8f1a6")
-		(property "Reference" "SW5"
-			(at 60.96 72.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 60.96 88.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 60.96 91.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 60.96 93.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 60.96 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 60.96 96.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 60.96 99.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 60.96 101.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "29c7a436-9ba4-43a7-9883-69ebe27a22d1")
-		)
-		(pin "2"
-			(uuid "131bb4a6-10a8-44dc-8e5a-188700ca4e90")
-		)
-		(pin "3"
-			(uuid "ed6b9b28-8761-437e-85c0-924ebfa1cbb8")
-		)
-		(pin "4"
-			(uuid "c3d895ca-c854-48f3-91d0-a56af0b16f9a")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 86.36 81.28 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "18171f4f-b4a4-40d9-834e-273272a4ed93")
-		(property "Reference" "SW6"
-			(at 86.36 72.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 86.36 88.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 86.36 91.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 86.36 93.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 86.36 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 86.36 96.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 86.36 99.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 86.36 101.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "3d52323b-50be-44e1-8d8f-34d8e00c8ba4")
-		)
-		(pin "2"
-			(uuid "6c3d8877-f699-4944-b064-38166ba3be50")
-		)
-		(pin "3"
-			(uuid "14e4ca8d-8aac-42bd-b1ff-1a7654701bd5")
-		)
-		(pin "4"
-			(uuid "ac339229-733f-4d59-88f7-eae80d239384")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 111.76 81.28 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "918e92f5-e327-4d49-b8dc-6a1391806b16")
-		(property "Reference" "SW7"
-			(at 111.76 72.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 111.76 88.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 111.76 91.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 111.76 93.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 111.76 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 111.76 96.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 111.76 99.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 111.76 101.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4791145f-189b-4bdb-a512-5d63629abc85")
-		)
-		(pin "2"
-			(uuid "7ab9d238-c67d-40ae-a497-e5c375ed4ea9")
-		)
-		(pin "3"
-			(uuid "b4a142b9-1b6f-434e-a6ff-fa4f1c0229f1")
-		)
-		(pin "4"
-			(uuid "6c3e3b71-f271-4556-8667-f8247acb2c92")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW7")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 137.16 81.28 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "51764b85-c22a-46b1-8199-f3fc4b84095f")
-		(property "Reference" "SW8"
-			(at 137.16 72.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 137.16 88.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 137.16 91.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 137.16 93.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 137.16 81.28 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 137.16 96.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 137.16 99.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 137.16 101.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "258a6f19-bb1c-4585-9e33-2aa455eea099")
-		)
-		(pin "2"
-			(uuid "8ab332a8-095e-4b9f-be15-77c9ab35fb4e")
-		)
-		(pin "3"
-			(uuid "36c41f5b-2d32-49ad-b4f2-a12ce290870d")
-		)
-		(pin "4"
-			(uuid "4dde46a2-3a80-4f89-861e-69ee2a02579b")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW8")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 60.96 106.68 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "acf81249-4fb0-49ed-9946-0dfcb33262d3")
-		(property "Reference" "SW9"
-			(at 60.96 97.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 60.96 113.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 60.96 116.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 60.96 118.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 60.96 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 60.96 121.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 60.96 124.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 60.96 126.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a1c9446a-4232-48df-9f2e-79c4fba4ffdb")
-		)
-		(pin "2"
-			(uuid "ddda5dc9-8037-4c30-89e6-141042d6634d")
-		)
-		(pin "3"
-			(uuid "beb3538d-57bd-44ed-ac2d-ca0834e13946")
-		)
-		(pin "4"
-			(uuid "7b85426d-74ab-422a-9aaf-0f877fe7115d")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 86.36 106.68 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d3d5c317-bf51-4a3b-9d7f-9dc3d3eb9684")
-		(property "Reference" "SW10"
-			(at 86.36 97.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 86.36 113.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 86.36 116.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 86.36 118.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 86.36 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 86.36 121.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 86.36 124.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 86.36 126.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "e429d7bc-8ccc-4a31-a5c0-2d572321de32")
-		)
-		(pin "2"
-			(uuid "2dacf145-56e5-400b-9559-b8b7024af5e5")
-		)
-		(pin "3"
-			(uuid "67aa8e35-e5a5-49c9-9ee3-4f1c9ee555f6")
-		)
-		(pin "4"
-			(uuid "0d1aec87-e324-46d3-b5e8-5f1779066976")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 111.76 106.68 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d7cc7e84-b455-4c7d-9c2f-9317aa4e7abd")
-		(property "Reference" "SW11"
-			(at 111.76 97.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 111.76 113.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 111.76 116.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 111.76 118.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 111.76 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 111.76 121.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 111.76 124.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 111.76 126.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bae815e8-fff2-41bd-84fc-0731b2005681")
-		)
-		(pin "2"
-			(uuid "251ac3ea-41e8-4ab8-b086-d210c16feac5")
-		)
-		(pin "3"
-			(uuid "5a61f85a-4787-4425-a7fc-71679897fd0d")
-		)
-		(pin "4"
-			(uuid "24c10bfb-c768-446f-8980-36d580f2f6de")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW11")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 137.16 106.68 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "db2ee286-79da-41af-a29c-2c9c02aaf5ed")
-		(property "Reference" "SW12"
-			(at 137.16 97.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 137.16 113.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 137.16 116.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 137.16 118.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 137.16 106.68 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 137.16 121.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 137.16 124.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 137.16 126.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "3eac7306-fe48-447f-92db-2b6412306df2")
-		)
-		(pin "2"
-			(uuid "4cec4acd-b646-470d-bd64-cb750214a7f8")
-		)
-		(pin "3"
-			(uuid "4eca7ef2-34bc-4f30-96ef-26c0ac2150ee")
-		)
-		(pin "4"
-			(uuid "762ac539-a750-4af7-bfb8-fefa5aae9bac")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW12")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 60.96 132.08 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "dcc6cdf4-e4ab-4530-b849-9b5373ded310")
-		(property "Reference" "SW13"
-			(at 60.96 122.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 60.96 138.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 60.96 141.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 60.96 143.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 60.96 132.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 60.96 146.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 60.96 149.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 60.96 151.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "bc39e998-938f-48b7-b290-efcaa739dd00")
-		)
-		(pin "2"
-			(uuid "9c3aa1e1-cdcc-4bf4-93ff-db83e3528768")
-		)
-		(pin "3"
-			(uuid "a07bed42-4831-4117-a6f1-aa662e781b90")
-		)
-		(pin "4"
-			(uuid "a4efed3b-5bac-4085-8893-d9831295ca5e")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW13")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 86.36 132.08 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "2db0d7fe-ffc0-4edc-b66b-941ce8f81f04")
-		(property "Reference" "SW14"
-			(at 86.36 122.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 86.36 138.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 86.36 141.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 86.36 143.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 86.36 132.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 86.36 146.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 86.36 149.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 86.36 151.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "6fe880df-47ce-442e-94a1-c394a3e8482f")
-		)
-		(pin "2"
-			(uuid "b24fd667-3446-4b10-bf5e-cd99f165bd65")
-		)
-		(pin "3"
-			(uuid "6a7327d5-14af-4285-bc68-45bef8fa7ae7")
-		)
-		(pin "4"
-			(uuid "a1d6bf82-1ab8-49bc-9f40-591ae5e15145")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW14")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 111.76 132.08 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "9f7e13c7-db26-45e6-a983-ee5f71dec1ed")
-		(property "Reference" "SW15"
-			(at 111.76 122.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 111.76 138.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 111.76 141.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 111.76 143.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 111.76 132.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 111.76 146.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 111.76 149.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 111.76 151.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2137d550-7fa6-48f1-8c1a-df6b645fd7cd")
-		)
-		(pin "2"
-			(uuid "e73cefe6-bb4d-46bd-9792-8e51f172f344")
-		)
-		(pin "3"
-			(uuid "78a2d004-efaa-4d5f-b166-a1220499c0d5")
-		)
-		(pin "4"
-			(uuid "a465015c-028c-4f5d-b162-cb230cbfef7f")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW15")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 137.16 132.08 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "8504ad77-0b19-4259-afe2-6ae440fbd7de")
-		(property "Reference" "SW16"
-			(at 137.16 122.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 137.16 138.89 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 137.16 141.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 137.16 143.97 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 137.16 132.08 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 137.16 146.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 137.16 149.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 137.16 151.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "5f921b82-d14d-4edc-9b1a-61f763e5e153")
-		)
-		(pin "2"
-			(uuid "54969018-c2ee-4da5-9c59-c0cbb53df787")
-		)
-		(pin "3"
-			(uuid "12ba7bc4-96aa-4e1b-8e08-6584f1545654")
-		)
-		(pin "4"
-			(uuid "8292ad65-2c5d-452e-924a-5512abc07a0b")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW16")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 60.96 157.48 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "c1d6343d-7073-4f6e-8bb7-3d1f832c0481")
-		(property "Reference" "SW17"
-			(at 60.96 147.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 60.96 166.37 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 60.96 166.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 60.96 171.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 60.96 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 60.96 171.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 60.96 174.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 60.96 176.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "27a4d8a8-012a-4ddd-a638-65b120cb740e")
-		)
-		(pin "2"
-			(uuid "d783aad7-8ef7-40ee-9c13-0485c38497da")
-		)
-		(pin "3"
-			(uuid "b6e0e754-d9ef-4ef8-a77d-940eee67d153")
-		)
-		(pin "4"
-			(uuid "040fc87e-c4e6-45f9-9658-fc5b9044d166")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW17")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 86.36 157.48 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "1236749c-366d-466c-bead-a8e15fd2e0ef")
-		(property "Reference" "SW18"
-			(at 86.36 147.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 86.36 166.37 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 86.36 166.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 86.36 171.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 86.36 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 86.36 171.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 86.36 174.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 86.36 176.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "228baecf-cf96-449e-9680-7c4d92cbd8c1")
-		)
-		(pin "2"
-			(uuid "431dea79-fe69-4ac7-84c2-45fa9079796b")
-		)
-		(pin "3"
-			(uuid "1104cd17-8a97-4190-aca2-b8e797d25eaf")
-		)
-		(pin "4"
-			(uuid "afc13d65-4c4c-4476-8987-043b47e4f050")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW18")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 111.76 157.48 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "759b60b6-6b56-4345-be1a-ac57ba0dac1b")
-		(property "Reference" "SW19"
-			(at 111.76 147.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 111.76 166.37 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 111.76 166.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 111.76 171.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 111.76 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 111.76 171.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 111.76 174.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 111.76 176.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "4643dbe7-9ce3-40ce-86ec-7a6408dd1311")
-		)
-		(pin "2"
-			(uuid "dde402af-21b2-44ab-a9d9-8d4019ccee35")
-		)
-		(pin "3"
-			(uuid "45968b24-3040-4723-bcaa-340679707a1f")
-		)
-		(pin "4"
-			(uuid "a8aee0d6-4cc1-4a2e-b56f-29cec2a254e9")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW19")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "electromech:SKQGABE010")
-		(at 137.16 157.48 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "68a51a78-eb81-496e-a092-4655e0bd2892")
-		(property "Reference" "SW20"
-			(at 137.16 147.38 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SKQGABE010"
-			(at 137.16 166.37 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-			(at 137.16 166.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-			(at 137.16 171.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Tactile switch 5.2mm SMD"
-			(at 137.16 157.48 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" "ALPSALPINE"
-			(at 137.16 171.51 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" "SKQGABE010"
-			(at 137.16 174.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "LCSC Part" "C115351"
-			(at 137.16 176.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "06224245-285f-41dc-b94b-8840b2d70e74")
-		)
-		(pin "2"
-			(uuid "76c8fa3c-f915-4eb6-8af0-d9ecc5dc437c")
-		)
-		(pin "3"
-			(uuid "18f0072a-1436-4715-b4fa-3e3b5d08b2a8")
-		)
-		(pin "4"
-			(uuid "970a317d-927f-464b-a812-91c1d004551d")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW20")
+					(reference "#PWR502")
 					(unit 1)
 				)
 			)
@@ -3663,8 +3651,8 @@
 		)
 	)
 	(symbol
-		(lib_id "power:+3.3V")
-		(at 147.32 44.45 0)
+		(lib_id "electromech:SKQGABE010")
+		(at 139.7 138.43 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3673,9 +3661,31 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "3ca16324-4a75-43a9-872c-aca25c2f10ac")
-		(property "Reference" "#PWR501"
-			(at 147.32 41.03 0)
+		(uuid "4f5d104a-afcd-4606-9c1d-887f9da904e9")
+		(property "Reference" "SW19"
+			(at 142.24 137.1599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 142.24 139.6999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 129.15 138.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3685,18 +3695,8 @@
 				)
 			)
 		)
-		(property "Value" "+3.3V"
-			(at 147.32 38.49 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 147.32 44.45 0)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 126.61 138.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3706,8 +3706,8 @@
 				)
 			)
 		)
-		(property "Datasheet" "~"
-			(at 147.32 44.45 0)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 139.7 138.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3717,8 +3717,30 @@
 				)
 			)
 		)
-		(property "Description" ""
-			(at 147.32 44.45 0)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 124.07 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 121.53 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 118.99 138.43 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3729,250 +3751,21 @@
 			)
 		)
 		(pin "1"
-			(uuid "064eaf71-0d9a-437a-88a0-e21ea316ec8f")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR501")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "passives:RC0603JR-0710KL")
-		(at 147.32 74.93 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d3abcc00-fd3d-4638-b027-0a5424e4f70e")
-		(property "Reference" "R17"
-			(at 162.54 74.93 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10k"
-			(at 162.54 76.19000000000001 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 147.32 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 147.32 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "10k 5% 0603 resistor"
-			(at 147.32 74.93 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "25d21019-569a-4c6d-9cfa-e6652aab6a89")
+			(uuid "9374801c-a0d9-4638-8247-b54d39fb3d20")
 		)
 		(pin "2"
-			(uuid "6043b932-8044-40dc-a99e-274b5470bce1")
+			(uuid "c8accea4-6fbb-4b18-b5e3-7a0588a6d1c8")
+		)
+		(pin "3"
+			(uuid "4bcdf12c-f1f0-40bb-a09f-c2f494336a64")
+		)
+		(pin "4"
+			(uuid "f78dbf7c-2e35-48b5-bda3-179bf165edb4")
 		)
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R17")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3.3V")
-		(at 147.32 69.85 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "4865d5dc-57ac-4d5b-a410-00edad5f4f4c")
-		(property "Reference" "#PWR502"
-			(at 147.32 66.03 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 147.32 63.49000000000001 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 147.32 69.85 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 147.32 69.85 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 147.32 69.85 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "d22e6f44-8565-4937-88b8-25e0ec267766")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR502")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "passives:RC0603JR-0710KL")
-		(at 147.32 100.33 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "9d7bd9be-fde3-462a-baa9-a1e5ece75c4b")
-		(property "Reference" "R18"
-			(at 162.54 100.33 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10k"
-			(at 162.54 101.19000000000001 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 147.32 100.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 147.32 100.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "10k 5% 0603 resistor"
-			(at 147.32 100.33 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1e1bb3bb-3753-4a5c-a054-7730fecfa839")
-		)
-		(pin "2"
-			(uuid "8f7994e8-ef7c-4c63-a2b4-21a06d9e07e9")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R18")
+					(reference "SW19")
 					(unit 1)
 				)
 			)
@@ -4002,7 +3795,7 @@
 			)
 		)
 		(property "Value" "+3.3V"
-			(at 147.32 88.49000000000001 0)
+			(at 147.32 88.49 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4137,6 +3930,2102 @@
 		)
 	)
 	(symbol
+		(lib_id "passives:RC0603JR-0710KL")
+		(at 116.84 173.99 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "5e6ecfa0-1dfd-4c67-a68d-82d6ad1f4690")
+		(property "Reference" "R25"
+			(at 107.06 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 107.06 174.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 106.68 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 106.68 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "10k 5% 0603 resistor"
+			(at 106.68 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2be706f7-19b3-4414-9eca-615624de0963")
+		)
+		(pin "2"
+			(uuid "72814ed9-1cad-4395-bd6d-d297418813ae")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "R25")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 114.3 138.43 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "623dc685-aacb-4af8-b64d-2978d656684b")
+		(property "Reference" "SW17"
+			(at 116.84 137.1599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 116.84 139.6999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 103.75 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 101.21 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 114.3 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 98.67 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 96.13 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 93.59 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7efa816f-7c79-4380-8249-8c0eaa846c32")
+		)
+		(pin "2"
+			(uuid "a5954d46-0fa3-437f-9f00-3956c83f4946")
+		)
+		(pin "3"
+			(uuid "13a0e178-7ea3-4d9c-b77d-e737ce2fb41a")
+		)
+		(pin "4"
+			(uuid "06a2b140-4d08-4368-a5b6-d79e6faa243b")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW17")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 63.5 138.43 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "69a89ed7-676e-4c4e-b276-7336d9f2ff22")
+		(property "Reference" "SW13"
+			(at 66.04 137.1599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 66.04 139.6999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 52.95 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 50.41 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 63.5 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 47.87 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 45.33 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 42.79 138.43 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "42974c4e-bce8-4381-b648-e3bfadb57b0b")
+		)
+		(pin "2"
+			(uuid "4061a0bc-eaf4-40a2-80fc-a5b666ca1466")
+		)
+		(pin "3"
+			(uuid "a565200e-cf0a-4f03-b97d-64c2d1393cb6")
+		)
+		(pin "4"
+			(uuid "325a88dc-b1c6-4416-ae02-8db54942911a")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 114.3 62.23 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "70b41ad1-a236-4af2-8b80-7aea745be649")
+		(property "Reference" "SW3"
+			(at 116.84 60.9599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 116.84 63.4999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 103.75 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 101.21 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 114.3 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 98.67 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 96.13 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 93.59 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "13d9798d-b1ad-4153-82d0-d32b7394a4d0")
+		)
+		(pin "2"
+			(uuid "10a16ff7-59cb-431a-8046-87b150ea4a04")
+		)
+		(pin "3"
+			(uuid "b88a9515-b384-487f-be79-87a020fff5a4")
+		)
+		(pin "4"
+			(uuid "c81625aa-f66c-486d-91ee-1c1ca1ba581d")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 139.7 87.63 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7294cda7-f49a-4b58-bd81-04c17f3f64b8")
+		(property "Reference" "SW8"
+			(at 142.24 86.3599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 142.24 88.8999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 129.15 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 126.61 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 139.7 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 124.07 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 121.53 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 118.99 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "5278ca42-d0e1-4cb8-9d8e-569183b7c359")
+		)
+		(pin "2"
+			(uuid "c62d79b9-55d4-4b8f-bba1-78f88b1750b8")
+		)
+		(pin "3"
+			(uuid "7f3e9dd5-27e0-4836-bc26-1dba1e361a8a")
+		)
+		(pin "4"
+			(uuid "b5860ff0-5ee0-4fbc-a6e3-ef91aab6ec39")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "passives:RC0603JR-0710KL")
+		(at 142.24 176.53 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "76bc4508-221a-450a-a1b8-8c02ec0eeac3")
+		(property "Reference" "R24"
+			(at 132.46 176.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 132.46 176.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 132.08 176.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 132.08 176.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "10k 5% 0603 resistor"
+			(at 132.08 176.53 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "06d4e78e-2bc3-47a9-8a32-9a64d66d8f10")
+		)
+		(pin "2"
+			(uuid "ae87923e-2175-4940-89d1-c19151180822")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "R24")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 63.5 113.03 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7aae69c9-2a7e-46c8-b684-15c28c9d7d57")
+		(property "Reference" "SW12"
+			(at 66.04 111.7599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 66.04 114.2999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 52.95 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 50.41 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 63.5 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 47.87 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 45.33 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 42.79 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "486fc571-edcd-4266-aa7f-643fae1e66ec")
+		)
+		(pin "2"
+			(uuid "625d01eb-a2e0-4938-b6c3-91925f302283")
+		)
+		(pin "3"
+			(uuid "6ce5670e-d2d5-451c-b781-4c677b64f29f")
+		)
+		(pin "4"
+			(uuid "c0278640-2720-4406-996f-ce908b8c1633")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW12")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 139.7 113.03 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7bb9bbed-9715-44d2-b01b-49c6cf272c2f")
+		(property "Reference" "SW9"
+			(at 142.24 111.7599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 142.24 114.2999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 129.15 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 126.61 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 139.7 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 124.07 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 121.53 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 118.99 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "36646120-3394-407d-ab69-c706d1101693")
+		)
+		(pin "2"
+			(uuid "e5e8453e-49a7-4eae-9f25-291d21d01cf2")
+		)
+		(pin "3"
+			(uuid "af6df9ba-fa8a-4c59-a6da-a651df7e236e")
+		)
+		(pin "4"
+			(uuid "459fbf2e-235b-4cf5-8660-77ea1edceeff")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW9")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "passives:RC0603JR-0710KL")
+		(at 147.32 151.13 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "80875fdc-d137-4125-87f6-f527aa8a9da0")
+		(property "Reference" "R20"
+			(at 162.54 151.13 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 162.54 151.19 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 147.32 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 147.32 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "10k 5% 0603 resistor"
+			(at 147.32 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "2f93501a-1ac4-4e97-b489-916a35841eba")
+		)
+		(pin "2"
+			(uuid "f08384f5-a334-496f-ade6-51b8bb2c85e9")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "R20")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 63.5 87.63 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "86811298-d4fe-4449-b47d-1beed1b9c344")
+		(property "Reference" "SW4"
+			(at 66.04 86.3599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 66.04 88.8999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 52.95 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 50.41 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 63.5 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 47.87 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 45.33 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 42.79 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "dc1b5b11-7384-49f8-a5d9-083eee45b1f7")
+		)
+		(pin "2"
+			(uuid "858b1eef-f046-4131-b5bf-456bc8b402db")
+		)
+		(pin "3"
+			(uuid "fd79373a-bf7e-428f-87cc-726ee3c406ec")
+		)
+		(pin "4"
+			(uuid "a16b48ec-b5d9-4186-b14e-5e2e51993ee1")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 88.9 87.63 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "871426cb-ee1d-4e5e-9af6-7d3ef6af0ade")
+		(property "Reference" "SW5"
+			(at 91.44 86.3599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 91.44 88.8999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 78.35 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 75.81 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 88.9 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 73.27 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 70.73 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 68.19 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "7f41deaf-2ea5-4b08-bc90-4516fdf2c7af")
+		)
+		(pin "2"
+			(uuid "1f2fd270-2657-43ef-9f5f-34527e4fb7fe")
+		)
+		(pin "3"
+			(uuid "3f5f572c-3a12-4132-bdf3-cfe3a52ffcc7")
+		)
+		(pin "4"
+			(uuid "6026008e-c7b9-41dc-af7b-5a97fc409284")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 116.84 179.07 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "95508256-af69-4387-87c0-321df4792f49")
+		(property "Reference" "#PWR0510"
+			(at 106.68 174.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 106.68 179.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 116.84 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 116.84 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 116.84 179.07 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "e07fc88d-21b8-431b-b1bb-0a95cabbbd0c")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "#PWR0510")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 139.7 62.23 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9a268f02-3603-4e4a-b3ae-2aea700ee073")
+		(property "Reference" "SW7"
+			(at 142.24 60.9599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 142.24 63.4999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 129.15 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 126.61 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 139.7 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 124.07 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 121.53 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 118.99 62.23 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "420e01ec-8342-446a-9722-d15f29e0c809")
+		)
+		(pin "2"
+			(uuid "975f4509-9cc1-459c-9354-9581e520a63d")
+		)
+		(pin "3"
+			(uuid "2879ead5-9427-47c1-800e-c7b65aa2a33a")
+		)
+		(pin "4"
+			(uuid "f2daa3e2-0311-4103-b917-ade9f88cc638")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "passives:RC0603JR-0710KL")
+		(at 147.32 100.33 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9d7bd9be-fde3-462a-baa9-a1e5ece75c4b")
+		(property "Reference" "R18"
+			(at 162.54 100.33 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 162.54 101.19 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 147.32 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 147.32 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "10k 5% 0603 resistor"
+			(at 147.32 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "1e1bb3bb-3753-4a5c-a054-7730fecfa839")
+		)
+		(pin "2"
+			(uuid "8f7994e8-ef7c-4c63-a2b4-21a06d9e07e9")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "R18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 88.9 163.83 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "a431118f-0c75-42dc-8d80-475f25dfeb0c")
+		(property "Reference" "SW15"
+			(at 91.44 162.5599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 91.44 165.0999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 78.35 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 75.81 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 88.9 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 73.27 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 70.73 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 68.19 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "6537256a-e0cc-451e-8f72-cc207e30529b")
+		)
+		(pin "2"
+			(uuid "e6c94c4d-b17a-4edb-b4fa-17dae3ffef92")
+		)
+		(pin "3"
+			(uuid "a4d3242d-c008-452c-ab7f-baa862f87244")
+		)
+		(pin "4"
+			(uuid "e0636326-6300-4064-a9b8-d3b6d4164994")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 142.24 181.61 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b50ea668-163f-4494-898b-2a18419565b2")
+		(property "Reference" "#PWR509"
+			(at 132.08 176.59 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 132.08 181.67 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 142.24 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 142.24 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 142.24 181.61 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "23d697fc-eb3f-48a1-890e-ce66142b1dd6")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "#PWR509")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 139.7 163.83 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b99f2126-97be-4ef8-94aa-593384dbc03e")
+		(property "Reference" "SW20"
+			(at 142.24 162.5599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 142.24 165.0999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 129.15 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 126.61 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 139.7 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 124.07 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 121.53 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 118.99 163.83 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "424e5abe-d1b9-4417-829a-67f44efa997b")
+		)
+		(pin "2"
+			(uuid "a0a9d43a-2191-44a4-b79c-4ee7833e5c96")
+		)
+		(pin "3"
+			(uuid "b2fe2587-ff9e-4755-b8c4-0959255447fa")
+		)
+		(pin "4"
+			(uuid "088aa852-a653-436f-b452-a2b25ffd41e7")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW20")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "passives:RC0603JR-0710KL")
+		(at 147.32 74.93 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d3abcc00-fd3d-4638-b027-0a5424e4f70e")
+		(property "Reference" "R17"
+			(at 162.54 74.93 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 162.54 76.19 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 147.32 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 147.32 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "10k 5% 0603 resistor"
+			(at 147.32 74.93 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "25d21019-569a-4c6d-9cfa-e6652aab6a89")
+		)
+		(pin "2"
+			(uuid "6043b932-8044-40dc-a99e-274b5470bce1")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "R17")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "passives:RC0603JR-0710KL")
+		(at 66.04 173.99 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e48f348e-1f75-4fa0-90a9-32fce60d9c76")
+		(property "Reference" "R27"
+			(at 56.26 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10k"
+			(at 56.26 174.05 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 55.88 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 55.88 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "10k 5% 0603 resistor"
+			(at 55.88 173.99 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "aee872ba-5611-4d7c-99cd-fcebe1d9f106")
+		)
+		(pin "2"
+			(uuid "11e8d605-6005-4228-b2e7-253e9fb63c85")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "R27")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "electromech:SKQGABE010")
+		(at 88.9 113.03 270)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "eacc471c-420f-44c4-86b4-a865f9a7c510")
+		(property "Reference" "SW11"
+			(at 91.44 111.7599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 91.44 114.2999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 78.35 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 75.81 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 88.9 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 73.27 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 70.73 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 68.19 113.03 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "16575f84-686f-43b4-b5da-d5240ce5510d")
+		)
+		(pin "2"
+			(uuid "687dcd44-a831-4381-b853-ead067f1dca1")
+		)
+		(pin "3"
+			(uuid "a7aec4cc-94aa-46a5-95d1-75842eda6d93")
+		)
+		(pin "4"
+			(uuid "1b184ae3-b3a4-4ba6-abab-70bc39720d69")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
+					(reference "SW11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3.3V")
 		(at 147.32 120.65 0)
 		(unit 1)
@@ -4149,7 +6038,7 @@
 		(fields_autoplaced yes)
 		(uuid "f6ebfa10-84f5-486f-8f34-b64087ccacfc")
 		(property "Reference" "#PWR504"
-			(at 147.32 116.02999999999999 0)
+			(at 147.32 116.03 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4215,246 +6104,8 @@
 		)
 	)
 	(symbol
-		(lib_id "passives:RC0603JR-0710KL")
-		(at 147.32 151.13 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "80875fdc-d137-4125-87f6-f527aa8a9da0")
-		(property "Reference" "R20"
-			(at 162.54 151.13 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10k"
-			(at 162.54 151.18999999999997 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 147.32 151.13 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 147.32 151.13 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "10k 5% 0603 resistor"
-			(at 147.32 151.13 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2f93501a-1ac4-4e97-b489-916a35841eba")
-		)
-		(pin "2"
-			(uuid "f08384f5-a334-496f-ade6-51b8bb2c85e9")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R20")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3.3V")
-		(at 147.32 146.05 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "0ab0d0cd-5977-4911-a5f8-a4b02ec041cf")
-		(property "Reference" "#PWR505"
-			(at 147.32 141.02999999999997 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 147.32 138.48999999999995 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 147.32 146.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 147.32 146.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 147.32 146.05 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "06ab01bb-babe-4ab8-ab14-94c3013c1200")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR505")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "passives:RC0603JR-0710KL")
-		(at 66.04 166.37 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "7946df9b-f3d8-4003-846b-4964b0e36011")
-		(property "Reference" "R21"
-			(at 57.46 166.37 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10k"
-			(at 57.46 166.42999999999998 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 55.88 166.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 55.88 166.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "10k 5% 0603 resistor"
-			(at 55.88 166.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "0b56a18f-0b75-4038-b32f-aed20516c22a")
-		)
-		(pin "2"
-			(uuid "76b73a99-3b12-4674-938b-d65535ebee73")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R21")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
-		(at 66.04 171.45 0)
+		(at 91.44 179.07 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4463,9 +6114,9 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "5b689338-887d-4fb4-aedd-77d1e8b74db3")
-		(property "Reference" "#PWR506"
-			(at 55.88 166.43 0)
+		(uuid "f941ea02-e7c6-40f7-a1e9-7cdfe9aadb96")
+		(property "Reference" "#PWR0511"
+			(at 81.28 174.05 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4476,7 +6127,8 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 55.88 171.51 0)
+			(at 81.28 179.13 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4486,7 +6138,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 66.04 171.45 0)
+			(at 91.44 179.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4497,7 +6149,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 66.04 171.45 0)
+			(at 91.44 179.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4508,7 +6160,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 66.04 171.45 0)
+			(at 91.44 179.07 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4519,12 +6171,12 @@
 			)
 		)
 		(pin "1"
-			(uuid "136b18c1-69cc-48ca-97ff-be9a11cd55bd")
+			(uuid "8d9e72bb-f51a-471c-bc7d-eadd5496434f")
 		)
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR506")
+					(reference "#PWR0511")
 					(unit 1)
 				)
 			)
@@ -4532,7 +6184,7 @@
 	)
 	(symbol
 		(lib_id "passives:RC0603JR-0710KL")
-		(at 91.44 166.37 90)
+		(at 91.44 173.99 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4541,9 +6193,10 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "e3a303b6-af44-4965-8730-76f736775097")
-		(property "Reference" "R22"
-			(at 82.46000000000001 166.37 0)
+		(uuid "fce4e935-e3c4-4b5c-9197-d5d8af2ce931")
+		(property "Reference" "R26"
+			(at 81.66 173.99 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4553,7 +6206,8 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 82.46000000000001 166.42999999999998 0)
+			(at 81.66 174.05 0)
+			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4563,7 +6217,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 81.28 166.37 0)
+			(at 81.28 173.99 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4574,7 +6228,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 81.28 166.37 0)
+			(at 81.28 173.99 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4585,7 +6239,7 @@
 			)
 		)
 		(property "Description" "10k 5% 0603 resistor"
-			(at 81.28 166.37 0)
+			(at 81.28 173.99 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4596,23 +6250,23 @@
 			)
 		)
 		(pin "1"
-			(uuid "249ed8be-9661-4254-9fef-3177e996e4f1")
+			(uuid "f0139476-6cf7-4d05-9faf-53793e796f04")
 		)
 		(pin "2"
-			(uuid "c8da356e-b10e-4103-b6ce-a71977de2307")
+			(uuid "2769dc98-d446-4b93-a439-b5439eb5bbe8")
 		)
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R22")
+					(reference "R26")
 					(unit 1)
 				)
 			)
 		)
 	)
 	(symbol
-		(lib_id "power:GND")
-		(at 91.44 171.45 0)
+		(lib_id "electromech:SKQGABE010")
+		(at 114.3 87.63 270)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4621,9 +6275,31 @@
 		(in_pos_files yes)
 		(dnp no)
 		(fields_autoplaced yes)
-		(uuid "c1c20687-67b0-48f0-aaf9-abcd9b2bb363")
-		(property "Reference" "#PWR507"
-			(at 81.28 166.43 0)
+		(uuid "ff5f4ddb-51d3-42f7-b807-ec7e76186e83")
+		(property "Reference" "SW6"
+			(at 116.84 86.3599 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SKQGABE010"
+			(at 116.84 88.8999 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(at 103.75 87.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4633,18 +6309,8 @@
 				)
 			)
 		)
-		(property "Value" "GND"
-			(at 81.28 171.51 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 91.44 171.45 0)
+		(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(at 101.21 87.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4654,8 +6320,8 @@
 				)
 			)
 		)
-		(property "Datasheet" "~"
-			(at 91.44 171.45 0)
+		(property "Description" "Tactile switch 5.2mm SMD"
+			(at 114.3 87.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4665,8 +6331,30 @@
 				)
 			)
 		)
-		(property "Description" ""
-			(at 91.44 171.45 0)
+		(property "Manufacturer" "ALPSALPINE"
+			(at 98.67 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "SKQGABE010"
+			(at 96.13 87.63 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC Part" "C115351"
+			(at 93.59 87.63 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4677,447 +6365,29 @@
 			)
 		)
 		(pin "1"
-			(uuid "37d42d36-9c08-4623-8592-c61992fafbbe")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR507")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "passives:RC0603JR-0710KL")
-		(at 116.84 166.37 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e94fc660-eb17-406d-ab59-883573ede864")
-		(property "Reference" "R23"
-			(at 107.46000000000001 166.37 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10k"
-			(at 107.46000000000001 166.42999999999998 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 106.68 166.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 106.68 166.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "10k 5% 0603 resistor"
-			(at 106.68 166.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "d653eac6-03ed-4964-abcd-a2a3dfa829df")
+			(uuid "824ec88b-5859-4e48-92d8-c2dd36f942fd")
 		)
 		(pin "2"
-			(uuid "ecbefd78-2006-4d8a-82e4-ef4bdd408c55")
+			(uuid "56fa1cfa-c832-459d-9147-12e1097a590f")
+		)
+		(pin "3"
+			(uuid "2b58d57e-8834-45a5-9fa9-e9d130547bdb")
+		)
+		(pin "4"
+			(uuid "154afe5c-96f3-42f4-8172-94b83b90f53d")
 		)
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R23")
+					(reference "SW6")
 					(unit 1)
 				)
 			)
 		)
 	)
-	(symbol
-		(lib_id "power:GND")
-		(at 116.84 171.45 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "bb0c869c-e379-4301-b2a3-19d932acbfd5")
-		(property "Reference" "#PWR508"
-			(at 106.68 166.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 106.68 171.51 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 116.84 171.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 116.84 171.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 116.84 171.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "53fb5853-b462-45b6-a74b-1952ca674014")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR508")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "passives:RC0603JR-0710KL")
-		(at 142.24 166.37 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "76bc4508-221a-450a-a1b8-8c02ec0eeac3")
-		(property "Reference" "R24"
-			(at 132.45999999999998 166.37 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10k"
-			(at 132.45999999999998 166.42999999999998 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 132.08 166.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 132.08 166.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "10k 5% 0603 resistor"
-			(at 132.08 166.37 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "06d4e78e-2bc3-47a9-8a32-9a64d66d8f10")
-		)
-		(pin "2"
-			(uuid "ae87923e-2175-4940-89d1-c19151180822")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R24")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 142.24 171.45 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "b50ea668-163f-4494-898b-2a18419565b2")
-		(property "Reference" "#PWR509"
-			(at 132.08 166.43 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GND"
-			(at 132.08 171.51 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 142.24 171.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 142.24 171.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 142.24 171.45 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "23d697fc-eb3f-48a1-890e-ce66142b1dd6")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR509")
-					(unit 1)
-				)
-			)
-		)
-	)
-		(wire (pts (xy 25.4 55.88) (xy 55.88 55.88)) (stroke (width 0) (type default)) (uuid "024b3427-4582-4441-b24d-9e53f9866ca2"))
-		(wire (pts (xy 55.88 55.88) (xy 81.28 55.88)) (stroke (width 0) (type default)) (uuid "2a11c018-b499-4dfe-a554-6c18b80a16fc"))
-		(wire (pts (xy 81.28 55.88) (xy 106.68 55.88)) (stroke (width 0) (type default)) (uuid "724b7e8c-edb9-4f13-9fe6-61dbe95decce"))
-		(wire (pts (xy 106.68 55.88) (xy 132.07999999999998 55.88)) (stroke (width 0) (type default)) (uuid "f0c7de90-7b13-492a-af7f-71f9e95a75c3"))
-		(wire (pts (xy 55.88 54.61) (xy 55.88 55.88)) (stroke (width 0) (type default)) (uuid "759dab26-f30d-417a-8966-7c036f761f97"))
-		(wire (pts (xy 81.28 54.61) (xy 81.28 55.88)) (stroke (width 0) (type default)) (uuid "1c969775-3551-4cd8-ae86-2268b530c181"))
-		(wire (pts (xy 106.68 54.61) (xy 106.68 55.88)) (stroke (width 0) (type default)) (uuid "93ea8b46-68fa-42e4-a393-f3764ee34031"))
-		(wire (pts (xy 132.07999999999998 54.61) (xy 132.07999999999998 55.88)) (stroke (width 0) (type default)) (uuid "f1c89c28-3667-43fa-a371-a136b8f0367c"))
-		(wire (pts (xy 25.4 81.28) (xy 55.88 81.28)) (stroke (width 0) (type default)) (uuid "fa8ac36c-31f3-4698-86d4-baaed2b93eab"))
-		(wire (pts (xy 55.88 81.28) (xy 81.28 81.28)) (stroke (width 0) (type default)) (uuid "9ef9a636-3438-4035-a33a-4e3c7c07fbb6"))
-		(wire (pts (xy 81.28 81.28) (xy 106.68 81.28)) (stroke (width 0) (type default)) (uuid "97825521-eb0e-4979-abf3-1974aff2cb8d"))
-		(wire (pts (xy 106.68 81.28) (xy 132.07999999999998 81.28)) (stroke (width 0) (type default)) (uuid "1b3e29cd-f949-41c8-ace2-86f0d26c952e"))
-		(wire (pts (xy 55.88 80.01) (xy 55.88 81.28)) (stroke (width 0) (type default)) (uuid "0398e07c-6ef0-4dbe-8344-f3d28539a696"))
-		(wire (pts (xy 81.28 80.01) (xy 81.28 81.28)) (stroke (width 0) (type default)) (uuid "71bd7db5-d493-49d8-a789-db16780ad215"))
-		(wire (pts (xy 106.68 80.01) (xy 106.68 81.28)) (stroke (width 0) (type default)) (uuid "22a7c860-b8f1-4508-8174-b6fe071c8688"))
-		(wire (pts (xy 132.07999999999998 80.01) (xy 132.07999999999998 81.28)) (stroke (width 0) (type default)) (uuid "789b2439-7bc2-4695-81f5-04546e4b0b3d"))
-		(wire (pts (xy 25.4 106.68) (xy 55.88 106.68)) (stroke (width 0) (type default)) (uuid "17f3f1ba-0a3e-427d-8069-edfadffcdf23"))
-		(wire (pts (xy 55.88 106.68) (xy 81.28 106.68)) (stroke (width 0) (type default)) (uuid "a5da68f0-67ca-497a-860c-673ad878b853"))
-		(wire (pts (xy 81.28 106.68) (xy 106.68 106.68)) (stroke (width 0) (type default)) (uuid "d9c6cad8-b533-4b08-9aa2-0b441da1f84f"))
-		(wire (pts (xy 106.68 106.68) (xy 132.07999999999998 106.68)) (stroke (width 0) (type default)) (uuid "be85e1a6-f79d-4df5-8607-40c23a22b04c"))
-		(wire (pts (xy 55.88 105.41000000000001) (xy 55.88 106.68)) (stroke (width 0) (type default)) (uuid "21cb659c-d7a9-4128-b115-03515637352b"))
-		(wire (pts (xy 81.28 105.41000000000001) (xy 81.28 106.68)) (stroke (width 0) (type default)) (uuid "6b009dba-03a7-432b-909c-130bc8136803"))
-		(wire (pts (xy 106.68 105.41000000000001) (xy 106.68 106.68)) (stroke (width 0) (type default)) (uuid "fa05299e-d3c9-4a3e-9fd3-6c3416989dc3"))
-		(wire (pts (xy 132.07999999999998 105.41000000000001) (xy 132.07999999999998 106.68)) (stroke (width 0) (type default)) (uuid "7c409411-468e-4113-9271-5af57cdfac68"))
-		(wire (pts (xy 25.4 132.08) (xy 55.88 132.08)) (stroke (width 0) (type default)) (uuid "9445ce51-44d4-44a7-b051-6f424cbb62f1"))
-		(wire (pts (xy 55.88 132.08) (xy 81.28 132.08)) (stroke (width 0) (type default)) (uuid "72fb05cc-2746-4e90-b133-a3b147fb2bf0"))
-		(wire (pts (xy 81.28 132.08) (xy 106.68 132.08)) (stroke (width 0) (type default)) (uuid "f990e1f7-6443-49f8-a6e8-0f21012d5bba"))
-		(wire (pts (xy 106.68 132.08) (xy 132.07999999999998 132.08)) (stroke (width 0) (type default)) (uuid "4a228e94-e510-4c50-9e7e-49128c765894"))
-		(wire (pts (xy 55.88 130.81) (xy 55.88 132.08)) (stroke (width 0) (type default)) (uuid "b1b36378-ee2a-4264-9e21-534223380ad5"))
-		(wire (pts (xy 81.28 130.81) (xy 81.28 132.08)) (stroke (width 0) (type default)) (uuid "edf48ff4-62a4-462e-bc6f-1817ef2a00e9"))
-		(wire (pts (xy 106.68 130.81) (xy 106.68 132.08)) (stroke (width 0) (type default)) (uuid "04ac58b1-6357-40ab-9fe3-80ae06d70e58"))
-		(wire (pts (xy 132.07999999999998 130.81) (xy 132.07999999999998 132.08)) (stroke (width 0) (type default)) (uuid "6cbc89be-9e2f-4a58-ae43-6962b1f822df"))
-		(wire (pts (xy 25.4 157.48) (xy 55.88 157.48)) (stroke (width 0) (type default)) (uuid "5842acdf-e516-4e45-834a-2604bebd04a0"))
-		(wire (pts (xy 55.88 157.48) (xy 81.28 157.48)) (stroke (width 0) (type default)) (uuid "8300170f-3a17-422e-bfa6-588a3b3b755f"))
-		(wire (pts (xy 81.28 157.48) (xy 106.68 157.48)) (stroke (width 0) (type default)) (uuid "91cdf2a4-51f3-405b-ad6a-75eb891267a9"))
-		(wire (pts (xy 106.68 157.48) (xy 132.07999999999998 157.48)) (stroke (width 0) (type default)) (uuid "5fd1a941-d778-434c-b1fa-7164994d3659"))
-		(wire (pts (xy 55.88 156.20999999999998) (xy 55.88 157.48)) (stroke (width 0) (type default)) (uuid "246c78e6-36d8-4dfc-915f-02a2f54089fa"))
-		(wire (pts (xy 81.28 156.20999999999998) (xy 81.28 157.48)) (stroke (width 0) (type default)) (uuid "e0475044-040b-48c2-8b31-14930543c29b"))
-		(wire (pts (xy 106.68 156.20999999999998) (xy 106.68 157.48)) (stroke (width 0) (type default)) (uuid "2bf855db-d6f4-4e23-be46-1f75a9e0d2d7"))
-		(wire (pts (xy 132.07999999999998 156.20999999999998) (xy 132.07999999999998 157.48)) (stroke (width 0) (type default)) (uuid "d7f61926-854e-48e2-bbcf-bffb39f0c05f"))
-		(wire (pts (xy 132.07999999999998 55.88) (xy 147.32 55.88)) (stroke (width 0) (type default)) (uuid "cafbdbf5-32c0-4a93-a330-66ab563267bb"))
-		(wire (pts (xy 147.32 54.61) (xy 147.32 55.88)) (stroke (width 0) (type default)) (uuid "4e8b31b0-b9be-4939-8f01-2ee514e1be21"))
-		(wire (pts (xy 132.07999999999998 81.28) (xy 147.32 81.28)) (stroke (width 0) (type default)) (uuid "aae176ea-982c-4cc7-8119-fef2a5975d24"))
-		(wire (pts (xy 147.32 80.01) (xy 147.32 81.28)) (stroke (width 0) (type default)) (uuid "4ef9e5c4-3f9e-4d62-ac35-3122beaf0b0a"))
-		(wire (pts (xy 132.07999999999998 106.68) (xy 147.32 106.68)) (stroke (width 0) (type default)) (uuid "7ff41852-ff69-4e5f-9b63-49477565d588"))
-		(wire (pts (xy 147.32 105.41000000000001) (xy 147.32 106.68)) (stroke (width 0) (type default)) (uuid "958ae695-d34b-4296-83bd-1b7ebe559430"))
-		(wire (pts (xy 132.07999999999998 132.08) (xy 147.32 132.08)) (stroke (width 0) (type default)) (uuid "b1ad9129-e8d1-4e82-a19f-7e32dbded16c"))
-		(wire (pts (xy 147.32 130.81) (xy 147.32 132.08)) (stroke (width 0) (type default)) (uuid "b4f4db5b-54ba-45bb-bd50-a1e709da1a29"))
-		(wire (pts (xy 132.07999999999998 157.48) (xy 147.32 157.48)) (stroke (width 0) (type default)) (uuid "80d4afa0-3628-4d2d-82d4-adcec686325a"))
-		(wire (pts (xy 147.32 156.20999999999998) (xy 147.32 157.48)) (stroke (width 0) (type default)) (uuid "fef440f1-b11a-4efe-bb42-099018205a55"))
-	(no_connect (at 55.88 59.690000000000005) (uuid "c4ecca8a-a09b-4476-ab9b-036ff32413da"))
-	(no_connect (at 66.04 59.690000000000005) (uuid "0e2c82e9-bfb6-4d2f-b4e2-01832f5618b4"))
-	(no_connect (at 81.28 59.690000000000005) (uuid "4bdb9a7c-5602-45ab-ae60-e34ee474d388"))
-	(no_connect (at 91.44 59.690000000000005) (uuid "627a8f0f-898c-4208-a624-ca43cf573dd0"))
-	(no_connect (at 106.68 59.690000000000005) (uuid "40ed52e5-fafb-4864-8047-8ceb6dd5a385"))
-	(no_connect (at 116.84 59.690000000000005) (uuid "7b815913-585c-4f77-be29-95d52403fa8c"))
-	(no_connect (at 132.07999999999998 59.690000000000005) (uuid "8781a769-e69e-4d75-826f-cc2287c76f7b"))
-	(no_connect (at 142.24 59.690000000000005) (uuid "e0fa8cb6-4ef0-4c31-8d37-dea8c5520ed4"))
-	(no_connect (at 55.88 85.09) (uuid "1f72fe64-3c07-493c-95d3-8fa6945924de"))
-	(no_connect (at 66.04 85.09) (uuid "dcd262f9-b64a-4c15-aa38-cd48c9390e7d"))
-	(no_connect (at 81.28 85.09) (uuid "c5f7580b-bac9-4bb3-97a5-1fdc1f21788b"))
-	(no_connect (at 91.44 85.09) (uuid "2c4123d2-4a37-4a27-853f-331d21c37f34"))
-	(no_connect (at 106.68 85.09) (uuid "59637ccc-995f-47fb-9da7-ebbb702a0ab2"))
-	(no_connect (at 116.84 85.09) (uuid "e1440fc6-63b8-426a-9b11-c432f6c8c147"))
-	(no_connect (at 132.07999999999998 85.09) (uuid "6c3c2b30-ddd0-4342-a949-21f556799cde"))
-	(no_connect (at 142.24 85.09) (uuid "3ceb9120-1c76-457b-95a3-1e6055995a8e"))
-	(no_connect (at 55.88 110.49000000000001) (uuid "0c1bd097-a288-4151-9af4-0c01493ed1f2"))
-	(no_connect (at 66.04 110.49000000000001) (uuid "18822ace-3311-4a64-8961-68558bcf9cfb"))
-	(no_connect (at 81.28 110.49000000000001) (uuid "5832be45-2772-424a-aae6-1fd9782603b9"))
-	(no_connect (at 91.44 110.49000000000001) (uuid "e2b18176-a84d-47f9-9247-0c233db1246a"))
-	(no_connect (at 106.68 110.49000000000001) (uuid "eac9e928-aa34-422b-8c5f-e58dd8ced232"))
-	(no_connect (at 116.84 110.49000000000001) (uuid "e0bd3cf3-1ef8-48fb-b2fe-7fb8be39a53b"))
-	(no_connect (at 132.07999999999998 110.49000000000001) (uuid "40d262c3-c80c-48aa-8999-ff5c27482083"))
-	(no_connect (at 142.24 110.49000000000001) (uuid "9ac2dd59-ac0d-42b5-b7d4-8c7c4d8bf010"))
-	(no_connect (at 55.88 135.89000000000001) (uuid "7d3cc7a4-ce21-42da-b24d-12c0ee7e1b7e"))
-	(no_connect (at 66.04 135.89000000000001) (uuid "d1b6101e-e290-4c83-ad7a-c2709197748b"))
-	(no_connect (at 81.28 135.89000000000001) (uuid "a14abc4e-8576-4054-8280-a72ad8414eb6"))
-	(no_connect (at 91.44 135.89000000000001) (uuid "ff024110-0310-43a0-92ad-025c31165d95"))
-	(no_connect (at 106.68 135.89000000000001) (uuid "feb7b7e6-913a-4f6d-a2ea-455d8956ec46"))
-	(no_connect (at 116.84 135.89000000000001) (uuid "3837a072-c61a-4506-99d1-8c0d2ed8b378"))
-	(no_connect (at 132.07999999999998 135.89000000000001) (uuid "250749b8-1f83-488d-966a-f03352a07313"))
-	(no_connect (at 142.24 135.89000000000001) (uuid "047e0fd3-cf9c-40e8-8bb2-1200b4f40a49"))
-	(no_connect (at 55.88 161.29) (uuid "a82c6cb0-0837-4793-97ef-acd7d25479a2"))
-	(no_connect (at 81.28 161.29) (uuid "bad1c7d6-0d23-4372-9365-20feda0cea6d"))
-	(no_connect (at 106.68 161.29) (uuid "c6641eb2-bc5a-4c81-8f15-ecadc4e259bc"))
-	(no_connect (at 132.07999999999998 161.29) (uuid "f21063ab-3594-4621-8a31-ed0620ee2b80"))
-		(wire (pts (xy 66.04 40.64) (xy 66.04 54.61)) (stroke (width 0) (type default)) (uuid "1b031a3f-437a-4863-b0ce-f2013947371d"))
-		(wire (pts (xy 66.04 54.61) (xy 66.04 80.01)) (stroke (width 0) (type default)) (uuid "34ee54bf-9d38-4c9f-a856-6ab069e7f11c"))
-		(wire (pts (xy 66.04 80.01) (xy 66.04 105.41)) (stroke (width 0) (type default)) (uuid "48552970-5b13-4383-97f8-5c2841382b99"))
-		(wire (pts (xy 66.04 105.41) (xy 66.04 130.81)) (stroke (width 0) (type default)) (uuid "ea1b111d-6d08-40eb-a8c9-0d98d162203f"))
-		(wire (pts (xy 66.04 130.81) (xy 66.04 156.21)) (stroke (width 0) (type default)) (uuid "701b7688-24dd-4101-9499-657f68cff851"))
-		(wire (pts (xy 66.04 156.21) (xy 66.04 161.29)) (stroke (width 0) (type default)) (uuid "ab05963b-fc24-41ce-a7f0-36d6283800f7"))
-		(wire (pts (xy 91.44 40.64) (xy 91.44 54.61)) (stroke (width 0) (type default)) (uuid "36d748e6-86bc-4463-8f2a-a85d3af4ee31"))
-		(wire (pts (xy 91.44 54.61) (xy 91.44 80.01)) (stroke (width 0) (type default)) (uuid "8c625a8b-5122-443e-ab89-b91a5a6793b2"))
-		(wire (pts (xy 91.44 80.01) (xy 91.44 105.41)) (stroke (width 0) (type default)) (uuid "c6d671f7-f75a-4bba-8920-82ef6fee0c41"))
-		(wire (pts (xy 91.44 105.41) (xy 91.44 130.81)) (stroke (width 0) (type default)) (uuid "8098ebc0-78a2-4a04-ab0b-076b769433cf"))
-		(wire (pts (xy 91.44 130.81) (xy 91.44 156.21)) (stroke (width 0) (type default)) (uuid "300202c3-1c83-4274-9e99-5c4233766424"))
-		(wire (pts (xy 91.44 156.21) (xy 91.44 161.29)) (stroke (width 0) (type default)) (uuid "f659675b-b021-4897-aaa7-c8af82c280e8"))
-		(wire (pts (xy 116.84 40.64) (xy 116.84 54.61)) (stroke (width 0) (type default)) (uuid "910f081c-5298-4568-8815-420c55ca7f88"))
-		(wire (pts (xy 116.84 54.61) (xy 116.84 80.01)) (stroke (width 0) (type default)) (uuid "78574a7a-680a-458e-b0bf-e28cbaa62aad"))
-		(wire (pts (xy 116.84 80.01) (xy 116.84 105.41)) (stroke (width 0) (type default)) (uuid "df5366c7-b370-42db-927f-eac862352e7e"))
-		(wire (pts (xy 116.84 105.41) (xy 116.84 130.81)) (stroke (width 0) (type default)) (uuid "f322d15a-ffc0-4bab-a4bd-1a961b3e89b6"))
-		(wire (pts (xy 116.84 130.81) (xy 116.84 156.21)) (stroke (width 0) (type default)) (uuid "c01e5155-fb6d-4516-ab77-a1e223a8f6cb"))
-		(wire (pts (xy 116.84 156.21) (xy 116.84 161.29)) (stroke (width 0) (type default)) (uuid "0bd2892d-61eb-4a09-92dc-9b4abf5e8cca"))
-		(wire (pts (xy 142.24 40.64) (xy 142.24 54.61)) (stroke (width 0) (type default)) (uuid "464d0f9c-c626-4efb-876f-9fcc83c9e21b"))
-		(wire (pts (xy 142.24 54.61) (xy 142.24 80.01)) (stroke (width 0) (type default)) (uuid "dfe58f08-c47e-4e4f-ba15-6e117df45035"))
-		(wire (pts (xy 142.24 80.01) (xy 142.24 105.41)) (stroke (width 0) (type default)) (uuid "8661060f-d221-4dbe-b56d-964d38e3814f"))
-		(wire (pts (xy 142.24 105.41) (xy 142.24 130.81)) (stroke (width 0) (type default)) (uuid "dedd48b9-ced9-41c3-a65a-240442142801"))
-		(wire (pts (xy 142.24 130.81) (xy 142.24 156.21)) (stroke (width 0) (type default)) (uuid "196abb3a-3dca-4188-95b4-c9188a41d9de"))
-		(wire (pts (xy 142.24 156.21) (xy 142.24 161.29)) (stroke (width 0) (type default)) (uuid "42baae23-aa48-4fa9-989c-9757375e167c"))
 	(sheet_instances
 		(path "/"
 			(page "1")
 		)
 	)
-	(embedded_fonts no)
 )
