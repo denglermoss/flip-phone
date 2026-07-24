@@ -4218,184 +4218,107 @@
 			(embedded_fonts no)
 		)
 		(symbol "passives:XFL4020-152MEC"
-			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "L"
+			(property
+				"Reference"
+				"L"
+				(id 0)
 				(at 0 5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) )
 			)
-			(property "Value" "XFL4020-152MEC"
+			(property
+				"Value"
+				"XFL4020-152MEC"
+				(id 1)
 				(at 0 -5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) )
 			)
-			(property "Footprint" "easyeda2kicad:IND-SMD_L4.0-W4.0-A"
+			(property
+				"Footprint"
+				"easyeda2kicad:IND-SMD_L4.0-W4.0-A"
+				(id 2)
 				(at 0 -7.62 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
-			(property "Datasheet" "https://www.lcsc.com/datasheet/C3033018.pdf"
+			(property
+				"Datasheet"
+				"https://www.lcsc.com/datasheet/C3033018.pdf"
+				(id 3)
 				(at 0 -10.16 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
-			(property "Description" "1.5uH 4.4A inductor"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+			(property
+				"Manufacturer"
+				"Coilcraft(线艺)"
+				(id 4)
+				(at 0 -12.70 0)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
-			(property "Manufacturer" "Coilcraft(线艺)"
-				(at 0 -12.7 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "MPN" "XFL4020-152MEC"
+			(property
+				"MPN"
+				"XFL4020-152MEC"
+				(id 5)
 				(at 0 -15.24 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
-			(property "LCSC Part" "C3033018"
+			(property
+				"LCSC Part"
+				"C3033018"
+				(id 6)
 				(at 0 -17.78 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
+			(property
+				"ki_description"
+				"1.5uH 4.4A inductor"
+				(id 7)
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27) ) hide)
+			)
+	
 			(symbol "XFL4020-152MEC_0_1"
 				(arc
-					(start -4.06 0.01)
-					(mid -3.035 1.0102)
-					(end -2.03 -0.01)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
+					(start 2.03 -0.01)
+					(mid 1.02 1.02)
+					(end 0.00 0.01)
+					(stroke (width 0) (type default))
+					(fill (type none))
 				)
 				(arc
-					(start -2.03 0.01)
-					(mid -1.005 1.0102)
-					(end 0 -0.01)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
+					(start 4.06 -0.01)
+					(mid 3.05 1.02)
+					(end 2.03 0.01)
+					(stroke (width 0) (type default))
+					(fill (type none))
 				)
 				(arc
-					(start 0 0.01)
-					(mid 1.0249 1.0101)
-					(end 2.03 -0.01)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
+					(start 0.00 -0.01)
+					(mid -1.01 1.02)
+					(end -2.03 0.01)
+					(stroke (width 0) (type default))
+					(fill (type none))
 				)
 				(arc
-					(start 2.03 0.01)
-					(mid 3.0549 1.0101)
-					(end 4.06 -0.01)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
+					(start -2.03 -0.01)
+					(mid -3.04 1.02)
+					(end -4.06 0.01)
+					(stroke (width 0) (type default))
+					(fill (type none))
 				)
 				(pin passive line
-					(at -5.08 0 0)
+					(at -5.08 -0.00 0)
 					(length 1.27)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
+					(name "1" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
 				)
 				(pin passive line
-					(at 5.08 0 180)
+					(at 5.08 -0.00 180)
 					(length 1.27)
-					(name "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
+					(name "2" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
 				)
 			)
-			(embedded_fonts no)
 		)
 		(symbol "power:+1V8"
 			(power global)
@@ -4929,7 +4852,15 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "power:PWR_FLAG"
+			(symbol "power:PWR_FLAG"
+			(power global)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -4939,11 +4870,11 @@
 				(at 0 1.905 0)
 				(show_name no)
 				(do_not_autoplace no)
+				(hide yes)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left bottom)
 				)
 			)
 			(property "Value" "PWR_FLAG"
@@ -4954,7 +4885,6 @@
 					(font
 						(size 1.27 1.27)
 					)
-					(justify left bottom)
 				)
 			)
 			(property "Footprint" ""
@@ -4979,7 +4909,7 @@
 					)
 				)
 			)
-			(property "Description" ""
+			(property "Description" "Special symbol for telling ERC where power comes from"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -4990,11 +4920,22 @@
 					)
 				)
 			)
-			(symbol "PWR_FLAG_0_1"
+			(property "ki_keywords" "flag power"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "PWR_FLAG_0_0"
 				(pin power_out line
-					(at 0 0 0)
+					(at 0 0 90)
 					(length 0)
-					(name "pwr_flag"
+					(name ""
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -5007,6 +4948,20 @@
 								(size 1.27 1.27)
 							)
 						)
+					)
+				)
+			)
+			(symbol "PWR_FLAG_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 1.27) (xy -1.016 1.905) (xy 0 2.54) (xy 1.016 1.905) (xy 0 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
 					)
 				)
 			)

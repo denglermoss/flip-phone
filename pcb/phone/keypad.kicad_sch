@@ -9,365 +9,240 @@
 	)
 	(lib_symbols
 		(symbol "electromech:SKQGABE010"
-			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "KEY"
+			(property
+				"Reference"
+				"KEY"
+				(id 0)
 				(at 0 6.35 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) )
 			)
-			(property "Value" "SKQGABE010"
+			(property
+				"Value"
+				"SKQGABE010"
+				(id 1)
 				(at 0 -8.89 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) )
 			)
-			(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+			(property
+				"Footprint"
+				"easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
+				(id 2)
 				(at 0 -11.43 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
-			(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+			(property
+				"Datasheet"
+				"https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
+				(id 3)
 				(at 0 -13.97 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
-			(property "Description" "Tactile switch 5.2mm SMD"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+			(property
+				"Manufacturer"
+				"ALPSALPINE(阿尔卑斯阿尔派)"
+				(id 4)
+				(at 0 -16.51 0)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
-			(property "ki_keywords" "Tactile Switches"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+			(property
+				"MPN"
+				"SKQGABE010"
+				(id 5)
+				(at 0 -19.05 0)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
+			(property
+				"LCSC Part"
+				"C115351"
+				(id 6)
+				(at 0 -21.59 0)
+				(effects (font (size 1.27 1.27) ) hide)
+			)
+			(property
+				"ki_keywords"
+				"Tactile Switches"
+				(id 8)
+				(at 0 -24.13 0)
+				(effects (font (size 1.27 1.27) ) hide)
+			)
+			(property
+				"ki_description"
+				"Tactile switch 5.2mm SMD"
+				(id 9)
+				(at 0 -26.67 0)
+				(effects (font (size 1.27 1.27) ) hide)
+			)
+	
 			(symbol "SKQGABE010_0_1"
+				(circle
+					(center 0.00 -2.03)
+					(radius 0.25)
+					(stroke (width 0) (type default))
+					(fill (type none))
+				)
+				(circle
+					(center 0.00 -0.51)
+					(radius 0.25)
+					(stroke (width 0) (type default))
+					(fill (type none))
+				)
 				(polyline
 					(pts
 						(xy -2.54 1.27) (xy 2.54 1.27)
 					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
+					(stroke (width 0) (type default))
+					(fill (type none))
 				)
 				(polyline
 					(pts
 						(xy -2.54 -3.81) (xy 2.54 -3.81)
 					)
-					(stroke
-						(width 0)
-						(type default)
+					(stroke (width 0) (type default))
+					(fill (type none))
+				)
+				(polyline
+					(pts
+						(xy 0.00 1.27) (xy 0.00 0.25)
 					)
-					(fill
-						(type none)
+					(stroke (width 0) (type default))
+					(fill (type none))
+				)
+				(polyline
+					(pts
+						(xy 0.00 -3.81) (xy 0.00 -2.03)
 					)
+					(stroke (width 0) (type default))
+					(fill (type none))
+				)
+				(polyline
+					(pts
+						(xy 0.00 0.25) (xy 0.00 -0.51)
+					)
+					(stroke (width 0) (type default))
+					(fill (type none))
 				)
 				(polyline
 					(pts
 						(xy -1.27 -0.25) (xy -0.25 -2.03)
 					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 1.27) (xy 0 0.25)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 0.25) (xy 0 -0.51)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 0 -0.51)
-					(radius 0.25)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 0 -2.03)
-					(radius 0.25)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -3.81) (xy 0 -2.03)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
+					(stroke (width 0) (type default))
+					(fill (type none))
 				)
 				(pin passive line
 					(at -5.08 1.27 0)
 					(length 2.54)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
+					(name "1" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
 				)
 				(pin passive line
 					(at 5.08 1.27 180)
 					(length 2.54)
-					(name "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
+					(name "2" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
 				)
 				(pin passive line
 					(at -5.08 -3.81 0)
 					(length 2.54)
-					(name "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
+					(name "3" (effects (font (size 1.27 1.27))))
+					(number "3" (effects (font (size 1.27 1.27))))
 				)
 				(pin passive line
 					(at 5.08 -3.81 180)
 					(length 2.54)
-					(name "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
+					(name "4" (effects (font (size 1.27 1.27))))
+					(number "4" (effects (font (size 1.27 1.27))))
 				)
 			)
-			(embedded_fonts no)
 		)
 		(symbol "passives:RC0603JR-0710KL"
-			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "R"
+			(property
+				"Reference"
+				"R"
+				(id 0)
 				(at 0 5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) )
 			)
-			(property "Value" "RC0603JR-0710KL"
+			(property
+				"Value"
+				"RC0603JR-0710KL"
+				(id 1)
 				(at 0 -5.08 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) )
 			)
-			(property "Footprint" "easyeda2kicad:R0603"
+			(property
+				"Footprint"
+				"easyeda2kicad:R0603"
+				(id 2)
 				(at 0 -7.62 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
-			(property "Datasheet" "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_10K-103-5_C99198.html"
+			(property
+				"Datasheet"
+				"https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_10K-103-5_C99198.html"
+				(id 3)
 				(at 0 -10.16 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
-			(property "Description" "10k 5% 0603 resistor"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+			(property
+				"Manufacturer"
+				"YAGEO(国巨)"
+				(id 4)
+				(at 0 -12.70 0)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
-			(property "ki_keywords" "Resistors"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
+			(property
+				"MPN"
+				"RC0603JR-0710KL"
+				(id 5)
+				(at 0 -15.24 0)
+				(effects (font (size 1.27 1.27) ) hide)
 			)
+			(property
+				"LCSC Part"
+				"C99198"
+				(id 6)
+				(at 0 -17.78 0)
+				(effects (font (size 1.27 1.27) ) hide)
+			)
+			(property
+				"ki_keywords"
+				"Resistors"
+				(id 8)
+				(at 0 -20.32 0)
+				(effects (font (size 1.27 1.27) ) hide)
+			)
+			(property
+				"ki_description"
+				"10k 5% 0603 resistor"
+				(id 9)
+				(at 0 -22.86 0)
+				(effects (font (size 1.27 1.27) ) hide)
+			)
+	
 			(symbol "RC0603JR-0710KL_0_1"
 				(rectangle
 					(start -2.54 1.02)
 					(end 2.54 -1.02)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
+					(stroke (width 0) (type default))
+					(fill (type background))
 				)
 				(pin passive line
-					(at -5.08 0 0)
+					(at 5.08 -0.00 180)
 					(length 2.54)
-					(name "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
+					(name "2" (effects (font (size 1.27 1.27))))
+					(number "2" (effects (font (size 1.27 1.27))))
 				)
 				(pin passive line
-					(at 5.08 0 180)
+					(at -5.08 -0.00 0)
 					(length 2.54)
-					(name "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
+					(name "1" (effects (font (size 1.27 1.27))))
+					(number "1" (effects (font (size 1.27 1.27))))
 				)
 			)
-			(embedded_fonts no)
 		)
 		(symbol "power:+3.3V"
 			(power global)
