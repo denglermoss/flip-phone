@@ -437,6 +437,22 @@
     [
       "2b7de758-71cc-4198-8a01-5d2c6e01f5f1",
       "Modem"
+    ],
+    [
+      "1c9f5800-c30c-48b4-b4f4-4248c9c52b8c",
+      "Codec"
+    ],
+    [
+      "a554b0c9-2abf-4ff9-b53b-f19190990074",
+      "Keypad"
+    ],
+    [
+      "d7f57b90-9db7-4266-b1f1-7949b1054009",
+      "Display"
+    ],
+    [
+      "7fc639d9-249c-4f41-85eb-7c2617f3c206",
+      "SIM_SD"
     ]
   ],
   "text_variables": {},

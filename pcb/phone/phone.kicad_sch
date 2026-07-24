@@ -12091,6 +12091,52 @@
 		)
 	)
 	(sheet
+		(at 254 280)
+		(size 30.48 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "1c9f5800-c30c-48b4-b4f4-4248c9c52b8c")
+		(property "Sheetname" "Codec"
+			(at 254 279 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "codec.kicad_sch"
+			(at 254 301 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
 		(at 254 250.19)
 		(size 30.48 20.32)
 		(exclude_from_sim no)
@@ -12137,53 +12183,7 @@
 		)
 	)
 	(sheet
-		(at 254 200)
-		(size 55 25)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "d692f43a-094c-48db-863f-ce7b80cfd81e")
-		(property "Sheetname" "MCU"
-			(at 254 199 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "mcu.kicad_sch"
-			(at 254 226 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
-					(page "2")
-				)
-			)
-		)
-	)
-	(sheet
-		(at 254 280)
+		(at 254 300)
 		(size 30.48 20.32)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -12197,9 +12197,9 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "1c9f5800-c30c-48b4-b4f4-4248c9c52b8c")
-		(property "Sheetname" "Codec"
-			(at 254 279 0)
+		(uuid "7fc639d9-249c-4f41-85eb-7c2617f3c206")
+		(property "Sheetname" "SIM_SD"
+			(at 254 299 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12209,8 +12209,8 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "codec.kicad_sch"
-			(at 254 301 0)
+		(property "Sheetfile" "sim_sd.kicad_sch"
+			(at 254 321 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -12223,7 +12223,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
-					(page "4")
+					(page "7")
 				)
 			)
 		)
@@ -12275,6 +12275,52 @@
 		)
 	)
 	(sheet
+		(at 254 200)
+		(size 55 25)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "d692f43a-094c-48db-863f-ce7b80cfd81e")
+		(property "Sheetname" "MCU"
+			(at 254 199 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "mcu.kicad_sch"
+			(at 254 226 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
 		(at 254 310)
 		(size 30.48 20.32)
 		(exclude_from_sim no)
@@ -12316,52 +12362,6 @@
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
 					(page "5")
-				)
-			)
-		)
-	)
-	(sheet
-		(at 254 300)
-		(size 30.48 20.32)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "7fc639d9-249c-4f41-85eb-7c2617f3c206")
-		(property "Sheetname" "SIM_SD"
-			(at 254 299 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "sim_sd.kicad_sch"
-			(at 254 321 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
-					(page "7")
 				)
 			)
 		)
