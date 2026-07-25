@@ -40,6 +40,7 @@ CONNECTORS = {
     "U.FL-R-SMT-1", "0.5K-HX-8PWB", "0.5K-HX-12PWB",
     "0.5K-HX-14PWB", "S2B-PH-SM4-TB",
     "PCIE-52P40H_C444926",
+    "USB4085-GF-A_C7095263", "54-00298",
 }
 
 ELECTROMECH = {
@@ -92,6 +93,8 @@ DESCRIPTIONS = {
     "0.5K-HX-14PWB": "14-pin 0.5mm FPC connector",
     "S2B-PH-SM4-TB": "JST-PH 2-pin battery conn",
     "PCIE-52P40H_C444926": "Mini PCIe socket 52-pin SMD",
+    "USB4085-GF-A_C7095263": "USB-C 2.0 TH RA 16-pin",
+    "54-00298": "TRRS 3.5mm TH jack w/detect",
     # Electromech
     "SKQGABE010": "Tactile switch 5.2mm SMD",
     "ECS-80-12-33Q-GN-TR": "8MHz crystal SMD3225",
