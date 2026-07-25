@@ -4,8 +4,9 @@
 	(generator_version "10.0")
 	(uuid "451c3b43-1616-42cb-bf96-d436f4db82c2")
 	(paper "A4")
+	(lib_symbols)
 	(sheet
-		(at 254 280)
+		(at 86.525 93.335)
 		(size 30.48 20.32)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -21,7 +22,7 @@
 		)
 		(uuid "1c9f5800-c30c-48b4-b4f4-4248c9c52b8c")
 		(property "Sheetname" "Codec"
-			(at 254 279 0)
+			(at 86.525 92.335 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -32,7 +33,7 @@
 			)
 		)
 		(property "Sheetfile" "codec.kicad_sch"
-			(at 254 301 0)
+			(at 86.525 114.335 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -51,7 +52,7 @@
 		)
 	)
 	(sheet
-		(at 254 250.19)
+		(at 165.9 81.305)
 		(size 30.48 20.32)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -67,7 +68,7 @@
 		)
 		(uuid "2b7de758-71cc-4198-8a01-5d2c6e01f5f1")
 		(property "Sheetname" "Modem"
-			(at 254 249.19 0)
+			(at 165.9 80.305 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -78,7 +79,7 @@
 			)
 		)
 		(property "Sheetfile" "modem.kicad_sch"
-			(at 254 271.19 0)
+			(at 165.9 102.305 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -97,7 +98,7 @@
 		)
 	)
 	(sheet
-		(at 254 340)
+		(at 95.415 143.175)
 		(size 30.48 20.32)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -113,7 +114,7 @@
 		)
 		(uuid "6e22c91a-fb49-47df-bf31-2f484b0239c9")
 		(property "Sheetname" "Display_Daughter"
-			(at 254 339 0)
+			(at 95.415 142.175 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -124,7 +125,7 @@
 			)
 		)
 		(property "Sheetfile" "display_daughter.kicad_sch"
-			(at 254 361 0)
+			(at 95.415 164.175 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -143,7 +144,7 @@
 		)
 	)
 	(sheet
-		(at 254 300)
+		(at 141.77 125.4)
 		(size 30.48 20.32)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -159,7 +160,7 @@
 		)
 		(uuid "7fc639d9-249c-4f41-85eb-7c2617f3c206")
 		(property "Sheetname" "SIM_SD"
-			(at 254 299 0)
+			(at 141.77 124.4 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -170,7 +171,7 @@
 			)
 		)
 		(property "Sheetfile" "sim_sd.kicad_sch"
-			(at 254 321 0)
+			(at 141.77 146.4 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -189,7 +190,53 @@
 		)
 	)
 	(sheet
-		(at 254 280)
+		(at 150.495 45.72)
+		(size 33.655 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "93995179-fee9-4317-80b0-38473b44bbe2")
+		(property "Sheetname" "Power"
+			(at 150.495 45.0084 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "power.kicad_sch"
+			(at 150.495 66.6246 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
+					(page "8")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 38.9 81.27)
 		(size 30.48 20.32)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -205,7 +252,7 @@
 		)
 		(uuid "a554b0c9-2abf-4ff9-b53b-f19190990074")
 		(property "Sheetname" "Keypad"
-			(at 254 279 0)
+			(at 38.9 80.27 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -216,7 +263,7 @@
 			)
 		)
 		(property "Sheetfile" "keypad.kicad_sch"
-			(at 254 301 0)
+			(at 38.9 102.27 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -235,7 +282,7 @@
 		)
 	)
 	(sheet
-		(at 254 200)
+		(at 46.52 33.02)
 		(size 55 25)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -251,7 +298,7 @@
 		)
 		(uuid "d692f43a-094c-48db-863f-ce7b80cfd81e")
 		(property "Sheetname" "MCU"
-			(at 254 199 0)
+			(at 46.52 32.02 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -262,7 +309,7 @@
 			)
 		)
 		(property "Sheetfile" "mcu.kicad_sch"
-			(at 254 226 0)
+			(at 46.52 59.02 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -281,7 +328,7 @@
 		)
 	)
 	(sheet
-		(at 254 310)
+		(at 51.6 119.525)
 		(size 30.48 20.32)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -297,7 +344,7 @@
 		)
 		(uuid "d7f57b90-9db7-4266-b1f1-7949b1054009")
 		(property "Sheetname" "Display"
-			(at 254 309 0)
+			(at 51.6 118.525 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -308,7 +355,7 @@
 			)
 		)
 		(property "Sheetfile" "display.kicad_sch"
-			(at 254 331 0)
+			(at 51.6 140.525 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -322,52 +369,6 @@
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
 					(page "5")
-				)
-			)
-		)
-	)
-	(sheet
-		(at 50 200)
-		(size 30.48 20.32)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "93995179-fee9-4317-80b0-38473b44bbe2")
-		(property "Sheetname" "Power"
-			(at 50 199 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "power.kicad_sch"
-			(at 50 221 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
-					(page "8")
 				)
 			)
 		)

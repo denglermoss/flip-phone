@@ -1086,7 +1086,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0966004b-036b-44b5-bed4-cbafebc90e3e")
-		(property "Reference" "#PWR130"
+		(property "Reference" "#PWR0125"
 			(at 120.65 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -1146,7 +1146,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/d7f57b90-9db7-4266-b1f1-7949b1054009"
-					(reference "#PWR130")
+					(reference "#PWR0125")
 					(unit 1)
 				)
 			)
@@ -1164,7 +1164,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0dbba326-ad35-48e4-8ddc-518b05238ba5")
-		(property "Reference" "#PWR132"
+		(property "Reference" "#PWR0128"
 			(at 133.35 156.21 0)
 			(hide yes)
 			(show_name no)
@@ -1224,7 +1224,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/d7f57b90-9db7-4266-b1f1-7949b1054009"
-					(reference "#PWR132")
+					(reference "#PWR0128")
 					(unit 1)
 				)
 			)
@@ -1241,7 +1241,7 @@
 		(in_pos_files yes)
 		(dnp no)
 		(uuid "3edcc136-e1a8-4cdd-805d-63e4ea0abd33")
-		(property "Reference" "J_HINGE"
+		(property "Reference" "J_HINGE1"
 			(at 135.89 129.54 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1346,7 +1346,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/d7f57b90-9db7-4266-b1f1-7949b1054009"
-					(reference "J_HINGE")
+					(reference "J_HINGE1")
 					(unit 1)
 				)
 			)
@@ -1364,7 +1364,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "89498d5c-7d35-43ac-97d6-552719fdc3d6")
-		(property "Reference" "#PWR131"
+		(property "Reference" "#PWR0124"
 			(at 133.35 104.14 0)
 			(hide yes)
 			(show_name no)
@@ -1424,7 +1424,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/d7f57b90-9db7-4266-b1f1-7949b1054009"
-					(reference "#PWR131")
+					(reference "#PWR0124")
 					(unit 1)
 				)
 			)
@@ -1442,7 +1442,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b6df6d8b-b089-46d2-99e0-12187298bcf0")
-		(property "Reference" "#PWR128"
+		(property "Reference" "#PWR0127"
 			(at 120.65 146.05 0)
 			(hide yes)
 			(show_name no)
@@ -1502,7 +1502,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/d7f57b90-9db7-4266-b1f1-7949b1054009"
-					(reference "#PWR128")
+					(reference "#PWR0127")
 					(unit 1)
 				)
 			)
@@ -1520,7 +1520,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f1b048b1-48d2-483f-99c5-1eb69ec9b6e9")
-		(property "Reference" "#PWR129"
+		(property "Reference" "#PWR0126"
 			(at 120.65 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -1580,7 +1580,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/d7f57b90-9db7-4266-b1f1-7949b1054009"
-					(reference "#PWR129")
+					(reference "#PWR0126")
 					(unit 1)
 				)
 			)

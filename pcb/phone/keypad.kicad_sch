@@ -9,240 +9,431 @@
 	)
 	(lib_symbols
 		(symbol "electromech:SKQGABE010"
+			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property
-				"Reference"
-				"KEY"
-				(id 0)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "KEY"
 				(at 0 6.35 0)
-				(effects (font (size 1.27 1.27) ) )
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"Value"
-				"SKQGABE010"
-				(id 1)
+			(property "Value" "SKQGABE010"
 				(at 0 -8.89 0)
-				(effects (font (size 1.27 1.27) ) )
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"Footprint"
-				"easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
-				(id 2)
+			(property "Footprint" "easyeda2kicad:KEY-SMD_4P-L5.2-W5.2-P3.70-LS6.4"
 				(at 0 -11.43 0)
-				(effects (font (size 1.27 1.27) ) hide)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"Datasheet"
-				"https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
-				(id 3)
+			(property "Datasheet" "https://lcsc.com/product-detail/Tactile-Switches_ALPS_SKQGABE010_5-2-5-2-1-5-1-57N_C115351.html"
 				(at 0 -13.97 0)
-				(effects (font (size 1.27 1.27) ) hide)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"Manufacturer"
-				"ALPSALPINE(阿尔卑斯阿尔派)"
-				(id 4)
+			(property "Description" "Tactile switch 5.2mm SMD"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "ALPSALPINE(阿尔卑斯阿尔派)"
 				(at 0 -16.51 0)
-				(effects (font (size 1.27 1.27) ) hide)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"MPN"
-				"SKQGABE010"
-				(id 5)
+			(property "MPN" "SKQGABE010"
 				(at 0 -19.05 0)
-				(effects (font (size 1.27 1.27) ) hide)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"LCSC Part"
-				"C115351"
-				(id 6)
+			(property "LCSC Part" "C115351"
 				(at 0 -21.59 0)
-				(effects (font (size 1.27 1.27) ) hide)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"ki_keywords"
-				"Tactile Switches"
-				(id 8)
-				(at 0 -24.13 0)
-				(effects (font (size 1.27 1.27) ) hide)
+			(property "ki_keywords" "Tactile Switches"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"ki_description"
-				"Tactile switch 5.2mm SMD"
-				(id 9)
-				(at 0 -26.67 0)
-				(effects (font (size 1.27 1.27) ) hide)
-			)
-	
 			(symbol "SKQGABE010_0_1"
-				(circle
-					(center 0.00 -2.03)
-					(radius 0.25)
-					(stroke (width 0) (type default))
-					(fill (type none))
-				)
-				(circle
-					(center 0.00 -0.51)
-					(radius 0.25)
-					(stroke (width 0) (type default))
-					(fill (type none))
-				)
 				(polyline
 					(pts
 						(xy -2.54 1.27) (xy 2.54 1.27)
 					)
-					(stroke (width 0) (type default))
-					(fill (type none))
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
 				)
 				(polyline
 					(pts
 						(xy -2.54 -3.81) (xy 2.54 -3.81)
 					)
-					(stroke (width 0) (type default))
-					(fill (type none))
-				)
-				(polyline
-					(pts
-						(xy 0.00 1.27) (xy 0.00 0.25)
+					(stroke
+						(width 0)
+						(type default)
 					)
-					(stroke (width 0) (type default))
-					(fill (type none))
-				)
-				(polyline
-					(pts
-						(xy 0.00 -3.81) (xy 0.00 -2.03)
+					(fill
+						(type none)
 					)
-					(stroke (width 0) (type default))
-					(fill (type none))
-				)
-				(polyline
-					(pts
-						(xy 0.00 0.25) (xy 0.00 -0.51)
-					)
-					(stroke (width 0) (type default))
-					(fill (type none))
 				)
 				(polyline
 					(pts
 						(xy -1.27 -0.25) (xy -0.25 -2.03)
 					)
-					(stroke (width 0) (type default))
-					(fill (type none))
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 1.27) (xy 0 0.25)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0.25) (xy 0 -0.51)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 -0.51)
+					(radius 0.25)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 -2.03)
+					(radius 0.25)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -3.81) (xy 0 -2.03)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
 				)
 				(pin passive line
 					(at -5.08 1.27 0)
 					(length 2.54)
-					(name "1" (effects (font (size 1.27 1.27))))
-					(number "1" (effects (font (size 1.27 1.27))))
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
 				)
 				(pin passive line
 					(at 5.08 1.27 180)
 					(length 2.54)
-					(name "2" (effects (font (size 1.27 1.27))))
-					(number "2" (effects (font (size 1.27 1.27))))
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
 				)
 				(pin passive line
 					(at -5.08 -3.81 0)
 					(length 2.54)
-					(name "3" (effects (font (size 1.27 1.27))))
-					(number "3" (effects (font (size 1.27 1.27))))
+					(name "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
 				)
 				(pin passive line
 					(at 5.08 -3.81 180)
 					(length 2.54)
-					(name "4" (effects (font (size 1.27 1.27))))
-					(number "4" (effects (font (size 1.27 1.27))))
+					(name "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "passives:RC0603JR-0710KL"
+			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
-			(property
-				"Reference"
-				"R"
-				(id 0)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "R"
 				(at 0 5.08 0)
-				(effects (font (size 1.27 1.27) ) )
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"Value"
-				"RC0603JR-0710KL"
-				(id 1)
+			(property "Value" "RC0603JR-0710KL"
 				(at 0 -5.08 0)
-				(effects (font (size 1.27 1.27) ) )
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"Footprint"
-				"easyeda2kicad:R0603"
-				(id 2)
+			(property "Footprint" "easyeda2kicad:R0603"
 				(at 0 -7.62 0)
-				(effects (font (size 1.27 1.27) ) hide)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"Datasheet"
-				"https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_10K-103-5_C99198.html"
-				(id 3)
+			(property "Datasheet" "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_10K-103-5_C99198.html"
 				(at 0 -10.16 0)
-				(effects (font (size 1.27 1.27) ) hide)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"Manufacturer"
-				"YAGEO(国巨)"
-				(id 4)
-				(at 0 -12.70 0)
-				(effects (font (size 1.27 1.27) ) hide)
+			(property "Description" "10k 5% 0603 resistor"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"MPN"
-				"RC0603JR-0710KL"
-				(id 5)
+			(property "Manufacturer" "YAGEO(国巨)"
+				(at 0 -12.7 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "MPN" "RC0603JR-0710KL"
 				(at 0 -15.24 0)
-				(effects (font (size 1.27 1.27) ) hide)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"LCSC Part"
-				"C99198"
-				(id 6)
+			(property "LCSC Part" "C99198"
 				(at 0 -17.78 0)
-				(effects (font (size 1.27 1.27) ) hide)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"ki_keywords"
-				"Resistors"
-				(id 8)
-				(at 0 -20.32 0)
-				(effects (font (size 1.27 1.27) ) hide)
+			(property "ki_keywords" "Resistors"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
 			)
-			(property
-				"ki_description"
-				"10k 5% 0603 resistor"
-				(id 9)
-				(at 0 -22.86 0)
-				(effects (font (size 1.27 1.27) ) hide)
-			)
-	
 			(symbol "RC0603JR-0710KL_0_1"
 				(rectangle
 					(start -2.54 1.02)
 					(end 2.54 -1.02)
-					(stroke (width 0) (type default))
-					(fill (type background))
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
 				)
 				(pin passive line
-					(at 5.08 -0.00 180)
+					(at -5.08 0 0)
 					(length 2.54)
-					(name "2" (effects (font (size 1.27 1.27))))
-					(number "2" (effects (font (size 1.27 1.27))))
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
 				)
 				(pin passive line
-					(at -5.08 -0.00 0)
+					(at 5.08 0 180)
 					(length 2.54)
-					(name "1" (effects (font (size 1.27 1.27))))
-					(number "1" (effects (font (size 1.27 1.27))))
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+3.3V"
 			(power global)
@@ -2418,7 +2609,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "0ab0d0cd-5977-4911-a5f8-a4b02ec041cf")
-		(property "Reference" "#PWR505"
+		(property "Reference" "#PWR0106"
 			(at 147.32 141.03 0)
 			(hide yes)
 			(show_name no)
@@ -2478,7 +2669,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR505")
+					(reference "#PWR0106")
 					(unit 1)
 				)
 			)
@@ -2496,7 +2687,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "16cf5fc7-8611-401d-88e8-67f835685b36")
-		(property "Reference" "SW16"
+		(property "Reference" "SW14"
 			(at 91.44 137.1599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2599,7 +2790,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW16")
+					(reference "SW14")
 					(unit 1)
 				)
 			)
@@ -2617,7 +2808,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "18efff24-a66c-42e1-8f14-3f4f13b9b87b")
-		(property "Reference" "SW14"
+		(property "Reference" "SW17"
 			(at 66.04 162.5599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2720,7 +2911,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW14")
+					(reference "SW17")
 					(unit 1)
 				)
 			)
@@ -2738,7 +2929,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "1e9c0366-8a35-464b-bd70-bd257ae2536d")
-		(property "Reference" "#PWR0512"
+		(property "Reference" "#PWR0120"
 			(at 55.88 174.05 0)
 			(hide yes)
 			(show_name no)
@@ -2799,7 +2990,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR0512")
+					(reference "#PWR0120")
 					(unit 1)
 				)
 			)
@@ -2817,7 +3008,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "28fecf3a-47d8-4948-b74c-020de622b44c")
-		(property "Reference" "SW18"
+		(property "Reference" "SW19"
 			(at 116.84 162.5599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2920,7 +3111,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW18")
+					(reference "SW19")
 					(unit 1)
 				)
 			)
@@ -3059,7 +3250,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "3ca16324-4a75-43a9-872c-aca25c2f10ac")
-		(property "Reference" "#PWR501"
+		(property "Reference" "#PWR090"
 			(at 147.32 41.03 0)
 			(hide yes)
 			(show_name no)
@@ -3119,7 +3310,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR501")
+					(reference "#PWR090")
 					(unit 1)
 				)
 			)
@@ -3137,7 +3328,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "46d9e6aa-2ec4-48d5-a1b2-a202445f4836")
-		(property "Reference" "SW10"
+		(property "Reference" "SW11"
 			(at 116.84 111.7599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3240,7 +3431,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW10")
+					(reference "SW11")
 					(unit 1)
 				)
 			)
@@ -3379,7 +3570,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4865d5dc-57ac-4d5b-a410-00edad5f4f4c")
-		(property "Reference" "#PWR502"
+		(property "Reference" "#PWR091"
 			(at 147.32 66.03 0)
 			(hide yes)
 			(show_name no)
@@ -3439,7 +3630,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR502")
+					(reference "#PWR091")
 					(unit 1)
 				)
 			)
@@ -3457,7 +3648,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4893635e-4503-491b-adc5-14935fd7e852")
-		(property "Reference" "R16"
+		(property "Reference" "R8"
 			(at 162.54 49.53 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3519,7 +3710,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R16")
+					(reference "R8")
 					(unit 1)
 				)
 			)
@@ -3537,7 +3728,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "4f5d104a-afcd-4606-9c1d-887f9da904e9")
-		(property "Reference" "SW19"
+		(property "Reference" "SW16"
 			(at 142.24 137.1599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3640,7 +3831,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW19")
+					(reference "SW16")
 					(unit 1)
 				)
 			)
@@ -3658,7 +3849,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5b10873c-cd99-4633-ae52-22761a4a0ef7")
-		(property "Reference" "#PWR503"
+		(property "Reference" "#PWR094"
 			(at 147.32 91.03 0)
 			(hide yes)
 			(show_name no)
@@ -3718,7 +3909,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR503")
+					(reference "#PWR094")
 					(unit 1)
 				)
 			)
@@ -3736,7 +3927,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5b456b3c-9396-416b-a6a4-9905c4ca2eb2")
-		(property "Reference" "R19"
+		(property "Reference" "R13"
 			(at 162.54 125.73 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3798,7 +3989,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R19")
+					(reference "R13")
 					(unit 1)
 				)
 			)
@@ -3816,7 +4007,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "5e6ecfa0-1dfd-4c67-a68d-82d6ad1f4690")
-		(property "Reference" "R25"
+		(property "Reference" "R17"
 			(at 107.06 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -3880,7 +4071,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R25")
+					(reference "R17")
 					(unit 1)
 				)
 			)
@@ -3898,7 +4089,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "623dc685-aacb-4af8-b64d-2978d656684b")
-		(property "Reference" "SW17"
+		(property "Reference" "SW15"
 			(at 116.84 137.1599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4001,7 +4192,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW17")
+					(reference "SW15")
 					(unit 1)
 				)
 			)
@@ -4382,7 +4573,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "76bc4508-221a-450a-a1b8-8c02ec0eeac3")
-		(property "Reference" "R24"
+		(property "Reference" "R18"
 			(at 132.46 176.53 0)
 			(hide yes)
 			(show_name no)
@@ -4446,7 +4637,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R24")
+					(reference "R18")
 					(unit 1)
 				)
 			)
@@ -4464,7 +4655,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7aae69c9-2a7e-46c8-b684-15c28c9d7d57")
-		(property "Reference" "SW12"
+		(property "Reference" "SW9"
 			(at 66.04 111.7599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4567,7 +4758,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW12")
+					(reference "SW9")
 					(unit 1)
 				)
 			)
@@ -4585,7 +4776,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "7bb9bbed-9715-44d2-b01b-49c6cf272c2f")
-		(property "Reference" "SW9"
+		(property "Reference" "SW12"
 			(at 142.24 111.7599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4688,7 +4879,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW9")
+					(reference "SW12")
 					(unit 1)
 				)
 			)
@@ -4706,7 +4897,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "80875fdc-d137-4125-87f6-f527aa8a9da0")
-		(property "Reference" "R20"
+		(property "Reference" "R14"
 			(at 162.54 151.13 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4768,7 +4959,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R20")
+					(reference "R14")
 					(unit 1)
 				)
 			)
@@ -4786,7 +4977,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "86811298-d4fe-4449-b47d-1beed1b9c344")
-		(property "Reference" "SW4"
+		(property "Reference" "SW5"
 			(at 66.04 86.3599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4889,7 +5080,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW4")
+					(reference "SW5")
 					(unit 1)
 				)
 			)
@@ -4907,7 +5098,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "871426cb-ee1d-4e5e-9af6-7d3ef6af0ade")
-		(property "Reference" "SW5"
+		(property "Reference" "SW6"
 			(at 91.44 86.3599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5010,7 +5201,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW5")
+					(reference "SW6")
 					(unit 1)
 				)
 			)
@@ -5028,7 +5219,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "95508256-af69-4387-87c0-321df4792f49")
-		(property "Reference" "#PWR0510"
+		(property "Reference" "#PWR0122"
 			(at 106.68 174.05 0)
 			(hide yes)
 			(show_name no)
@@ -5089,7 +5280,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR0510")
+					(reference "#PWR0122")
 					(unit 1)
 				)
 			)
@@ -5107,7 +5298,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9a268f02-3603-4e4a-b3ae-2aea700ee073")
-		(property "Reference" "SW7"
+		(property "Reference" "SW4"
 			(at 142.24 60.9599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5210,7 +5401,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW7")
+					(reference "SW4")
 					(unit 1)
 				)
 			)
@@ -5228,7 +5419,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "9d7bd9be-fde3-462a-baa9-a1e5ece75c4b")
-		(property "Reference" "R18"
+		(property "Reference" "R12"
 			(at 162.54 100.33 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5290,7 +5481,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R18")
+					(reference "R12")
 					(unit 1)
 				)
 			)
@@ -5308,7 +5499,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a431118f-0c75-42dc-8d80-475f25dfeb0c")
-		(property "Reference" "SW15"
+		(property "Reference" "SW18"
 			(at 91.44 162.5599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5411,7 +5602,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW15")
+					(reference "SW18")
 					(unit 1)
 				)
 			)
@@ -5429,7 +5620,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b50ea668-163f-4494-898b-2a18419565b2")
-		(property "Reference" "#PWR509"
+		(property "Reference" "#PWR0123"
 			(at 132.08 176.59 0)
 			(hide yes)
 			(show_name no)
@@ -5490,7 +5681,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR509")
+					(reference "#PWR0123")
 					(unit 1)
 				)
 			)
@@ -5629,7 +5820,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "d3abcc00-fd3d-4638-b027-0a5424e4f70e")
-		(property "Reference" "R17"
+		(property "Reference" "R9"
 			(at 162.54 74.93 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5691,7 +5882,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R17")
+					(reference "R9")
 					(unit 1)
 				)
 			)
@@ -5709,7 +5900,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "e48f348e-1f75-4fa0-90a9-32fce60d9c76")
-		(property "Reference" "R27"
+		(property "Reference" "R15"
 			(at 56.26 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -5773,7 +5964,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R27")
+					(reference "R15")
 					(unit 1)
 				)
 			)
@@ -5791,7 +5982,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "eacc471c-420f-44c4-86b4-a865f9a7c510")
-		(property "Reference" "SW11"
+		(property "Reference" "SW10"
 			(at 91.44 111.7599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5894,7 +6085,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW11")
+					(reference "SW10")
 					(unit 1)
 				)
 			)
@@ -5912,7 +6103,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f6ebfa10-84f5-486f-8f34-b64087ccacfc")
-		(property "Reference" "#PWR504"
+		(property "Reference" "#PWR099"
 			(at 147.32 116.03 0)
 			(hide yes)
 			(show_name no)
@@ -5972,7 +6163,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR504")
+					(reference "#PWR099")
 					(unit 1)
 				)
 			)
@@ -5990,7 +6181,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f941ea02-e7c6-40f7-a1e9-7cdfe9aadb96")
-		(property "Reference" "#PWR0511"
+		(property "Reference" "#PWR0121"
 			(at 81.28 174.05 0)
 			(hide yes)
 			(show_name no)
@@ -6051,7 +6242,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "#PWR0511")
+					(reference "#PWR0121")
 					(unit 1)
 				)
 			)
@@ -6069,7 +6260,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "fce4e935-e3c4-4b5c-9197-d5d8af2ce931")
-		(property "Reference" "R26"
+		(property "Reference" "R16"
 			(at 81.66 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -6133,7 +6324,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "R26")
+					(reference "R16")
 					(unit 1)
 				)
 			)
@@ -6151,7 +6342,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "ff5f4ddb-51d3-42f7-b807-ec7e76186e83")
-		(property "Reference" "SW6"
+		(property "Reference" "SW7"
 			(at 116.84 86.3599 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6254,7 +6445,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/a554b0c9-2abf-4ff9-b53b-f19190990074"
-					(reference "SW6")
+					(reference "SW7")
 					(unit 1)
 				)
 			)
