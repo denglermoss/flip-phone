@@ -68,4 +68,4 @@ Never delete old decisions from `docs/ref/project-log.md`. Strike through the te
 
 ## Citations
 
-When referencing docs in responses or new doc content, use root-relative paths (e.g., `docs/ref/requirements.md`), not absolute paths, so references are greppable and work across environments. In Obsidian, set Settings → Files & Links → New link format → "Absolute path in vault" for these to resolve as clickable links.
+When referencing docs in responses or new doc content, use root-relative paths (e.g., `docs/ref/requirements.md`), not absolute paths, so references are greppable and work across environments.

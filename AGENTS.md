@@ -12,7 +12,7 @@ This project is documentation-driven. The docs are the source of truth for decis
 
 ### Document Structure
 
-Docs are organized into folders by lifecycle stage. Each doc has YAML frontmatter (`status: active|reference|archived`, `updated: YYYY-MM-DD`) for Obsidian navigation.
+Docs are organized into folders by lifecycle stage. Each doc has YAML frontmatter (`status: active|reference|archived`, `updated: YYYY-MM-DD`) for metadata/navigation.
 
 ```
 docs/
@@ -77,7 +77,7 @@ Each type of information has **one source of truth**. Other docs link to it — 
 
 5. **Superseded decisions**: Do not delete old decisions from project-log.md. Strike them through (`~~text~~`) and mark **SUPERSEDED <date>** with a pointer to the replacing decision. History matters.
 
-6. **Reference docs by root-relative path** (e.g., `docs/ref/requirements.md`, not absolute paths) so citations are greppable and work across environments. In Obsidian, set Settings → Files & Links → New link format → "Absolute path in vault" for these to resolve as clickable links.
+6. **Reference docs by root-relative path** (e.g., `docs/ref/requirements.md`, not absolute paths) so citations are greppable and work across environments.
 
 7. **When reviewing or auditing the project**, check for:
    - Stale "open questions" that are actually resolved
