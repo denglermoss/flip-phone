@@ -4216,7 +4216,7 @@
 		(uuid "17cf0d48-533b-4438-87a6-c4dccde35a51")
 	)
 	(junction
-		(at 158.75 182.88)
+		(at 148.59 182.88)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "490963ca-da4f-4ced-be58-384acad57c2b")
@@ -4384,10 +4384,6 @@
 	(no_connect
 		(at 279.4 125.73)
 		(uuid "a7ad5bde-73e2-4d83-8534-c1f3538774e6")
-	)
-	(no_connect
-		(at 165.1 184.15)
-		(uuid "ac1b7fa0-52c7-4562-9af6-56b95ee0c29d")
 	)
 	(no_connect
 		(at 279.4 166.37)
@@ -4667,7 +4663,7 @@
 	)
 	(wire
 		(pts
-			(xy 158.75 179.07) (xy 165.1 179.07)
+			(xy 148.59 179.07) (xy 165.1 179.07)
 		)
 		(stroke
 			(width 0)
@@ -4924,6 +4920,16 @@
 			(type default)
 		)
 		(uuid "82a94c83-4e0b-4108-858b-69ca35759034")
+	)
+	(wire
+		(pts
+			(xy 163.83 184.15) (xy 165.1 184.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "85eacf37-cabd-4831-91ad-ffb96c69442a")
 	)
 	(wire
 		(pts
@@ -5217,7 +5223,7 @@
 	)
 	(wire
 		(pts
-			(xy 158.75 182.88) (xy 158.75 179.07)
+			(xy 148.59 182.88) (xy 148.59 179.07)
 		)
 		(stroke
 			(width 0)
@@ -5877,6 +5883,30 @@
 			)
 		)
 	)
+	(global_label "HP_DET"
+		(shape bidirectional)
+		(at 163.83 184.15 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "47577cb5-1a6a-4708-80bd-595e81d79528")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 146.83 184.15 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+	)
 	(global_label "KEY_COL3"
 		(shape bidirectional)
 		(at 256.54 198.12 270)
@@ -6167,7 +6197,7 @@
 	)
 	(global_label "VBUS"
 		(shape input)
-		(at 148.59 182.88 180)
+		(at 138.43 182.88 180)
 		(fields_autoplaced yes)
 		(effects
 			(font
@@ -6177,7 +6207,7 @@
 		)
 		(uuid "a1b2c3d4-4444-4444-8444-444444444444")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 139.7 182.88 0)
+			(at 129.54 182.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9684,7 +9714,7 @@
 	)
 	(symbol
 		(lib_id "passives:RC0603FR-0768KL")
-		(at 158.75 187.96 90)
+		(at 148.59 187.96 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9694,7 +9724,7 @@
 		(dnp no)
 		(uuid "71ad8caa-5456-4f68-a402-e519dde681b9")
 		(property "Reference" "R28"
-			(at 161.29 186.6899 0)
+			(at 151.13 186.6899 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9705,7 +9735,7 @@
 			)
 		)
 		(property "Value" "RC0603FR-0768KL"
-			(at 161.29 189.2299 90)
+			(at 151.13 189.2299 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9717,7 +9747,7 @@
 			)
 		)
 		(property "Footprint" "easyeda2kicad:R0603"
-			(at 166.37 187.96 0)
+			(at 156.21 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9728,17 +9758,6 @@
 			)
 		)
 		(property "Datasheet" "https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_68KR-6802-1_C114633.html"
-			(at 168.91 187.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "68k 1% 0603 resistor"
 			(at 158.75 187.96 0)
 			(hide yes)
 			(show_name no)
@@ -9749,8 +9768,19 @@
 				)
 			)
 		)
+		(property "Description" "68k 1% 0603 resistor"
+			(at 148.59 187.96 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Manufacturer" "YAGEO(国巨)"
-			(at 171.45 187.96 0)
+			(at 161.29 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9761,7 +9791,7 @@
 			)
 		)
 		(property "MPN" "RC0603FR-0768KL"
-			(at 173.99 187.96 0)
+			(at 163.83 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9772,7 +9802,7 @@
 			)
 		)
 		(property "LCSC Part" "C114633"
-			(at 176.53 187.96 0)
+			(at 166.37 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10915,7 +10945,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 158.75 193.04 0)
+		(at 148.59 193.04 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10925,7 +10955,7 @@
 		(dnp no)
 		(uuid "a1b2c3d4-0001-4001-8001-000000000001")
 		(property "Reference" "#PWR044"
-			(at 160.02 190.5 0)
+			(at 149.86 190.5 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10936,7 +10966,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 158.75 196.85 0)
+			(at 148.59 196.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10946,7 +10976,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 158.75 193.04 0)
+			(at 148.59 193.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10957,7 +10987,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 158.75 193.04 0)
+			(at 148.59 193.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10968,7 +10998,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 158.75 193.04 0)
+			(at 148.59 193.04 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10992,7 +11022,7 @@
 	)
 	(symbol
 		(lib_id "passives:RC0603JR-0710KL")
-		(at 153.67 182.88 0)
+		(at 143.51 182.88 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -11002,7 +11032,7 @@
 		(dnp no)
 		(uuid "a1b2c3d4-8888-4888-8888-888888888888")
 		(property "Reference" "R4"
-			(at 153.67 184.912 0)
+			(at 143.51 184.912 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -11012,7 +11042,7 @@
 			)
 		)
 		(property "Value" "100k"
-			(at 153.67 187.96 0)
+			(at 143.51 187.96 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11023,7 +11053,7 @@
 			)
 		)
 		(property "Footprint" "easyeda2kicad:R0603"
-			(at 153.67 182.88 0)
+			(at 143.51 182.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11034,7 +11064,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 153.67 182.88 0)
+			(at 143.51 182.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11045,7 +11075,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 153.67 182.88 0)
+			(at 143.51 182.88 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
