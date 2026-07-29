@@ -1029,6 +1029,17 @@ User preference: **hinged** sockets (not push-push) — hinged lids open upward,
   - *Rationale*: Standard KiCad practice for power nets that enter the board from connectors.
 - **Result**: 0 errors, 0 warnings, 0 violations across all 8 sheets (root + MCU + Modem + Codec + Keypad + Display + Display_Daughter + SIM_SD).
 
+### 2026-07-28: Doc Restructure + Anti-Duplication Policy + Consolidation
+
+- **Restructured docs into lifecycle folders**: `docs/work/` (active planning), `docs/ref/` (long-term reference), `docs/datasheets/` (renamed from `docs/reference/`), `docs/archive/` (completed plans + all revisit prompts moved here). 329 cross-references updated across 21 files. YAML frontmatter (`status`, `updated`) added to all 20 docs.
+- **Anti-duplication policy**: Each information type has ONE source of truth (see Source of Truth Assignments table in `AGENTS.md`). Other docs link to the source — they do not restate it. Replaces the old "update all relevant docs" rule. Persisted in `AGENTS.md` and `.devin/rules/doc-maintain.md`.
+- **Consolidated duplicated content** (applying the new policy):
+  - `AGENTS.md` Key Decisions: slimmed from ~15 paragraph-length entries to a 12-row table with 1-line summaries + links to project-log.md. Open Items section collapsed to a one-liner (all resolved).
+  - `README.md`: removed duplicate architecture diagram (now references `docs/ref/problem-definition.md`); simplified documentation index to a brief overview pointing to `AGENTS.md` for the full table.
+  - `docs/ref/requirements.md` Resolved Questions: slimmed from 15 paragraph-length entries to 1-line summaries with links to project-log.md.
+- **Obsidian references removed**: Initially added Obsidian setup instructions, then removed them after the IDE extension proved unreliable. The folder structure, frontmatter, and anti-duplication policy are tool-agnostic and remain.
+- **No schematic changes** — docs-only. Tier 4 items (task-tracker checkboxes, block-diagram net name reconciliation, missing project-log entries for SKQGABE010/SOFNG/backlight) still deferred to §J in `docs/work/schematic-completion-plan.md`.
+
 ### 2026-07-28: Documentation Consolidation — Archive Stale Docs, Fix Stale Content, Update Index
 
 - **Archived `docs/working-plan.md`** → `docs/archive/working-plan.md`. This plan tracked the ERC warning cleanup (196→3 warnings, 2026-07-23) and deferred-component additions (SWD header, VBUS divider, NET_STATUS LED, 2026-07-24). It was marked COMPLETE and superseded by `docs/work/schematic-completion-plan.md` (created 2026-07-28). A SUPERSEDED header was added pointing to the current plan. Session summaries already exist in project-log.md (2026-07-23 and 2026-07-24 entries).
