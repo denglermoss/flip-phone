@@ -7066,7 +7066,7 @@
 	)
 	(symbol
 		(lib_name "6TPF470MAH_1")
-		(lib_id "temp_470uf:6TPF470MAH")
+		(lib_id "passives:6TPF470MAH")
 		(at 175.26 162.56 180)
 		(unit 1)
 		(body_style 1)
@@ -7096,7 +7096,7 @@
 				)
 			)
 		)
-		(property "Footprint" "temp_470uf:CAP-SMD_L7.3-W4.3"
+		(property "Footprint" "easyeda2kicad:CAP-SMD_L7.3-W4.3"
 			(at 175.26 162.56 0)
 			(hide yes)
 			(show_name no)

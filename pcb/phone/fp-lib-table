@@ -1,8 +1,5 @@
 (fp_lib_table
   (version 7)
   (lib (name "easyeda2kicad")(type "KiCad")(uri "${KIPRJMOD}/lib/easyeda2kicad.pretty")(options "")(descr "JLC/LCSC footprints downloaded via easyeda2kicad"))
-  (lib (name "temp_switch")(type "KiCad")(uri "${KIPRJMOD}/lib/temp_switch.pretty")(options "")(descr "Temp: ALPS slide switch footprints (to be merged into easyeda2kicad)"))
-  (lib (name "temp_470uf")(type "KiCad")(uri "${KIPRJMOD}/lib/temp_470uf.pretty")(options "")(descr "Temp: Panasonic 470uF tantalum polymer footprints (to be merged into easyeda2kicad)"))
-  (lib (name "temp_10uf")(type "KiCad")(uri "${KIPRJMOD}/lib/temp_10uf.pretty")(options "")(descr "Temp: Samsung 10uF ceramic footprints (to be merged into easyeda2kicad)"))
   (lib (name "tensility")(type "KiCad")(uri "${KIPRJMOD}/lib/tensility.pretty")(options "")(descr "Tensility connector footprints (DigiKey-sourced parts)"))
 )

@@ -5183,7 +5183,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "temp_switch:SSSS811101"
+		(symbol "electromech:SSSS811101"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -5209,7 +5209,7 @@
 					)
 				)
 			)
-			(property "Footprint" "temp_switch:SW-SMD_SSSS811101"
+			(property "Footprint" "easyeda2kicad:SW-SMD_SSSS811101"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -7770,7 +7770,7 @@
 		)
 	)
 	(symbol
-		(lib_id "temp_switch:SSSS811101")
+		(lib_id "electromech:SSSS811101")
 		(at 115.57 71.12 0)
 		(unit 1)
 		(body_style 1)
@@ -7803,7 +7803,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "temp_switch:SW-SMD_SSSS811101"
+		(property "Footprint" "easyeda2kicad:SW-SMD_SSSS811101"
 			(at 115.57 71.12 0)
 			(hide yes)
 			(show_name no)
