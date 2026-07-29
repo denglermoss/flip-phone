@@ -1025,6 +1025,16 @@ User preference: **hinged** sockets (not push-push) — hinged lids open upward,
   - *Rationale*: Standard KiCad practice for power nets that enter the board from connectors.
 - **Result**: 0 errors, 0 warnings, 0 violations across all 8 sheets (root + MCU + Modem + Codec + Keypad + Display + Display_Daughter + SIM_SD).
 
+### 2026-07-28: Documentation Consolidation — Archive Stale Docs, Fix Stale Content, Update Index
+
+- **Archived `docs/working-plan.md`** → `docs/archive/working-plan.md`. This plan tracked the ERC warning cleanup (196→3 warnings, 2026-07-23) and deferred-component additions (SWD header, VBUS divider, NET_STATUS LED, 2026-07-24). It was marked COMPLETE and superseded by `docs/schematic-completion-plan.md` (created 2026-07-28). A SUPERSEDED header was added pointing to the current plan. Session summaries already exist in project-log.md (2026-07-23 and 2026-07-24 entries).
+- **Archived `docs/revisit-prompts/parts-sourcing-revisit.md`** → `docs/revisit-prompts/archive/parts-sourcing-revisit.md`. All 16 items resolved (2 deferred to Phase 7 — speakers). This was the last active revisit prompt; all 5 are now archived. Updated `docs/revisit-prompts/README.md` — Active table is now empty, parts-sourcing moved to Archived table.
+- **Fixed stale content in `docs/problem-definition.md`**: Updated "Form factor is deferred" → flip/clamshell LOCKED 2026-07-19; "Architecture (Preliminary — Single Board)" → two-board flip architecture; Key Constraints form factor row updated.
+- **Fixed stale content in `docs/requirements.md`**: Updated FR-5 (Form Factor) from "not yet specified, single-board prototype first" → flip/clamshell locked, two PCBs + hinge flex.
+- **Fixed stale content in `README.md`**: Updated form factor references (deferred → locked flip); updated Status section to reflect current Phase 3 progress (most sheets 70-92% per `docs/schematic-completion-plan.md`).
+- **Updated `AGENTS.md` doc table**: Added 4 missing docs (`block-diagram.md`, `mcu-pin-assignment.md`, `schematic-completion-plan.md`, `ui-design.md`); added note about archived docs.
+- **No schematic changes** — docs-only consolidation. Tier 4 items (task-tracker checkboxes, block-diagram net name reconciliation, missing project-log entries for SKQGABE010/SOFNG/backlight) deferred to §J in `docs/schematic-completion-plan.md` (after schematic fixes are done).
+
 ### 2026-07-28: Documentation Refdes Reconciliation — Docs Now Match Schematic
 
 - **Decision**: Update all documentation refdes to match the schematic (not the other way around). The schematic refdes are canonical. This reverses the 2026-07-22 M4/M5 decision which renamed schematic refdes to match docs (USBC1→J1, CN1→J_BATT, D1→U10). That rename was never committed to the schematic — the schematic retained its original refdes (USBC1, CN1, D1, etc.) — but the docs were updated to use the "matching" names. This created a persistent mismatch between docs and schematic.

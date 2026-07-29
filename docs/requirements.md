@@ -28,9 +28,9 @@
 - **FR-4.3**: Device shall enter low-power mode when idle (display off, modem standby).
 - **FR-4.4**: Device shall support a standby time of at least 24 hours (target).
 
-### FR-5: Form Factor (Deferred)
-- **FR-5.1**: Device form factor is not yet specified. Single-board prototype first.
-- **FR-5.2**: Mechanical design (enclosure, form factor, keypad integration) will be decided after electronics and firmware are proven.
+### FR-5: Form Factor (Flip/Clamshell — LOCKED 2026-07-19)
+- **FR-5.1**: Device form factor is flip/clamshell — two PCBs (main board + display daughterboard) connected via a 14-pin 0.5mm hinge flex cable. Main display (ST7789V 2.0") + outer display (1.14" TFT) on the daughterboard; keypad, MCU, modem, battery, and connectors on the main board.
+- **FR-5.2**: Mechanical design (enclosure, hinge mechanism, keypad feel) is deferred to Phase 7 — depends on electronics being proven first. See `docs/project-log.md` 2026-07-19 Display Panel Selection + Flip Form Factor Locked.
 - **FR-5.3**: User has access to FDM, SLA, and CNC for enclosure fabrication.
 
 ### FR-6: Ecosystem Connectivity (Future — Constrains Hardware Selection Now)

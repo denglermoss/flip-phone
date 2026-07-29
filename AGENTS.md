@@ -17,11 +17,17 @@ This project is documentation-driven. The docs are the source of truth for decis
 | `docs/problem-definition.md` | The problem, architecture, MVP, risks, success criteria |
 | `docs/requirements.md` | Functional & non-functional requirements, resolved/open questions |
 | `docs/constraints.md` | Technical, budget, regulatory, timeline constraints |
+| `docs/block-diagram.md` | Per-section pin-level wiring spec (power, MCU, modem, codec, display, keypad, SIM/SD). Source of truth for schematic entry. |
+| `docs/mcu-pin-assignment.md` | STM32H743ZI full pin map (73 pins assigned, ~60 spare) |
 | `docs/research-notes.md` | Research findings, component analysis, open research questions |
 | `docs/feature-wishlist.md` | Features rated 1-10, ecosystem implications, component selection guide |
 | `docs/project-log.md` | Decision log (dated), phase breakdown, progress tracking |
 | `docs/task-tracker.md` | Comprehensive plan to assembled PCB (Phase 3-5: schematic → layout → DIY assembly). Created 2026-07-22. |
+| `docs/schematic-completion-plan.md` | Per-sheet review tracker for Phase 3 schematic fixes. Created 2026-07-28. |
+| `docs/ui-design.md` | UI screen map, input model, visual style (80s sci-fi HUD) |
 | `docs/bom.md` | Bill of Materials — component list with prices, links, cost estimates |
+| `docs/revisit-prompts/` | Revisit prompts — all 5 resolved and archived (modem, codec, display, USB HS/ULPI, parts sourcing). See `docs/revisit-prompts/README.md`. |
+| `docs/archive/` | Completed/superseded working plans retained for historical reference. |
 | `README.md` | Project overview, documentation index, status |
 
 ### Rules

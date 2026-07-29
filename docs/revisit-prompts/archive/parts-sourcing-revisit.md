@@ -1,5 +1,11 @@
 # Revisit Prompt: PCB Parts Sourcing — Remaining Components
 
+> **ARCHIVED 2026-07-28** — RESOLVED. All 16 items resolved (2 deferred to Phase 7:
+> speakers LS1/LS2 are case-mounted, not PCB-assembled). All parts have KiCad models
+> and are JLC-sourced (no consignment). See `docs/revisit-prompts/README.md` archived
+> table for the resolution summary, and `pcb/PARTS_TRACKING.md` for the current parts
+> list. Retained for historical reference only — do not re-run.
+
 **Purpose**: Paste the prompt below into a new chat to work through the remaining parts selection and sourcing decisions for the phone PCB. This collects all open items that need either a part pick (search JLC) or a design decision before the schematic can be completed.
 
 **STATUS: OPEN** — Created 2026-07-19 during the parts library build phase.

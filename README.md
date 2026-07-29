@@ -4,7 +4,7 @@
 
 Designing and building a custom cell phone from scratch. The project covers hardware design (PCB, electronics), embedded firmware, cellular communication, and eventually mechanical/enclosure design.
 
-**Form factor is not yet locked.** The initial goal is a working phone (breadboard → custom PCB). Mechanical design (flip, candybar, slider, etc.) will be decided after the electronics and firmware are proven.
+**Form factor: flip/clamshell (LOCKED 2026-07-19).** Two PCBs (main board + display daughterboard) connected via a hinge flex cable. Mechanical design (enclosure, hinge, keypad feel) is deferred to Phase 7.
 
 **Long-term vision**: The phone is the hub of a personal ecosystem of targeted devices. Future modules (e.g. a car infotainment system for navigation + music) would connect to the phone via USB for LTE tethering, data access, and charging. **Tethering uses the SIM7600 modem's own USB 2.0 HS port directly** (RNDIS/ECM), bypassing the MCU — no USB3300 ULPI transceiver needed. The phone project is the primary focus — ecosystem modules are future scope, but hardware decisions must not prevent them.
 
@@ -17,7 +17,7 @@ Designing and building a custom cell phone from scratch. The project covers hard
 ## Scope
 
 ### In Scope
-- Custom PCB design (single-board initially; multi-board/form factor decided later)
+- Custom PCB design (flip/clamshell: main board + display daughterboard + hinge flex)
 - Microcontroller + off-the-shelf cellular module architecture
 - Firmware: call handling, UI, contacts, power management
 - Making real phone calls on a real network
@@ -35,14 +35,12 @@ Designing and building a custom cell phone from scratch. The project covers hard
 
 ```
 ┌─────────────────────────────┐
-│        Phone Board           │
+│        Main Board            │
 │  - MCU (RTOS)                │
 │  - Cellular Module (LTE)     │
 │  - SIM Card Slot             │
-│  - Display                   │
 │  - Keypad                    │
-│  - Mic + Speaker             │
-│  - Battery + Charging IC     │
+│  - Mic + Battery + Charging  │
 │  - Power Regulation          │
 │  - Antenna                   │
 │  - USB (data + power) ←──┐   │ ← Ecosystem interconnect
@@ -50,16 +48,21 @@ Designing and building a custom cell phone from scratch. The project covers hard
 └──────────────────────────┼──┘
                            │
     ┌──────────────────────┘
-    ▼
+    │ Hinge flex (14-pin FFC)
+    │
 ┌─────────────────────────────┐
-│  Future Module (e.g. Car)    │
-│  - SBC + Display + Audio     │
-│  - USB host to phone         │
-│  - Uses phone LTE via tether │
+│   Display Daughterboard       │
+│  - Main display (2.0" TFT)    │
+│  - Outer display (1.14" TFT)  │
+│  - Earpiece speaker            │
 └─────────────────────────────┘
 
-Form factor (flip, candybar, etc.)
-and multi-board split deferred.
+    ┌──────────────────────┐
+    │  Future Module (Car)  │
+    │  - SBC + Display       │
+    │  - USB host to phone   │
+    │  - Uses phone LTE      │
+    └────────────────────────┘
 Ecosystem modules are future scope.
 ```
 
@@ -68,18 +71,22 @@ Ecosystem modules are future scope.
 - [Problem Definition](docs/problem-definition.md) — The problem, architecture, MVP, risks, success criteria
 - [Requirements](docs/requirements.md) — Functional & non-functional requirements
 - [Constraints](docs/constraints.md) — Technical, budget, regulatory, timeline
+- [Block Diagram](docs/block-diagram.md) — Per-section pin-level wiring spec (power, MCU, modem, codec, display, keypad, SIM/SD). Source of truth for schematic entry.
+- [MCU Pin Assignment](docs/mcu-pin-assignment.md) — STM32H743ZI full pin map (73 pins assigned, ~60 spare)
 - [Research Notes](docs/research-notes.md) — Cellular comms primer, component research
 - [Feature Wishlist](docs/feature-wishlist.md) — All potential features rated 1-10, ecosystem implications, component selection guide
-- [Project Log](docs/project-log.md) — Decision log and progress tracking
+- [Project Log](docs/project-log.md) — Decision log (dated), phase breakdown, progress tracking
 - [Task Tracker](docs/task-tracker.md) — Comprehensive plan to assembled PCB (Phase 3-5: schematic → layout → DIY assembly). Created 2026-07-22.
-- [UI Design](docs/ui-design.md) — Screen map, input model, visual style (in progress)
-- [Bill of Materials](docs/bom.md) — Component list with prices, links, and cost estimates (preliminary)
-- [Revisit Prompts](docs/revisit-prompts/) — Prompts for open questions requiring dedicated discussion. **All resolved and archived** (2026-06-28): modem (SIM7600 locked), codec (~~MAX9880A~~ → ALC5651 selected 2026-07-19), display (ST7789V SPI TFT selected), USB HS/ULPI (dropped — SIM7600's own USB 2.0 HS port does tethering directly, bypassing the MCU; no USB3300 needed). Archived prompts in `docs/revisit-prompts/archive/`; see `docs/revisit-prompts/README.md` for the archive index.
+- [Schematic Completion Plan](docs/schematic-completion-plan.md) — Per-sheet review tracker for Phase 3 schematic fixes (created 2026-07-28)
+- [UI Design](docs/ui-design.md) — Screen map, input model, visual style (80s sci-fi HUD)
+- [Bill of Materials](docs/bom.md) — Component list with prices, links, and cost estimates
+- [Revisit Prompts](docs/revisit-prompts/) — All 5 prompts resolved and archived (modem, codec, display, USB HS/ULPI, parts sourcing). See `docs/revisit-prompts/README.md` for the archive index.
+- [Archived Docs](docs/archive/) — Completed/superseded working plans retained for historical reference.
 
 ## Status
 
-**Phase 1 (Research & Component Selection) — Complete.** All guiding hardware decisions locked: MCU (STM32H743ZI), modem (SIM7600NA-H), codec (ALC5651-CG), display (ST7789V SPI TFT), keypad (SMD tactile switches), USB architecture (modem-direct tethering, no ULPI). **Zephyr development environment set up (2026-06-29)** — toolchain verified by building blinky for `nucleo_h753zi`.
+**Phase 1 (Research & Component Selection) — Complete.** All guiding hardware decisions locked: MCU (STM32H743ZI), modem (SIM7600NA-H), codec (ALC5651-CG), display (ST7789V SPI TFT), keypad (SMD tactile switches), USB architecture (modem-direct tethering, no ULPI). Zephyr development environment set up (2026-06-29).
 
-**Phase 2 (HAT-Based Prototype) — In Progress (2026-07-18).** All prototyping hardware received. **MVP achieved (2026-07-13)**: MCU firmware places and receives VoLTE calls with audio on Mint LTE. **Keypad integrated + verified (2026-07-18)**: 4×4 matrix keypad wired to Nucleo GPIO via Zephyr's `gpio-kbd-matrix` input driver — user types arbitrary phone numbers and places calls (A=Call, B=End, C=Backspace). Functional test passed: real VoLTE call to a user-typed number, no PC involvement. Standalone-dialer milestone reached. Remaining MVP items: signal indicator (`AT+CSQ` polling — doable now), battery indicator (PCB-phase — needs MAX17048 fuel gauge). See `docs/project-log.md` Phase Breakdown.
+**Phase 2 (HAT-Based Prototype) — Complete.** MVP achieved (2026-07-13): MCU firmware places and receives VoLTE calls with audio on Mint LTE. Keypad integrated + verified (2026-07-18): standalone dialer — user types phone numbers and places real calls with no PC involvement. See `docs/project-log.md` Phase Breakdown.
 
-**Phase 3 (Schematic Design) — In Progress (2026-07-22).** Pre-schematic decisions settled: modem USB HS port → unpopulated connector footprint on rev1; GNSS antenna → U.FL footprint included; loudspeaker → earpiece + loudspeaker both included; SIM/microSD connector → combo-vs-separate deferred to sourcing. USB-C connector type formally locked (16-pin USB 2.0). Approach: block-diagram-first → **flat sheet with global labels** (not hierarchical sheets). **Modem form factor: MPCIe primary, LGA fallback.** **Progress: power section schemed + reviewed (2026-07-22); all other sections to be specified.** **Comprehensive plan to assembled PCB created (2026-07-22)** — see `docs/task-tracker.md` for the full Phase 3-5 task breakdown (schematic completion → PCB layout → DIY assembly). Plan targets full DIY assembly, hardware-only, endpoint = assembled board in hand.
+**Phase 3 (Schematic Design) — In Progress (2026-07-28).** All parts sourced with KiCad models (no consignment). Schematic approach: flat sheet + global labels, MPCIe modem form factor (primary), LGA fallback. **Per-sheet progress** (see `docs/schematic-completion-plan.md` for details): Power ✅, MCU ~92%, Modem ~90%, Codec ✅ (restored), Keypad ✅, Display main ~80% (backlight FET pending), Display daughter ~70%, SIM/SD ✅. ERC: 0 errors, 15 warnings. Remaining work tracked in `docs/schematic-completion-plan.md`; full Phase 3-5 plan in `docs/task-tracker.md`.

@@ -4,7 +4,7 @@
 
 Design and build a custom cell phone from scratch that can make and receive real voice calls on a live cellular network in the United States. The device must eventually become a usable daily-driver, not just a lab prototype.
 
-**Form factor is deferred.** The initial focus is electronics and firmware. Mechanical design (flip, candybar, slider, etc.) will be decided after the core phone functionality is proven on a single-board design.
+**Form factor: flip/clamshell (LOCKED 2026-07-19).** Two PCBs (main board + display daughterboard) connected via a hinge flex cable. The display daughterboard is trivial (~5 components + 3 ZIF connectors). Hinge mechanism and enclosure design are deferred to Phase 7 (mechanical). See `docs/project-log.md` 2026-07-19 Display Panel Selection + Flip Form Factor Locked.
 
 ## Modular Ecosystem Vision (Future — Does Not Affect MVP)
 
@@ -32,20 +32,18 @@ A cell phone is a convergence of five engineering disciplines, each non-trivial 
 
 4. **Power Management** — Cellular modules draw 2A+ peaks during transmission. The battery, regulators, and charging circuit must handle this while fitting in a small enclosure. Standby time needs to be at least 24 hours.
 
-5. **Mechanical Integration** (deferred) — Enclosure, keypad feel, display mounting, antenna placement, and form factor. This is a separate design phase that depends on the electronics being proven first.
+5. **Mechanical Integration** (Phase 7) — Enclosure, keypad feel, display mounting, antenna placement, and hinge mechanism. Form factor is locked (flip/clamshell); mechanical design is a separate phase that depends on the electronics being proven first.
 
-## Architecture (Preliminary — Single Board)
+## Architecture (Flip/Clamshell — Locked 2026-07-19)
 
 ```
 ┌─────────────────────────────┐
-│        Phone Board           │
+│        Main Board            │
 │  - MCU (RTOS)                │
 │  - Cellular Module (LTE)     │
 │  - SIM Card Slot             │
-│  - Display                   │
 │  - Keypad                    │
-│  - Mic + Speaker             │
-│  - Battery + Charging IC     │
+│  - Mic + Battery + Charging  │
 │  - Power Regulation          │
 │  - Antenna                   │
 │  - USB (data + power) ←──┐   │ ← Ecosystem interconnect
@@ -53,19 +51,26 @@ A cell phone is a convergence of five engineering disciplines, each non-trivial 
 └──────────────────────────┼──┘
                            │
     ┌──────────────────────┘
+    │ Hinge flex (14-pin 0.5mm FFC)
+    │ — display SPI, backlight,
+    │   earpiece, outer display CS2/DC2
     │
-    ▼
 ┌─────────────────────────────┐
-│  Future Module (e.g. Car)    │
-│  - SBC (Linux)               │
-│  - Display (5-7" TFT)        │
-│  - Audio out                 │
-│  - USB host to phone         │
-│  - Uses phone LTE via tether │
+│   Display Daughterboard       │
+│  - Main display (ST7789V 2.0")│
+│  - Outer display (1.14" TFT)  │
+│  - Earpiece speaker            │
+│  - Backlight FET + resistors  │
 └─────────────────────────────┘
 
-Multi-board split and form factor
-(flip, candybar, etc.) deferred.
+    ┌──────────────────────┐
+    │  Future Module (Car)  │
+    │  - SBC (Linux)         │
+    │  - Display (5-7" TFT)  │
+    │  - Audio out            │
+    │  - USB host to phone    │
+    │  - Uses phone LTE       │
+    └────────────────────────┘
 Ecosystem modules are future scope.
 ```
 
@@ -97,7 +102,7 @@ Ecosystem modules are future scope.
 | PCB EDA | KiCad |
 | Budget | Keep low; flexible |
 | Prototype BOM | < $150/unit |
-| Form factor | Deferred — single board first, mechanical design later |
+| Form factor | Flip/clamshell (LOCKED 2026-07-19) — two PCBs + hinge flex; mechanical design in Phase 7 |
 | Assembly | Hand-solderable for prototypes |
 | Enclosure | 3D print (FDM/SLA) or CNC |
 | Ecosystem interconnect | USB (data + power); BT/WiFi deferred |

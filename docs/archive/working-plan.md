@@ -1,5 +1,12 @@
 # Working Plan — ERC Warning Cleanup & Schematic Finalization
 
+> **ARCHIVED 2026-07-28** — Superseded by `docs/schematic-completion-plan.md`.
+> This plan completed the ERC warning cleanup (196→3 warnings, 2026-07-23) and
+> added deferred components (SWD header, VBUS divider, NET_STATUS LED, 2026-07-24).
+> It is retained for historical reference only. The current schematic work is
+> tracked in `docs/schematic-completion-plan.md`. See also `docs/project-log.md`
+> 2026-07-23 and 2026-07-24 session entries.
+
 > **Created**: 2026-07-23
 > **Goal**: Fix all 196 ERC warnings (user reverted suppressions — wants real fixes, not ignores)
 > **Status**: COMPLETE
