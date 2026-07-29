@@ -1,3 +1,7 @@
+---
+status: active
+updated: 2026-07-28
+---
 # UI Design
 
 Phone UI specification — screen map, navigation, input model, and visual style. This is a living document: the screen map and input model are stable decisions; the visual style is explorative and evolves as we iterate on hardware.
@@ -134,4 +138,4 @@ Nokia-style menu navigation (2=up, 8=down) — digits double as nav keys in menu
 
 ## Decisions Log
 
-- **2026-07-18**: UI design session. Full screen map committed (idle/dialer, menu, contacts list/detail/add-edit, messages list/conversation/compose, settings, in-call, incoming). Input model: 2/8 as up/down in menus (Nokia-style), A=select, B=back. Visual style: 80s sci-fi HUD (amber/orange on black) as explorative starting point. Contact storage: Zephyr settings subsystem (simplest for now). See `docs/project-log.md` 2026-07-18 UI Design Session.
+- **2026-07-18**: UI design session. Full screen map committed (idle/dialer, menu, contacts list/detail/add-edit, messages list/conversation/compose, settings, in-call, incoming). Input model: 2/8 as up/down in menus (Nokia-style), A=select, B=back. Visual style: 80s sci-fi HUD (amber/orange on black) as explorative starting point. Contact storage: Zephyr settings subsystem (simplest for now). See `docs/ref/project-log.md` 2026-07-18 UI Design Session.

@@ -1,3 +1,7 @@
+---
+status: archived
+updated: 2026-07-28
+---
 # Revisit Prompts
 
 ## Active
@@ -18,4 +22,4 @@ The following prompts have been resolved and locked. The files are in `archive/`
 | Display Type (`display-decision.md`) | RESOLVED & LOCKED | 2026-06-28 | ST7789V SPI color TFT (2.0" 240×320, RGB565) selected. Five options evaluated. |
 | USB HS / ULPI (`zephyr-usb-hs-ulpi-revisit.md`) | RESOLVED & LOCKED | 2026-06-28 | USB3300 ULPI dropped. SIM7600's own USB 2.0 HS port does tethering directly. MCU USB OTG_FS sufficient. |
 
-See `docs/project-log.md` for the full decision log and rationale.
+See `docs/ref/project-log.md` for the full decision log and rationale.

@@ -1,3 +1,7 @@
+---
+status: archived
+updated: 2026-07-28
+---
 # Revisit Prompt: Display Type Selection
 
 **STATUS: RESOLVED & LOCKED 2026-06-28** — Revisit conducted. **ST7789V SPI color TFT** (2.0" 240×320, RGB565, ~$5–8) selected.

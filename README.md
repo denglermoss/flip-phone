@@ -68,25 +68,25 @@ Ecosystem modules are future scope.
 
 ## Documentation Index
 
-- [Problem Definition](docs/problem-definition.md) — The problem, architecture, MVP, risks, success criteria
-- [Requirements](docs/requirements.md) — Functional & non-functional requirements
-- [Constraints](docs/constraints.md) — Technical, budget, regulatory, timeline
-- [Block Diagram](docs/block-diagram.md) — Per-section pin-level wiring spec (power, MCU, modem, codec, display, keypad, SIM/SD). Source of truth for schematic entry.
-- [MCU Pin Assignment](docs/mcu-pin-assignment.md) — STM32H743ZI full pin map (73 pins assigned, ~60 spare)
-- [Research Notes](docs/research-notes.md) — Cellular comms primer, component research
-- [Feature Wishlist](docs/feature-wishlist.md) — All potential features rated 1-10, ecosystem implications, component selection guide
-- [Project Log](docs/project-log.md) — Decision log (dated), phase breakdown, progress tracking
-- [Task Tracker](docs/task-tracker.md) — Comprehensive plan to assembled PCB (Phase 3-5: schematic → layout → DIY assembly). Created 2026-07-22.
-- [Schematic Completion Plan](docs/schematic-completion-plan.md) — Per-sheet review tracker for Phase 3 schematic fixes (created 2026-07-28)
-- [UI Design](docs/ui-design.md) — Screen map, input model, visual style (80s sci-fi HUD)
-- [Bill of Materials](docs/bom.md) — Component list with prices, links, and cost estimates
-- [Revisit Prompts](docs/revisit-prompts/) — All 5 prompts resolved and archived (modem, codec, display, USB HS/ULPI, parts sourcing). See `docs/revisit-prompts/README.md` for the archive index.
+- [Problem Definition](docs/ref/problem-definition.md) — The problem, architecture, MVP, risks, success criteria
+- [Requirements](docs/ref/requirements.md) — Functional & non-functional requirements
+- [Constraints](docs/ref/constraints.md) — Technical, budget, regulatory, timeline
+- [Block Diagram](docs/work/block-diagram.md) — Per-section pin-level wiring spec (power, MCU, modem, codec, display, keypad, SIM/SD). Source of truth for schematic entry.
+- [MCU Pin Assignment](docs/work/mcu-pin-assignment.md) — STM32H743ZI full pin map (73 pins assigned, ~60 spare)
+- [Research Notes](docs/ref/research-notes.md) — Cellular comms primer, component research
+- [Feature Wishlist](docs/ref/feature-wishlist.md) — All potential features rated 1-10, ecosystem implications, component selection guide
+- [Project Log](docs/ref/project-log.md) — Decision log (dated), phase breakdown, progress tracking
+- [Task Tracker](docs/work/task-tracker.md) — Comprehensive plan to assembled PCB (Phase 3-5: schematic → layout → DIY assembly). Created 2026-07-22.
+- [Schematic Completion Plan](docs/work/schematic-completion-plan.md) — Per-sheet review tracker for Phase 3 schematic fixes (created 2026-07-28)
+- [UI Design](docs/work/ui-design.md) — Screen map, input model, visual style (80s sci-fi HUD)
+- [Bill of Materials](docs/ref/bom.md) — Component list with prices, links, and cost estimates
+- [Revisit Prompts](docs/archive/revisit-prompts/) — All 5 prompts resolved and archived (modem, codec, display, USB HS/ULPI, parts sourcing). See `docs/archive/revisit-prompts/README.md` for the archive index.
 - [Archived Docs](docs/archive/) — Completed/superseded working plans retained for historical reference.
 
 ## Status
 
 **Phase 1 (Research & Component Selection) — Complete.** All guiding hardware decisions locked: MCU (STM32H743ZI), modem (SIM7600NA-H), codec (ALC5651-CG), display (ST7789V SPI TFT), keypad (SMD tactile switches), USB architecture (modem-direct tethering, no ULPI). Zephyr development environment set up (2026-06-29).
 
-**Phase 2 (HAT-Based Prototype) — Complete.** MVP achieved (2026-07-13): MCU firmware places and receives VoLTE calls with audio on Mint LTE. Keypad integrated + verified (2026-07-18): standalone dialer — user types phone numbers and places real calls with no PC involvement. See `docs/project-log.md` Phase Breakdown.
+**Phase 2 (HAT-Based Prototype) — Complete.** MVP achieved (2026-07-13): MCU firmware places and receives VoLTE calls with audio on Mint LTE. Keypad integrated + verified (2026-07-18): standalone dialer — user types phone numbers and places real calls with no PC involvement. See `docs/ref/project-log.md` Phase Breakdown.
 
-**Phase 3 (Schematic Design) — In Progress (2026-07-28).** All parts sourced with KiCad models (no consignment). Schematic approach: flat sheet + global labels, MPCIe modem form factor (primary), LGA fallback. **Per-sheet progress** (see `docs/schematic-completion-plan.md` for details): Power ✅, MCU ~92%, Modem ~90%, Codec ✅ (restored), Keypad ✅, Display main ~80% (backlight FET pending), Display daughter ~70%, SIM/SD ✅. ERC: 0 errors, 15 warnings. Remaining work tracked in `docs/schematic-completion-plan.md`; full Phase 3-5 plan in `docs/task-tracker.md`.
+**Phase 3 (Schematic Design) — In Progress (2026-07-28).** All parts sourced with KiCad models (no consignment). Schematic approach: flat sheet + global labels, MPCIe modem form factor (primary), LGA fallback. **Per-sheet progress** (see `docs/work/schematic-completion-plan.md` for details): Power ✅, MCU ~92%, Modem ~90%, Codec ✅ (restored), Keypad ✅, Display main ~80% (backlight FET pending), Display daughter ~70%, SIM/SD ✅. ERC: 0 errors, 15 warnings. Remaining work tracked in `docs/work/schematic-completion-plan.md`; full Phase 3-5 plan in `docs/work/task-tracker.md`.

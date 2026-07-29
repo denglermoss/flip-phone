@@ -1,3 +1,7 @@
+---
+status: archived
+updated: 2026-07-28
+---
 # Revisit Prompt: Codec / Audio Path Architecture (PCM + I2S)
 
 **STATUS: RESOLVED & LOCKED 2026-06-28** — Revisit conducted. **MAX9880A** dual-port codec selected.

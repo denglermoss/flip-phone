@@ -1,3 +1,7 @@
+---
+status: archived
+updated: 2026-07-28
+---
 # Revisit Prompt: Cellular Module Selection
 
 **Purpose**: Paste the prompt below into a new chat to revisit the cellular module decision. This collects several related concerns that surfaced during the 2026-06-28 documentation review.
@@ -13,7 +17,7 @@
 - **PDP context conflict RESOLVED** — confirmed in `AT+NETOPEN` code path only. Project uses CMUX+PPP (`ATD*99***<cid>#`), which bypasses it. CMUX+PPP is the standard documented pattern (Linux n_gsm, RT-Thread, ESP-IDF).
 - **Simultaneous VoLTE+data is NOT a requirement** — not needed for MVP or daily driver. "Pause data during call" is acceptable for the future ecosystem too. Dropped as a modem selection factor.
 
-See `docs/project-log.md` (2026-06-28 Modem Revisit Second Round) and `docs/research-notes.md` (Modem Revisit Findings, Second Round) for full details. The prompt below is retained for reference only.
+See `docs/ref/project-log.md` (2026-06-28 Modem Revisit Second Round) and `docs/ref/research-notes.md` (Modem Revisit Findings, Second Round) for full details. The prompt below is retained for reference only.
 
 ---
 

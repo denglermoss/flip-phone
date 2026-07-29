@@ -31,9 +31,9 @@ These rules apply when working in the `pcb/` directory. They govern how the AI a
 
 8. **Library integrity.** Don't break symbol/footprint library links, delete library symbols, or modify shared library files without explicit approval.
 
-9. **Protected sections.** The power section is schemed + reviewed (project-log 2026-07-22). Treat it as locked — any change requires explicit approval and a documented rationale in `docs/project-log.md`. Other sections become protected as they are reviewed (document in project-log).
+9. **Protected sections.** The power section is schemed + reviewed (project-log 2026-07-22). Treat it as locked — any change requires explicit approval and a documented rationale in `docs/ref/project-log.md`. Other sections become protected as they are reviewed (document in project-log).
 
-10. **Documentation sync.** If a schematic/PCB change affects BOM, net names, component selection, or architecture, update the relevant docs (`docs/bom.md`, `docs/requirements.md`, `docs/project-log.md`) in the same session, per the root `AGENTS.md` doc-maintain rule.
+10. **Documentation sync.** If a schematic/PCB change affects BOM, net names, component selection, or architecture, update the relevant docs (`docs/ref/bom.md`, `docs/ref/requirements.md`, `docs/ref/project-log.md`) in the same session, per the root `AGENTS.md` doc-maintain rule.
 
 11. **No autonomous manufacturing outputs.** Don't generate Gerbers, drill files, or fab-ready BOM without an explicit user request. Manufacturing handoff is user-initiated.
 
@@ -67,7 +67,7 @@ The following skills in `.devin/skills/` encode KiCad workflows. All are invocab
 - `/kicad-review` — run DRC/ERC + inspect a design, report findings. Read-only.
 - `/kicad-schematic-edit` — governed write workflow for `.kicad_sch` files (plan → checkpoint if autonomous → edit → validate → report).
 - `/kicad-pcb-edit` — governed write workflow for `.kicad_pcb` files (same flow).
-- `/kicad-bom` — generate/validate BOM and cross-check against `docs/bom.md`.
+- `/kicad-bom` — generate/validate BOM and cross-check against `docs/ref/bom.md`.
 
 ## Model Note
 

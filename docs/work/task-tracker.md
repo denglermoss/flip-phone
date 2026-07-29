@@ -1,3 +1,7 @@
+---
+status: active
+updated: 2026-07-28
+---
 # Task Tracker — Path to Assembled PCB
 
 > **Created**: 2026-07-22
@@ -6,7 +10,7 @@
 > **Scope**: Hardware-only (schematic → layout → fab → assembly). Firmware port to custom PCB is a separate later effort.
 > **Form factor**: MPCIe primary (SIM7600NA-H-PCIE, Techship S2-109KS-Z30G9), LGA fallback.
 >
-> **How to use**: Work top-to-bottom. Each phase has tasks with checkboxes. Update status as you go. Open questions/decisions are called out inline — resolve them before proceeding past their gate. When a phase completes, update `docs/project-log.md` and the Progress Tracking table at the bottom of this doc.
+> **How to use**: Work top-to-bottom. Each phase has tasks with checkboxes. Update status as you go. Open questions/decisions are called out inline — resolve them before proceeding past their gate. When a phase completes, update `docs/ref/project-log.md` and the Progress Tracking table at the bottom of this doc.
 
 ---
 
@@ -32,7 +36,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 
 - **O1 — MPCIe PCM confirmation with Techship** *(gate: before buying modem, not before schematic)*
   - **Status**: Verified from V1.03 manual + Techship spec sheet (high confidence ~90%). Part S2-109KS-Z30G9 ends in "PCIE" (not "PCIEA"), Techship lists PCM as "o" (supported), manual confirms PCIE variant = PCM active on pins 45/47/49/51, PCIEA = PCM NC.
-  - **Action**: Optional email to Techship for 100% certainty before purchasing. Draft email in `docs/research-notes.md` (add if not there). Not a blocker for schematic — proceed with MPCIe PCM wiring.
+  - **Action**: Optional email to Techship for 100% certainty before purchasing. Draft email in `docs/ref/research-notes.md` (add if not there). Not a blocker for schematic — proceed with MPCIe PCM wiring.
   - **Resolved by**: Subagent verification 2026-07-22 (this session).
 
 - **O2 — MPCIe power-on method** *(gate: before modem schematic section finalized)*
@@ -40,7 +44,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
   - **Blocks**: ~~Modem section power wiring, MCU GPIO allocation~~ — unblocked.
 
 - **O3 — MCU peripheral-to-pin mapping** *(gate: before any non-power schematic section)*
-  - **Status**: RESOLVED 2026-07-22. Full pin assignment in `docs/mcu-pin-assignment.md` (73 pins assigned, ~60 spare). All pin numbers verified against STM32H743ZI datasheet DS12110 Rev 11 Table 9.
+  - **Status**: RESOLVED 2026-07-22. Full pin assignment in `docs/work/mcu-pin-assignment.md` (73 pins assigned, ~60 spare). All pin numbers verified against STM32H743ZI datasheet DS12110 Rev 11 Table 9.
   - **Blocks**: ~~All schematic sections except power~~ — unblocked.
 
 - **O4 — ALC5651 DBVDD pinout** *(gate: before codec schematic section)*
@@ -95,12 +99,12 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 
 > **Status**: IN PROGRESS (power section done, 7 sections remaining)
 > **Approach**: Flat sheet + global labels (not hierarchical sheets). Block-diagram-first.
-> **Reference**: `docs/block-diagram.md` is the source of truth for each section.
+> **Reference**: `docs/work/block-diagram.md` is the source of truth for each section.
 
 ### 3.1 Resolve schematic-blocking open questions
 
 - [x] **O2**: Confirm MPCIe power-on method — RESOLVED (auto-on at 3.3V, load switch + MCU_MODEM_PWR_EN)
-- [x] **O3**: Create MCU pin assignment spreadsheet — RESOLVED (`docs/mcu-pin-assignment.md`, 73 pins assigned)
+- [x] **O3**: Create MCU pin assignment spreadsheet — RESOLVED (`docs/work/mcu-pin-assignment.md`, 73 pins assigned)
 - [x] **O4**: Verify ALC5651 DBVDD pinout — RESOLVED (single shared pin 39, DBVDD=1.8V, I2S-2 via SN74AXC4T774)
 - [x] **O5**: Verify ALC5651 analog supply current — RESOLVED (≤13mW, U9 retained)
 - [ ] **O1** (optional): Email Techship for 100% PCM confirmation (not a blocker)
@@ -177,7 +181,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 
 **Complexity**: Medium (~2-3 hours). Depends on modem section (USIM signals).
 
-- [ ] Download ESDA6V1-5SC6 datasheet if not in `docs/reference/` — add to index
+- [ ] Download ESDA6V1-5SC6 datasheet if not in `docs/datasheets/` — add to index
 - [ ] Place J3 (nano-SIM hinged, SHOU HAN NANO SIM XG6P H1.35)
 - [ ] Place U6 (ESDA6V1-5SC6) near J3
 - [ ] Wire USIM_VDD, USIM_DATA, USIM_CLK, USIM_RST from modem global labels → SIM socket
@@ -214,14 +218,14 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 **Complexity**: Medium (~2-3 hours).
 
 - [ ] Run KiCad ERC — fix all violations
-- [ ] Cross-check schematic vs `docs/block-diagram.md` (every component, signal, power net)
+- [ ] Cross-check schematic vs `docs/work/block-diagram.md` (every component, signal, power net)
 - [ ] Verify all global labels match between sections
 - [ ] Verify power nets use correct symbols (+BATT, +3.3V, +1V8, GND)
 - [ ] Add PWR_FLAG symbols where needed (no "power pin not driven" errors)
 - [ ] Mark all unconnected pins with NC flag
 - [ ] Generate netlist — verify no unconnected nets
-- [ ] Update `docs/block-diagram.md` with completed sections
-- [ ] Update `docs/project-log.md` with schematic completion entry
+- [ ] Update `docs/work/block-diagram.md` with completed sections
+- [ ] Update `docs/ref/project-log.md` with schematic completion entry
 - [ ] **Phase 3 gate**: Schematic ERC-clean and reviewed → proceed to Phase 4
 
 ---

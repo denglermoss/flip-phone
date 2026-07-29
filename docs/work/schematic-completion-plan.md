@@ -1,3 +1,7 @@
+---
+status: active
+updated: 2026-07-28
+---
 # Schematic Completion Plan
 
 > **Created**: 2026-07-28
@@ -66,7 +70,7 @@ Note: ESDA6V1 was a single U11 in docs but is two separate chips in the schemati
 - [ ] **Add UART debug header** (optional) — for Zephyr console
 - [ ] **Add test points** (optional) — SWDIO, SWCLK, NRST, USB_DP/DN, VBUS
 - [ ] **Add hardware reset button** (optional) — tactile switch on NRST to GND
-- [ ] **Update `docs/mcu-pin-assignment.md`** — add HP_DET on PA2; correct VDD/VSS pin numbers
+- [ ] **Update `docs/work/mcu-pin-assignment.md`** — add HP_DET on PA2; correct VDD/VSS pin numbers
 
 ### §C — Modem Sheet: Missing Footprint & USB Routing
 
@@ -87,22 +91,22 @@ HEAD version contains: U5 (ALC5651), U12 (SN74AXC4T774 level shifter), C23-C26/C
 
 - [x] **Restore codec sheet from HEAD** — DONE 2026-07-28
 - [x] **Verify restored content** — ERC clean (0 violations on codec sheet)
-- [ ] **Re-review restored codec sheet** for completeness against `docs/block-diagram.md` §Codec
+- [ ] **Re-review restored codec sheet** for completeness against `docs/work/block-diagram.md` §Codec
 - [ ] **Open questions to verify after restore**:
-  - Does ALC5651 symbol have a RESETB pin? (subagent flagged it missing — verify against `docs/reference/alc5651.pdf`)
+  - Does ALC5651 symbol have a RESETB pin? (subagent flagged it missing — verify against `docs/datasheets/alc5651.pdf`)
   - DCVDD (pin 40) pin type — `power_in` but docs say internal LDO (needs datasheet check)
   - MCLK level-shifting — 5th channel beyond U12's 4 bits (design decision needed)
   - Loudspeaker amp — ALC5651 has no integrated speaker driver; is an external amp in the design?
   - Headphone jack — the `add_headphone_jack.py` script was attempting to add one; HP_DET still dangling. Decide whether to re-attempt carefully.
 - [ ] **Clean up**: delete or fix `pcb/phone/scripts/add_headphone_jack.py`
-- [ ] **Update `docs/task-tracker.md`** — codec "Done" entry is now correct again
+- [ ] **Update `docs/work/task-tracker.md`** — codec "Done" entry is now correct again
 
 ### §E — Keypad Sheet: Footprint Fixes & Labels
 
 - [ ] **Fix 9 resistor footprint overrides** — R8-R18 have instance Footprint = `""` (blanked), should inherit `easyeda2kicad:R0603`
 - [ ] **Add key-function text labels** — SW1-SW20 need silkscreen labels (1, 2, ..., CALL, END, UP, DOWN, OK, SPARE)
 - [ ] **Add scan-algorithm note** — document the mixed pull-up/pull-down topology (active-low column drive, read rows)
-- [ ] **Update `docs/block-diagram.md` §Keypad** — remove "to be specified", add SKQGABE010 part + topology + matrix map
+- [ ] **Update `docs/work/block-diagram.md` §Keypad** — remove "to be specified", add SKQGABE010 part + topology + matrix map
 - [ ] **Add project-log entry** for SKQGABE010 selection and pull topology
 
 ### §F — Display (Main Board): Backlight FET
@@ -143,9 +147,9 @@ HEAD version contains: U5 (ALC5651), U12 (SN74AXC4T774 level shifter), C23-C26/C
 
 ### §J — Documentation Sync
 
-- [ ] **`docs/task-tracker.md`**: Update §3.2-3.8 checkboxes to reflect actual completion; fix cap refdes (C40/C41/C42 → C18-C22); codec entry correct for HEAD but note working-tree issue
-- [ ] **`docs/block-diagram.md`**: Update sections marked "to be specified" that are actually drawn (MCU, modem, keypad, display, SIM/SD); reconcile backlight architecture (LEDA/LEDK vs BL_PWM); reconcile net names (DISP_SDA/SCL vs DISP_MOSI/SCK, SPK+/SPK- vs EARPIECE+/-)
-- [ ] **`docs/project-log.md`**: Add entries for SKQGABE010 keypad switch selection, SOFNG socket selection, backlight architecture change, codec sheet restore
+- [ ] **`docs/work/task-tracker.md`**: Update §3.2-3.8 checkboxes to reflect actual completion; fix cap refdes (C40/C41/C42 → C18-C22); codec entry correct for HEAD but note working-tree issue
+- [ ] **`docs/work/block-diagram.md`**: Update sections marked "to be specified" that are actually drawn (MCU, modem, keypad, display, SIM/SD); reconcile backlight architecture (LEDA/LEDK vs BL_PWM); reconcile net names (DISP_SDA/SCL vs DISP_MOSI/SCK, SPK+/SPK- vs EARPIECE+/-)
+- [ ] **`docs/ref/project-log.md`**: Add entries for SKQGABE010 keypad switch selection, SOFNG socket selection, backlight architecture change, codec sheet restore
 - [ ] **`AGENTS.md`**: Reconcile refdes (USBC1, CN1, U8-U10, D1) and socket part (Techship vs SOFNG) with schematic
 
 ---

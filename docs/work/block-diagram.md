@@ -1,3 +1,7 @@
+---
+status: active
+updated: 2026-07-28
+---
 # Schematic Reference
 
 > **Status**: Living document — updated section-by-section as the schematic is drawn in KiCad. Each section lists components, signals, power nets, and connection notes for that part of the design. Use this alongside KiCad while drawing.
@@ -95,7 +99,7 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 
 ### Power IC pinouts and connections
 
-> **Source for all pinouts**: vendor datasheets, extracted via the PDF MCP server. TPS63021 from `docs/reference/tps63021.pdf` (TI SLVS916I §5 Pin Functions). TPS7A02 from TI SBVS277C §5 (DBV/SOT-23-5 variant). MCP73831 from `docs/reference/mcp73831.pdf` (Microchip DS20001984H — **DFN-8 2×3mm variant, not SOT-23-5**; see U11 correction below). MAX17048 from `docs/reference/max17048.pdf` (ADI/Maxim Rev 7, §Pin/Bump Descriptions p6 — TDFN-8 2×2mm variant). USBC1 USB-C pinout from the KiCad symbol `TYPE-C-31-M-12` (downloaded from LCSC C165948 via easyeda2kicad) — pinout follows the USB Type-C specification (USB-IF).
+> **Source for all pinouts**: vendor datasheets, extracted via the PDF MCP server. TPS63021 from `docs/datasheets/tps63021.pdf` (TI SLVS916I §5 Pin Functions). TPS7A02 from TI SBVS277C §5 (DBV/SOT-23-5 variant). MCP73831 from `docs/datasheets/mcp73831.pdf` (Microchip DS20001984H — **DFN-8 2×3mm variant, not SOT-23-5**; see U11 correction below). MAX17048 from `docs/datasheets/max17048.pdf` (ADI/Maxim Rev 7, §Pin/Bump Descriptions p6 — TDFN-8 2×2mm variant). USBC1 USB-C pinout from the KiCad symbol `TYPE-C-31-M-12` (downloaded from LCSC C165948 via easyeda2kicad) — pinout follows the USB Type-C specification (USB-IF).
 
 #### USBC1 — Korean Hroparts TYPE-C-31-M-12 (USB-C 16-pin receptacle, USB 2.0)
 
@@ -156,7 +160,7 @@ USB-C USBC1 (A6+B6, A7+B7) → USBLC6-2 ESD (D1) → MCU USB OTG_FS (D+, D-)
 
 #### U11 — MCP73831-2ACI/MC (LiPo charger, DFN-8 2×3mm + exposed pad)
 
-> Datasheet: `docs/reference/mcp73831.pdf` (Microchip DS20001984H). "-2ACI" = 4.20V regulation (LiPo standard). **Package: DFN-8 2×3mm with exposed pad** (NOT SOT-23-5 — the block diagram previously said SOT-23-5, corrected 2026-07-21 after downloading the datasheet and verifying the downloaded KiCad footprint `TDFN-8_L3.0-W2.0-P0.50-BL-EP1.6` has 9 pads). LCSC C150772. The "/MC" suffix in Microchip's naming usually means SOT-23-5, but LCSC C150772 maps to the DFN-8 variant — verify at order time.
+> Datasheet: `docs/datasheets/mcp73831.pdf` (Microchip DS20001984H). "-2ACI" = 4.20V regulation (LiPo standard). **Package: DFN-8 2×3mm with exposed pad** (NOT SOT-23-5 — the block diagram previously said SOT-23-5, corrected 2026-07-21 after downloading the datasheet and verifying the downloaded KiCad footprint `TDFN-8_L3.0-W2.0-P0.50-BL-EP1.6` has 9 pads). LCSC C150772. The "/MC" suffix in Microchip's naming usually means SOT-23-5, but LCSC C150772 maps to the DFN-8 variant — verify at order time.
 
 **Pinout (DFN-8 2×3mm, top view — pin 1 marked with dot, exposed pad on bottom):**
 ```
@@ -191,13 +195,13 @@ USB-C USBC1 (A6+B6, A7+B7) → USBLC6-2 ESD (D1) → MCU USB OTG_FS (D+, D-)
 
 **Note on charge current:** USB 2.0 standard port = 500mA. The MCP73831-2ACI can do up to 500mA. If we ever want fast charging from a 2A USB charger, we'd need a different charger IC (BQ25895 etc.) — but for prototype, 500mA is fine.
 
-**Note on package correction (2026-07-21):** The block diagram previously said "SOT-23-5" with a 5-pin pinout. The actual downloaded KiCad footprint is `TDFN-8_L3.0-W2.0-P0.50-BL-EP1.6` (9 pads = 8 signal + 1 exposed pad), confirming the DFN-8 variant. The DFN-8 pinout differs from SOT-23-5: pin 4 is VBAT (not PROG), pin 6 is VSS (not STAT), and pins 7/8/9 are NC / PROG / exposed pad. Corrected after downloading `docs/reference/mcp73831.pdf` and verifying against datasheet page 1 package diagram and Table 3-1 (p11).
+**Note on package correction (2026-07-21):** The block diagram previously said "SOT-23-5" with a 5-pin pinout. The actual downloaded KiCad footprint is `TDFN-8_L3.0-W2.0-P0.50-BL-EP1.6` (9 pads = 8 signal + 1 exposed pad), confirming the DFN-8 variant. The DFN-8 pinout differs from SOT-23-5: pin 4 is VBAT (not PROG), pin 6 is VSS (not STAT), and pins 7/8/9 are NC / PROG / exposed pad. Corrected after downloading `docs/datasheets/mcp73831.pdf` and verifying against datasheet page 1 package diagram and Table 3-1 (p11).
 
 **Note on pinout correction (2026-07-22):** The 2026-07-21 package correction got the DFN-8 pinout wrong again (pins 2/3/4/6/7/8 were incorrect — written from the package diagram without reading Table 3-1). The correct pinout from DS20001984H Table 3-1: 1=VDD, 2=VDD, 3=VBAT, 4=VBAT, 5=STAT, 6=VSS, 7=NC, 8=PROG, 9(EP)=VSS. The KiCad symbol in the schematic was already correct — this doc fix brings the doc in line with both the datasheet and the schematic. The STAT behavior was also corrected: STAT=LOW during charging (not HIGH as previously documented).
 
 #### U8 — TPS63021DSJR (3.3V buck-boost, VSON-14 with exposed pad)
 
-> Datasheet: TI SLVS916I (in `docs/reference/tps63021.pdf`). "DSJ" = VSON-14 3×4mm with exposed thermal pad. LCSC C202140. Fixed 3.3V output (no feedback divider needed).
+> Datasheet: TI SLVS916I (in `docs/datasheets/tps63021.pdf`). "DSJ" = VSON-14 3×4mm with exposed thermal pad. LCSC C202140. Fixed 3.3V output (no feedback divider needed).
 
 **Pinout (VSON-14, top view — pin 1 marked with dot):**
 ```
@@ -273,7 +277,7 @@ USB-C USBC1 (A6+B6, A7+B7) → USBLC6-2 ESD (D1) → MCU USB OTG_FS (D+, D-)
 
 #### U10 — MAX17048G+T10 (fuel gauge, TDFN-8 2×2mm)
 
-> Datasheet: `docs/reference/max17048.pdf` (ADI/Maxim MAX17048-MAX17049 Rev 7, 19pp). "G+T10" = TDFN-8 2×2mm package. LCSC C2682616. ModelGauge — no current-sense resistor needed, measures battery voltage on VDD + coulomb counting algorithmically. **Pinout corrected 2026-07-21** — previous version had 6 of 8 pins wrong (cited "Rev 7 datasheet" without actually downloading it; see project-log.md 2026-07-21 MAX17048 Pinout Correction).
+> Datasheet: `docs/datasheets/max17048.pdf` (ADI/Maxim MAX17048-MAX17049 Rev 7, 19pp). "G+T10" = TDFN-8 2×2mm package. LCSC C2682616. ModelGauge — no current-sense resistor needed, measures battery voltage on VDD + coulomb counting algorithmically. **Pinout corrected 2026-07-21** — previous version had 6 of 8 pins wrong (cited "Rev 7 datasheet" without actually downloading it; see project-log.md 2026-07-21 MAX17048 Pinout Correction).
 
 **Pinout (TDFN-8, top view — pin 1 marked with dot, exposed pad on bottom):**
 ```
@@ -302,7 +306,7 @@ USB-C USBC1 (A6+B6, A7+B7) → USBLC6-2 ESD (D1) → MCU USB OTG_FS (D+, D-)
 - R_SCL = 4.7kΩ pullup to +3.3V — **one resistor for the whole SCL line**, shared by all I2C devices. Same reasoning as R_SDA. **Deferred to MCU schematic section.**
 - (Optional) R_ALRT = 10kΩ pullup to +3.3V (if using ALRT interrupt — ALRT is not on the I2C bus, it's a separate alert line, so it gets its own pullup)
 
-**I2C address:** MAX17048 default = **0x36** (7-bit). ALC5651 = **0x1A** (7-bit, from `docs/reference/alc5651.pdf` §7.14.1 Table 14 — address byte `0011010 R/W`, 8-bit write = 0x34). **No conflict** — 0x36 ≠ 0x1A, both can share the same I2C bus. **RESOLVED 2026-07-21.**
+**I2C address:** MAX17048 default = **0x36** (7-bit). ALC5651 = **0x1A** (7-bit, from `docs/datasheets/alc5651.pdf` §7.14.1 Table 14 — address byte `0011010 R/W`, 8-bit write = 0x34). **No conflict** — 0x36 ≠ 0x1A, both can share the same I2C bus. **RESOLVED 2026-07-21.**
 
 **Notes:**
 - The MAX17048 has no current-sense resistor — it infers state-of-charge from voltage curve + coulomb counting model. Less accurate than a sense-resistor fuel gauge but much simpler (no high-current shunt in the VBAT path).
@@ -420,7 +424,7 @@ In practice: use **global labels** on both sides of the level shifter. MCU pins 
 
 > **Status**: Pin mappings verified 2026-07-22 from vendor PDFs via MCP extraction. **MPCIe is the primary form factor** being schemed (flat sheet + global labels). LGA pin mapping retained as a **fallback reference** — pivot only if MPCIe proves difficult during layout. Same global label set on both variants.
 >
-> **Sources**: LGA pinout from `docs/reference/SIM7600 Series Hardware Design_V1.03.pdf` §2.1-2.2 (pp 13-17). MPCIe pinout from `docs/reference/SIM7600_Series_PCIE_Hardware_Design_V1.03.pdf` §2.2 (pp 13-15). KiCad symbol pin numbers verified against `lib/ics.kicad_sym` (SIM7600NA-H, 135 pins) and `lib/connectors.kicad_sym` (PCIE-52P40H_C444926, 54 pins).
+> **Sources**: LGA pinout from `docs/datasheets/SIM7600 Series Hardware Design_V1.03.pdf` §2.1-2.2 (pp 13-17). MPCIe pinout from `docs/datasheets/SIM7600_Series_PCIE_Hardware_Design_V1.03.pdf` §2.2 (pp 13-15). KiCad symbol pin numbers verified against `lib/ics.kicad_sym` (SIM7600NA-H, 135 pins) and `lib/connectors.kicad_sym` (PCIE-52P40H_C444926, 54 pins).
 
 ### Global labels (MPCIe primary, LGA fallback)
 
@@ -705,7 +709,7 @@ The MPCIe card's VCC requires **3.0–3.6V (3.3V typical)** — **raw LiPo (up t
 
 ### D1 — USBLC6-2SC6 (USB-C ESD protection, SOT-23-6)
 
-> Datasheet: `docs/reference/usblc6-2.pdf` (ST DS4260 Rev 7, Dec 2021, 14pp). LCSC C7519. ST OEM. **Protects D+, D-, AND VBUS** — the block diagram previously (incorrectly) said "data, not VBUS." Corrected 2026-07-21 after downloading the datasheet. The USBLC6-2 is specifically designed for USB 2.0 ports — it has a VBUS pin (pin 5) that clamps ESD strikes on the 5V rail in addition to the two data-line pairs.
+> Datasheet: `docs/datasheets/usblc6-2.pdf` (ST DS4260 Rev 7, Dec 2021, 14pp). LCSC C7519. ST OEM. **Protects D+, D-, AND VBUS** — the block diagram previously (incorrectly) said "data, not VBUS." Corrected 2026-07-21 after downloading the datasheet. The USBLC6-2 is specifically designed for USB 2.0 ports — it has a VBUS pin (pin 5) that clamps ESD strikes on the 5V rail in addition to the two data-line pairs.
 
 **Pinout (SOT-23-6, top view — pin 1 marked with dot/bar):**
 ```

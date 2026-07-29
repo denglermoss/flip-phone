@@ -1,3 +1,7 @@
+---
+status: reference
+updated: 2026-07-28
+---
 # Feature Wishlist
 
 Features are rated 1-10 based on user priority:

@@ -1,3 +1,7 @@
+---
+status: active
+updated: 2026-07-28
+---
 # MCU Pin Assignment — STM32H743ZIT6 (LQFP-144)
 
 **Created**: 2026-07-22

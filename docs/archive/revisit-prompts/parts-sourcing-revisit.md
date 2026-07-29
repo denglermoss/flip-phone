@@ -1,8 +1,12 @@
+---
+status: archived
+updated: 2026-07-28
+---
 # Revisit Prompt: PCB Parts Sourcing — Remaining Components
 
 > **ARCHIVED 2026-07-28** — RESOLVED. All 16 items resolved (2 deferred to Phase 7:
 > speakers LS1/LS2 are case-mounted, not PCB-assembled). All parts have KiCad models
-> and are JLC-sourced (no consignment). See `docs/revisit-prompts/README.md` archived
+> and are JLC-sourced (no consignment). See `docs/archive/revisit-prompts/README.md` archived
 > table for the resolution summary, and `pcb/PARTS_TRACKING.md` for the current parts
 > list. Retained for historical reference only — do not re-run.
 
@@ -12,13 +16,13 @@
 
 **Context**: The IC library is ~90% complete (9 of 11 ICs downloaded via `easyeda2kicad` from JLC/LCSC). What remains is mostly mechanical parts (connectors, switches, transducers) and two ICs not stocked on JLC. The KiCad project-local library is at `pcb/phone/lib/` (symbols in `easyeda2kicad.kicad_sym`, footprints in `easyeda2kicad.pretty/`, 3D models in `easyeda2kicad.3dshapes/`). Tracking doc: `pcb/PARTS_TRACKING.md` (single source of truth for C-numbers and sourcing status).
 
-See `docs/project-log.md` (2026-07-19 Parts Library Build entry) and `pcb/PARTS_TRACKING.md` for current status.
+See `docs/ref/project-log.md` (2026-07-19 Parts Library Build entry) and `pcb/PARTS_TRACKING.md` for current status.
 
 ---
 
 ## Prompt to paste into new chat:
 
-I'm working on a custom cell phone project (STM32H743ZI + SIM7600NA-H + Zephyr RTOS + custom PCB, targeting US LTE with VoLTE on T-Mobile/Mint). The full project docs are in the `docs/` folder — please read them before responding. The block diagram is `docs/block-diagram.md`, constraints are `docs/constraints.md`, and the parts tracking doc is `pcb/PARTS_TRACKING.md`.
+I'm working on a custom cell phone project (STM32H743ZI + SIM7600NA-H + Zephyr RTOS + custom PCB, targeting US LTE with VoLTE on T-Mobile/Mint). The full project docs are in the `docs/` folder — please read them before responding. The block diagram is `docs/work/block-diagram.md`, constraints are `docs/ref/constraints.md`, and the parts tracking doc is `pcb/PARTS_TRACKING.md`.
 
 We're in the PCB design phase. I've already sourced and downloaded KiCad footprints/symbols/3D models for all ICs plus passive/LED parts from JLC/LCSC using `easyeda2kicad`. The assembly method is locked: **JLCPCB PCBA, 2-board MOQ, LCSC-stocked parts.** **No consignment parts remain** (MAX9880A was the last — replaced by ALC5651 2026-07-19). The project-local KiCad library is at `pcb/phone/lib/`.
 
@@ -30,7 +34,7 @@ I need help completing the parts list. There are three categories of open items:
 
 1. ~~**U5: MAX9880AETM+T** (Analog Devices/Maxim audio codec, TQFN-48 6×6mm)~~ — **SUPERSEDED 2026-07-19**
    - ~~Ultra Librarian KiCad v6 package downloaded...~~ ~~Sourcing: Mouser consignment...~~
-   - **SUPERSEDED 2026-07-19**: MAX9880A replaced by **Realtek ALC5651-CG** (LCSC C963633, QFN-40 5×5mm, JLC Extended — no consignment). Dual I2S/PCM audio hub codec (same architecture: I2S-1 = PCM voice from SIM7600, I2S-2 = I2S music from MCU). Better specs (100dBA DAC vs 96dB, 94dBA ADC vs 82dB), smaller package, ASRC per interface. PCM Mode A short-sync verified compatible with SIM7600 §3.6. KiCad model downloaded via easyeda2kicad. Datasheet: `docs/reference/alc5651.pdf` (Rev 0.9, 134pp). See `docs/project-log.md` 2026-07-19 Codec Swap MAX9880A→ALC5651.
+   - **SUPERSEDED 2026-07-19**: MAX9880A replaced by **Realtek ALC5651-CG** (LCSC C963633, QFN-40 5×5mm, JLC Extended — no consignment). Dual I2S/PCM audio hub codec (same architecture: I2S-1 = PCM voice from SIM7600, I2S-2 = I2S music from MCU). Better specs (100dBA DAC vs 96dB, 94dBA ADC vs 82dB), smaller package, ASRC per interface. PCM Mode A short-sync verified compatible with SIM7600 §3.6. KiCad model downloaded via easyeda2kicad. Datasheet: `docs/datasheets/alc5651.pdf` (Rev 0.9, 134pp). See `docs/ref/project-log.md` 2026-07-19 Codec Swap MAX9880A→ALC5651.
    - ~~Only remaining consignment part~~ **No consignment parts remain.**
 
 2. **U8: TPS63021DSJR** (Texas Instruments buck-boost regulator, VSON-14 / DSJ package) — **RESOLVED & LOCKED 2026-07-19**
@@ -41,7 +45,7 @@ I need help completing the parts list. There are three categories of open items:
    - KiCad model: symbol `TPS63021DSJR`, footprint `VSON-14_L4.0-W3.0-P0.50-BL-EP_TI_DSJ`, 3D `VSON-14_L4.0-W3.0-H1.0-P0.50`.
    - ~~Download KiCad V6+ from Ultra Librarian (search TI → TPS630201)~~
    - ~~**Critical**: verify the package is DRC (VQFN-10, 2.5×3mm with exposed pad) — not DSJ (VSON-14, which is the TPS63020 3A version)~~ — **this warning was backwards**: DSJ (VSON-14) is the 4A family we want; DRC (VSON-10) is the smaller 1.8A TPS6300x family. There is no 4A part in DRC.
-   - See `docs/project-log.md` 2026-07-19 U8 Buck-Boost Correction for full rationale.
+   - See `docs/ref/project-log.md` 2026-07-19 U8 Buck-Boost Correction for full rationale.
 
 ### B. Mechanical parts — search JLC, pick a specific part, download via easyeda2kicad
 
@@ -53,7 +57,7 @@ For each item below, search JLC/LCSC for in-stock parts matching the specs, pick
    - **Why not GCT USB4081** (the revisit prompt's reference part): USB4081 is 24-pin USB 3.2 Gen 2 — wrong pin count. The block diagram specifies 16-pin USB 2.0. GCT does not appear to have a 16-pin USB 2.0 variant on JLC.
    - **Alternative evaluated**: JUSHUO JS16T-TYPE-C479-DWH2-FSQ (C49118447) — comparable specs (16-pin, 5A, 10K cycles, with O-ring) but Shenzhen brand (lower tier than Korean Hroparts). No reason to prefer it when HRO is in stock at 94K units.
    - **KiCad model downloaded** via easyeda2kicad: symbol `TYPE-C-31-M-12`, footprint `USB-C_SMD-TYPE-C-31-M-12_1`, 3D `USB-C_SMD-TYPE-C-31-M-12_1` (.wrl + .step).
-   - See `docs/project-log.md` 2026-07-19 USBC1 USB-C Selection for full rationale.
+   - See `docs/ref/project-log.md` 2026-07-19 USBC1 USB-C Selection for full rationale.
 
 4. **J5, J6: U.FL antenna receptacles** (cellular + GNSS) — **RESOLVED 2026-07-19**
    - **Selected**: Hirose U.FL-R-SMT-1(10) (LCSC C88373). The original U.FL connector from Hirose (invented the U.FL standard). 6 GHz, 50Ω, 53,805 in stock, $0.227 qty 5+.
@@ -62,7 +66,7 @@ For each item below, search JLC/LCSC for in-stock parts matching the specs, pick
 
 5. **SW1–SW20: Tactile switches** (5.2×5.2mm SMD, for keypad matrix) — **RESOLVED 2026-07-19**
    - **Selected**: ALPS Alpine SKQGABE010 (LCSC C115351). 5.2×5.2×1.5mm, 1.57N (160gf), 0.25mm travel, 1M cycle life. KiCad model downloaded to `pcb/phone/lib/`.
-   - See `docs/project-log.md` 2026-07-19 Keypad Switch Selection for full rationale and tradeoffs.
+   - See `docs/ref/project-log.md` 2026-07-19 Keypad Switch Selection for full rationale and tradeoffs.
 
 6. **Y1: 8MHz crystal** (HSE for STM32H743, SMD 3225 4-pin) — **RESOLVED 2026-07-19**
    - **Selected**: ECS Inc ECS-80-12-33Q-GN-TR (LCSC C2595911). 8MHz, 12pF CL, ±30ppm, SMD3225-4P (3.2×2.5mm), AEC-Q200 automotive qualified. 150 in stock on JLC, $1.39.
@@ -76,8 +80,8 @@ For each item below, search JLC/LCSC for in-stock parts matching the specs, pick
    - **Isat adequacy**: 4.4A vs the datasheet's "20% above calculated peak" guidance (≥4.8A). Adequate because (a) 4A is the TPS63021 switch current LIMIT (fault condition), not operating current; (b) actual phone peak currents are 2–3A (modem TX burst + display + audio + MCU); (c) calculated peak inductor current at 3A out buck mode ≈ 3.1A, at 3A out boost mode ≈ 3.7A — both well under 4.4A.
    - **Alternative rejected**: Taiyo Yuden LSDND4040WKT1R5MM (C6653414, Isat 7A but DCR 35mΩ — 2.4× higher, noticeable efficiency hit on the most critical rail in the phone).
    - **KiCad model downloaded** via easyeda2kicad: symbol `XFL4020-152MEC`, footprint `IND-SMD_L4.0-W4.0-A`, 3D `IND-SMD_L4.0-W4.0-A` (.wrl + .step).
-   - **Datasheet added to `docs/reference/`**: `tps63021.pdf` (TI SLVS916I Rev. I, Oct 2019) — downloaded from https://www.ti.com/lit/ds/symlink/tps63021.pdf. Inductor selection specs verified from §8.2.2.2 + Table 2 + Table 4.
-   - See `docs/project-log.md` 2026-07-19 L1 Inductor Selection for full rationale and tradeoffs.
+   - **Datasheet added to `docs/datasheets/`**: `tps63021.pdf` (TI SLVS916I Rev. I, Oct 2019) — downloaded from https://www.ti.com/lit/ds/symlink/tps63021.pdf. Inductor selection specs verified from §8.2.2.2 + Table 2 + Table 4.
+   - See `docs/ref/project-log.md` 2026-07-19 L1 Inductor Selection for full rationale and tradeoffs.
 
 8. **LS1: Earpiece speaker** (10mm round, 8Ω) — **DEFERRED 2026-07-19**
    - ~~The BOM references Taoglas SPKM.10.8.A — check if JLC stocks it~~ **DEFERRED**: Speakers are case-mounted mechanical parts (wire-soldered during final assembly, not PCB-assembled by JLC). No need to spec now — PCB will have wire solder pads (2× 1mm pads, ~5mm apart).
@@ -128,7 +132,7 @@ These need a decision before the corresponding part can be sourced. Present the 
 ### Workflow
 
 For each item:
-1. Research the part (search JLC/LCSC, check datasheets in `docs/reference/` if applicable)
+1. Research the part (search JLC/LCSC, check datasheets in `docs/datasheets/` if applicable)
 2. Present options with tradeoffs (for decisions) or a recommended pick (for mechanical parts)
 3. Once I confirm, download the KiCad model (via `easyeda2kicad --full --lcsc_id=C####### --output "pcb/phone/lib"` for JLC parts, or Ultra Librarian for the two non-JLC ICs)
 4. Update `pcb/PARTS_TRACKING.md` (check the boxes, record C#)
@@ -138,7 +142,7 @@ For each item:
 
 1. ~~**A1, A2** (MAX9880A, TPS630201) — these are the only missing ICs; block schematic completion~~ **RESOLVED 2026-07-19**: ~~A1 (MAX9880A) integrated from Ultra Librarian~~ **SUPERSEDED 2026-07-19**: MAX9880A replaced by Realtek ALC5651-CG (C963633, JLC Extended — no consignment). A2 (TPS630201→TPS63021DSJR) — phantom part number corrected, downloaded from JLC (C202140). Both ICs now have KiCad models. **No consignment parts remain.** See project-log.md 2026-07-19.
 2. ~~**C13** (display panel pick) — blocks J7, which blocks layout planning~~ **RESOLVED 2026-07-19**: HS HS20HS072RX (C5329582) selected. 12-pin 0.5mm ZIF FPC. Flip form factor also locked (two boards + hinge FFC). J7 blocker cleared. All four FPC connectors (J7/J8/J9/J10) locked to HDGC 0.5K-HX series + KiCad models downloaded. Outer display re-selected to ER-TFT1.14-2 (BuyDisplay). See project-log.md 2026-07-19.
-3. ~~**B7** (inductor L1) — critical for power design, needs TPS63021DSJR datasheet verification~~ **RESOLVED 2026-07-19**: Coilcraft XFL4020-152MEC (C3033018) — datasheet-recommended part (TI SLVS916I Table 2 + Table 4). 1.5µH, Isat 4.4A, DCR 14.4mΩ, 4×4×2.1mm. TPS63021 datasheet added to `docs/reference/tps63021.pdf`. KiCad model downloaded. See project-log.md 2026-07-19 L1 Inductor Selection.
+3. ~~**B7** (inductor L1) — critical for power design, needs TPS63021DSJR datasheet verification~~ **RESOLVED 2026-07-19**: Coilcraft XFL4020-152MEC (C3033018) — datasheet-recommended part (TI SLVS916I Table 2 + Table 4). 1.5µH, Isat 4.4A, DCR 14.4mΩ, 4×4×2.1mm. TPS63021 datasheet added to `docs/datasheets/tps63021.pdf`. KiCad model downloaded. See project-log.md 2026-07-19 L1 Inductor Selection.
 4. ~~**C11, C12** (J2, J3/J4 decisions) — block connector sourcing~~ **RESOLVED 2026-07-19**: C11 J2 = test points only (no connector, per SIM7600 manual §3.4 recommendation). C12 J3/J4 = separate sockets (combo not on JLC; SIM7600 manual recommends standalone; electrical independence matches physical separation). See project-log.md 2026-07-19 J2/J3/J4 Decisions.
 5. **B3, B4, B6, B8, B9, B10** (remaining mechanical: USB-C, U.FL, crystal, transducers) — can proceed in parallel. **User preference (2026-07-19): OEM/brand-name connectors, especially USB-C.** Apply the existing project principle (already swapped TECH PUBLIC clones for ST originals on D1/U6/U7) to all connector sourcing.
 

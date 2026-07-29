@@ -1,3 +1,7 @@
+---
+status: reference
+updated: 2026-07-28
+---
 # Constraints
 
 ## Technical Constraints

@@ -25,9 +25,9 @@ bom_test.csv
 # (gen_*.py scripts ARE tracked in pcb/phone/scripts/)
 
 
-# Reference docs (vendor PDFs/datasheets — only README.md is tracked)
-docs/reference/*
-!docs/reference/README.md
+# Datasheets (vendor PDFs/datasheets — only README.md is tracked)
+docs/datasheets/*
+!docs/datasheets/README.md
 
 # KiCad user-local project rules (per-user UI state, not project config)
 *.kicad_prl

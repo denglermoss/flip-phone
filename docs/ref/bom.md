@@ -1,10 +1,14 @@
+---
+status: reference
+updated: 2026-07-28
+---
 # Bill of Materials (BOM)
 
 > **Status**: Preliminary — reflects component selections locked as of 2026-06-28 (MCU, modem, codec, display, keypad). Items not yet selected (power ICs, transducers) are listed as candidates with price ranges. Prices are USD, captured 2026-06-28 from publicly listed distributor pages. Verify current pricing/stock before ordering. **Updated 2026-06-28 (documentation review)**: VBAT buck regulator removed (direct-from-LiPo); 3.3V buck-boost (TPS630201) and fuel gauge (MAX17048) added; ESD protection added; MCP73831 note corrected. **Updated 2026-06-28 (keypad selection)**: Keypad locked — SMD tactile switches on custom PCB traces; prototyping keypad module added to §1. **Updated 2026-06-28 (Nucleo substitution)**: NUCLEO-H743ZI/ZI2 obsolete — NUCLEO-H753ZI is the substitute (H753 = H743 + crypto, identical for this project). DigiKey links added for all prototyping parts. Order consolidation: DigiKey (electronics) + Waveshare (HAT + display) + Mint Mobile (SIM).
 
 ## How to Read This BOM
 
-- **LOCKED**: Component decision is final (see `docs/project-log.md`). Do not substitute without a documented revisit.
+- **LOCKED**: Component decision is final (see `docs/ref/project-log.md`). Do not substitute without a documented revisit.
 - **CANDIDATE**: Component not yet locked. Listed option(s) are recommended based on current docs; a selection revisit is pending.
 - **TBD**: No candidate selected yet — deferred to a later phase per the docs.
 - Prices are unit price at qty 1 unless noted. Bulk pricing reduces cost significantly for most components.
@@ -13,7 +17,7 @@
 
 ## 1. Prototyping Platform (Phase 2 — HAT-Based Prototype)
 
-These items are for Phase 2 validation (VoLTE on a real carrier) before any custom PCB work. See `docs/project-log.md` Phase Breakdown.
+These items are for Phase 2 validation (VoLTE on a real carrier) before any custom PCB work. See `docs/ref/project-log.md` Phase Breakdown.
 
 **Order consolidation (3 sources, all free/fast shipping):**
 - **DigiKey** (one order): Nucleo H753ZI, Adafruit keypad, tactile buttons, breadboard, jumper wires
@@ -40,20 +44,20 @@ These items are for Phase 2 validation (VoLTE on a real carrier) before any cust
 
 ## 2. Core Components — LOCKED (Final PCB)
 
-These are the locked component decisions per `docs/project-log.md`. Prices reflect the bare component for PCB assembly.
+These are the locked component decisions per `docs/ref/project-log.md`. Prices reflect the bare component for PCB assembly.
 
 | # | Component | Part Number | Package | Status | Qty | Unit Price | Ext Price | Source / Link | Notes |
 |---|-----------|-------------|---------|--------|-----|-----------|-----------|---------------|-------|
 | 4 | MCU — STM32H7 Cortex-M7 480MHz, 2MB Flash, 1MB RAM | STM32H743ZIT6 | LQFP-144 20×20mm | LOCKED | 1 | $14.61 (qty 1) / $9.13 (10ku) | $14.61 | [ST eStore](https://estore.st.com/en/stm32h743zit6-cpn.html) · [DigiKey](https://www.digikey.com/en/products/detail/stmicroelectronics/STM32H743ZIT6/6371188) | Hand-solderable LQFP. USB OTG_FS built-in (12 Mbps). USB HS via ULPI **dropped** 2026-06-28 — modem-direct USB tethering replaces it. LQFP-144 retained for GPIO margin (41 spare). |
 | 5 | Cellular module — LTE Cat-4, VoLTE, B66/B71, NA variant | SIM7600NA-H | LCC+LGA 30×30mm, 119-pin | LOCKED | 1 | ~~$31.42~~ **$59.00 (JLC pre-order, corrected 2026-07-22)** | $59.00 | [JLC pre-order — SIM7600NA-H (C5380303)](https://jlcpcb.com/partdetail/SIMCom_WirelessSolutions-SIM7600NA-H/C5380303) | LGA — requires JLCPCB assembly or DIY reflow (hardest DIY part). **JLC price corrected 2026-07-22**: was $31.42 in docs (stale, from 2026-07-19) — current JLC price is **$59.00/ea**, 8-day lead time. **Broker quotes (2026-07-22, bare modules shipped to you)**: UniKey $35/ea (DC 26+, 5-8 working days, EXW Hong Kong), Worldway $41/ea (DC 23+, 3-4 days). **MPCIe form factor (primary 2026-07-22)**: SIM7600NA-H-PCIE (S2-109KS-Z30G9) from Techship ~$50/ea — Mini PCIe socketed card, eliminates LGA reflow. Same B71/B66/VoLTE/GNSS/PCM specs. **PCM CONFIRMED** from SIM7600 Series PCIE Hardware Design V1.03 §2.2 + §3.10.1: pins 45/47/49/51 (PCM_CLK/OUT/IN/SYNC), master/short-sync/16-bit/2048kHz/1.8V = exact match to ALC5651 PCM Mode A. All MPCIe socket options are **SMD** (0.8mm pitch, right-angle — not through-hole): Amphenol G633A0520022U (C357792, 1589 stock, ~5mm), SOFNG PCIE-52P40H (C444926, 3039 stock, 4mm), Hanbo PCI-E-H52-52P (C3039346), **JLC basic C9900027618** (5.2mm, no extended fee). Socket ~$1-5. SIM socket NOT onboard (§3.7 says "contact local sales" — Techship spec lists as optional `o`, stock card does NOT have it; both variants need PCB SIM socket). No PWRKEY pin on edge connector (TBD how module powers on). **Approach: MPCIe is the primary form factor for the schematic + PCB layout; LGA is the fallback (pivot only if MPCIe proves difficult).** See project-log.md 2026-07-22 Schematic Approach + MPCIe Primary. **Part name corrected 2026-07-19**: "SIM7600A-H" was a misnomer — SIMCom's actual product code is `SIM7600NA-H` (North America H-series). The old LCSC link (C2995537) pointed to the non-H `SIM7600A`, a different/older product (87-pin LCC, not 119-pin LCC+LGA). SIM7600G-H (C5355477, $46.95, 39 in stock) shares the identical 119-pin LCC+LGA package and is the **footprint fallback** if NA-H library data is incomplete. SA-H and E-H are 87-pin LCC (different package) and lack B71 — disqualified. Fallback modem: EC25-AF. See project-log.md 2026-07-19 SIM7600 Variant Selection. |
-| 6 | Audio codec — dual I2S/PCM (PCM voice + I2S music) | Realtek ALC5651-CG | QFN-40 5×5mm | LOCKED | 1 | ~$1.00 (LCSC qty 1) | ~$1.00 | [LCSC — ALC5651-CG (C963633)](https://www.lcsc.com/product-detail/C963633.html) · [JLC — C963633](https://jlcpcb.com/partdetail/Realtek-ALC5651CG/C963633) | ~~MAX9880AETM+T~~ **SUPERSEDED 2026-07-19** (was Mouser consignment — replaced to eliminate last consignment part). ALC5651 is JLC Extended (no consignment). Dual I2S/PCM audio hub: I2S-1 = PCM voice from SIM7600 (slave, PCM Mode A short-sync), I2S-2 = I2S music from MCU. 100dBA DAC, 94dBA ADC, ASRC, 7-band EQ, DRC/AGC. 1.8V analog + 1.2V digital (internal LDO) + 3.3V MICVDD. QFN-40 5×5mm (smaller than MAX9880A TQFN-48 6×6mm). PCM compatibility verified (ALC5651 §7.5.1 PCM Mode A = SIM7600 §3.6 short sync). Datasheet: `docs/reference/alc5651.pdf`. KiCad model downloaded. See project-log.md 2026-07-19 Codec Swap. |
+| 6 | Audio codec — dual I2S/PCM (PCM voice + I2S music) | Realtek ALC5651-CG | QFN-40 5×5mm | LOCKED | 1 | ~$1.00 (LCSC qty 1) | ~$1.00 | [LCSC — ALC5651-CG (C963633)](https://www.lcsc.com/product-detail/C963633.html) · [JLC — C963633](https://jlcpcb.com/partdetail/Realtek-ALC5651CG/C963633) | ~~MAX9880AETM+T~~ **SUPERSEDED 2026-07-19** (was Mouser consignment — replaced to eliminate last consignment part). ALC5651 is JLC Extended (no consignment). Dual I2S/PCM audio hub: I2S-1 = PCM voice from SIM7600 (slave, PCM Mode A short-sync), I2S-2 = I2S music from MCU. 100dBA DAC, 94dBA ADC, ASRC, 7-band EQ, DRC/AGC. 1.8V analog + 1.2V digital (internal LDO) + 3.3V MICVDD. QFN-40 5×5mm (smaller than MAX9880A TQFN-48 6×6mm). PCM compatibility verified (ALC5651 §7.5.1 PCM Mode A = SIM7600 §3.6 short sync). Datasheet: `docs/datasheets/alc5651.pdf`. KiCad model downloaded. See project-log.md 2026-07-19 Codec Swap. |
 | | **Core subtotal** | | | | | **~$43–47** | | |
 
 ---
 
 ## 3. Supporting Components — Recommended/Candidate
 
-These components are required for the phone but have not been formally locked in `docs/project-log.md` (except the display, which is locked — see §3a). Candidates are listed with prices; a selection revisit is pending for keypad and power ICs.
+These components are required for the phone but have not been formally locked in `docs/ref/project-log.md` (except the display, which is locked — see §3a). Candidates are listed with prices; a selection revisit is pending for keypad and power ICs.
 
 ### 3a. Display (LOCKED — ST7789V SPI color TFT)
 
@@ -175,7 +179,7 @@ These components are required for the phone but have not been formally locked in
 | PCB fab + assembly (separate) | $62 | $122 |
 | **Total per unit (BOM + PCB)** | **~$159** | **~$262** |
 
-**Assessment**: The components-only BOM target (< $150/unit, NFR-5) is achievable at the low end and tight at the high end. The dominant cost is the cellular module (~$28–32) + JLCPCB assembly (~$57–72). PCB fab/assembly is correctly excluded from the NFR-5 BOM target per `docs/requirements.md`. Note: the previous "high-current buck regulator for VBAT" (~$3–6) was removed — VBAT is powered directly from the LiPo (see constraints.md Power section). A 3.3V buck-boost (TPS630201, ~$3.50) and fuel gauge (MAX17048, ~$2.50) were added — net cost change is approximately +$2.50.
+**Assessment**: The components-only BOM target (< $150/unit, NFR-5) is achievable at the low end and tight at the high end. The dominant cost is the cellular module (~$28–32) + JLCPCB assembly (~$57–72). PCB fab/assembly is correctly excluded from the NFR-5 BOM target per `docs/ref/requirements.md`. Note: the previous "high-current buck regulator for VBAT" (~$3–6) was removed — VBAT is powered directly from the LiPo (see constraints.md Power section). A 3.3V buck-boost (TPS630201, ~$3.50) and fuel gauge (MAX17048, ~$2.50) were added — net cost change is approximately +$2.50.
 
 ### Prototyping Phase (one-time, before custom PCB)
 
@@ -190,7 +194,7 @@ These components are required for the phone but have not been formally locked in
 | Adafruit breadboard + jumper wires (PID 239 + 759) | DigiKey | $5 |
 | **Prototyping subtotal** | | **~$148–180** |
 
-### Total Project Budget Estimate (per `docs/constraints.md`: $200–500 realistic)
+### Total Project Budget Estimate (per `docs/ref/constraints.md`: $200–500 realistic)
 
 | Phase | Est Cost |
 |-------|----------|
@@ -206,13 +210,13 @@ These components are required for the phone but have not been formally locked in
 
 ## 6. Open Items / Pre-Order Verification
 
-Per `docs/constraints.md` and `docs/project-log.md`, these must be verified before placing the PCB order:
+Per `docs/ref/constraints.md` and `docs/ref/project-log.md`, these must be verified before placing the PCB order:
 
 - [x] ~~**MAX9880A**~~: ~~Confirm PCM short-frame sync support on primary port (datasheet review). Verify stock at DigiKey/Mouser — Maxim/ADI parts can have long lead times. Confirm 1.8V supply + level shifting plan.~~ **ALL VERIFIED 2026-06-29/30**: PCM short-frame sync confirmed compatible (TDM short-sync slave mode); stock available at Mouser (2,250 units, $2.23); 1.8V supply + level shifting documented (MCU I2S lines only — SIM7600 PCM lines are 1.8V, connect directly to MAX9880A, no level shifter needed on PCM). **SUPERSEDED 2026-07-19**: MAX9880A replaced by Realtek ALC5651-CG (C963633, JLC Extended — no consignment). See project-log.md 2026-07-19 Codec Swap.
 - [ ] **SIM7600NA-H**: Pre-order placed via JLC (C5380303, $31.42). JLC sources from SIMCom — lead time ≤18 days = auto-proceed, >18 days = email confirmation. Part appears in your JLC Parts Lib when it arrives at their warehouse. Can start PCB fab order in parallel; SMT assembly waits for both board + part. Verify firmware version supports VoLTE before PCB commit (HAT validated on LE20B02). |
 - [ ] **ST7789V display**: Confirm ST7789v Zephyr driver works on STM32H7 with target Zephyr version (MIPI DBI API conversion had teething issues — verify on dev board before PCB). ~~Select specific raw panel module and confirm FPC/connector footprint.~~ **Panel RESOLVED 2026-07-19**: HS HS20HS072RX (C5329582), 12-pin 0.5mm ZIF FPC. Confirm panel max SPI clock (~40MHz) and STM32H7 SPI can drive it. Plan backlight PWM on timer-output GPIO. ~~Verify panel backlight LED configuration (parallel vs series)~~ **CONFIRMED 2026-07-19**: 4 parallel white LEDs, Vf 3.0V, 80mA — FET + resistors only, no boost driver. Verify ST7789T3 variant works with `display_st7789v.c` driver. Confirm exact RST pin position from mechanical drawing before finalizing ZIF pinout.
 - [x] **Keypad design**: **RESOLVED 2026-06-28** — SMD tactile switches on custom PCB traces (LOCKED). 5×4 matrix = 9 GPIO for ~20 keys. **Specific switch part RESOLVED 2026-07-19** — ALPS SKQGABE010 (C115351), 5.2×5.2×1.5mm, 160gf, 0.25mm travel, 1M cycles. KiCad model downloaded. Phase 2 prototyping uses off-the-shelf 4×4 matrix module + loose tactile buttons. See project-log.md 2026-06-28 Keypad Selection and 2026-07-19 Keypad Switch Selection.
-- [x] ~~**High-current buck regulator**: Select specific part for modem VBAT rail (2A+ peaks, dedicated rail).~~ **RESOLVED 2026-06-28**: No buck regulator needed — VBAT powered directly from LiPo (3.4–4.3V matches LiPo operating range). Separate power net from 3.3V MCU rail, with 100–470µF bulk capacitance. See `docs/constraints.md` Power section.
+- [x] ~~**High-current buck regulator**: Select specific part for modem VBAT rail (2A+ peaks, dedicated rail).~~ **RESOLVED 2026-06-28**: No buck regulator needed — VBAT powered directly from LiPo (3.4–4.3V matches LiPo operating range). Separate power net from 3.3V MCU rail, with 100–470µF bulk capacitance. See `docs/ref/constraints.md` Power section.
 - [x] **3.3V buck-boost regulator**: ~~Verify TPS630201 stock + 2A rating sufficient for all system loads (MCU + display + SD + codec). Confirm output voltage accuracy and ripple specs meet MCU requirements.~~ **RESOLVED 2026-07-19**: "TPS630201" was a phantom part number — corrected to **TPS63021DSJR** (LCSC C202140, fixed 3.3V, 4A switches / ~3A output, VSON-14/DSJ). In stock at JLC. Exceeds the original 2A spec with headroom. KiCad model downloaded. See project-log.md 2026-07-19 U8 Buck-Boost Correction.
 - [ ] **Battery fuel gauge**: Verify MAX17048 I2C address doesn't conflict with ALC5651. Confirm fuel gauge characterization for the selected LiPo (MAX17048 has a characterization table; may need custom model for non-standard cells).
 - [ ] **USB-C connector**: ~~Confirm 16-pin (USB 2.0) vs 24-pin (USB 3.x) — USB FS/HS only needs 16-pin.~~ **RESOLVED 2026-07-19**: 16-pin USB-C (USB 2.0) — formally locked. USB FS/HS only needs D+/D-.

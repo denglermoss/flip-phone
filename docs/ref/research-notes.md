@@ -1,3 +1,7 @@
+---
+status: reference
+updated: 2026-07-28
+---
 # Research Notes
 
 ## Cellular Communication Primer
@@ -473,11 +477,11 @@ Components that are implied by the architecture but not yet explicitly listed in
 | Component | Purpose | Notes |
 |-----------|---------|-------|
 | Nano-SIM socket | SIM card holder for SIM7600 | LGA/SMD, typically Molex 786470-3001 or similar |
-| Battery fuel gauge IC | Battery level monitoring (FR-4.2) | I2C. **Selected: MAX17048** (ModelGauge, coulomb counting, ~$2.50). Shares I2C bus with ALC5651. See `docs/bom.md` item 12 and `docs/constraints.md` Power section. |
-| 3.3V buck-boost regulator | MCU/system rail from LiPo | **Selected: TPS63021DSJR** (fixed 3.3V, 4A switches / ~3A output, VSON-14/DSJ, LCSC C202140, ~$3.50 — LOCKED 2026-07-19). LiPo 3.0–4.2V → 3.3V. *Correction: docs previously said "TPS630201" — phantom part number, corrected to TPS63021DSJR.* See `docs/bom.md` item 10 and `docs/constraints.md` Power section. |
-| ESD protection diodes | USB-C, SIM, microSD data lines | **Selected: USBLC6-2SC6** (USB) + **ESDA6V1-5SC6** (SIM/SD), ~$1 total. See `docs/bom.md` items 23-24 and `docs/constraints.md` PCB Design section. |
-| Modem PWRKEY/STATUS GPIO | Power-cycle SIM7600 from MCU | 2 GPIO pins (PWRKEY output + STATUS input). See `docs/constraints.md` MCU section. |
-| Display backlight driver | Raw panel LED backlight (FET + resistors) | N-FET + current-limiting resistors + PWM GPIO for parallel-LED panels. Verify panel config before PCB. See `docs/constraints.md` Display section. |
+| Battery fuel gauge IC | Battery level monitoring (FR-4.2) | I2C. **Selected: MAX17048** (ModelGauge, coulomb counting, ~$2.50). Shares I2C bus with ALC5651. See `docs/ref/bom.md` item 12 and `docs/ref/constraints.md` Power section. |
+| 3.3V buck-boost regulator | MCU/system rail from LiPo | **Selected: TPS63021DSJR** (fixed 3.3V, 4A switches / ~3A output, VSON-14/DSJ, LCSC C202140, ~$3.50 — LOCKED 2026-07-19). LiPo 3.0–4.2V → 3.3V. *Correction: docs previously said "TPS630201" — phantom part number, corrected to TPS63021DSJR.* See `docs/ref/bom.md` item 10 and `docs/ref/constraints.md` Power section. |
+| ESD protection diodes | USB-C, SIM, microSD data lines | **Selected: USBLC6-2SC6** (USB) + **ESDA6V1-5SC6** (SIM/SD), ~$1 total. See `docs/ref/bom.md` items 23-24 and `docs/ref/constraints.md` PCB Design section. |
+| Modem PWRKEY/STATUS GPIO | Power-cycle SIM7600 from MCU | 2 GPIO pins (PWRKEY output + STATUS input). See `docs/ref/constraints.md` MCU section. |
+| Display backlight driver | Raw panel LED backlight (FET + resistors) | N-FET + current-limiting resistors + PWM GPIO for parallel-LED panels. Verify panel config before PCB. See `docs/ref/constraints.md` Display section. |
 | 32.768 kHz crystal | Not needed (NITZ selected) | Only if RTC crystal approach is later adopted. See constraints.md timekeeping section. |
 | USB-C connector | Data + charging + ecosystem interconnect | USB-C recommended over micro-USB. Connector type still TBD in requirements.md. |
 | Earpiece transducer | Call audio (held to ear) | Separate from loudspeaker. See constraints.md audio topology note. |
@@ -491,7 +495,7 @@ Components that are implied by the architecture but not yet explicitly listed in
 
 ### First Round (2026-06-28)
 
-A revisit of the SIM7600 selection evaluated four concerns: standby power, B71 validation, simultaneous VoLTE+data, and LGA assembly. **Conclusion: stick with SIM7600, with two changes** (switch prototyping HAT to NA-H; make VoLTE+data the first HAT test). Full rationale in `docs/project-log.md` (2026-06-28 Modem Revisit).
+A revisit of the SIM7600 selection evaluated four concerns: standby power, B71 validation, simultaneous VoLTE+data, and LGA assembly. **Conclusion: stick with SIM7600, with two changes** (switch prototyping HAT to NA-H; make VoLTE+data the first HAT test). Full rationale in `docs/ref/project-log.md` (2026-06-28 Modem Revisit).
 
 ### Second Round (2026-06-28) — Full Re-evaluation
 

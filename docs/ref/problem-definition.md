@@ -1,10 +1,14 @@
+---
+status: reference
+updated: 2026-07-28
+---
 # Problem Definition
 
 ## The Problem
 
 Design and build a custom cell phone from scratch that can make and receive real voice calls on a live cellular network in the United States. The device must eventually become a usable daily-driver, not just a lab prototype.
 
-**Form factor: flip/clamshell (LOCKED 2026-07-19).** Two PCBs (main board + display daughterboard) connected via a hinge flex cable. The display daughterboard is trivial (~5 components + 3 ZIF connectors). Hinge mechanism and enclosure design are deferred to Phase 7 (mechanical). See `docs/project-log.md` 2026-07-19 Display Panel Selection + Flip Form Factor Locked.
+**Form factor: flip/clamshell (LOCKED 2026-07-19).** Two PCBs (main board + display daughterboard) connected via a hinge flex cable. The display daughterboard is trivial (~5 components + 3 ZIF connectors). Hinge mechanism and enclosure design are deferred to Phase 7 (mechanical). See `docs/ref/project-log.md` 2026-07-19 Display Panel Selection + Flip Form Factor Locked.
 
 ## Modular Ecosystem Vision (Future — Does Not Affect MVP)
 
@@ -18,7 +22,7 @@ The phone is the first and primary project. However, the long-term vision is a *
 
 **Design principle**: The phone's hardware and firmware decisions must not prevent ecosystem integration. Specifically, the phone must expose connectivity interfaces (USB at minimum) that allow a future module to access LTE tethering, file storage, and potentially audio. This does not change the MVP scope — it only constrains hardware choices to leave the door open.
 
-**Tethering architecture (updated 2026-06-28)**: LTE tethering to the car module uses the **SIM7600's own USB 2.0 HS port (480 Mbps)** directly — the modem presents itself as a USB network adapter (RNDIS/ECM via `AT+CUSBPIDSWITCH`), bypassing the MCU entirely. The MCU's USB (OTG_FS, 12 Mbps) handles firmware updates, file/MSC transfer, and debug. A future internal USB 2.0 hub (USB2514) presents both the modem (LTE) and the MCU (files) to the car module over one USB-C cable. The earlier "MCU bridges LTE to USB CDC ECM, needs USB HS via ULPI" plan is superseded — no USB3300 ULPI transceiver needed. See `docs/project-log.md` 2026-06-28 USB HS/ULPI Revisit.
+**Tethering architecture (updated 2026-06-28)**: LTE tethering to the car module uses the **SIM7600's own USB 2.0 HS port (480 Mbps)** directly — the modem presents itself as a USB network adapter (RNDIS/ECM via `AT+CUSBPIDSWITCH`), bypassing the MCU entirely. The MCU's USB (OTG_FS, 12 Mbps) handles firmware updates, file/MSC transfer, and debug. A future internal USB 2.0 hub (USB2514) presents both the modem (LTE) and the MCU (files) to the car module over one USB-C cable. The earlier "MCU bridges LTE to USB CDC ECM, needs USB HS via ULPI" plan is superseded — no USB3300 ULPI transceiver needed. See `docs/ref/project-log.md` 2026-06-28 USB HS/ULPI Revisit.
 
 ## Why This Is Hard
 

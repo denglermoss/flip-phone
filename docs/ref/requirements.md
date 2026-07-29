@@ -1,3 +1,7 @@
+---
+status: reference
+updated: 2026-07-28
+---
 # Requirements
 
 ## Functional Requirements
@@ -30,7 +34,7 @@
 
 ### FR-5: Form Factor (Flip/Clamshell — LOCKED 2026-07-19)
 - **FR-5.1**: Device form factor is flip/clamshell — two PCBs (main board + display daughterboard) connected via a 14-pin 0.5mm hinge flex cable. Main display (ST7789V 2.0") + outer display (1.14" TFT) on the daughterboard; keypad, MCU, modem, battery, and connectors on the main board.
-- **FR-5.2**: Mechanical design (enclosure, hinge mechanism, keypad feel) is deferred to Phase 7 — depends on electronics being proven first. See `docs/project-log.md` 2026-07-19 Display Panel Selection + Flip Form Factor Locked.
+- **FR-5.2**: Mechanical design (enclosure, hinge mechanism, keypad feel) is deferred to Phase 7 — depends on electronics being proven first. See `docs/ref/project-log.md` 2026-07-19 Display Panel Selection + Flip Form Factor Locked.
 - **FR-5.3**: User has access to FDM, SLA, and CNC for enclosure fabrication.
 
 ### FR-6: Ecosystem Connectivity (Future — Constrains Hardware Selection Now)
@@ -55,7 +59,7 @@
 ### NFR-3: Manufacturability
 - PCB design shall be producible by standard PCB fab houses (e.g., JLCPCB, PCBWay).
 - Components shall be sourced from available distributors (DigiKey, Mouser, LCSC).
-- Assembly shall be feasible with hand soldering for prototypes, **except the cellular module** — all LTE/VoLTE modules are LGA and require reflow or JLCPCB assembly. Realistic approach: JLCPCB assembles the modem section (~$57–72), hand-solder the rest. No LTE module exists in a hand-friendly package; this is an industry reality. (Updated 2026-06-28 per modem revisit.) **MPCIe option (primary 2026-07-22)**: the SIM7600NA-H-PCIE Mini PCIe socketed card plugs into an SMD socket that reflows with the rest of the board — no LGA reflow, no JLC PCBA required for the modem. The MPCIe card is the primary form factor; bare LGA is the fallback. See `docs/constraints.md` MPCIe section and `docs/project-log.md` 2026-07-22 Schematic Approach entry.
+- Assembly shall be feasible with hand soldering for prototypes, **except the cellular module** — all LTE/VoLTE modules are LGA and require reflow or JLCPCB assembly. Realistic approach: JLCPCB assembles the modem section (~$57–72), hand-solder the rest. No LTE module exists in a hand-friendly package; this is an industry reality. (Updated 2026-06-28 per modem revisit.) **MPCIe option (primary 2026-07-22)**: the SIM7600NA-H-PCIE Mini PCIe socketed card plugs into an SMD socket that reflows with the rest of the board — no LGA reflow, no JLC PCBA required for the modem. The MPCIe card is the primary form factor; bare LGA is the fallback. See `docs/ref/constraints.md` MPCIe section and `docs/ref/project-log.md` 2026-07-22 Schematic Approach entry.
 
 ### NFR-4: Maintainability
 - Firmware shall be modular and well-structured.

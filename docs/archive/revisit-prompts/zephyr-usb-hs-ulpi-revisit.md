@@ -1,3 +1,7 @@
+---
+status: archived
+updated: 2026-07-28
+---
 # Revisit Prompt: Zephyr USB High-Speed via ULPI on STM32H7
 
 **STATUS: RESOLVED & LOCKED 2026-06-28** — Revisit conducted. **USB3300 ULPI transceiver dropped.** Ecosystem tethering will use the SIM7600's own USB 2.0 HS port directly (RNDIS/ECM via `AT+CUSBPIDSWITCH`), bypassing the MCU. MCU USB is OTG_FS (12 Mbps) only.

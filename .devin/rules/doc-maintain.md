@@ -6,39 +6,66 @@ trigger: always_on
 
 This project is documentation-driven. The docs in `docs/` are the single source of truth for decisions, requirements, constraints, and research. **Keeping them accurate, current, and internally consistent is a mandatory part of every task — not an optional cleanup step.**
 
+## Document Structure
+
+```
+docs/
+  work/         — Active planning & working docs (frequently edited)
+  ref/          — Long-term reference (locked decisions, specs, history)
+  datasheets/   — Vendor datasheets (PDFs gitignored, only README.md tracked)
+  archive/      — Completed/superseded plans + revisit prompts (historical)
+```
+
+Each doc has YAML frontmatter: `status: active|reference|archived`, `updated: YYYY-MM-DD`.
+
+## Single Source of Truth — No Duplication
+
+**Each type of information has ONE source of truth.** Other docs link to it — they do not restate it. See the Source of Truth Assignments table in `AGENTS.md` for the full mapping.
+
+Key assignments:
+- Decision rationale → `docs/ref/project-log.md`
+- Architecture/MVP/risks → `docs/ref/problem-definition.md`
+- Requirements → `docs/ref/requirements.md`
+- Constraints → `docs/ref/constraints.md`
+- Component selection + pricing → `docs/ref/bom.md`
+- Pin assignments → `docs/work/mcu-pin-assignment.md`
+- Block wiring spec → `docs/work/block-diagram.md`
+- Current plan/status → `docs/work/task-tracker.md`
+
 ## Read Before Acting
 
 Before making any change, recommendation, or answering any question about this project:
-1. Read `AGENTS.md` at the project root for project summary and maintenance rules.
-2. Read the specific doc(s) relevant to the task (`docs/requirements.md`, `docs/constraints.md`, `docs/research-notes.md`, `docs/project-log.md`, `docs/feature-wishlist.md`, `docs/problem-definition.md`).
+1. Read `AGENTS.md` at the project root for project summary, doc structure, and source-of-truth assignments.
+2. Read the specific source-of-truth doc(s) relevant to the task.
 3. Do not rely on session context or memory alone — verify the current state against the docs.
 
 ## Update After Decisions
 
-Whenever a decision is made, a question is resolved, or a new factor/risk is discovered during a session:
+When a decision is made, a question is resolved, or a new factor/risk is discovered:
 
-- **Decision log**: Add a dated entry to `docs/project-log.md` → "Decision Log" section, with rationale and tradeoffs. Also update the "Progress Tracking" table.
-- **Requirements**: Move resolved items from "Open Questions" to "Resolved Questions" in `docs/requirements.md`. Update functional/non-functional requirements if the decision changes them.
-- **Constraints**: Update `docs/constraints.md` if the decision adds, removes, or changes a technical/budget/regulatory constraint.
-- **Research**: In `docs/research-notes.md`, mark resolved open questions as `**RESOLVED**` with the answer. Add new research findings under the appropriate section.
-- **Wishlist**: Update `docs/feature-wishlist.md` if the decision changes component selection implications.
-- **Problem definition**: Update `docs/problem-definition.md` if the architecture, MVP scope, risks, or success criteria change.
-- **README**: Update `README.md` if the project overview or status changes.
-
-If a change touches multiple docs, update all of them in the same session — do not leave docs out of sync.
+1. **Add a dated entry to `docs/ref/project-log.md`** (Decision Log section) with rationale and tradeoffs. This is the canonical record.
+2. **Update the specific source-of-truth doc** that the decision affects:
+   - New/changed constraint → `docs/ref/constraints.md`
+   - Resolved open question → `docs/ref/requirements.md` (move from Open to Resolved)
+   - Resolved research question → `docs/ref/research-notes.md` (mark RESOLVED)
+   - Part selection change → `docs/ref/bom.md`
+   - Architecture/MVP/risk change → `docs/ref/problem-definition.md`
+   - Feature rating change → `docs/ref/feature-wishlist.md`
+3. **Do NOT update every doc that mentions the topic.** Update only the source of truth + project-log.md. Other docs reference the source via links.
+4. **Update `README.md`** only if the project overview or phase status changes (brief summary + link, not full details).
 
 ## Consistency Checks
 
 When finishing a task, verify:
 - No "open question" in any doc has been resolved elsewhere but not updated.
-- No decision in `project-log.md` contradicts a requirement or constraint.
+- No decision in `project-log.md` contradicts a source-of-truth doc.
 - No superseded decision is still written as active (strike through + mark **SUPERSEDED**).
-- Component selections referenced in one doc are consistent with all other docs.
+- No content is duplicated across docs that should be a link instead (Rule 2 violation).
 
 ## Superseded Decisions
 
-Never delete old decisions from `docs/project-log.md`. Strike through the text (`~~old decision~~`) and add `**SUPERSEDED <date>**: <reason and pointer to new decision>`. The decision history must remain traceable.
+Never delete old decisions from `docs/ref/project-log.md`. Strike through the text (`~~old decision~~`) and add `**SUPERSEDED <date>**: <reason and pointer to new decision>`. The decision history must remain traceable.
 
 ## Citations
 
-When referencing docs in responses or new doc content, use relative paths (e.g., `docs/requirements.md`), not absolute paths, so references work across environments.
+When referencing docs in responses or new doc content, use root-relative paths (e.g., `docs/ref/requirements.md`), not absolute paths, so references are greppable and work across environments. In Obsidian, set Settings → Files & Links → New link format → "Absolute path in vault" for these to resolve as clickable links.

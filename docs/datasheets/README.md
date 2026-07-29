@@ -1,10 +1,14 @@
+---
+status: reference
+updated: 2026-07-28
+---
 # Reference Documentation
 
 Local copies of vendor datasheets, reference manuals, hardware design docs, and saved wiki pages that this project relies on. These are **not** version-controlled (see `.gitignore` — everything in this directory except this README is ignored). They are large binary files that vendors update independently. This index records what belongs here, the exact part numbers, and where to download each so anyone can re-fetch the current version.
 
 ## How to populate
 
-Download each file below into this directory (`docs/reference/`). Browser "Save Page As" creates an `.html` file plus a `_files/` subdirectory of assets — both belong here. The `.gitignore` excludes everything except this README, so the files stay local-only.
+Download each file below into this directory (`docs/datasheets/`). Browser "Save Page As" creates an `.html` file plus a `_files/` subdirectory of assets — both belong here. The `.gitignore` excludes everything except this README, so the files stay local-only.
 
 ## Mandatory: add missing datasheets before citing them
 
@@ -12,9 +16,9 @@ Download each file below into this directory (`docs/reference/`). Browser "Save 
 
 Workflow when a datasheet is missing:
 1. Find the official PDF on the vendor's website (manufacturer product page → "Datasheet" link) or a reputable mirror (LCSC product page, Mouser, DigiKey, Analog Devices, TI, ST, etc.).
-2. Download it into `docs/reference/` with a descriptive lowercase filename (e.g., `max17048.pdf`, `tps7a02.pdf`).
+2. Download it into `docs/datasheets/` with a descriptive lowercase filename (e.g., `max17048.pdf`, `tps7a02.pdf`).
 3. Add a row to the "Index → PDFs" table below with the filename, part/document name (including revision if known), and source URL.
-4. Then cite the local PDF in project docs (e.g., `docs/reference/max17048.pdf §Pin Description`).
+4. Then cite the local PDF in project docs (e.g., `docs/datasheets/max17048.pdf §Pin Description`).
 
 This rule exists because datasheet specs vary by revision and package variant — citing from memory risks the kind of pinout/voltage/package errors that are expensive to catch after PCB fab. If a datasheet cannot be found (rare — most parts have public datasheets), say so explicitly in the project log and flag the spec as unverified.
 
@@ -73,4 +77,4 @@ This rule exists because datasheet specs vary by revision and package variant �
 
 ## Maintenance
 
-When a vendor publishes a new revision, replace the local file and update the "Source" URL (and the version in the filename) in this index. If a document is cited by version in the project docs (e.g., "Hardware Design Manual V1.03 §3.6"), note the version change in `docs/project-log.md` so the citation trail stays accurate.
+When a vendor publishes a new revision, replace the local file and update the "Source" URL (and the version in the filename) in this index. If a document is cited by version in the project docs (e.g., "Hardware Design Manual V1.03 §3.6"), note the version change in `docs/ref/project-log.md` so the citation trail stays accurate.
