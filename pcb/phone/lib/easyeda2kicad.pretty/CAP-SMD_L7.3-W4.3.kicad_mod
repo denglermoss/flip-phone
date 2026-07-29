@@ -24,7 +24,7 @@
 	(fp_line (start -3.65 -2.15) (end 3.65 -2.15) (layer F.CrtYd) (width 0.05))
 	(fp_line (start 3.65 -2.15) (end 3.65 2.15) (layer F.CrtYd) (width 0.05))
 	(fp_line (start 3.65 2.15) (end -3.65 2.15) (layer F.CrtYd) (width 0.05))
-	(model "lib/temp_470uf.3dshapes/CASE-E_L7.3-W4.3-H4.1.wrl"
+	(model "lib/easyeda2kicad.3dshapes/CASE-E_L7.3-W4.3-H4.1.wrl"
 		(offset (xyz 0.000 0.000 0.000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 180))

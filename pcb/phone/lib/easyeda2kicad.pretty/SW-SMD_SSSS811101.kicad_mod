@@ -42,7 +42,7 @@
 	(fp_line (start 0.96 1.75) (end 3.35 1.75) (layer F.CrtYd) (width 0.05))
 	(fp_line (start 3.35 1.75) (end 3.35 -0.85) (layer F.CrtYd) (width 0.05))
 	(fp_line (start 3.35 -0.85) (end -3.35 -0.85) (layer F.CrtYd) (width 0.05))
-	(model "lib/temp_switch.3dshapes/SW-TH_SSSS811101.wrl"
+	(model "lib/easyeda2kicad.3dshapes/SW-TH_SSSS811101.wrl"
 		(offset (xyz 0.000 0.000 0.000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))

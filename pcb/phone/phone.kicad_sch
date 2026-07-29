@@ -4,6 +4,14 @@
 	(generator_version "10.0")
 	(uuid "451c3b43-1616-42cb-bf96-d436f4db82c2")
 	(paper "A4")
+	(title_block
+		(title "Custom Cell Phone")
+		(date "2026-07-28")
+		(rev "Rev 1")
+		(company "")
+		(comment 1 "STM32H743ZI + SIM7600NA-H + ALC5651 + Zephyr RTOS")
+		(comment 2 "Hierarchical schematic — 8 sub-sheets, global labels for inter-sheet nets")
+	)
 	(lib_symbols)
 	(sheet
 		(at 86.525 93.335)
@@ -276,7 +284,7 @@
 		(instances
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
-					(page "4")
+					(page "9")
 				)
 			)
 		)

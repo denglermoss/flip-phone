@@ -6,9 +6,9 @@ updated: 2026-07-28
 
 > **Status**: Living document — updated section-by-section as the schematic is drawn in KiCad. Each section lists components, signals, power nets, and connection notes for that part of the design. Use this alongside KiCad while drawing.
 >
-> **Approach**: **Flat schematic with labeled regions** (not hierarchical sheets). All components on one schematic (or a few A3/A4 pages with off-sheet connectors). Each block occupies a clearly labeled rectangular region. Power nets are global power symbols. Inter-block signals use net labels (not hierarchical pins).
+> **Approach**: **Hierarchical schematic** — 8 sub-sheets in a flat root container (`phone.kicad_sch`). Each block (MCU, Modem, Codec, Keypad, Display, Display_Daughter, SIM_SD, Power) is its own `.kicad_sch` file. Power nets are global power symbols. Inter-block signals use **global labels** (not hierarchical pins) — no sheet-pin matching required. Each sub-sheet declares the global labels it needs; connectivity is by name-matching across sheets.
 >
-> **Why flat**: The board is ~30-40 components / ~8 ICs — on the boundary where hierarchical sheets add overhead (pin matching, connector-splitting awkwardness) without much benefit. Flat-with-regions keeps everything visible and avoids the "USB-C connector belongs to both power and MCU" problem.
+> **Why hierarchical (changed from original flat plan)**: ~~**Flat schematic with labeled regions** (not hierarchical sheets).~~ **SUPERSEDED 2026-07-28**: The original plan was flat-with-regions, arguing that ~30-40 components / ~8 ICs was on the boundary where hierarchical sheets add overhead without much benefit. In practice, the design grew to 129 components across 8 functional blocks, and KiCad's hierarchical sheets proved cleaner than a single giant flat sheet — each block gets its own page for printing/PDF, ERC runs per-sheet, and the root sheet serves as a visual block diagram. Global labels (not hierarchical pins) are used for inter-sheet nets, avoiding the pin-matching overhead that was the original concern. The "USB-C connector belongs to both power and MCU" problem is handled by placing USB-C on the Power sheet and using global labels for the USB signals that the MCU needs.
 
 ## Power Nets (Global)
 
