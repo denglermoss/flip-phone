@@ -40,8 +40,8 @@ All pin numbers in this document are verified against the STM32H743ZI datasheet 
 | 25 | NRST | NRST | Reset (active low, 10kΩ pullup to +3.3V) |
 | 30 | VDD | +3.3V | Power |
 | 31 | VSSA | GND | Analog ground |
-| 32 | VREF+ | +3.3V | ADC reference (tie to +3.3V via ferrite bead) |
-| 33 | VDDA | +3.3V | Analog supply (via ferrite bead + 1µF) |
+| 32 | VREF+ | +3.3V | ADC reference (tie to +3.3V via ferrite bead) — **IMPLEMENTED 2026-07-28** (L1 ferrite + C18/C19 decoupling) |
+| 33 | VDDA | +3.3V | Analog supply (via ferrite bead + 1µF) — **IMPLEMENTED 2026-07-28** (L1 ferrite + C18 1µF + C19 10nF) |
 | 38 | VSS | GND | Ground |
 | 39 | VDD | +3.3V | Power |
 | 48 | VSS | GND | Ground |
@@ -78,8 +78,8 @@ All pin numbers in this document are verified against the STM32H743ZI datasheet 
 
 | Pin # | Pin Name | AF | Net | Direction | Notes |
 |-------|----------|----|-----|-----------|-------|
-| 103 | PA11 | AF10 | USB_DM | I/O | USB D- via USBLC6-2 (U10) |
-| 104 | PA12 | AF10 | USB_DP | I/O | USB D+ via USBLC6-2 (U10) |
+| 103 | PA11 | AF10 | USB_DM | I/O | USB D- via USBLC6-2 (D1) |
+| 104 | PA12 | AF10 | USB_DP | I/O | USB D+ via USBLC6-2 (D1) |
 
 ### VBUS Sense
 
@@ -131,7 +131,7 @@ All pin numbers in this document are verified against the STM32H743ZI datasheet 
 | 76 | PB15 | AF5 | I2S2_DACDAT | Out | I2S SDO (MCU→codec) → shifter → codec DACDAT2 |
 | 75 | PB14 | AF5 | I2S2_ADCDAT | In | I2S SDI (codec→MCU) ← shifter ← codec ADCDAT2 |
 
-**Level shifter**: SN74AXC4T774 (U9), VCCA=+1V8, VCCB=+3.3V. DIR for BCLK/LRCK/DACDAT = B→A (3.3V→1.8V, MCU→codec). DIR for ADCDAT = A→B (1.8V→3.3V, codec→MCU). Hardwire DIR pins (directions are fixed). MCLK not routed — codec uses internal PLL.
+**Level shifter**: SN74AXC4T774 (U12), VCCA=+1V8, VCCB=+3.3V. DIR for BCLK/LRCK/DACDAT = B→A (3.3V→1.8V, MCU→codec). DIR for ADCDAT = A→B (1.8V→3.3V, codec→MCU). Hardwire DIR pins (directions are fixed). MCLK not routed — codec uses internal PLL.
 
 ### SDMMC1 (microSD — 4-bit mode)
 
@@ -296,7 +296,7 @@ If SN74AXC4T774 DIR pins are hardwired (directions fixed), no MCU GPIO needed. I
 ## Notes for Schematic Entry
 
 - All VDD pins: 100nF decoupling cap to nearest VSS
-- VDDA: ferrite bead from +3.3V, 1µF + 10nF to VSSA
+- VDDA: ferrite bead from +3.3V, 1µF + 10nF to VSSA — **IMPLEMENTED 2026-07-28** (L1=BLM18KG601SN1D, C18=1µF, C19=10nF)
 - VCAP pins (71, 106): 2.2µF to GND each (internal LDO output caps)
 - VDD33USB (pin 95): tie to +3.3V, 100nF decoupling
 - BOOT0 (pin 138): 10kΩ to GND (boot from flash)

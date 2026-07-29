@@ -4,7 +4,7 @@
 
 | Prompt | Status | Created | Summary |
 |--------|--------|---------|---------|
-| Parts Sourcing (`parts-sourcing-revisit.md`) | **RESOLVED** (16 of 16 items resolved; 2 deferred to Phase 7) | 2026-07-19 | **All parts sourced.** J3 nano-SIM = SHOU HAN NANO SIM XG6P H1.35 (C7529386, hinged, $0.146), J4 microSD = Molex 472192001 (C164170, hinged, $0.765). LS1/LS2 speakers DEFERRED to Phase 7 (case-mounted, not PCB-assembled). All other parts: U1-U11 ICs (U3 codec = ALC5651-CG), J1 USB-C (Korean Hroparts), J2 test points, J5/J6 U.FL (Hirose), J7-J10 FPC (HDGC 0.5K-HX), SW1-SW20 (ALPS SKQGABE010), Y1 crystal (ECS AEC-Q200), L1 inductor (Coilcraft XFL4020-152MEC), MK1 mic (ZILLTEK ZTS6117). **No consignment parts remain.** **All parts have KiCad models — schematic design unblocked.** |
+| Parts Sourcing (`parts-sourcing-revisit.md`) | **RESOLVED** (16 of 16 items resolved; 2 deferred to Phase 7) | 2026-07-19 | **All parts sourced.** J3 nano-SIM = SHOU HAN NANO SIM XG6P H1.35 (C7529386, hinged, $0.146), J4 microSD = Molex 472192001 (C164170, hinged, $0.765). LS1/LS2 speakers DEFERRED to Phase 7 (case-mounted, not PCB-assembled). All other parts: U1-U12 ICs (U5 codec = ALC5651-CG), USBC1 USB-C (Korean Hroparts), J2 test points, J5/J6 U.FL (Hirose), J7-J10 FPC (HDGC 0.5K-HX), SW1-SW20 (ALPS SKQGABE010), Y1 crystal (ECS AEC-Q200), L1 inductor (Coilcraft XFL4020-152MEC), MK1 mic (ZILLTEK ZTS6117). **No consignment parts remain.** **All parts have KiCad models — schematic design unblocked.** |
 
 ## Archived (all resolved & locked 2026-06-28)
 

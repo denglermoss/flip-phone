@@ -36,7 +36,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
   - **Resolved by**: Subagent verification 2026-07-22 (this session).
 
 - **O2 — MPCIe power-on method** *(gate: before modem schematic section finalized)*
-  - **Status**: RESOLVED 2026-07-22, **UPDATED 2026-07-24**. SIM7600 MPCIe auto-powers on when 3.3V is applied — no PWRKEY pin. ~~Load switch on +3.3V to modem, controlled by MCU GPIO `MCU_MODEM_PWR_EN` (PE6, pin 5), recommended for power control and graceful shutdown.~~ **SUPERSEDED 2026-07-24**: No load switch — SIM7600 has robust sleep mode (<5mA, maintains call/SMS reception) + dedicated PWRKEY pin. Load switch is redundant. MCU_MODEM_PWR_EN (PE6) is now no_connect. System on/off is controlled by a slide switch (SW1) on the TPS63021 EN pin instead.
+  - **Status**: RESOLVED 2026-07-22, **UPDATED 2026-07-24**. SIM7600 MPCIe auto-powers on when 3.3V is applied — no PWRKEY pin. ~~Load switch on +3.3V to modem, controlled by MCU GPIO `MCU_MODEM_PWR_EN` (PE6, pin 5), recommended for power control and graceful shutdown.~~ **SUPERSEDED 2026-07-24**: No load switch — SIM7600 has robust sleep mode (<5mA, maintains call/SMS reception) + dedicated PWRKEY pin. Load switch is redundant. MCU_MODEM_PWR_EN (PE6) is now no_connect. System on/off is controlled by a slide switch (SW21) on the TPS63021 EN pin instead.
   - **Blocks**: ~~Modem section power wiring, MCU GPIO allocation~~ — unblocked.
 
 - **O3 — MCU peripheral-to-pin mapping** *(gate: before any non-power schematic section)*
@@ -44,11 +44,11 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
   - **Blocks**: ~~All schematic sections except power~~ — unblocked.
 
 - **O4 — ALC5651 DBVDD pinout** *(gate: before codec schematic section)*
-  - **Status**: RESOLVED 2026-07-22. DBVDD is a SINGLE shared pin (pin 39) — both I2S ports share one voltage domain. Decision: DBVDD=1.8V. I2S-1 direct to modem, I2S-2 via SN74AXC4T774 level shifter (U9). I2C uses 1.8V pullups.
+  - **Status**: RESOLVED 2026-07-22. DBVDD is a SINGLE shared pin (pin 39) — both I2S ports share one voltage domain. Decision: DBVDD=1.8V. I2S-1 direct to modem, I2S-2 via SN74AXC4T774 level shifter (U12). I2C uses 1.8V pullups.
   - **Blocks**: ~~Codec power wiring~~ — unblocked.
 
 - **O5 — ALC5651 analog supply current** *(gate: before codec schematic section)*
-  - **Status**: RESOLVED 2026-07-22. Power consumption ≤13mW (~7mA at 1.8V) — well under 50mA. U5 (TPS7A0218) retained (MPCIe doesn't expose VDD_1V8, and decoupling codec from modem power state is desirable).
+  - **Status**: RESOLVED 2026-07-22. Power consumption ≤13mW (~7mA at 1.8V) — well under 50mA. U9 (TPS7A0218) retained (MPCIe doesn't expose VDD_1V8, and decoupling codec from modem power state is desirable).
   - **Blocks**: ~~Codec power wiring~~ — unblocked.
 
 ### Gates before PCB layout (Phase 4)
@@ -102,7 +102,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [x] **O2**: Confirm MPCIe power-on method — RESOLVED (auto-on at 3.3V, load switch + MCU_MODEM_PWR_EN)
 - [x] **O3**: Create MCU pin assignment spreadsheet — RESOLVED (`docs/mcu-pin-assignment.md`, 73 pins assigned)
 - [x] **O4**: Verify ALC5651 DBVDD pinout — RESOLVED (single shared pin 39, DBVDD=1.8V, I2S-2 via SN74AXC4T774)
-- [x] **O5**: Verify ALC5651 analog supply current — RESOLVED (≤13mW, U5 retained)
+- [x] **O5**: Verify ALC5651 analog supply current — RESOLVED (≤13mW, U9 retained)
 - [ ] **O1** (optional): Email Techship for 100% PCM confirmation (not a blocker)
 
 ### 3.2 MCU section (STM32H743ZI full pin map) — CRITICAL PATH, do first
@@ -141,7 +141,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [ ] Wire LED: LED_WWAN# (pin 42, active-low) → network status LED circuit (+3.3V → resistor → LED → pin 42)
 - [ ] Wire SIM: USIM_VDD, USIM_DATA, USIM_CLK, USIM_RST → flat sheet SIM socket (global labels)
 - [ ] Mark unused MPCIe pins NC (W_DISABLE#, SCL, SDA, MICN, EARP, EARN)
-- [ ] Place U8 (TXB0108PWR level shifter): VCCA → +1V8, VCCB → +3.3V, OE → +3.3V pullup; wire 8 bits (UART + control signals)
+- [ ] Place U3 (TXB0108PWR level shifter): VCCA → +1V8, VCCB → +3.3V, OE → +3.3V pullup; wire 8 bits (UART + control signals)
 - [ ] ERC: VCC on +3.3V not +BATT, bulk caps present, level shifter VCCA ≤ VCCB, OE pulled high
 
 ### 3.4 Codec section (ALC5651-CG) + transducers — do third
@@ -149,7 +149,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 **Complexity**: Large (~4-6 hours). Depends on MCU (I2S, I2C) and modem (PCM) sections.
 
 - [ ] Resolve O4 (DBVDD pinout) and O5 (analog current) first
-- [ ] Place U3 (ALC5651-CG, QFN-40) symbol
+- [ ] Place U5 (ALC5651-CG, QFN-40) symbol
 - [ ] Wire power: AVDD, DACREF, CPVDD → +1V8; MICVDD → +3.3V; DBVDD per O4 resolution
 - [ ] Wire I2S-1 (PCM from modem): BCLK, LRCK, DACDAT, ADCDAT → modem PCM pins (1.8V direct)
 - [ ] Wire I2S-2 (I2S from MCU): BCLK, LRCK, DACDAT, ADCDAT → MCU I2S pins (3.3V)
@@ -179,7 +179,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 
 - [ ] Download ESDA6V1-5SC6 datasheet if not in `docs/reference/` — add to index
 - [ ] Place J3 (nano-SIM hinged, SHOU HAN NANO SIM XG6P H1.35)
-- [ ] Place U11 (ESDA6V1-5SC6) near J3
+- [ ] Place U6 (ESDA6V1-5SC6) near J3
 - [ ] Wire USIM_VDD, USIM_DATA, USIM_CLK, USIM_RST from modem global labels → SIM socket
 - [ ] Wire ESD protection on all SIM data lines
 - [ ] Add 100nF cap on USIM_VDD at socket
@@ -253,12 +253,12 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [ ] Place MPCIe socket (top layer, largest part, sets board min dimension ~54mm)
 - [ ] Define board outline around MPCIe + corner radii + mounting holes (4× M2/M2.5)
 - [ ] Place MCU (bottom layer, under keypad zone, thermal vias to GND plane)
-- [ ] Place power ICs (U4 TPS63021, U5 TPS7A0218, U6 MCP73831) near battery connector
-- [ ] Place connectors (J1 USB-C, J_BATT, J4 SD, J8 hinge flex, J5/J6 U.FL) on board edges
-- [ ] Place codec (U3 ALC5651) on bottom layer, near MCU I2S and MPCIe PCM pins
-- [ ] Place fuel gauge (U7 MAX17048) near battery connector
-- [ ] Place ESD protection (U10 USBLC6-2 near USB-C, U11 ESDA6V1 near SIM/SD)
-- [ ] Place level shifter (U8 TXB0108) between MCU and modem
+- [ ] Place power ICs (U8 TPS63021, U9 TPS7A0218, U11 MCP73831) near battery connector
+- [ ] Place connectors (USBC1 USB-C, CN1, J4 SD, J8 hinge flex, J5/J6 U.FL) on board edges
+- [ ] Place codec (U5 ALC5651) on bottom layer, near MCU I2S and MPCIe PCM pins
+- [ ] Place fuel gauge (U10 MAX17048) near battery connector
+- [ ] Place ESD protection (D1 USBLC6-2 near USB-C, U6/U7 ESDA6V1 near SIM/SD)
+- [ ] Place level shifter (U3 TXB0108) between MCU and modem
 - [ ] Place keypad switches (20× on top layer, grid matching enclosure)
 - [ ] Place decoupling caps (100nF close to IC power pins, bulk caps near modem VCC)
 - [ ] Place LEDs, test points, pull-up resistors
@@ -398,7 +398,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [ ] Align + secure bottom stencil
 - [ ] Apply solder paste (even squeegee pressure)
 - [ ] Inspect paste under microscope (all pads covered, no bridges on QFN-40/0.5mm FPC)
-- [ ] Place components: MCU (LQFP-144) first, then ICs (U3-U11), then passives, then mic
+- [ ] Place components: MCU (LQFP-144) first, then ICs (U5-U11), then passives, then mic
 - [ ] **Critical**: Verify paste on exposed pads (TPS63021, MCU, ALC5651 thermal pads)
 - [ ] Reflow (leaded profile: preheat 150→180°C 60-90s, reflow 210-220°C 30-45s, cool)
 - [ ] Inspect under microscope: tombstoning, bridges, insufficient paste, misalignment
@@ -410,14 +410,14 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [ ] Align + secure top stencil
 - [ ] Apply solder paste
 - [ ] Inspect paste (MPCIe 0.8mm pads, FPC 0.5mm pads)
-- [ ] Place: MPCIe socket first, then connectors (J1, J3, J4, J5/J6, J7-J10, J_BATT), then keypad switches (20×), LEDs, crystal, remaining passives
+- [ ] Place: MPCIe socket first, then connectors (USBC1, J3, J4, J5/J6, J7-J10, CN1), then keypad switches (20×), LEDs, crystal, remaining passives
 - [ ] Reflow (same profile — watch for bottom-side shifting)
 - [ ] Inspect: MPCIe socket (52 pins), FPC bridges, keypad alignment, LED polarity
 - [ ] Rework as needed
 
 ### 5.7 Through-hole / hand-solder (if any)
 
-- [ ] Battery connector J_BATT (if through-hole variant — verify, C295747 is SMD)
+- [ ] Battery connector CN1 (if through-hole variant — verify, C295747 is SMD)
 - [ ] Test points (modem USB J2, any debug points)
 - [ ] Speaker wire pads (clean + tin, no soldering yet — speakers are Phase 7)
 
@@ -493,7 +493,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 | 2026-07-23 | Phase 3: J_HINGE2 added to display daughterboard | Done |
 | 2026-07-23 | Phase 3: ERC cleanup — 196→3 warnings (0 errors) | Done |
 | 2026-07-24 | Phase 3: Add deferred components — VBUS divider (R12/R13), MCU_MODEM_PWR_EN pull-down (R11), SWD header (J3), NET_STATUS LED (R12+LED1) | Done |
-| 2026-07-24 | Phase 3: Power switch (SW1 ALPS SSSS811101) added to power sheet — controls TPS63021 EN pin | Done |
+| 2026-07-24 | Phase 3: Power switch (SW21 ALPS SSSS811101) added to power sheet — controls TPS63021 EN pin | Done |
 | 2026-07-24 | Phase 3: Modem bulk caps (C40 470µF + C41/C42 10µF) added near MPCIe VCC pins | Done |
 | 2026-07-24 | Phase 3: Load switch reversed — R11 removed, no_connect on PE6, temp libraries registered | Done |
 | | Phase 3: Final schematic review + ERC fully clean | Pending |

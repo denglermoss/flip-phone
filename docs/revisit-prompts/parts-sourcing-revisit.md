@@ -22,12 +22,12 @@ I need help completing the parts list. There are three categories of open items:
 
 ~~These two parts are not on LCSC. I need to download their KiCad models from Ultra Librarian (or the manufacturer's CAD library) and source them from Mouser/DigiKey for consignment to JLC.~~ **Both RESOLVED 2026-07-19 — no consignment parts remain.**
 
-1. ~~**U3: MAX9880AETM+T** (Analog Devices/Maxim audio codec, TQFN-48 6×6mm)~~ — **SUPERSEDED 2026-07-19**
+1. ~~**U5: MAX9880AETM+T** (Analog Devices/Maxim audio codec, TQFN-48 6×6mm)~~ — **SUPERSEDED 2026-07-19**
    - ~~Ultra Librarian KiCad v6 package downloaded...~~ ~~Sourcing: Mouser consignment...~~
    - **SUPERSEDED 2026-07-19**: MAX9880A replaced by **Realtek ALC5651-CG** (LCSC C963633, QFN-40 5×5mm, JLC Extended — no consignment). Dual I2S/PCM audio hub codec (same architecture: I2S-1 = PCM voice from SIM7600, I2S-2 = I2S music from MCU). Better specs (100dBA DAC vs 96dB, 94dBA ADC vs 82dB), smaller package, ASRC per interface. PCM Mode A short-sync verified compatible with SIM7600 §3.6. KiCad model downloaded via easyeda2kicad. Datasheet: `docs/reference/alc5651.pdf` (Rev 0.9, 134pp). See `docs/project-log.md` 2026-07-19 Codec Swap MAX9880A→ALC5651.
    - ~~Only remaining consignment part~~ **No consignment parts remain.**
 
-2. **U4: TPS63021DSJR** (Texas Instruments buck-boost regulator, VSON-14 / DSJ package) — **RESOLVED & LOCKED 2026-07-19**
+2. **U8: TPS63021DSJR** (Texas Instruments buck-boost regulator, VSON-14 / DSJ package) — **RESOLVED & LOCKED 2026-07-19**
    - **"TPS630201" was a phantom part number** — TI never manufactured it. Carried in docs since 2026-06-28. The original prompt text below (kept for history) referenced a non-existent part and a confused package warning.
    - **Real part**: TPS63021DSJR — fixed 3.3V output, 4A switches / ~3A output, Vin 1.8–5.5V, VSON-14 (DSJ, 3×4mm) with exposed pad. TI "Active Production".
    - LCSC C202140, in stock at JLC → **no consignment needed** (downloaded via easyeda2kicad like the other JLC parts).
@@ -35,19 +35,19 @@ I need help completing the parts list. There are three categories of open items:
    - KiCad model: symbol `TPS63021DSJR`, footprint `VSON-14_L4.0-W3.0-P0.50-BL-EP_TI_DSJ`, 3D `VSON-14_L4.0-W3.0-H1.0-P0.50`.
    - ~~Download KiCad V6+ from Ultra Librarian (search TI → TPS630201)~~
    - ~~**Critical**: verify the package is DRC (VQFN-10, 2.5×3mm with exposed pad) — not DSJ (VSON-14, which is the TPS63020 3A version)~~ — **this warning was backwards**: DSJ (VSON-14) is the 4A family we want; DRC (VSON-10) is the smaller 1.8A TPS6300x family. There is no 4A part in DRC.
-   - See `docs/project-log.md` 2026-07-19 U4 Buck-Boost Correction for full rationale.
+   - See `docs/project-log.md` 2026-07-19 U8 Buck-Boost Correction for full rationale.
 
 ### B. Mechanical parts — search JLC, pick a specific part, download via easyeda2kicad
 
 For each item below, search JLC/LCSC for in-stock parts matching the specs, pick one (prefer OEM/brand-name, check stock quantity), and download the KiCad model. Record the C# in `pcb/PARTS_TRACKING.md`.
 
-3. **J1: USB-C 16-pin receptacle** (SMD, USB 2.0, 16-pin — for charging + MCU USB) — **RESOLVED 2026-07-19**
+3. **USBC1: USB-C 16-pin receptacle** (SMD, USB 2.0, 16-pin — for charging + MCU USB) — **RESOLVED 2026-07-19**
    - **Selected**: Korean Hroparts Elec TYPE-C-31-M-12 (LCSC C165948). 16-pin USB 2.0, 5A/20V, 10,000 mating cycles, 7.35mm right-angle SMD. 94,755 in stock at LCSC, $0.186 qty 5+.
    - **Why Korean Hroparts (HRO)**: Reputable Korean USB-C connector brand — higher tier than generic Shenzhen brands (HCTL, Hong Cheng, G-Switch). User preference (2026-07-19): OEM/brand-name connectors. HRO is one of the most popular USB-C connector brands on JLC/LCSC (94K+ stock, low C-number = long catalog history = well-supported for assembly).
    - **Why not GCT USB4081** (the revisit prompt's reference part): USB4081 is 24-pin USB 3.2 Gen 2 — wrong pin count. The block diagram specifies 16-pin USB 2.0. GCT does not appear to have a 16-pin USB 2.0 variant on JLC.
    - **Alternative evaluated**: JUSHUO JS16T-TYPE-C479-DWH2-FSQ (C49118447) — comparable specs (16-pin, 5A, 10K cycles, with O-ring) but Shenzhen brand (lower tier than Korean Hroparts). No reason to prefer it when HRO is in stock at 94K units.
    - **KiCad model downloaded** via easyeda2kicad: symbol `TYPE-C-31-M-12`, footprint `USB-C_SMD-TYPE-C-31-M-12_1`, 3D `USB-C_SMD-TYPE-C-31-M-12_1` (.wrl + .step).
-   - See `docs/project-log.md` 2026-07-19 J1 USB-C Selection for full rationale.
+   - See `docs/project-log.md` 2026-07-19 USBC1 USB-C Selection for full rationale.
 
 4. **J5, J6: U.FL antenna receptacles** (cellular + GNSS) — **RESOLVED 2026-07-19**
    - **Selected**: Hirose U.FL-R-SMT-1(10) (LCSC C88373). The original U.FL connector from Hirose (invented the U.FL standard). 6 GHz, 50Ω, 53,805 in stock, $0.227 qty 5+.
@@ -96,7 +96,7 @@ These need a decision before the corresponding part can be sourced. Present the 
 11. **J2: Modem USB connector type** (DNP on rev1 — footprint only) — **RESOLVED 2026-07-19**
     - The block diagram says the modem's USB 2.0 HS port routes to a connector footprint on rev1, populated on a future ecosystem respin.
     - ~~Decision: USB-C, micro-USB, or just unpopulated pads / test points?~~ **RESOLVED**: **Test points only** (VBUS, D+, D-, GND — 4 pads).
-    - *Rationale*: The SIM7600 HW Design Manual V1.08 §3.4 explicitly recommends: "The USB interface is a frequently used debug port; it is suggested to reserve test points." The future ecosystem respin routes modem USB through an internal USB 2.0 hub (USB2514) to J1 (the main USB-C), so J2 will **never** be a user-facing connector in the final product. Test points give everything needed for rev1 (firmware updates, debug AT commands, tethering validation via probe clips) at minimal board cost. USB-C DNP was considered (future-proof if ecosystem plan changes) but rejected — a respin can add a connector then if the plan ever changes direction.
+    - *Rationale*: The SIM7600 HW Design Manual V1.08 §3.4 explicitly recommends: "The USB interface is a frequently used debug port; it is suggested to reserve test points." The future ecosystem respin routes modem USB through an internal USB 2.0 hub (USB2514) to USBC1 (the main USB-C), so J2 will **never** be a user-facing connector in the final product. Test points give everything needed for rev1 (firmware updates, debug AT commands, tethering validation via probe clips) at minimal board cost. USB-C DNP was considered (future-proof if ecosystem plan changes) but rejected — a respin can add a connector then if the plan ever changes direction.
     - *J2 is no longer a "connector" — it's 4 test pads*. No part to source. No KiCad footprint download needed (use KiCad built-in `TestPoint:TestPoint_Pad_D1.0mm` or similar).
 
 12. **J3/J4: SIM + microSD — combo socket vs separate sockets** — **RESOLVED 2026-07-19**
@@ -134,11 +134,11 @@ For each item:
 2. ~~**C13** (display panel pick) — blocks J7, which blocks layout planning~~ **RESOLVED 2026-07-19**: HS HS20HS072RX (C5329582) selected. 12-pin 0.5mm ZIF FPC. Flip form factor also locked (two boards + hinge FFC). J7 blocker cleared. All four FPC connectors (J7/J8/J9/J10) locked to HDGC 0.5K-HX series + KiCad models downloaded. Outer display re-selected to ER-TFT1.14-2 (BuyDisplay). See project-log.md 2026-07-19.
 3. ~~**B7** (inductor L1) — critical for power design, needs TPS63021DSJR datasheet verification~~ **RESOLVED 2026-07-19**: Coilcraft XFL4020-152MEC (C3033018) — datasheet-recommended part (TI SLVS916I Table 2 + Table 4). 1.5µH, Isat 4.4A, DCR 14.4mΩ, 4×4×2.1mm. TPS63021 datasheet added to `docs/reference/tps63021.pdf`. KiCad model downloaded. See project-log.md 2026-07-19 L1 Inductor Selection.
 4. ~~**C11, C12** (J2, J3/J4 decisions) — block connector sourcing~~ **RESOLVED 2026-07-19**: C11 J2 = test points only (no connector, per SIM7600 manual §3.4 recommendation). C12 J3/J4 = separate sockets (combo not on JLC; SIM7600 manual recommends standalone; electrical independence matches physical separation). See project-log.md 2026-07-19 J2/J3/J4 Decisions.
-5. **B3, B4, B6, B8, B9, B10** (remaining mechanical: USB-C, U.FL, crystal, transducers) — can proceed in parallel. **User preference (2026-07-19): OEM/brand-name connectors, especially USB-C.** Apply the existing project principle (already swapped TECH PUBLIC clones for ST originals on U10/U11) to all connector sourcing.
+5. **B3, B4, B6, B8, B9, B10** (remaining mechanical: USB-C, U.FL, crystal, transducers) — can proceed in parallel. **User preference (2026-07-19): OEM/brand-name connectors, especially USB-C.** Apply the existing project principle (already swapped TECH PUBLIC clones for ST originals on D1/U6/U7) to all connector sourcing.
 
 ### Notes
 
-- All JLC parts should be OEM/brand-name where available (we already swapped TECH PUBLIC clones for ST originals on U10/U11)
+- All JLC parts should be OEM/brand-name where available (we already swapped TECH PUBLIC clones for ST originals on D1/U6/U7)
 - Check stock quantities — for 2-board assembly with overage, we need at least 5-10 of each part
 - The SIM7600NA-H (C5380303) is a pre-order part — the footprint is downloaded but the part itself needs to be pre-ordered and lead time factored in
 - ~~Two consigned parts (MAX9880A, TPS630201) will be bought from Mouser/DigiKey and shipped to JLC — factor in shipping time~~ **Updated 2026-07-19**: ~~Only ONE consignment part remains (MAX9880A from Mouser)~~ **NO consignment parts remain** — MAX9880A replaced by Realtek ALC5651-CG (C963633, JLC Extended). TPS630201 was a phantom part number — corrected to TPS63021DSJR (LCSC C202140, JLC-stocked). All parts now JLC-sourced.

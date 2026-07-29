@@ -12,10 +12,10 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 
 | Net name | Voltage | Source | Consumers |
 |----------|---------|--------|-----------|
-| `VBUS` | 5V | USB-C connector (J1) | MCP73831 charger input (U6), MCU VBUS sense (via divider — deferred to MCU section) |
-| `+BATT` | 3.4–4.3V (LiPo) | LiPo via battery connector (J_BATT, JST S2B-PH-SM4-TB, C295747) | SIM7600 VBAT pins (U2), TPS63021DSJR input (U4), MAX17048 VDD (U7 — power + voltage sense) |
-| `+3.3V` | 3.3V | TPS63021DSJR buck-boost output (U4) | MCU, display, SD card, codec MICVDD, level shifter VCCB (U9 SN74AXC4T774) |
-| `+1V8` | 1.8V | TPS7A0218 LDO output (U5, from +3.3V) | ALC5651 codec analog (AVDD/DACREF/CPVDD), codec DBVDD (shared single pin — both I2S ports), level shifter VCCA (U9), I2C pullups |
+| `VBUS` | 5V | USB-C connector (USBC1) | MCP73831 charger input (U11), MCU VBUS sense (via divider — deferred to MCU section) |
+| `+BATT` | 3.4–4.3V (LiPo) | LiPo via battery connector (CN1, JST S2B-PH-SM4-TB, C295747) | SIM7600 VBAT pins (U2), TPS63021DSJR input (U8), MAX17048 VDD (U10 — power + voltage sense) |
+| `+3.3V` | 3.3V | TPS63021DSJR buck-boost output (U8) | MCU, display, SD card, codec MICVDD, level shifter VCCB (U12 SN74AXC4T774) |
+| `+1V8` | 1.8V | TPS7A0218 LDO output (U9, from +3.3V) | ALC5651 codec analog (AVDD/DACREF/CPVDD), codec DBVDD (shared single pin — both I2S ports), level shifter VCCA (U12), I2C pullups |
 | `GND` | 0V | Common ground (USB-C GND, LiPo −, all ICs) | All blocks |
 
 > **`+BATT` is separate from `+3.3V`** — modem 2A bursts must not droop the MCU rail. LiPo connects directly to `+BATT` (no regulator). Bulk capacitance (100–470µF ceramic + tantalum) at modem VBAT pins, physically close to the modem. **Deferred to modem schematic section** — the power schematic has ~25µF on `+BATT` (C2/C3=10µF, C10=4.7µF); the modem section must add the 100–470µF bulk caps close to the modem's VBAT pins.
@@ -27,12 +27,12 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 **Source:**
 | Source | Pin | Notes |
 |--------|-----|-------|
-| USB-C connector (J1) | VBUS pins (A4, B9) | 5V from USB host/charger. USBLC6-2 ESD on D+/D- **and VBUS** (U10 — protects all three USB-C signal paths). |
+| USB-C connector (USBC1) | VBUS pins (A4, B9) | 5V from USB host/charger. USBLC6-2 ESD on D+/D- **and VBUS** (D1 — protects all three USB-C signal paths). |
 
 **Consumers:**
 | Consumer | Pin | Notes |
 |----------|-----|-------|
-| MCP73831 charger IC (U6) | VDD (pin 1) | Charger input — USB 5V → LiPo charge current (500mA). |
+| MCP73831 charger IC (U11) | VDD (pin 1) | Charger input — USB 5V → LiPo charge current (500mA). |
 | MCU (STM32H743) | VBUS sense GPIO (TBD) | MCU reads VBUS to detect USB connection / charger attached. Not the USB OTG_FS VBUS pin (that's for USB enumeration) — a separate GPIO on any 3.3V-tolerant pin. VBUS is 5V, needs a resistor divider. **Deferred to MCU schematic section.** Note: the originally suggested 100k/47k divider gives ~1.6V, which is marginal for STM32H7 logic-high (CMOS VIH = 0.7×VDD = 2.31V at 3.3V; TTL-input VIH = 1.7V at 3.0V). Use 100k/68k → ~2.02V or 68k/47k → ~2.04V for reliable logic-high detection. |
 
 ### `+BATT` (3.4–4.3V LiPo) — sources and consumers
@@ -40,26 +40,26 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 **Source:**
 | Source | Pin | Notes |
 |--------|-----|-------|
-| LiPo battery via battery connector (J_BATT — JST S2B-PH-SM4-TB, C295747) | + terminal | Single-cell LiPo, 3.0–4.2V operating, 4.3V absolute max. Direct to +BATT net — no regulator, no switch. **Connector**: JST PH 2-pin SMD right-angle, 2A rated, mates with pre-crimped plugs on Adafruit/SparkFun/Amazon LiPo batteries. **Battery itself is NOT on JLC** (hazmat shipping) — buy separately with JST-PH plug attached. |
+| LiPo battery via battery connector (CN1 — JST S2B-PH-SM4-TB, C295747) | + terminal | Single-cell LiPo, 3.0–4.2V operating, 4.3V absolute max. Direct to +BATT net — no regulator, no switch. **Connector**: JST PH 2-pin SMD right-angle, 2A rated, mates with pre-crimped plugs on Adafruit/SparkFun/Amazon LiPo batteries. **Battery itself is NOT on JLC** (hazmat shipping) — buy separately with JST-PH plug attached. |
 
 **Consumers:**
 | Consumer | Pin | Notes |
 |----------|-----|-------|
 | SIM7600NA-H modem (U2) | VBAT pins (multiple — see HW Design Manual §3.1) | 2A TX bursts. **Bulk capacitance required here**: 100–470µF ceramic + tantalum, placed at the VBAT pins. Short, wide PDN traces. **Deferred to modem schematic section** — power schematic has ~25µF on +BATT; modem section must add the bulk caps. |
-| TPS63021DSJR buck-boost (U4) | VIN (pin 1, 2, 3) | Input to the 3.3V buck-boost. Powers everything on +3.3V. |
-| MAX17048 fuel gauge (U7) | CELL+ (pin 3) | Sense input — fuel gauge measures +BATT voltage. No current flows into this pin (high-Z). |
+| TPS63021DSJR buck-boost (U8) | VIN (pin 1, 2, 3) | Input to the 3.3V buck-boost. Powers everything on +3.3V. |
+| MAX17048 fuel gauge (U10) | CELL+ (pin 3) | Sense input — fuel gauge measures +BATT voltage. No current flows into this pin (high-Z). |
 
 **Also flows INTO +BATT from charger:**
 | Source | Pin | Notes |
 |--------|-----|-------|
-| MCP73831 charger IC (U6) | VBAT (pin 3) | Charger output — current INTO the battery when USB is connected. Same net as the battery (+BATT). |
+| MCP73831 charger IC (U11) | VBAT (pin 3) | Charger output — current INTO the battery when USB is connected. Same net as the battery (+BATT). |
 
 ### `+3.3V` (3.3V) — sources and consumers
 
 **Source:**
 | Source | Pin | Notes |
 |--------|-----|-------|
-| TPS63021DSJR buck-boost (U4) | VOUT (pin 10, 11, 12) | Fixed 3.3V output, ~3A max. Needs 3×22µF output caps + 0.1µF VINA bypass (datasheet §8.2.2.4). FB pin tied to VOUT directly (fixed-output variant — no divider). |
+| TPS63021DSJR buck-boost (U8) | VOUT (pin 10, 11, 12) | Fixed 3.3V output, ~3A max. Needs 3×22µF output caps + 0.1µF VINA bypass (datasheet §8.2.2.4). FB pin tied to VOUT directly (fixed-output variant — no divider). |
 
 **Consumers:**
 | Consumer | Pin | Notes |
@@ -67,37 +67,37 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 | MCU (STM32H743ZI) | VDD (multiple), VDDA (analog), VBAT (RTC — not used, tie to +3.3V) | Bulk + 100nF decoupling per VDD pair. VDDA via ferrite bead + 1µF (analog isolation). |
 | Display (main + outer, via hinge flex J8) | IOVCC/VCC, LEDA (backlight anode) | Through hinge flex. Backlight LEDA also from +3.3V via current-limit resistors. |
 | microSD socket (J4) | VDD | SD card power (3.3V). Card detects its own voltage. |
-| ALC5651 codec (U3) | MICVDD, DBVDD | MICVDD is always 3.3V (mic bias). DBVDD is a **single shared pin (pin 39)** — both I2S-1 and I2S-2 use the same 1.8V domain. **RESOLVED 2026-07-22**: DBVDD=1.8V, I2S-2 (MCU side) goes through SN74AXC4T774 level shifter (U9). |
-| Level shifter (U8 TXB0108) | VCCB (pin 19) | 3.3V side — MCU-facing. |
-| MAX17048 fuel gauge (U7) | VDD (pin 3) | Power + voltage sense input. Connect to +BATT (raw LiPo). MAX17048 senses battery voltage on VDD, not on a separate CELL pin. |
-| USB-C CC1/CC2 pull-downs (J1) | 5.1kΩ to GND on each CC pin | Identifies the phone as a UFP (upstream-facing port / device). Not a rail consumer per se, but lives on the USB-C connector. |
+| ALC5651 codec (U5) | MICVDD, DBVDD | MICVDD is always 3.3V (mic bias). DBVDD is a **single shared pin (pin 39)** — both I2S-1 and I2S-2 use the same 1.8V domain. **RESOLVED 2026-07-22**: DBVDD=1.8V, I2S-2 (MCU side) goes through SN74AXC4T774 level shifter (U12). |
+| Level shifter (U3 TXB0108) | VCCB (pin 19) | 3.3V side — MCU-facing. |
+| MAX17048 fuel gauge (U10) | VDD (pin 3) | Power + voltage sense input. Connect to +BATT (raw LiPo). MAX17048 senses battery voltage on VDD, not on a separate CELL pin. |
+| USB-C CC1/CC2 pull-downs (USBC1) | 5.1kΩ to GND on each CC pin | Identifies the phone as a UFP (upstream-facing port / device). Not a rail consumer per se, but lives on the USB-C connector. |
 
 ### `+1V8` (1.8V) — sources and consumers
 
 **Source:**
 | Source | Pin | Notes |
 |--------|-----|-------|
-| TPS7A0218 LDO (U5) | OUT (pin 1) | 1.8V fixed, 200mA max. Input from +3.3V. Load is light (~10–20mA codec + level shifter). Needs 1µF in + 1µF out ceramic (datasheet §9.2). |
+| TPS7A0218 LDO (U9) | OUT (pin 1) | 1.8V fixed, 200mA max. Input from +3.3V. Load is light (~10–20mA codec + level shifter). Needs 1µF in + 1µF out ceramic (datasheet §9.2). |
 
 **Consumers:**
 | Consumer | Pin | Notes |
 |----------|-----|-------|
-| ALC5651 codec (U3) | AVDD, DACREF, CPVDD (analog supply) | 1.8V analog. The codec's digital core (1.2V) comes from an internal LDO — no external 1.2V rail needed. |
-| ALC5651 codec (U3) | DBVDD (shared — both I2S-1 and I2S-2) | 1.8V digital I/O for both I2S ports, I2C, MCLK, GPIOs. Single shared pin (pin 39). I2S-1 (PCM/modem) is direct 1.8V↔1.8V. I2S-2 (MCU) goes through SN74AXC4T774 level shifter (U9). **RESOLVED 2026-07-22**. |
-| Level shifter (U9 SN74AXC4T774) | VCCA (pin 1) | 1.8V side — codec-facing. 4-bit direction-controlled shifter for I2S-2 (BCLK2/LRCK2/DACDAT2/ADCDAT2). |
+| ALC5651 codec (U5) | AVDD, DACREF, CPVDD (analog supply) | 1.8V analog. The codec's digital core (1.2V) comes from an internal LDO — no external 1.2V rail needed. |
+| ALC5651 codec (U5) | DBVDD (shared — both I2S-1 and I2S-2) | 1.8V digital I/O for both I2S ports, I2C, MCLK, GPIOs. Single shared pin (pin 39). I2S-1 (PCM/modem) is direct 1.8V↔1.8V. I2S-2 (MCU) goes through SN74AXC4T774 level shifter (U12). **RESOLVED 2026-07-22**. |
+| Level shifter (U12 SN74AXC4T774) | VCCA (pin 1) | 1.8V side — codec-facing. 4-bit direction-controlled shifter for I2S-2 (BCLK2/LRCK2/DACDAT2/ADCDAT2). |
 
-**Open question — modem VDD_1V8 pin:** The SIM7600 has its own VDD_1V8 output pin (1.8V LDO, 50mA max) that the reference design (HW Design Manual §3.6.2) uses to power the codec. Do we use the modem's VDD_1V8 (saves the TPS7A0218) or our own U5 (guarantees 200mA headroom, independent of modem state)? **Tentative: use U5** — the ALC5651 may draw more than 50mA, and relying on the modem's LDO couples codec power to modem power state. Confirm at schematic time by checking ALC5651 analog supply current in the datasheet.
+**Open question — modem VDD_1V8 pin:** The SIM7600 has its own VDD_1V8 output pin (1.8V LDO, 50mA max) that the reference design (HW Design Manual §3.6.2) uses to power the codec. Do we use the modem's VDD_1V8 (saves the TPS7A0218) or our own U9 (guarantees 200mA headroom, independent of modem state)? **Tentative: use U9** — the ALC5651 may draw more than 50mA, and relying on the modem's LDO couples codec power to modem power state. Confirm at schematic time by checking ALC5651 analog supply current in the datasheet.
 
 ### `GND` (0V) — sources and consumers
 
-**Source:** Common ground — USB-C GND pins (J1 A12, B12, B1, A1), LiPo negative terminal (J_BATT), exposed pad / ground pours on PCB.
+**Source:** Common ground — USB-C GND pins (USBC1 A12, B12, B1, A1), LiPo negative terminal (CN1), exposed pad / ground pours on PCB.
 **Consumers:** Every IC has GND pin(s). Every connector has GND. Every decoupling cap has a GND side. The PCB ground plane is a single continuous reference for all rails. No isolated grounds (no split planes) — single GND net everywhere.
 
 ### Power IC pinouts and connections
 
-> **Source for all pinouts**: vendor datasheets, extracted via the PDF MCP server. TPS63021 from `docs/reference/tps63021.pdf` (TI SLVS916I §5 Pin Functions). TPS7A02 from TI SBVS277C §5 (DBV/SOT-23-5 variant). MCP73831 from `docs/reference/mcp73831.pdf` (Microchip DS20001984H — **DFN-8 2×3mm variant, not SOT-23-5**; see U6 correction below). MAX17048 from `docs/reference/max17048.pdf` (ADI/Maxim Rev 7, §Pin/Bump Descriptions p6 — TDFN-8 2×2mm variant). J1 USB-C pinout from the KiCad symbol `TYPE-C-31-M-12` (downloaded from LCSC C165948 via easyeda2kicad) — pinout follows the USB Type-C specification (USB-IF).
+> **Source for all pinouts**: vendor datasheets, extracted via the PDF MCP server. TPS63021 from `docs/reference/tps63021.pdf` (TI SLVS916I §5 Pin Functions). TPS7A02 from TI SBVS277C §5 (DBV/SOT-23-5 variant). MCP73831 from `docs/reference/mcp73831.pdf` (Microchip DS20001984H — **DFN-8 2×3mm variant, not SOT-23-5**; see U11 correction below). MAX17048 from `docs/reference/max17048.pdf` (ADI/Maxim Rev 7, §Pin/Bump Descriptions p6 — TDFN-8 2×2mm variant). USBC1 USB-C pinout from the KiCad symbol `TYPE-C-31-M-12` (downloaded from LCSC C165948 via easyeda2kicad) — pinout follows the USB Type-C specification (USB-IF).
 
-#### J1 — Korean Hroparts TYPE-C-31-M-12 (USB-C 16-pin receptacle, USB 2.0)
+#### USBC1 — Korean Hroparts TYPE-C-31-M-12 (USB-C 16-pin receptacle, USB 2.0)
 
 > Datasheet: LCSC product page C165948. Pinout follows the USB Type-C specification (USB-IF Rev 1.4+) — standard for all 16-pin USB 2.0 USB-C receptacles. The part datasheet confirms mechanical dimensions, current rating (5A/20V), and mating cycles (10K). KiCad symbol `TYPE-C-31-M-12`, footprint `USB-C_SMD-TYPE-C-31-M-12_1`. **LOCKED 2026-07-19.**
 
@@ -121,7 +121,7 @@ Mechanical/mounting tabs (4):
 | A1B12, B1A12 | GND | `GND` | Two GND pins (each combines two physical pads: A1+B12 and B1+A12). Tie both to `GND`. |
 | A5 | CC1 | 5.1kΩ to `GND` | Configuration Channel 1. **5.1kΩ pull-down identifies the phone as a UFP (upstream-facing port / device)** — tells the charger/host to provide 5V on VBUS. Without this, the charger won't output VBUS. |
 | B5 | CC2 | 5.1kΩ to `GND` | Configuration Channel 2. Same 5.1kΩ pull-down as CC1. CC1 and CC2 each get their own resistor (do NOT tie CC1 and CC2 together before the resistor — they serve different plug orientations). |
-| A6, B6 | DP1, DP2 | `USB_DP` (D+) | USB 2.0 D+ differential pair. A6 and B6 are the same signal on opposite plug orientations — **tie A6 and B6 together** on the PCB. Routes through USBLC6-2 ESD protection (U10) to MCU USB OTG_FS D+ pin. |
+| A6, B6 | DP1, DP2 | `USB_DP` (D+) | USB 2.0 D+ differential pair. A6 and B6 are the same signal on opposite plug orientations — **tie A6 and B6 together** on the PCB. Routes through USBLC6-2 ESD protection (D1) to MCU USB OTG_FS D+ pin. |
 | A7, B7 | DN1, DN2 | `USB_DN` (D-) | USB 2.0 D- differential pair. Same as D+ — **tie A7 and B7 together**. Routes through USBLC6-2 ESD to MCU USB OTG_FS D- pin. |
 | A8 | SBU1 | Float or `GND` | Sideband Use 1. Not used for USB 2.0. Leave floating or tie to GND. Used in alternate modes (DisplayPort, analog audio) — not applicable here. |
 | B8 | SBU2 | Float or `GND` | Sideband Use 2. Same as SBU1 — not used. |
@@ -130,11 +130,11 @@ Mechanical/mounting tabs (4):
 **External components:**
 - R_CC1 = 5.1kΩ to GND on CC1 (identifies as UFP)
 - R_CC2 = 5.1kΩ to GND on CC2 (identifies as UFP)
-- USBLC6-2 ESD protection on D+/D- **and VBUS** (U10 — see §ESD Protection for pinout. The USBLC6-2 is a 6-pin device that protects all three USB-C signal paths: D+, D-, and VBUS. VBUS ESD is NOT handled by the MCP73831's internal protection alone — the USBLC6-2 is the primary ESD diode for the VBUS rail entry point.)
+- USBLC6-2 ESD protection on D+/D- **and VBUS** (D1 — see §ESD Protection for pinout. The USBLC6-2 is a 6-pin device that protects all three USB-C signal paths: D+, D-, and VBUS. VBUS ESD is NOT handled by the MCP73831's internal protection alone — the USBLC6-2 is the primary ESD diode for the VBUS rail entry point.)
 
 **VBUS power path:**
 ```
-USB-C J1 (A4B9, B4A9) → VBUS net → MCP73831 VDD (pin 1, U6)
+USB-C USBC1 (A4B9, B4A9) → VBUS net → MCP73831 VDD (pin 1, U11)
                                        → MCU VBUS sense (via resistor divider)
 ```
 - VBUS is 5V when a USB host/charger is connected, 0V when unplugged.
@@ -143,7 +143,7 @@ USB-C J1 (A4B9, B4A9) → VBUS net → MCP73831 VDD (pin 1, U6)
 
 **USB data path:**
 ```
-USB-C J1 (A6+B6, A7+B7) → USBLC6-2 ESD (U10) → MCU USB OTG_FS (D+, D-)
+USB-C USBC1 (A6+B6, A7+B7) → USBLC6-2 ESD (D1) → MCU USB OTG_FS (D+, D-)
 ```
 - USB 2.0 data goes through ESD protection to the MCU's USB OTG_FS peripheral.
 - Used for firmware upload, debug, and file transfer (12 Mbps — sufficient for these tasks).
@@ -154,7 +154,7 @@ USB-C J1 (A6+B6, A7+B7) → USBLC6-2 ESD (U10) → MCU USB OTG_FS (D+, D-)
 - **D+ and D- pairing**: USB-C has two sets of D+/D- pins (A6/A7 and B6/B7) for plug-reversal symmetry. Tie each pair together on the PCB — the USB 2.0 spec allows this because only one set is active at a time (determined by CC orientation).
 - **SBU pins**: Leave floating. SBU is only used for alternate modes (DisplayPort, analog audio accessory mode). We don't use any alt modes.
 
-#### U6 — MCP73831-2ACI/MC (LiPo charger, DFN-8 2×3mm + exposed pad)
+#### U11 — MCP73831-2ACI/MC (LiPo charger, DFN-8 2×3mm + exposed pad)
 
 > Datasheet: `docs/reference/mcp73831.pdf` (Microchip DS20001984H). "-2ACI" = 4.20V regulation (LiPo standard). **Package: DFN-8 2×3mm with exposed pad** (NOT SOT-23-5 — the block diagram previously said SOT-23-5, corrected 2026-07-21 after downloading the datasheet and verifying the downloaded KiCad footprint `TDFN-8_L3.0-W2.0-P0.50-BL-EP1.6` has 9 pads). LCSC C150772. The "/MC" suffix in Microchip's naming usually means SOT-23-5, but LCSC C150772 maps to the DFN-8 variant — verify at order time.
 
@@ -175,7 +175,7 @@ USB-C J1 (A6+B6, A7+B7) → USBLC6-2 ESD (U10) → MCU USB OTG_FS (D+, D-)
 |-----|------|------------------|-------|
 | 1 | VDD | `VBUS` (5V from USB-C) | Charger input. Bypass to VSS with **≥4.7µF** ceramic cap (close to pin). |
 | 2 | VDD | `VBUS` (5V from USB-C) | Second VDD pin — **tie to pin 1** on the PCB. (The DFN-8 package has two VDD pins for lower bond-wire inductance and better current handling.) |
-| 3 | VBAT | `+BATT` (LiPo) | Charger output — current INTO battery. Bypass to VSS with **≥4.7µF** ceramic cap. Same net as J_BATT pin 1 and everything else on +BATT. |
+| 3 | VBAT | `+BATT` (LiPo) | Charger output — current INTO battery. Bypass to VSS with **≥4.7µF** ceramic cap. Same net as CN1 pin 1 and everything else on +BATT. |
 | 4 | VBAT | `+BATT` (LiPo) | Second VBAT pin — **tie to pin 3** on the PCB. (Same reasoning as the dual VDD pins.) |
 | 5 | STAT | LED + 470Ω to VDD (pin 1/2) | **Charge status LED — LOCKED 2026-07-21.** MCP73831 = tri-state: **LOW = charging** (preconditioning / fast charge / constant-voltage modes), **HIGH = charge complete**, **High-Z = shutdown** (no input power, or PROG floating). LED + 470Ω resistor from VDD (VBUS, 5V) to STAT: **LED on = charging** (STAT sinks current to GND), LED off = charge complete (STAT drives HIGH, no voltage across LED) or USB unplugged (VBUS=0). Visual indicator only — no MCU GPIO read. Rationale: (a) simple — one LED + one resistor, no firmware; (b) immediate user feedback ("is my phone charging?"); (c) saves an MCU GPIO for other uses; (d) the MCU can infer charge state indirectly if needed (VBUS presence + battery voltage trend from fuel gauge). If software charge-state monitoring becomes necessary later, the STAT net can be tapped to an MCU GPIO in parallel with the LED (LED stays, MCU reads the same tri-state logic). **STAT behavior corrected 2026-07-22** — previous doc said "high = charging" which is the opposite of the datasheet (DS20001984H p13 operational flowchart: STAT=LOW during all charging modes, STAT=HIGH at charge complete). |
 | 6 | VSS | `GND` | Ground. |
@@ -195,7 +195,7 @@ USB-C J1 (A6+B6, A7+B7) → USBLC6-2 ESD (U10) → MCU USB OTG_FS (D+, D-)
 
 **Note on pinout correction (2026-07-22):** The 2026-07-21 package correction got the DFN-8 pinout wrong again (pins 2/3/4/6/7/8 were incorrect — written from the package diagram without reading Table 3-1). The correct pinout from DS20001984H Table 3-1: 1=VDD, 2=VDD, 3=VBAT, 4=VBAT, 5=STAT, 6=VSS, 7=NC, 8=PROG, 9(EP)=VSS. The KiCad symbol in the schematic was already correct — this doc fix brings the doc in line with both the datasheet and the schematic. The STAT behavior was also corrected: STAT=LOW during charging (not HIGH as previously documented).
 
-#### U4 — TPS63021DSJR (3.3V buck-boost, VSON-14 with exposed pad)
+#### U8 — TPS63021DSJR (3.3V buck-boost, VSON-14 with exposed pad)
 
 > Datasheet: TI SLVS916I (in `docs/reference/tps63021.pdf`). "DSJ" = VSON-14 3×4mm with exposed thermal pad. LCSC C202140. Fixed 3.3V output (no feedback divider needed).
 
@@ -240,7 +240,7 @@ USB-C J1 (A6+B6, A7+B7) → USBLC6-2 ESD (U10) → MCU USB OTG_FS (D+, D-)
 - L1 traces short and wide (carries 2-3A).
 - Exposed pad = primary heat path — vias to GND plane below.
 
-#### U5 — TPS7A0218PDBVR (1.8V LDO, SOT-23-5)
+#### U9 — TPS7A0218PDBVR (1.8V LDO, SOT-23-5)
 
 > Datasheet: TI SBVS277C. "DBV" = SOT-23-5. "18" = 1.8V fixed output. LCSC C3748843. Input from +3.3V, output = +1V8.
 
@@ -271,7 +271,7 @@ USB-C J1 (A6+B6, A7+B7) → USBLC6-2 ESD (U10) → MCU USB OTG_FS (D+, D-)
 - Low-dropout (~150mV at 200mA) — but we don't need dropout performance since +3.3V is always >1.95V (1.8V + 150mV).
 - Internal pulldown on EN means the chip is OFF if EN floats. Tying EN to IN guarantees it's on.
 
-#### U7 — MAX17048G+T10 (fuel gauge, TDFN-8 2×2mm)
+#### U10 — MAX17048G+T10 (fuel gauge, TDFN-8 2×2mm)
 
 > Datasheet: `docs/reference/max17048.pdf` (ADI/Maxim MAX17048-MAX17049 Rev 7, 19pp). "G+T10" = TDFN-8 2×2mm package. LCSC C2682616. ModelGauge — no current-sense resistor needed, measures battery voltage on VDD + coulomb counting algorithmically. **Pinout corrected 2026-07-21** — previous version had 6 of 8 pins wrong (cited "Rev 7 datasheet" without actually downloading it; see project-log.md 2026-07-21 MAX17048 Pinout Correction).
 
@@ -703,7 +703,7 @@ The MPCIe card's VCC requires **3.0–3.6V (3.3V typical)** — **raw LiPo (up t
 
 ## Section: ESD Protection — *to be specified (distributed per-connector)*
 
-### U10 — USBLC6-2SC6 (USB-C ESD protection, SOT-23-6)
+### D1 — USBLC6-2SC6 (USB-C ESD protection, SOT-23-6)
 
 > Datasheet: `docs/reference/usblc6-2.pdf` (ST DS4260 Rev 7, Dec 2021, 14pp). LCSC C7519. ST OEM. **Protects D+, D-, AND VBUS** — the block diagram previously (incorrectly) said "data, not VBUS." Corrected 2026-07-21 after downloading the datasheet. The USBLC6-2 is specifically designed for USB 2.0 ports — it has a VBUS pin (pin 5) that clamps ESD strikes on the 5V rail in addition to the two data-line pairs.
 
@@ -718,24 +718,24 @@ The MPCIe card's VCC requires **3.0–3.6V (3.3V typical)** — **raw LiPo (up t
 
 | Pin | Name | Net / connection | Notes |
 |-----|------|------------------|-------|
-| 1 | I/O1 | `USB_DP` (D+) | USB 2.0 D+ — ties to J1 A6+B6 (combined) on one side, MCU USB OTG_FS D+ on the other. **Pin 1 and pin 6 are the same I/O1 line internally** — they're the two ends of the D+ ESD diode. |
+| 1 | I/O1 | `USB_DP` (D+) | USB 2.0 D+ — ties to USBC1 A6+B6 (combined) on one side, MCU USB OTG_FS D+ on the other. **Pin 1 and pin 6 are the same I/O1 line internally** — they're the two ends of the D+ ESD diode. |
 | 2 | GND | `GND` | Ground reference for all ESD clamps. **Critical: tie directly to GND plane with short, wide trace** — ESD current needs a low-inductance path to ground or the clamp voltage rises. |
-| 3 | I/O2 | `USB_DN` (D-) | USB 2.0 D- — ties to J1 A7+B7 (combined) on one side, MCU USB OTG_FS D- on the other. **Pin 3 and pin 4 are the same I/O2 line internally** — two ends of the D- ESD diode. |
+| 3 | I/O2 | `USB_DN` (D-) | USB 2.0 D- — ties to USBC1 A7+B7 (combined) on one side, MCU USB OTG_FS D- on the other. **Pin 3 and pin 4 are the same I/O2 line internally** — two ends of the D- ESD diode. |
 | 4 | I/O2 | `USB_DN` (D-) | Second end of I/O2 — tie to pin 3 (or use as the "MCU side" of D- if pin 3 is the "connector side"). Either way, both pins are on the same net. |
 | 5 | VBUS | `VBUS` (5V) | **VBUS ESD clamp.** Ties to the VBUS net — clamps ESD strikes on the 5V rail from the USB-C connector. This is the primary VBUS ESD protection; the MCP73831's internal ESD is secondary. |
 | 6 | I/O1 | `USB_DP` (D+) | Second end of I/O1 — tie to pin 1 (or use as the "MCU side" of D+ if pin 1 is the "connector side"). |
 
 **Wiring topology (recommended):**
 ```
-J1 A6+B6 (D+) ──┬──── U10 pin 1 (I/O1, connector side)
-                └──── U10 pin 6 (I/O1, MCU side) ──── MCU USB_OTG_FS D+
+USBC1 A6+B6 (D+) ──┬──── D1 pin 1 (I/O1, connector side)
+                └──── D1 pin 6 (I/O1, MCU side) ──── MCU USB_OTG_FS D+
 
-J1 A7+B7 (D-) ──┬──── U10 pin 3 (I/O2, connector side)
-                └──── U10 pin 4 (I/O2, MCU side) ──── MCU USB_OTG_FS D-
+USBC1 A7+B7 (D-) ──┬──── D1 pin 3 (I/O2, connector side)
+                └──── D1 pin 4 (I/O2, MCU side) ──── MCU USB_OTG_FS D-
 
-J1 A4B9+B4A9 (VBUS) ──── U10 pin 5 (VBUS) ──── VBUS net ──── MCP73831 VDD
+USBC1 A4B9+B4A9 (VBUS) ──── D1 pin 5 (VBUS) ──── VBUS net ──── MCP73831 VDD
 
-U10 pin 2 (GND) ──── GND plane (short wide trace)
+D1 pin 2 (GND) ──── GND plane (short wide trace)
 ```
 
 The "connector side / MCU side" split on pins 1/6 and 3/4 is optional — both pins are on the same net internally, so you can tie them together at a single point if routing is easier that way. The split is useful when the USBLC6-2 sits physically between the connector and the MCU: D+ enters pin 1, exits pin 6, continues to MCU. The ESD diode is in the middle of the trace, which is the ideal placement (ESD clamped as close to the connector as possible, before the signal reaches the MCU).
@@ -749,13 +749,13 @@ The "connector side / MCU side" split on pins 1/6 and 3/4 is optional — both p
 - Leakage: 150nA max — negligible for battery life
 
 **Placement (layout-critical):**
-- Place U10 **as close to J1 as physically possible** — ESD strikes happen at the connector, and the goal is to clamp them before they propagate into the board.
+- Place D1 **as close to USBC1 as physically possible** — ESD strikes happen at the connector, and the goal is to clamp them before they propagate into the board.
 - Pin 2 (GND) trace to GND plane must be **short and wide** (<2mm, >0.3mm wide) — ESD current is high-frequency (sub-nanosecond rise time), so trace inductance matters more than resistance. A long thin GND trace turns the clamp into an antenna.
-- D+/D- traces through U10 should maintain 90Ω differential impedance (USB 2.0 spec) — keep the traces short and symmetric.
+- D+/D- traces through D1 should maintain 90Ω differential impedance (USB 2.0 spec) — keep the traces short and symmetric.
 
-### U11 — ESDA6V1-5SC6 (multi-line ESD protection, SOT-23-6)
+### U6/U7 — ESDA6V1-5SC6 (multi-line ESD protection, SOT-23-6)
 
-> LCSC C6650. ST OEM. Used for SIM card and/or other connector ESD protection. Pinout and application TBD — to be documented when SIM/modem connector sections are specified. 3D model shared with U10 (same SOT-23-6 package).
+> LCSC C6650. ST OEM. Two identical chips in the schematic: **U6** for SIM card ESD protection (near J_SIM1), **U7** for SD card ESD protection (near J_SD1). Pinout and application TBD — to be documented when SIM/modem connector sections are specified. 3D model shared with D1 (same SOT-23-6 package).
 
 
 ## Section: SD Card — *to be specified (sourcing-deferred: combo or separate)*
