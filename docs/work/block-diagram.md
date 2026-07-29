@@ -63,7 +63,7 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 **Source:**
 | Source | Pin | Notes |
 |--------|-----|-------|
-| TPS63021DSJR buck-boost (U8) | VOUT (pin 10, 11, 12) | Fixed 3.3V output, ~3A max. Needs 3×22µF output caps + 0.1µF VINA bypass (datasheet §8.2.2.4). FB pin tied to VOUT directly (fixed-output variant — no divider). |
+| TPS63021DSJR buck-boost (U8) | VIN (pin 10, 11) ← +BATT; VOUT (pin 4, 5) → +3.3V | Fixed 3.3V output, ~3A max. Needs 2×10µF input caps + 3×22µF output caps + 0.1µF VINA bypass (datasheet §8.2.2.4). FB pin tied to VOUT directly (fixed-output variant — no divider). |
 
 **Consumers:**
 | Consumer | Pin | Notes |

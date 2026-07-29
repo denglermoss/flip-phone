@@ -6548,6 +6548,16 @@
 	)
 	(wire
 		(pts
+			(xy 168.91 50.8) (xy 170.18 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f1a2b3c4-d5e6-4789-abcd-ef0123456789")
+	)
+	(wire
+		(pts
 			(xy 223.52 33.02) (xy 228.6 33.02)
 		)
 		(stroke
@@ -6735,16 +6745,6 @@
 			(type default)
 		)
 		(uuid "a1aeaff5-c746-4416-b05f-cc0e69887770")
-	)
-	(wire
-		(pts
-			(xy 170.18 50.8) (xy 168.91 50.8)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a470fe5d-eba5-42d8-9b45-8d9d80098a51")
 	)
 	(wire
 		(pts
@@ -7005,6 +7005,16 @@
 			(type default)
 		)
 		(uuid "d8e3a659-9be0-4b47-afff-1cee36d07ebc")
+	)
+	(wire
+		(pts
+			(xy 170.18 50.8) (xy 175.26 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f5a6b7c8-d9ea-4bcd-ef01-234567890123")
 	)
 	(wire
 		(pts
@@ -9439,83 +9449,6 @@
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/93995179-fee9-4317-80b0-38473b44bbe2"
 					(reference "#PWR0179")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+BATT")
-		(at 170.18 50.8 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "55712b7e-2972-454d-9dd0-a8afb03ca927")
-		(property "Reference" "#PWR0169"
-			(at 170.18 54.61 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+BATT"
-			(at 170.18 45.72 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 170.18 50.8 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 170.18 50.8 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 170.18 50.8 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "13bc600d-5915-42f1-90da-682036b88df5")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/93995179-fee9-4317-80b0-38473b44bbe2"
-					(reference "#PWR0169")
 					(unit 1)
 				)
 			)
@@ -13630,6 +13563,84 @@
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/93995179-fee9-4317-80b0-38473b44bbe2"
 					(reference "D1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 175.26 50.8 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f6a7b8c9-deab-4cde-f012-345678901234")
+		(property "Reference" "#FLG03"
+			(at 175.26 45.72 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 175.26 48.26 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Footprint" ""
+			(at 175.26 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 175.26 50.8 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 175.26 50.8 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "f7a8b9ca-ebcd-4def-0123-456789012345")
+		)
+		(instances
+			(project "phone"
+				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/93995179-fee9-4317-80b0-38473b44bbe2"
+					(reference "#FLG03")
 					(unit 1)
 				)
 			)
