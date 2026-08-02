@@ -4614,7 +4614,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:R0603"
 			(at 201.93 111.76 0)
 			(hide yes)
 			(show_name no)
@@ -4844,7 +4844,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:R0603"
 			(at 139.7 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -4922,7 +4922,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:C0805"
 			(at 163.83 162.56 0)
 			(hide yes)
 			(show_name no)
@@ -5077,7 +5077,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:TSSOP-20_L6.5-W4.4-P0.65-LS6.4-BL"
 			(at 217.17 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -5476,7 +5476,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:PCIE-SMD_PCIE-52P40H-1"
 			(at 90.17 93.98 0)
 			(hide yes)
 			(show_name no)
@@ -6093,7 +6093,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:C0805"
 			(at 152.4 162.56 0)
 			(hide yes)
 			(show_name no)
@@ -7327,7 +7327,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:C0805"
 			(at 198.12 162.56 0)
 			(hide yes)
 			(show_name no)
@@ -7405,7 +7405,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:C0805"
 			(at 186.69 162.56 0)
 			(hide yes)
 			(show_name no)

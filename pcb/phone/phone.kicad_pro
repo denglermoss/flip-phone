@@ -240,7 +240,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": ""
+      "sch_revision": "Rev 1"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -654,7 +654,7 @@
         "uuid": "451c3b43-1616-42cb-bf96-d436f4db82c2"
       }
     ],
-    "used_designators": "CN1,L1,D1,#PWR1-211,#PWR510-512,#PWR606,U1-12,USBC1,J_SPK1,C1-47,#FLG1-2,R1-33,LED1-2,SW1-21,J_DISP1-2,J_EARPIECE1,J_HINGE1-2,J_SD1,J_MIC1,J_SIM1,J1,Y1",
+    "used_designators": "CN1,#PWR1-211,#PWR510-512,#PWR606,D1,L1-2,U1-12,USBC1,J_SPK1,C1-48,R1-33,#FLG1-2,LED1-2,SW1-21,J_DISP1-2,J_EARPIECE1,J_HINGE1-2,J_MIC1,J_SD1,J_SIM1,J1,Y1",
     "variants": []
   },
   "sheets": [
@@ -669,10 +669,6 @@
     [
       "2b7de758-71cc-4198-8a01-5d2c6e01f5f1",
       "Modem"
-    ],
-    [
-      "a554b0c9-2abf-4ff9-b53b-f19190990074",
-      "Keypad"
     ],
     [
       "1c9f5800-c30c-48b4-b4f4-4248c9c52b8c",
@@ -693,6 +689,10 @@
     [
       "93995179-fee9-4317-80b0-38473b44bbe2",
       "Power"
+    ],
+    [
+      "a554b0c9-2abf-4ff9-b53b-f19190990074",
+      "Keypad"
     ]
   ],
   "text_variables": {},

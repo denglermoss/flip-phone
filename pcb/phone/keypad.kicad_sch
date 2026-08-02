@@ -3668,7 +3668,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:R0603"
 			(at 147.32 49.53 0)
 			(hide yes)
 			(show_name no)
@@ -3947,7 +3947,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:R0603"
 			(at 147.32 125.73 0)
 			(hide yes)
 			(show_name no)
@@ -4029,7 +4029,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:R0603"
 			(at 106.68 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -4595,7 +4595,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:R0603"
 			(at 132.08 176.53 0)
 			(hide yes)
 			(show_name no)
@@ -4917,7 +4917,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:R0603"
 			(at 147.32 151.13 0)
 			(hide yes)
 			(show_name no)
@@ -5439,7 +5439,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:R0603"
 			(at 147.32 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -5840,7 +5840,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:R0603"
 			(at 147.32 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -5922,7 +5922,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:R0603"
 			(at 55.88 173.99 0)
 			(hide yes)
 			(show_name no)
@@ -6282,7 +6282,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "easyeda2kicad:R0603"
 			(at 81.28 173.99 0)
 			(hide yes)
 			(show_name no)

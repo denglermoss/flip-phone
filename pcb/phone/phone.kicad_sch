@@ -8,7 +8,6 @@
 		(title "Custom Cell Phone")
 		(date "2026-07-28")
 		(rev "Rev 1")
-		(company "")
 		(comment 1 "STM32H743ZI + SIM7600NA-H + ALC5651 + Zephyr RTOS")
 		(comment 2 "Hierarchical schematic — 8 sub-sheets, global labels for inter-sheet nets")
 	)
