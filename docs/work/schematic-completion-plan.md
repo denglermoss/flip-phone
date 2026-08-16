@@ -61,25 +61,35 @@ Note: ESDA6V1 was a single U11 in docs but is two separate chips in the schemati
 
 ### §B — MCU Sheet: Missing Components & Footprint Fixes
 
+**Required for Phase 3 gate:**
+
 - [x] **Add VDDA ferrite bead + 1µF + 10nF caps** — **DONE 2026-07-28.** Added BLM18KG601SN1D ferrite bead (L1) between +3.3V and VDDA/VREF+, with 1µF (C18, GRM188R61C105KA93D) and 10nF (C19, CC0603KRX7R9BB103) decoupling caps to GND. Added PWR_FLAG on VDDA net for ERC. Also added CC0603KRX7R9BB103 to passives.kicad_sym library. ERC: 0 errors, 15 warnings (3 new lib_symbol_mismatch for new parts, rest pre-existing).
 - [ ] **Add 4.7µF bulk cap** on +3.3V near MCU (docs say "100nF per pair + 4.7µF bulk")
 - [ ] **Fix C4/C13 part-number mismatch** — lib_id is 4.7µF (GRM188R61C475KE11D) but value overridden to "2.2µF". Either use correct 2.2µF part or update value to match.
 - [ ] **Fix R1/R2/R3 footprints** — have `C0603` instead of `R0603`
 - [ ] **Assign USBC1 (SWD header) footprint** — Conn_01x04 with empty footprint
-- [ ] **Add NRST to SWD header** (optional) — expand to 5-pin for debug reset
-- [ ] **Add UART debug header** (optional) — for Zephyr console
-- [ ] **Add test points** (optional) — SWDIO, SWCLK, NRST, USB_DP/DN, VBUS
-- [ ] **Add hardware reset button** (optional) — tactile switch on NRST to GND
 - [ ] **Update `docs/work/mcu-pin-assignment.md`** — add HP_DET on PA2; correct VDD/VSS pin numbers
 
+**Optional / defer:**
+
+- [ ] **Add NRST to SWD header** — expand to 5-pin for debug reset
+- [ ] **Add UART debug header** — for Zephyr console
+- [ ] **Add test points** — SWDIO, SWCLK, NRST, USB_DP/DN, VBUS
+- [ ] **Add hardware reset button** — tactile switch on NRST to GND
+
 ### §C — Modem Sheet: Missing Footprint & USB Routing
+
+**Required for Phase 3 gate:**
 
 - [x] **Assign C20 footprint** (470µF tantalum) — **DONE 2026-07-28.** Temp library `temp_470uf` already had both symbol (`6TPF470MAH`) and footprint (`CAP-SMD_L7.3-W4.3`, Case E 7.3×4.3mm). The schematic instance had an empty Footprint property override blanking the library-level value. Set instance Footprint to `temp_470uf:CAP-SMD_L7.3-W4.3`. ERC verified: 0 errors, 11 warnings (all pre-existing), Modem sheet 0 violations.
 - [ ] **Route modem USB or document deferral** — pins 36/38 (USB_DN/DP) marked NC. AGENTS.md says "Rev1 routes modem USB to a connector footprint." Either route + ESD, or document deferral in project-log.
 - [ ] **Resolve socket part discrepancy** — AGENTS.md says Techship S2-109KS-Z30G9; schematic uses SOFNG PCIE-52P40H (C444926). Reconcile docs.
 - [ ] **Add PWR_FLAG symbols** on +3.3V and +1V8 (if needed for ERC)
-- [ ] **Add OE RC ramp cap** (optional) — on TXB0108 OE pin for power sequencing
-- [ ] **Add test points** (optional)
+
+**Optional / defer:**
+
+- [ ] **Add OE RC ramp cap** — on TXB0108 OE pin for power sequencing
+- [ ] **Add test points**
 
 ### §D — Codec Sheet: RESTORED FROM GIT (DONE)
 
@@ -113,6 +123,8 @@ HEAD version contains: U5 (ALC5651), U12 (SN74AXC4T774 level shifter), C23-C26/C
 
 > **2026-08-16 update**: The backlight FET architecture conflict is **resolved** by the candybar pivot. The FET lives on the single board, directly switching LEDK — no hinge flex, no daughterboard, no "which board does the FET live on?" question. The old conflict (docs said FET on main board with LEDA/LEDK through hinge; schematic used BL_PWM through hinge with R19 on daughterboard) no longer applies.
 
+**Required for Phase 3 gate:**
+
 - [ ] **Add N-channel logic-level MOSFET** for backlight PWM switching (CRITICAL — without it, MCU GPIO would need to sink ~64-80mA, exceeding 20mA max)
   - Recommended: AO3400A (LCSC C20917), SI2302 (C66355), or BSS138 (C85568)
   - Drain → LEDK, Source → GND, Gate → MCU PWM GPIO (BL_PWM)
@@ -121,8 +133,11 @@ HEAD version contains: U5 (ALC5651), U12 (SN74AXC4T774 level shifter), C23-C26/C
 - [ ] **Remove hinge flex connectors (J8/J9)** from the display sheet — no longer needed (candybar, single board)
 - [ ] **Remove outer display connector (J10)** and its signals (OUTER_CS, OUTER_DC) from the display sheet — outer display dropped
 - [ ] **Wire display directly** — J7 (12-pin ZIF) connects directly to MCU SPI + GPIO + power + backlight, no hinge flex intermediary
-- [ ] **Add ESD protection on EARPIECE+/-** (optional — user's ear is ESD source)
 - [ ] **Reconcile net names** — DISP_MOSI/SCK vs docs' DISP_SDA/SCL; EARPIECE+/- vs docs' SPK+/SPK-
+
+**Optional / defer:**
+
+- [ ] **Add ESD protection on EARPIECE+/-** — user's ear is ESD source
 
 ### §G — ~~Display Daughterboard~~ **DROPPED 2026-08-16** (candybar pivot)
 

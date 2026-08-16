@@ -2,6 +2,8 @@
 
 These rules apply when working in the `pcb/` directory. They govern how the AI agent uses the `kicad-mcp-pro` MCP server (profile `agent_full`, mode `write`) to interact with KiCad design files. The user owns all design decisions; the agent implements, verifies, and explains.
 
+> **Workflow role change (2026-08-16)**: The user now handles all KiCad work (schematic capture, PCB layout, footprint assignment, library edits). The agent acts as **reviewer and guide** — reviewing schematics, running ERC/DRC via the kicad-inspector subagent, checking against docs, flagging issues, and advising on design decisions. The agent does **not** directly edit `.kicad_sch` or `.kicad_pcb` files unless the user explicitly asks. The write-mode rules below (Core Principles, Subagent Usage) still apply when the kicad-author subagent is explicitly invoked, but the default workflow is now review-only via kicad-inspector. See `docs/ref/project-log.md` 2026-08-16 Workflow Role Change.
+
 ## Setup (verified 2026-07-22)
 
 - **MCP server**: `kicad-mcp-pro` v3.28.0 via uvx, configured in `~/.codeium/windsurf/mcp_config.json` as the `kicad` server. Auto-imported by Devin at session start.
@@ -43,10 +45,12 @@ These rules apply when working in the `pcb/` directory. They govern how the AI a
 
 ## Subagent Usage
 
+> **Default workflow (2026-08-16)**: Use `kicad-inspector` for all KiCad review tasks (ERC/DRC, BOM, netlist verification). The `kicad-author` subagent and write-mode skills are **dormant** — invoke only when the user explicitly asks the agent to make a KiCad edit.
+
 Subagents are useful for parallelizing inspection, validation, and focused implementation work on KiCad files. Two custom profiles are defined in `.devin/agents/`:
 
-- **`kicad-inspector`** — read-only (DRC/ERC, inspection, BOM extraction). Runs on GLM-5.2 High (free tier, 200k context). Use for validation and research tasks. Safe to fan out multiple in parallel (e.g., one runs ERC, another checks netlist against BOM).
-- **`kicad-author`** — write-capable (schematic/PCB edits). Runs on GLM-5.2 High. Governed by the rules above. `max-nesting: 2` so it can spawn an inspector subagent to validate its own work after editing.
+- **`kicad-inspector`** — read-only (DRC/ERC, inspection, BOM extraction). Runs on GLM-5.2 High (free tier, 200k context). **Active** — use for all validation and research tasks. Safe to fan out multiple in parallel (e.g., one runs ERC, another checks netlist against BOM).
+- **`kicad-author`** — write-capable (schematic/PCB edits). Runs on GLM-5.2 High. **Dormant (2026-08-16)** — invoke only on explicit user request. Governed by the rules below. `max-nesting: 2` so it can spawn an inspector subagent to validate its own work after editing.
 
 ### Subagent rules
 
@@ -63,11 +67,11 @@ Subagents are useful for parallelizing inspection, validation, and focused imple
 
 The following skills in `.devin/skills/` encode KiCad workflows. All are invocable by both the user (`/skill-name`) and the model (when relevant):
 
-- `/kicad-checkpoint` — commit current state as a labeled checkpoint before risky/autonomous work. Used by the autonomous-mode workflow in rule 3.
-- `/kicad-review` — run DRC/ERC + inspect a design, report findings. Read-only.
-- `/kicad-schematic-edit` — governed write workflow for `.kicad_sch` files (plan → checkpoint if autonomous → edit → validate → report).
-- `/kicad-pcb-edit` — governed write workflow for `.kicad_pcb` files (same flow).
-- `/kicad-bom` — generate/validate BOM and cross-check against `docs/ref/bom.md`.
+- `/kicad-checkpoint` — commit current state as a labeled checkpoint before risky/autonomous work. Used by the autonomous-mode workflow in rule 3. **Active.**
+- `/kicad-review` — run DRC/ERC + inspect a design, report findings. Read-only. **Active** — default review path.
+- `/kicad-schematic-edit` — governed write workflow for `.kicad_sch` files (plan → checkpoint if autonomous → edit → validate → report). **Dormant (2026-08-16)** — invoke only on explicit user request.
+- `/kicad-pcb-edit` — governed write workflow for `.kicad_pcb` files (same flow). **Dormant (2026-08-16)** — invoke only on explicit user request.
+- `/kicad-bom` — generate/validate BOM and cross-check against `docs/ref/bom.md`. **Active.**
 
 ## Model Note
 
