@@ -1,6 +1,6 @@
 ---
 status: active
-updated: 2026-08-16
+updated: 2026-08-17
 ---
 # MCU Pin Assignment — STM32H743ZIT6 (LQFP-144)
 
@@ -170,20 +170,20 @@ All pin numbers in this document are verified against the STM32H743ZI datasheet 
 | 142 | PE1 | GPIO | MCU_DTR | Out | Data terminal ready (sleep control) |
 | 1 | PE2 | GPIO | MCU_MODEM_RST | Out | Modem reset (active low) |
 | 2 | PE3 | GPIO/EXTI | MCU_MODEM_STATUS | In | WAKE# interrupt (falling edge) |
-| 5 | PE6 | GPIO | MCU_MODEM_PWR_EN | Out | Load switch enable (modem +3.3V power control) |
+| 87 | PG2 | GPIO | MCU_MODEM_PWR_EN | Out | Load switch enable (modem +3.3V power control) — **moved from PE6 2026-08-17** (PE6 reassigned to DCMI_D7) |
 
 ### Power Monitoring GPIOs
 
 | Pin # | Pin Name | AF | Net | Direction | Notes |
 |-------|----------|----|-----|-----------|-------|
-| 3 | PE4 | GPIO/EXTI | PWR_3V3_OK | In | TPS63021 PG (power good) interrupt |
-| 4 | PE5 | GPIO/EXTI | FUEL_ALERT | In | MAX17048 ALRT interrupt |
+| 44 | PC4 | GPIO/EXTI | PWR_3V3_OK | In | TPS63021 PG (power good) interrupt — **moved from PE4 2026-08-17** (PE4 reassigned to DCMI_D4) |
+| 45 | PC5 | GPIO/EXTI | FUEL_ALERT | In | MAX17048 ALRT interrupt — **moved from PE5 2026-08-17** (PE5 reassigned to DCMI_D6) |
 
 ### Backlight PWM
 
 | Pin # | Pin Name | AF | Net | Direction | Notes |
 |-------|----------|----|-----|-----------|-------|
-| 100 | PA8 | AF1 (TIM1_CH1) | BL_PWM | Out | Backlight dimming PWM |
+| 81 | PD12 | AF2 (TIM4_CH1) | BL_PWM | Out | Backlight dimming PWM — **moved from PA8 2026-08-17** (PA8 reassigned to MCO1 for camera XCLK) |
 
 ### Level Shifter DIR Control (optional — can hardwire)
 
@@ -193,6 +193,45 @@ If SN74AXC4T774 DIR pins are hardwired (directions fixed), no MCU GPIO needed. I
 |-------|----------|----|-----|-----------|-------|
 | 56 | PG0 | GPIO | SHIFTER_DIR | Out | Optional: level shifter direction control |
 
+### DCMI (Camera — OV5640 DVP 8-bit, added 2026-08-17)
+
+Camera module: OV5640 5MP auto-focus, ArduCAM-standard 20-pin 0.5mm FPC DVP module. See `docs/ref/project-log.md` 2026-08-17.
+
+| Pin # | Pin Name | AF | Net | Direction | Notes |
+|-------|----------|----|-----|-----------|-------|
+| 40 | PA4 | AF14 | DCMI_HSYNC | In | Horizontal sync from camera |
+| 42 | PA6 | AF14 | DCMI_PIXCLK | In | Pixel clock from camera |
+| 124 | PG9 | AF14 | DCMI_VSYNC | In | Vertical sync from camera (was spare, freed from OUTER_CS) |
+| 96 | PC6 | AF14 | DCMI_D0 | In | Data bit 0 |
+| 97 | PC7 | AF14 | DCMI_D1 | In | Data bit 1 |
+| 125 | PG10 | AF14 | DCMI_D2 | In | Data bit 2 (was spare, freed from OUTER_DC) |
+| 126 | PG11 | AF14 | DCMI_D3 | In | Data bit 3 |
+| 59 | PE4 | AF14 | DCMI_D4 | In | Data bit 4 (**was PWR_3V3_OK — moved to PC4**) |
+| 117 | PD3 | AF14 | DCMI_D5 | In | Data bit 5 |
+| 69 | PE5 | AF14 | DCMI_D6 | In | Data bit 6 (**was FUEL_ALERT — moved to PC5**) |
+| 70 | PE6 | AF14 | DCMI_D7 | In | Data bit 7 (**was MODEM_PWR_EN — moved to PG2**) |
+
+**Bus width**: 8-bit (sensor D[9:2] → MCU DCMI_D[7:0]). The OV5640 has a 10-bit DVP port; 8-bit mode uses the upper 8 bits (D[9:2]) per OV5640 hardware app notes.
+
+### Camera Clock + Control GPIOs (added 2026-08-17)
+
+| Pin # | Pin Name | AF | Net | Direction | Notes |
+|-------|----------|----|-----|-----------|-------|
+| 100 | PA8 | AF0 (MCO1) | CAM_XCLK | Out | Master clock to camera (16-24 MHz via MCO1). **Was BL_PWM — moved to PD12/TIM4_CH1.** |
+| 88 | PG3 | GPIO | CAM_RESET | Out | Camera reset (active low) |
+| 89 | PG4 | GPIO | CAM_PWDN | Out | Camera power-down (active high) |
+
+### I2C2 (Camera SCCB — separate bus, 3.3V, added 2026-08-17)
+
+**Why separate from I2C1**: I2C1 (PB8/PB9) uses 1.8V pull-ups for the ALC5651 codec (DBVDD=1.8V). The OV5640 module has 3.3V pull-ups on its SCCB lines. Connecting to I2C1 would pull the bus to 3.3V, potentially damaging the codec and MAX17048. I2C2 is a dedicated 3.3V bus for the camera only.
+
+| Pin # | Pin Name | AF | Net | Direction | Notes |
+|-------|----------|----|-----|-----------|-------|
+| 11 | PF1 | AF4 | I2C2_SCL | I/O | 4.7kΩ pullup to +3.3V (camera SCCB clock) |
+| 10 | PF0 | AF4 | I2C2_SDA | I/O | 4.7kΩ pullup to +3.3V (camera SCCB data) |
+
+**Bus devices**: OV5640 (SCCB addr 0x3C, fixed — not strap-selectable). No collision with I2C1 devices (ALC5651 0x1A, MAX17048 0x36) but voltage isolation forces separate bus regardless.
+
 ---
 
 ## Spare GPIO (unassigned)
@@ -200,8 +239,6 @@ If SN74AXC4T774 DIR pins are hardwired (directions fixed), no MCU GPIO needed. I
 | Pin # | Pin Name | Available For |
 |-------|----------|---------------|
 | 7 | PC13 | GPIO (RTC_OUT/WKUP4) |
-| 10 | PF0 | GPIO / I2C2_SDA |
-| 11 | PF1 | GPIO / I2C2_SCL |
 | 12 | PF2 | GPIO |
 | 13 | PF3 | GPIO / ADC3 |
 | 14 | PF4 | GPIO / ADC3 |
@@ -218,11 +255,7 @@ If SN74AXC4T774 DIR pins are hardwired (directions fixed), no MCU GPIO needed. I
 | 35 | PA1 | GPIO / ADC1 / TIM2_CH2 |
 | 36 | PA2 | GPIO / ADC12 / USART2_TX |
 | 37 | PA3 | GPIO / ADC12 / USART2_RX |
-| 40 | PA4 | GPIO / ADC12 / DAC1_OUT1 |
-| 42 | PA6 | GPIO / ADC12 / SPI1_MISO (if display read needed) |
 | 43 | PA7 | GPIO / ADC12 / TIM1_CH1N |
-| 44 | PC4 | GPIO / ADC12 / I2S1_MCK |
-| 45 | PC5 | GPIO / ADC12 |
 | 48 | PB2 | GPIO / COMP1 |
 | 49 | PF11 | GPIO / ADC1 |
 | 50 | PF12 | GPIO / ADC1 |
@@ -236,35 +269,34 @@ If SN74AXC4T774 DIR pins are hardwired (directions fixed), no MCU GPIO needed. I
 | 78 | PD9 | GPIO / USART3_RX |
 | 79 | PD10 | GPIO / USART3_CK |
 | 80 | PD11 | GPIO |
-| 81 | PD12 | GPIO / TIM4_CH1 / I2C4_SCL |
 | 82 | PD13 | GPIO / TIM4_CH2 / I2C4_SDA |
 | 85 | PD14 | GPIO / TIM4_CH3 |
 | 86 | PD15 | GPIO / TIM4_CH4 |
-| 87 | PG2 | GPIO |
-| 88 | PG3 | GPIO |
-| 89 | PG4 | GPIO |
 | 90 | PG5 | GPIO |
 | 91 | PG6 | GPIO |
 | 92 | PG7 | GPIO / USART6_CK |
 | 93 | PG8 | GPIO / USART6_RTS |
-| 96 | PC6 | GPIO / I2S2_MCK / TIM3_CH1 |
-| 97 | PC7 | GPIO / I2S3_MCK / TIM3_CH2 |
 | 101 | PA9 | GPIO / LPUART1_TX / USART1_TX |
 | 102 | PA10 | GPIO / LPUART1_RX / USART1_RX |
 | 114 | PD0 | GPIO / FDCAN1_RX |
 | 115 | PD1 | GPIO / FDCAN1_TX |
-| 117 | PD3 | GPIO / USART2_CTS |
 | 118 | PD4 | GPIO / USART2_RTS |
 | 119 | PD5 | GPIO / USART2_TX |
 | 122 | PD6 | GPIO / USART2_RX |
 | 123 | PD7 | GPIO / USART2_CK |
-| 126 | PG11 | GPIO / SPI1_SCK |
 | 127 | PG12 | GPIO / SPI6_MISO |
 | 128 | PG13 | GPIO / SPI6_SCK / USART6_CTS |
 | 129 | PG14 | GPIO / SPI6_MOSI / USART6_TX |
 | 132 | PG15 | GPIO / USART6_CTS |
 
-**Spare count**: ~60 GPIO pins available for future expansion (camera, sensors, LEDs, etc.)
+**Spare count**: ~44 GPIO pins available for future expansion (notification LED, vibration motor, headphone jack detect, sensors, etc.)
+
+> **rev1 expansion (2026-08-16)**: Four new hardware features added to rev1. Camera DCMI pins assigned 2026-08-17 (see above). Remaining features need GPIO at schematic time:
+> - **Notification LED**: 1 spare GPIO (output). Trivial.
+> - **Vibration motor**: 1 spare GPIO (output, to N-FET gate). Trivial.
+> - **Headphone jack detect**: 1 spare GPIO (input, jack insertion switch). Trivial.
+>
+> Total remaining GPIO needed: ~3. Well within the ~44 spare. See project-log.md 2026-08-16 rev1 Hardware Scope Expansion.
 
 ---
 
@@ -279,6 +311,7 @@ If SN74AXC4T774 DIR pins are hardwired (directions fixed), no MCU GPIO needed. I
 | VBUS sense | 1 |
 | LPUART1 (modem UART) | 4 |
 | I2C1 (codec + fuel gauge) | 2 |
+| I2C2 (camera SCCB, 3.3V) | 2 |
 | SPI1 (displays) | 2 + 5 control |
 | I2S2 (codec music) | 4 |
 | SDMMC1 (microSD) | 6 |
@@ -286,8 +319,10 @@ If SN74AXC4T774 DIR pins are hardwired (directions fixed), no MCU GPIO needed. I
 | Modem control | 5 |
 | Power monitoring | 2 |
 | Backlight PWM | 1 |
-| **Total assigned** | **73** |
-| **Spare GPIO** | **~60** |
+| DCMI (camera data + sync) | 11 |
+| Camera control (XCLK + RESET + PWDN) | 3 |
+| **Total assigned** | **89** |
+| **Spare GPIO** | **~44** |
 | **Total LQFP-144 pins** | **144** |
 
 ## Conflicts Resolved
@@ -296,6 +331,9 @@ If SN74AXC4T774 DIR pins are hardwired (directions fixed), no MCU GPIO needed. I
 2. **JTAG vs display control**: PA15 (JTDI), PB3 (JTDO), PB4 (NJTRST) conflict with JTAG. Resolved: SWD-only debugging, JTAG pins repurposed as GPIO for display CS/DC/RST.
 3. **PC2_C vs I2S2_SDI**: LQFP-144 pin 28 is PC2_C (analog-coupled), which lacks SPI2/I2S2 alternate functions. Resolved: use PB14 for I2S2_SDI instead.
 4. **I2C voltage domain**: With DBVDD=1.8V, codec I2C is 1.8V. Resolved: 1.8V pullups on I2C bus, STM32H7 FT pins tolerate this, MAX17048 VIH=1.4V min works.
+5. **DCMI D4/D6/D7 pin conflicts (2026-08-17)**: On LQFP-144, DCMI_D4 is only on PC11/PE4, DCMI_D6 is only on PB8/PE5, DCMI_D7 is only on PB9/PE6. PC11=SD_D3, PB8=I2C1_SCL, PB9=I2C1_SDA — all assigned. Resolved: reassign PE4 (PWR_3V3_OK→PC4), PE5 (FUEL_ALERT→PC5), PE6 (MODEM_PWR_EN→PG2) to spare pins, freeing PE4/PE5/PE6 for DCMI.
+6. **Camera XCLK vs backlight PWM (2026-08-17)**: PA8 is both MCO1 (camera XCLK) and TIM1_CH1 (backlight PWM). Resolved: move BL_PWM to PD12/TIM4_CH1, use PA8/MCO1 for camera XCLK.
+7. **Camera I2C voltage mismatch (2026-08-17)**: OV5640 module SCCB has 3.3V pull-ups; I2C1 bus uses 1.8V pull-ups for codec. Resolved: separate I2C2 bus (PF0/PF1) at 3.3V for camera only.
 
 ## Notes for Schematic Entry
 

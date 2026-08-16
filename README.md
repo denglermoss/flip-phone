@@ -23,7 +23,7 @@ Designing and building a custom cell phone from scratch — hardware (PCB, elect
 ### Out of Scope (for now)
 - Custom cellular modem / baseband processor design
 - FCC certification (prototype stage; revisit if moving toward production)
-- App store, browser, camera, or smartphone features
+- App store, browser, or smartphone features (camera IS included on rev1 — see `docs/ref/project-log.md` 2026-08-16)
 - Custom OS (will use RTOS or bare metal)
 - Ecosystem module design (car system, etc.) — future projects, not this one
 

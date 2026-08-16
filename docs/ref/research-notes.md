@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-07-28
+updated: 2026-08-17
 ---
 # Research Notes
 
@@ -307,6 +307,12 @@ STM32H743 sleep current (~20 µA) is higher than STM32L4 (0.4 µA) or nRF52840 (
 Standby battery life is determined by the modem in LTE idle/DRX mode, not the MCU and not the deep-sleep figure. For the SIM7600 at 17.5 mA idle: 17.5 mA × 24h = **420 mAh** minimum for 24h standby. With an 800 mAh battery, standby is ~45 hours — the 24h target (FR-4.4) is achievable with comfortable margin. The previous docs' claim that the modem dominates standby power is correct; only the cited "3 mA" figure was wrong (that's deep-sleep, not idle/DRX). The MCU sleep current (~20 µA) is ~0.1% of the modem idle current and truly negligible.
 
 ## Camera & Video Recording Analysis
+
+> **RESOLVED 2026-08-17**: Camera module selected — **OV5640** (5MP, auto-focus, 8-bit DVP). See `docs/ref/project-log.md` 2026-08-17. The analysis below remains valid as reference for DCMI bandwidth, JPEG paths, and video recording feasibility. Key findings confirmed during selection:
+> - OV5640 has on-chip JPEG (same as OV2640) — the JPEG bandwidth/memory analysis below applies.
+> - STM32H743 hardware JPEG codec confirmed in Zephyr (`st,stm32-jpeg` driver, PR #110278) — Path 2 (HW encode/decode) is available as a fallback/complement to sensor-side JPEG.
+> - Zephyr OV5640 DVP driver (merged Feb 2025) currently exposes only 480×272 RGB565 — needs extension for VGA+/JPEG/AF. This is firmware work, not a hardware restriction.
+> - OV2640 Zephyr driver is more mature (JPEG at all resolutions, tested on H743 DCMI) but OV2640 is 2MP fixed-focus vs OV5640's 5MP auto-focus. Quality difference justified the firmware tradeoff.
 
 ### DCMI Hardware Limits (STM32H743)
 

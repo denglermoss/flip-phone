@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-08-16
+updated: 2026-08-17
 ---
 # Bill of Materials (BOM)
 
@@ -137,7 +137,7 @@ These components are required for the phone but have not been formally locked in
 |---|-----------|--------|-----|-----------|-----------|-------|
 | 25 | Bulk capacitance — 470µF tantalum polymer (modem +3.3V rail) | SELECTED: Panasonic 6TPF470MAH (LCSC C403809) | 1 | ~$0.80 | ~$0.80 | C40 on modem sheet. Low ESR, handles 2A+ LTE bursts. |
 | 25a | Bulk capacitance — 10µF ceramic (modem +3.3V rail) | SELECTED: Samsung CL10A106KP8NNNC (LCSC C19702) | 2 | ~$0.03 | ~$0.06 | C41/C42 on modem sheet. High-freq decoupling. JLC Basic. |
-| 25b | Power switch (momentary pushbutton — soft on/off + 5s hard off) | SELECTED: ALPS SSAL120100 (LCSC C335996) | 1 | ~$0.30 | ~$0.30 | SW21 on power sheet. Momentary SPDT slide (spring-return), 10mA@5V, SMD 7.6×1.2×4.1mm. 4,720 in stock. NRND (acceptable for hobby). Replaces SSSS811101 (maintained slide). **Latch circuit TBD** — see project-log 2026-08-02. |
+| 25b | Power switch (maintained, battery-path disconnect) | TBD (power-rated ≥3A) | 1 | ~$0.50–2 | ~$0.50–2 | Maintained (latching) switch in battery path (between J_BATT and +BATT net). Must handle full system current (TPS63021 can draw 2A+ during LTE TX). Replaces SSAL120100 (signal-level momentary, not power-rated). Specific part TBD at schematic time. See project-log 2026-08-17. |
 | 25c | VDDA ferrite bead (MCU ADC noise isolation) | SELECTED: Murata BLM18KG601SN1D (LCSC C85833) | 1 | ~$0.05 | ~$0.05 | L1 on MCU sheet. 600Ω@100MHz, 0603. Isolates VDDA/VREF+ from digital +3.3V. |
 | 25d | VDDA 1µF decoupling cap | SELECTED: Murata GRM188R61C105KA93D (LCSC C77404) | 1 | ~$0.03 | ~$0.03 | C18 on MCU sheet. 1µF X5R 16V 0603. Bulk decoupling on VDDA side of ferrite. |
 | 25e | VDDA 10nF decoupling cap | SELECTED: YAGEO CC0603KRX7R9BB103 (LCSC C100042) | 1 | ~$0.01 | ~$0.01 | C19 on MCU sheet. 10nF X7R 50V 0603. High-freq decoupling on VDDA. |
@@ -146,6 +146,20 @@ These components are required for the phone but have not been formally locked in
 | 28 | LEDs (status, notification, backlight) | CANDIDATE | ~3 | ~$0.10–0.30 | ~$0.30–1 | Rated 2 on wishlist. |
 | 29 | Test points, headers, misc hardware | CANDIDATE | — | — | ~$2–5 | For bring-up/debug. |
 | | **Passive/misc subtotal** | | | | **~$12–33** | |
+
+### 3j. rev1 Hardware Expansion — Camera, Headphone, Notification (2026-08-16)
+
+> **Added 2026-08-16**: Four features included on rev1 per the v1 hardware scope decision. See `docs/ref/project-log.md` 2026-08-16 rev1 Hardware Scope Expansion. Camera module + 3.5mm jack parts are TBD (research pending); LED + vibration motor driver are trivial.
+
+| # | Component | Part Number | Status | Qty | Unit Price | Ext Price | Source / Link | Notes |
+|---|-----------|-------------|--------|-----|-----------|-----------|---------------|-------|
+| 30 | Camera module — OV5640 5MP auto-focus DVP | SELECTED: OV5640 ArduCAM-standard 20-pin DVP module | SELECTED (2026-08-17) | 1 | ~$8–15 | ~$8–15 | — | **Selected 2026-08-17** (see project-log.md). OV5640 5MP (2592×1944) with VCM auto-focus, 8-bit DVP, on-chip JPEG. ArduCAM-standard 20-pin 0.5mm FPC module with onboard LDOs (3.3V input only). DOVDD = 2.8V (verify on specific module). SCCB addr 0x3C. Connected via DCMI (11 pins) + MCO1 XCLK + I2C2 (separate 3.3V bus). ZIF connector on PCB, module sourced separately. Firmware: Zephyr OV5640 DVP driver needs extension (currently 480×272 RGB565 only — add VGA+/JPEG/AF). |
+| 30a | Camera FPC connector — 20-pin 0.5mm ZIF | TBD (matching OV5640 ArduCAM 20-pin pinout) | CANDIDATE | 1 | ~$0.50–1 | ~$0.50–1 | — | 20-pin 0.5mm pitch FPC ZIF connector (bottom contact, SMD). Matches ArduCAM-standard OV5640 DVP module pinout. Specific part TBD at schematic time — verify pinout against sourced module. |
+| 31 | 3.5mm headphone jack, TRS, SMD | TBD | CANDIDATE (include on rev1 — locked 2026-08-16) | 1 | ~$1–2 | ~$1–2 | — | **Rev1 decision (2026-08-16)**: wired audio output from ALC5651 codec. Board edge mount (~6×14mm). Jack-detect GPIO mutes speakers when inserted. Specific part TBD at schematic time. |
+| 32 | LED notification light | TBD (standard 0603/0805 SMD LED) | CANDIDATE (include on rev1 — locked 2026-08-16) | 1 | ~$0.10–0.30 | ~$0.10–0.30 | — | **Rev1 decision (2026-08-16)**: single GPIO + current-limit resistor. Missed-call/SMS alert. Trivial. (Supersedes item 28's "Rated 2 on wishlist" note — now included.) |
+| 33 | Vibration motor driver — N-FET + flyback diode | TBD (standard N-FET SOT-23 + diode) | CANDIDATE (include on rev1 — locked 2026-08-16) | 1 | ~$0.10–0.30 | ~$0.10–0.30 | — | **Rev1 decision (2026-08-16)**: GPIO → N-FET gate, motor connects via 2-pin header. Flyback diode required (motor is inductive). The motor itself is off-board (mechanical part, not on PCB). |
+| 33a | Vibration motor connector, 2-pin | TBD | CANDIDATE | 1 | ~$0.10 | ~$0.10 | — | 2-pin SMD header/JST for the off-board vibration motor. |
+| | **rev1 expansion subtotal** | | | | | **~$7–19** | |
 
 ---
 
@@ -174,12 +188,13 @@ These components are required for the phone but have not been formally locked in
 | ESD protection | $1 | $1 |
 | Antenna (cellular + GNSS) | $8 | $11 |
 | Keypad (SMD tactile switches) | $1 | $2 |
+| rev1 expansion (camera + headphone + LED + motor driver) | $7 | $19 |
 | Passive components & misc | $11 | $32 |
-| **BOM total (components, per unit)** | **~$97** | **~$140** |
+| **BOM total (components, per unit)** | **~$104** | **~$159** |
 | PCB fab + assembly (separate) | $62 | $122 |
 | **Total per unit (BOM + PCB)** | **~$159** | **~$262** |
 
-**Assessment**: The components-only BOM target (< $150/unit, NFR-5) is achievable at the low end and tight at the high end. The dominant cost is the cellular module (~$28–32) + JLCPCB assembly (~$57–72). PCB fab/assembly is correctly excluded from the NFR-5 BOM target per `docs/ref/requirements.md`. Note: the previous "high-current buck regulator for VBAT" (~$3–6) was removed — VBAT is powered directly from the LiPo (see constraints.md Power section). A 3.3V buck-boost (TPS630201, ~$3.50) and fuel gauge (MAX17048, ~$2.50) were added — net cost change is approximately +$2.50.
+**Assessment**: The components-only BOM target (< $150/unit, NFR-5) is achievable at the low end but the high end now exceeds it (~$159) after the 2026-08-16 rev1 hardware expansion (camera + headphone + LED + vibration motor, ~$7-19). The camera module (OV5640, ~$8-15, selected 2026-08-17) is the main variable in the expansion cost. The dominant cost remains the cellular module (~$59) + JLCPCB assembly (~$57–72). PCB fab/assembly is correctly excluded from the NFR-5 BOM target per `docs/ref/requirements.md`. Note: the previous "high-current buck regulator for VBAT" (~$3–6) was removed — VBAT is powered directly from the LiPo (see constraints.md Power section). A 3.3V buck-boost (TPS63021DSJR, ~$3.50) and fuel gauge (MAX17048, ~$2.50) were added — net cost change is approximately +$2.50.
 
 ### Prototyping Phase (one-time, before custom PCB)
 
@@ -224,6 +239,10 @@ Per `docs/ref/constraints.md` and `docs/ref/project-log.md`, these must be verif
 - [ ] **Modem USB HS connector (rev1)**: Select USB-C vs micro-USB for the unpopulated modem USB footprint (2026-07-19 decision: include footprint, type TBD at schematic time).
 - [ ] **GNSS antenna part**: Select specific U.FL GNSS antenna (2026-07-19 decision: include on rev1, part TBD).
 - [ ] **Loudspeaker part**: Select specific loudspeaker transducer (2026-07-19 decision: include on rev1, part TBD).
+- [x] **Camera module** (2026-08-16 rev1 expansion): **SELECTED 2026-08-17**: OV5640 (5MP, auto-focus, 8-bit DVP). ArduCAM-standard 20-pin 0.5mm FPC connector. Power: 3.3V only (onboard LDOs on module). Separate I2C2 bus (3.3V) for SCCB control. Specific module part TBD (sourcing verification needed — confirm DOVDD=2.8V, onboard LDOs, FFC pinout). See project-log.md 2026-08-17.
+- [ ] **3.5mm headphone jack** (2026-08-16 rev1 expansion): Select specific TRS SMD connector. Confirm ALC5651 headphone output routing (dedicated HPOUT vs speaker switch). Add jack-detect GPIO. See project-log.md 2026-08-16.
+- [ ] **Vibration motor + connector** (2026-08-16 rev1 expansion): Select 2-pin connector + specific off-board vibration motor. Confirm N-FET driver + flyback diode sizing. See project-log.md 2026-08-16.
+- [ ] **LED notification** (2026-08-16 rev1 expansion): Select LED + current-limit resistor value. Assign spare GPIO. Trivial. See project-log.md 2026-08-16.
 - [x] **SIM/microSD connector sourcing**: ~~Evaluate combo vs separate socket availability~~ **RESOLVED 2026-07-19** — separate sockets (J3 SHOU HAN C7529386 + J4 Molex C164170), both hinged, both JLC-sourced.
 
 ---

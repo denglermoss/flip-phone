@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-07-28
+updated: 2026-08-17
 ---
 # Feature Wishlist
 
@@ -31,19 +31,19 @@ These ratings inform **component selection** — we should ensure the MCU, cellu
 | Feature | Rating | Notes |
 |---------|--------|-------|
 | USB data transfer | 8 | Daily driver. Also critical for **ecosystem interconnect** (car module tethering). MCU must have USB device/peripheral capability. |
-| Bluetooth (headset, audio, file transfer) | 6 | Strong want. MCU selection should support BT (nRF52 has built-in BLE; STM32 would need external BT module). Note: BLE != classic BT — A2DP audio needs classic BT. |
+| Bluetooth (headset, audio, file transfer) | 6 | Strong want. MCU selection should support BT (nRF52 has built-in BLE; STM32 would need external BT module). Note: BLE != classic BT — A2DP audio needs classic BT. **Rev1 hardware decision (2026-08-16)**: deferred to v2 — external classic-BT audio module + antenna keepout + significant firmware not justified for v1. Wireless headphones off the table for v1; 3.5mm jack covers wired audio. See project-log.md 2026-08-16. |
 | Hotspot / tethering | 6 | Strong want. Ties into ecosystem concept — phone provides LTE to car module via USB. Cellular module must support data + tethering. Most LTE modules do. **Note (2026-06-28)**: Simultaneous VoLTE+data (tethering while on a call) is NOT required — "pause data during call" is acceptable. SIM7600 supports data via CMUX+PPP (MCU-originated) **and** via its own USB 2.0 HS port directly (RNDIS/ECM, `AT+CUSBPIDSWITCH`) for ecosystem tethering — bypassing the MCU. USB3300 ULPI transceiver dropped (not needed). See project-log.md Modem Revisit (Second Round) and USB HS/ULPI Revisit. |
-| Wi-Fi (OTA updates, basic internet) | 4 | Nice to have. ESP32 has built-in; STM32/nRF52 would need external module. Could use for firmware OTA updates. |
+| Wi-Fi (OTA updates, basic internet) | 4 | Nice to have. ESP32 has built-in; STM32/nRF52 would need external module. Could use for firmware OTA updates. **Rev1 hardware decision (2026-08-16)**: deferred to v2 — USB firmware updates (MCU OTG_FS on rev1) cover the OTA use case. See project-log.md 2026-08-16. |
 | NFC | 1.5 | Not wanted. |
 
 ## Media
 
 | Feature | Rating | Notes |
 |---------|--------|-------|
-| MP3 / music playback | 6 | Strong want. Needs: audio DAC or I2S output, storage (SD card), MP3 decoder (software or hardware). MCU must have enough processing power for decode. |
-| Photo capture | 6 | Strong want. Needs camera module (SPI/MIPI). Display should be color for preview. |
+| MP3 / music playback | 6 | Strong want. Needs: audio DAC or I2S output, storage (SD card), MP3 decoder (software or hardware). MCU must have enough processing power for decode. **Rev1 hardware decision (2026-08-16)**: effectively free on rev1 — SD card (J4, LOCKED) + codec I2S-2 (wired to MCU via level shifter) are already on the board. This is a firmware-only feature, no hardware decision needed. |
+| Photo capture | 6 | Strong want. Needs camera module (SPI/MIPI). Display should be color for preview. **Rev1 hardware decision (2026-08-16)**: camera included on rev1 (fully, not just footprint). DCMI pins assigned on MCU. **Module selected (2026-08-17)**: OV5640 (5MP, auto-focus, 8-bit DVP). See `docs/ref/project-log.md` 2026-08-17. |
 | Video recording | 5 | Nice to have. More demanding — higher data rate, storage, processing. |
-| FM radio | 4 | Nice to have. Some cellular modules (e.g., Quectel) have built-in FM. Headphone jack acts as antenna. |
+| FM radio | 4 | Nice to have. Some cellular modules (e.g., Quectel) have built-in FM. Headphone jack acts as antenna. **Rev1 hardware decision (2026-08-16)**: deferred — SIM7600 has no built-in FM; would need a dedicated receiver chip. Not worth it for a 4-rated feature. See project-log.md 2026-08-16. |
 | Custom ringtones | 2 | Don't care. |
 | Voice recorder | 1 | Not wanted. |
 
@@ -51,7 +51,7 @@ These ratings inform **component selection** — we should ensure the MCU, cellu
 
 | Feature | Rating | Notes |
 |---------|--------|-------|
-| Photo capture | 6 | See Media section. Camera module selection affects PCB layout and display choice (color preferred). |
+| Photo capture | 6 | See Media section. Camera module selection affects PCB layout and display choice (color preferred). **Rev1 hardware decision (2026-08-16)**: included on rev1. **Module selected (2026-08-17)**: OV5640 (5MP, auto-focus, 8-bit DVP). See project-log.md 2026-08-17. |
 | Video recording | 5 | See Media section. |
 | Flash / torch | 2 | Don't care. |
 
@@ -71,9 +71,9 @@ These ratings inform **component selection** — we should ensure the MCU, cellu
 | Feature | Rating | Component Impact |
 |---------|--------|-----------------|
 | MicroSD card slot | 7 | Daily driver. MCU needs SPI or SDIO interface. PCB space for connector. Critical for music + photo storage. |
-| 3.5mm headphone jack | 4 | Nice to have. PCB space + audio routing. Could use BT headphones instead. |
-| Vibration motor | 2 | Don't care. GPIO + driver circuit, minimal impact. |
-| LED notification light | 2 | Don't care. Single GPIO, trivial. |
+| 3.5mm headphone jack | 4 | Nice to have. PCB space + audio routing. Could use BT headphones instead. **Rev1 hardware decision (2026-08-16)**: included on rev1 — wired audio output from ALC5651 codec. BT deferred to v2, so the jack is the only audio-out path for v1. See project-log.md 2026-08-16. |
+| Vibration motor | 2 | Don't care. GPIO + driver circuit, minimal impact. **Rev1 hardware decision (2026-08-16)**: included on rev1 — trivial cost (GPIO + N-FET + flyback diode + 2-pin connector). Silent call/SMS alerts. See project-log.md 2026-08-16. |
+| LED notification light | 2 | Don't care. Single GPIO, trivial. **Rev1 hardware decision (2026-08-16)**: included on rev1 — trivial cost (GPIO + LED + resistor). Missed-call/SMS alerts. See project-log.md 2026-08-16. |
 | GPS / GNSS | (see ecosystem) | Some LTE modules have built-in GNSS (e.g., Quectel EG25-G has GPS/GLONASS). Important for ecosystem (car navigation). Select module with GNSS if possible. **Rev1 hardware decision (2026-07-19)**: U.FL footprint for GNSS antenna included on rev1 — SIM7600 has built-in GNSS (validated 2026-07-12), user wants this board to potentially be the final version. |
 | Proximity / ambient light sensor | 1 | Not wanted. |
 | Hardware power button | — | No preference. |
@@ -99,7 +99,7 @@ When selecting components, ensure these capabilities are available (even if not 
 | Module with built-in GNSS | GPS, ecosystem (car nav) | 6 — strong want |
 | BLE on MCU (or external BT module) | Bluetooth, ecosystem wireless | 6 — strong want |
 | I2S or audio DAC on MCU | MP3 playback, audio output | 6 — strong want |
-| Camera interface (SPI/parallel) | Photo capture | 6 — strong want |
+| Camera interface (SPI/parallel) | Photo capture | 6 — strong want — **INCLUDED on rev1 (2026-08-16), module: OV5640 5MP AF (selected 2026-08-17)** |
 | Module supports data + tethering | Hotspot, ecosystem | 6 — strong want (simultaneous VoLTE+data NOT required — pause-data acceptable) |
 | Color display | Camera preview, photos | 5-6 — **SELECTED: ST7789V SPI TFT, 2.0" 240×320, RGB565** (satisfies "no 5+ blocked"; see research-notes.md Display Options) |
 | FM radio in module | FM radio | 4 — nice to have |

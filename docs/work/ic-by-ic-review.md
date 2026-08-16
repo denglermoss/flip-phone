@@ -7,7 +7,7 @@ updated: 2026-08-16
 > **Created**: 2026-08-02
 > **Purpose**: Track results of a full IC-by-IC schematic review against vendor datasheets. The user (project lead) reviews each IC and asks questions; the agent verifies against the datasheet (primary source) and schematic (read-only, minimal). Decisions and findings are recorded here.
 > **Context**: Project is switching from PCIe to LGA modem. Review may surface items affected by that switch.
-> **Source of truth for pin connections**: `docs/work/block-diagram.md` (per-section wiring spec). This doc records review findings and deferred tasks only — it does not duplicate wiring specs.
+> **Source of truth for pin connections**: The **KiCad schematic** (`pcb/phone/phone.kicad_sch`) is the pin-level source of truth. `docs/work/block-diagram.md` provides design intent and historical planning reference. This doc records review findings and deferred tasks only — it does not duplicate wiring specs.
 
 ## Review Process
 
@@ -88,38 +88,48 @@ Our design wires PG to an MCU GPIO with EXTI (interrupt) for brown-out warning (
 
 **Severity**: Info (no action)
 
-### Q3: Power switch function — momentary slide switch architecture (soft on/off + 5s hard off)
+### Q3: Power switch function — ~~momentary slide switch architecture (soft on/off + 5s hard off)~~ **SUPERSEDED 2026-08-17: maintained power switch in battery path + MCU sleep timer**
 
-**Finding**: Architecture decided 2026-08-02. SW21 changed from maintained slide (SSSS811101, direct EN control) to **momentary slide switch** (ALPS SSAL120100, LCSC C335996 — SPDT, spring-return, ALPS "Single-side Recoil Type"). Three functions:
-1. **Short press when off** → power on (release hard-off latch → EN high → boot, or EXTI wakes MCU from STOP)
-2. **Short press when on** → soft off (MCU EXTI → graceful shutdown → STOP mode)
-3. **5-second hold** → hard off (RC timer → latch → EN low → 3.3V rail dies; pure hardware, works if MCU hung)
+**Finding**: ~~Architecture decided 2026-08-02. SW21 changed from maintained slide (SSSS811101, direct EN control) to **momentary slide switch** (ALPS SSAL120100, LCSC C335996 — SPDT, spring-return, ALPS "Single-side Recoil Type"). Three functions:~~
+~~1. **Short press when off** → power on (release hard-off latch → EN high → boot, or EXTI wakes MCU from STOP)~~
+~~2. **Short press when on** → soft off (MCU EXTI → graceful shutdown → STOP mode)~~
+~~3. **5-second hold** → hard off (RC timer → latch → EN low → 3.3V rail dies; pure hardware, works if MCU hung)~~
 
-**Switch type correction (2026-08-02)**: Previously mislabeled as "momentary pushbutton." SSAL120100 is a **momentary slide switch** — SPDT, 2 positions, springs back to the rest position ("recoil"). Functionally equivalent to a momentary pushbutton for this circuit. The SPDT contact (common + NO/NC) may be useful for the latch circuit (separate SET/RESET edges). **⚠️ NRND**: ALPS marks this part "Not Recommended for New Designs." Still in stock at LCSC (C335996) for now, but an active alternative should be sourced before PCB fab. Not a blocker for the architecture decision.
+**SUPERSEDED 2026-08-17**: Replaced with a simple maintained power switch in the battery path + MCU inactivity timer for soft off. See project-log 2026-08-17. Key changes:
+- **Hard off**: Maintained switch physically disconnects battery from +BATT net. 0 power draw. No latch circuit needed.
+- **Soft off**: MCU inactivity timer → STOP mode. Firmware-driven, all firmware details deferred until after PCB ordered.
+- **EN pin**: Reverts to always-on (1MΩ pullup to +BATT). No switch on EN.
+- **Switch part**: Changes from SSAL120100 (signal-level momentary, 10mA@5V) to TBD maintained power-rated switch (≥3A). Specific part TBD at schematic time.
+- **Charging while off**: Not supported (switch disconnects battery from charger VBAT path). Accepted.
+- **DEF-002 (latch circuit)**: Moot — no latch needed.
 
-**Long-press behavior (decided 2026-08-02)**: Simple for rev1 — short press = soft off, 5s hold = hard off. The MCU does **not** intercept long presses for a "Power off?" menu. The 5s hardware timer is the unconditional kill (works even if MCU is hung). Firmware does not need to distinguish press lengths. A menu-based power-off can be added post-rev1.
+> **The following text describes the superseded 2026-08-02 architecture and is retained for history. All of it is struck. See the SUPERSEDED note above and project-log 2026-08-17 for the current architecture.**
 
-**Critical verification finding**: The naive "RC timer → transistor → EN" approach does NOT work because EN has a permanent 1MΩ pullup to +BATT. Releasing the switch after a 5s hold would immediately re-power the system. A **latching circuit** is required:
-- SET (5s hold via RC timer) → holds EN low persistently after switch release
-- RESET (short press) → releases EN → 1MΩ pullup brings rail up → boot
-- RESET must work in pure hardware (MCU is unpowered during hard-off)
+~~**Switch type correction (2026-08-02)**: Previously mislabeled as "momentary pushbutton." SSAL120100 is a **momentary slide switch** — SPDT, 2 positions, springs back to the rest position ("recoil"). Functionally equivalent to a momentary pushbutton for this circuit. The SPDT contact (common + NO/NC) may be useful for the latch circuit (separate SET/RESET edges). **⚠️ NRND**: ALPS marks this part "Not Recommended for New Designs." Still in stock at LCSC (C335996) for now, but an active alternative should be sourced before PCB fab. Not a blocker for the architecture decision.~~
 
-**Unified power-on**: A short press does the right thing in both states because the hardware paths are naturally exclusive — when the rail is up, the latch reset is a no-op and the EXTI fires; when the rail is dead, there's no EXTI to fire, so the latch reset does the work. Same user action, hardware picks the right path automatically.
+~~**Long-press behavior (decided 2026-08-02)**: Simple for rev1 — short press = soft off, 5s hold = hard off. The MCU does **not** intercept long presses for a "Power off?" menu. The 5s hardware timer is the unconditional kill (works even if MCU is hung). Firmware does not need to distinguish press lengths. A menu-based power-off can be added post-rev1.~~
 
-**Firmware note — power-on race condition**: When the latch releases and the rail comes up, the MCU boots over ~tens of ms. The switch press that triggered boot is ending right around then. Firmware must **ignore switch events for the first ~500ms after boot**, otherwise the tail end of the "power on" press could be read as a "soft off" press and immediately shut the system back down. This is a firmware concern, not hardware, but must be noted in the firmware task spec.
+~~**Critical verification finding**: The naive "RC timer → transistor → EN" approach does NOT work because EN has a permanent 1MΩ pullup to +BATT. Releasing the switch after a 5s hold would immediately re-power the system. A **latching circuit** is required:~~
+~- SET (5s hold via RC timer) → holds EN low persistently after switch release~
+~- RESET (short press) → releases EN → 1MΩ pullup brings rail up → boot~
+~- RESET must work in pure hardware (MCU is unpowered during hard-off)~
 
-**Latch implementation (DEF-002)**: Deferred — not yet designed. Two options on the table:
-- (A) SR latch from 2 transistors + RC timer (~$0.10, ~5-8 components) — cheaper, more educational, more failure modes
-- (B) Dedicated pushbutton on/off controller IC (e.g., LTC2950, ~$2-3, single IC) — more reliable, less educational
-- **Decision**: Resolve when drawing the power schematic section. Not a blocker for the architecture.
+~~**Unified power-on**: A short press does the right thing in both states because the hardware paths are naturally exclusive — when the rail is up, the latch reset is a no-op and the EXTI fires; when the rail is dead, there's no EXTI to fire, so the latch reset does the work. Same user action, hardware picks the right path automatically.~~
 
-**Schematic impact**: Current SW21 wiring (maintained switch directly on EN: ON=+BATT→R1→SW21→EN, OFF=EN→SW21→GND) must be replaced with the momentary switch + latch circuit. This is a power section change — requires explicit approval per pcb/AGENTS.md rule 9 (protected section).
+~~**Firmware note — power-on race condition**: When the latch releases and the rail comes up, the MCU boots over ~tens of ms. The switch press that triggered boot is ending right around then. Firmware must **ignore switch events for the first ~500ms after boot**, otherwise the tail end of the "power on" press could be read as a "soft off" press and immediately shut the system back down. This is a firmware concern, not hardware, but must be noted in the firmware task spec.~~
 
-**Charging while off**: Still works — MCP73831 VBUS→+BATT path is independent of TPS63021. Hard-off kills +3.3V but charging continues. ✓
+~~**Latch implementation (DEF-002)**: Deferred — not yet designed. Two options on the table:~~
+~- (A) SR latch from 2 transistors + RC timer (~$0.10, ~5-8 components) — cheaper, more educational, more failure modes~
+~- (B) Dedicated pushbutton on/off controller IC (e.g., LTC2950, ~$2-3, single IC) — more reliable, less educational~
+~- **Decision**: Resolve when drawing the power schematic section. Not a blocker for the architecture.~
 
-**Modem during hard-off**: MPCIe modem is on +3.3V (via VCC pins), so hard-off kills the modem too. This is desirable — true power-off, not standby. For soft-off (MCU STOP), the modem stays registered on the network for incoming calls (standby, not off).
+~~**Schematic impact**: Current SW21 wiring (maintained switch directly on EN: ON=+BATT→R1→SW21→EN, OFF=EN→SW21→GND) must be replaced with the momentary switch + latch circuit. This is a power section change — requires explicit approval per pcb/AGENTS.md rule 9 (protected section).~~
 
-**Severity**: Architecture decided. Latch implementation = deferred design task (DEF-002, resolve at power schematic drawing time).
+~~**Charging while off**: Still works — MCP73831 VBUS→+BATT path is independent of TPS63021. Hard-off kills +3.3V but charging continues. ✓~~
+
+~~**Modem during hard-off**: MPCIe modem is on +3.3V (via VCC pins), so hard-off kills the modem too. This is desirable — true power-off, not standby. For soft-off (MCU STOP), the modem stays registered on the network for incoming calls (standby, not off).~~
+
+~~**Severity**: Architecture decided. Latch implementation = deferred design task (DEF-002, resolve at power schematic drawing time).~~
 
 ---
 
@@ -127,8 +137,8 @@ Our design wires PG to an MCU GPIO with EXTI (interrupt) for brown-out warning (
 
 | ID | Description | Origin | Date | Status |
 |----|-------------|--------|------|--------|
-| DEF-001 | Power switch architecture: what does "off" mean? Does modem VBAT need a separate switch? How does LGA modem change this? SW21 placement. | U8 review Q3 | 2026-08-02 | **Resolved 2026-08-02** — momentary pushbutton, soft on/off + 5s hard off. See Q3 above. |
-| DEF-002 | Latch circuit implementation for hard-off persistence: SR latch (2 transistors + RC timer) vs dedicated IC (LTC2950). Component selection, schematic wiring, RC time constant calc. **Deferred** — resolve when drawing the power schematic section. | U8 review Q3 | 2026-08-02 | Open (deferred) |
+| DEF-001 | Power switch architecture: what does "off" mean? Does modem VBAT need a separate switch? How does LGA modem change this? SW21 placement. | U8 review Q3 | 2026-08-02 | **Resolved 2026-08-02, SUPERSEDED 2026-08-17** — replaced by maintained power switch in battery path + MCU sleep timer. See Q3 above + project-log 2026-08-17. |
+| DEF-002 | ~~Latch circuit implementation for hard-off persistence: SR latch (2 transistors + RC timer) vs dedicated IC (LTC2950). Component selection, schematic wiring, RC time constant calc.~~ **MOOT 2026-08-17** — no latch circuit needed. The maintained power switch physically disconnects the battery; no latch is required to hold EN low. | U8 review Q3 | 2026-08-02 | **Moot (2026-08-17)** — eliminated by power switch simplification. |
 
 ---
 
@@ -139,3 +149,4 @@ Our design wires PG to an MCU GPIO with EXTI (interrupt) for brown-out warning (
 | 2026-08-02 | U8 | Initial review: Q1 (PS/SYNC — no change, deliberate deviation), Q2 (PG pullup — no change, correct for EXTI), Q3 (power switch — deferred) |
 | 2026-08-02 | U8 | Q3 updated: power switch architecture decided (momentary slide switch, soft on/off + 5s hard off). DEF-001 resolved, DEF-002 opened (latch circuit TBD). SW21 part changed SSSS811101 → SSAL120100. |
 | 2026-08-02 | U8 | Q3 corrected: SSAL120100 is a momentary **slide** switch (SPDT, spring-return), not a pushbutton. Added NRND flag. Added long-press decision (simple for rev1 — no menu, 5s hardware kill only). Added unified power-on explanation + power-on race condition firmware note. DEF-002 deferred to power schematic drawing time. |
+| 2026-08-17 | U8 | Q3 SUPERSEDED: Power switch architecture simplified to maintained switch in battery path + MCU inactivity timer. Latch circuit eliminated (DEF-002 moot). EN reverts to always-on. Switch part changes from SSAL120100 to TBD power-rated maintained switch. See project-log 2026-08-17. |

@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-08-16
+updated: 2026-08-17
 ---
 # Problem Definition
 
@@ -54,7 +54,14 @@ A cell phone is a convergence of five engineering disciplines, each non-trivial 
 │  - (future: BT/WiFi)     │       │
 │  - Main display (ST7789V 2.0")   │ ← ZIF connector, mounts on board
 │  - Earpiece speaker              │
+│  - Loudspeaker                   │
+│  - 3.5mm headphone jack (rev1)   │ ← Wired audio out (2026-08-16)
+│  - Camera module (rev1, OV5640)  │ ← DCMI, OV5640 5MP AF (selected 2026-08-17)
+│  - Notification LED (rev1)       │ ← Missed-call/SMS alert (2026-08-16)
+│  - Vibration motor driver (rev1) │ ← Silent alert, off-board motor (2026-08-16)
 │  - Backlight FET + resistors     │
+│  - microSD slot                  │
+│  - GNSS U.FL footprint           │
 └──────────────────────────────────┘
 
     ┌──────────────────────┐

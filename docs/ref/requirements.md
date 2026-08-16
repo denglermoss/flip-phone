@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-08-16
+updated: 2026-08-17
 ---
 # Requirements
 
@@ -31,21 +31,36 @@ updated: 2026-08-16
 - **FR-4.2**: Device shall monitor and display battery level.
 - **FR-4.3**: Device shall enter low-power mode when idle (display off, modem standby).
 - **FR-4.4**: Device shall support a standby time of at least 24 hours (target).
-- **FR-4.5**: Device shall power on via a short press of the power switch from both soft-off (MCU STOP mode) and hard-off (rail dead) states. See `docs/ref/project-log.md` 2026-08-02 Power Switch Functionality.
-- **FR-4.6**: Device shall support soft power off — graceful shutdown to MCU STOP mode — triggered by either a short press of the power switch (MCU EXTI) or software (e.g., menu action). Modem stays registered on the network for incoming calls in soft-off. See `docs/ref/project-log.md` 2026-08-02.
-- **FR-4.7**: Device shall support hard power off via a 5-second hold of the power switch. This is a pure-hardware function (RC timer + latch → EN low → +3.3V rail dies) that works independently of MCU state, including when firmware is hung. Modem dies too (true power-off, not standby). See `docs/ref/project-log.md` 2026-08-02.
+- **FR-4.5**: Device shall power on via a maintained power switch that physically connects the battery to the system. Flipping the switch on brings up the +BATT net → TPS63021 EN rises → +3.3V rail comes up → MCU boots. See `docs/ref/project-log.md` 2026-08-17 Power Switch Simplification.
+- **FR-4.6**: Device shall support soft off — MCU enters STOP mode after an inactivity timer expires. This is firmware-driven. All firmware behavior details (modem sleep state, wake sources, timer duration, graceful shutdown sequence, network reachability during sleep) are deferred until after PCB is ordered. See `docs/ref/project-log.md` 2026-08-17.
+- **FR-4.7**: Device shall support hard power off via the maintained power switch — physically disconnects the battery from the system, resulting in 0 power draw. No latch circuit, no MCU involvement. Charging while off is not supported (accepted tradeoff). See `docs/ref/project-log.md` 2026-08-17.
 
 ### FR-5: Form Factor (Candybar / Single-Board — LOCKED 2026-08-16)
 - **FR-5.1**: Device form factor is candybar / single-board — one PCB with all components. Display (ST7789V 2.0") mounts directly via ZIF connector (J7, 12-pin 0.5mm). No hinge flex, no daughterboard, no outer display. Flip/clamshell deferred to v2. See `docs/ref/project-log.md` 2026-08-16 Form Factor Pivot.
 - **FR-5.2**: Mechanical design (enclosure, keypad feel) is deferred to Phase 7 — depends on electronics being proven first. Single-shell enclosure (no hinge mechanism).
 - **FR-5.3**: User has access to FDM, SLA, and CNC for enclosure fabrication.
 
-### FR-6: Ecosystem Connectivity (Future — Constrains Hardware Selection Now)
-- **FR-6.1**: Device MCU shall have USB capability (device or OTG mode) to enable future module connectivity. This is a hardware selection constraint, not an MVP feature.
-- **FR-6.2**: Device PCB shall include a USB data connector (not charge-only) routed to the MCU. Physical connector type TBD.
-- **FR-6.3**: Future scope (post-daily-driver): USB tethering to expose LTE connectivity to external modules. **Architecture (2026-06-28)**: tethering uses the SIM7600's own USB 2.0 HS port directly (RNDIS/ECM via `AT+CUSBPIDSWITCH`), bypassing the MCU — the modem is the USB network adapter, not the MCU. The MCU's USB (OTG_FS) is not in the tethering path. See project-log.md 2026-06-28 USB HS/ULPI Revisit.
-- **FR-6.4**: Future scope: File access (contacts, music storage) over USB for external modules.
-- **FR-6.5**: Bluetooth/WiFi for wireless ecosystem modules is deferred — not a hardware selection constraint at this time.
+### FR-6: Camera (rev1 expansion — 2026-08-16)
+- **FR-6.1**: Device shall include a camera module connected via the MCU DCMI interface (8-bit parallel). Camera module selected: OV5640 (5MP, auto-focus, 8-bit DVP via 20-pin FPC). See `docs/ref/project-log.md` 2026-08-17.
+- **FR-6.2**: Device shall support photo capture to SD card storage. (Post-MVP firmware; hardware present on rev1.)
+- **FR-6.3**: Device display (ST7789V, color) shall be capable of showing a live camera preview. (Post-MVP firmware.)
+- **FR-6.4**: Camera module selection shall be finalized before schematic entry for the camera section. See `docs/ref/project-log.md` 2026-08-16.
+
+### FR-7: Audio Output (rev1 expansion — 2026-08-16)
+- **FR-7.1**: Device shall include a 3.5mm TRS headphone jack for wired audio output from the ALC5651 codec.
+- **FR-7.2**: Device shall mute the earpiece and loudspeaker when headphones are inserted (jack-detect GPIO).
+- **FR-7.3**: Device shall support MP3/music playback via SD card storage + codec I2S-2 path. (Firmware-only — hardware already on rev1: SD card + codec I2S-2 + level shifter. See `docs/ref/feature-wishlist.md`.)
+
+### FR-8: Notifications (rev1 expansion — 2026-08-16)
+- **FR-8.1**: Device shall include an LED notification light for missed-call/SMS alerts (single GPIO + LED).
+- **FR-8.2**: Device shall include a vibration motor for silent call/SMS alerts (GPIO + N-FET driver + off-board motor via connector).
+
+### FR-9: Ecosystem Connectivity (Future — Constrains Hardware Selection Now)
+- **FR-9.1**: Device MCU shall have USB capability (device or OTG mode) to enable future module connectivity. This is a hardware selection constraint, not an MVP feature.
+- **FR-9.2**: Device PCB shall include a USB data connector (not charge-only) routed to the MCU. Physical connector type TBD.
+- **FR-9.3**: Future scope (post-daily-driver): USB tethering to expose LTE connectivity to external modules. **Architecture (2026-06-28)**: tethering uses the SIM7600's own USB 2.0 HS port directly (RNDIS/ECM via `AT+CUSBPIDSWITCH`), bypassing the MCU — the modem is the USB network adapter, not the MCU. The MCU's USB (OTG_FS) is not in the tethering path. See project-log.md 2026-06-28 USB HS/ULPI Revisit.
+- **FR-9.4**: Future scope: File access (contacts, music storage) over USB for external modules.
+- **FR-9.5**: Bluetooth/WiFi for wireless ecosystem modules is deferred — not a hardware selection constraint at this time.
 
 ## Non-Functional Requirements
 

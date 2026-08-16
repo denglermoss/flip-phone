@@ -40,7 +40,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
   - **Resolved by**: Subagent verification 2026-07-22 (this session).
 
 - **O2 — MPCIe power-on method** *(gate: before modem schematic section finalized)*
-  - **Status**: RESOLVED 2026-07-22, **UPDATED 2026-07-24**. SIM7600 MPCIe auto-powers on when 3.3V is applied — no PWRKEY pin. ~~Load switch on +3.3V to modem, controlled by MCU GPIO `MCU_MODEM_PWR_EN` (PE6, pin 5), recommended for power control and graceful shutdown.~~ **SUPERSEDED 2026-07-24**: No load switch — SIM7600 has robust sleep mode (<5mA, maintains call/SMS reception) + dedicated PWRKEY pin. Load switch is redundant. MCU_MODEM_PWR_EN (PE6) is now no_connect. System on/off is controlled by a slide switch (SW21) on the TPS63021 EN pin instead.
+  - **Status**: RESOLVED 2026-07-22, **UPDATED 2026-07-24, UPDATED 2026-08-17**. SIM7600 MPCIe auto-powers on when 3.3V is applied — no PWRKEY pin. ~~Load switch on +3.3V to modem, controlled by MCU GPIO `MCU_MODEM_PWR_EN` (PE6, pin 5), recommended for power control and graceful shutdown.~~ **SUPERSEDED 2026-07-24**: No load switch — SIM7600 has robust sleep mode (<5mA, maintains call/SMS reception) + dedicated PWRKEY pin. Load switch is redundant. MCU_MODEM_PWR_EN (PE6) is now no_connect. ~~System on/off is controlled by a slide switch (SW21) on the TPS63021 EN pin instead.~~ **UPDATED 2026-08-17**: System on/off is controlled by a maintained power switch (SW21) in the battery path (between J_BATT and +BATT net), not on the EN pin. See project-log 2026-08-17.
   - **Blocks**: ~~Modem section power wiring, MCU GPIO allocation~~ — unblocked.
 
 - **O3 — MCU peripheral-to-pin mapping** *(gate: before any non-power schematic section)*
@@ -99,7 +99,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 
 > **Status**: IN PROGRESS (power section done, 7 sections remaining)
 > **Approach**: Flat sheet + global labels (not hierarchical sheets). Block-diagram-first.
-> **Reference**: `docs/work/block-diagram.md` is the source of truth for each section.
+> **Reference**: The KiCad schematic (`pcb/phone/phone.kicad_sch`) is the pin-level source of truth. `docs/work/block-diagram.md` provides design intent and planning reference.
 
 ### 3.1 Resolve schematic-blocking open questions
 
@@ -219,13 +219,13 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 **Complexity**: Medium (~2-3 hours).
 
 - [ ] Run KiCad ERC — fix all violations
-- [ ] Cross-check schematic vs `docs/work/block-diagram.md` (every component, signal, power net)
+- [ ] Cross-check schematic vs datasheets (every component, signal, power net) — `docs/work/block-diagram.md` is planning reference, not authoritative
 - [ ] Verify all global labels match between sections
 - [ ] Verify power nets use correct symbols (+BATT, +3.3V, +1V8, GND)
 - [ ] Add PWR_FLAG symbols where needed (no "power pin not driven" errors)
 - [ ] Mark all unconnected pins with NC flag
 - [ ] Generate netlist — verify no unconnected nets
-- [ ] Update `docs/work/block-diagram.md` with completed sections
+- [ ] ~~Update `docs/work/block-diagram.md` with completed sections~~ **SUPERSEDED 2026-08-16**: block-diagram.md is now design-intent only; the schematic is the pin-level source of truth. No need to sync pin-level detail back to the doc.
 - [ ] Update `docs/ref/project-log.md` with schematic completion entry
 - [ ] **Phase 3 gate**: Schematic ERC-clean and reviewed → proceed to Phase 4
 

@@ -33,7 +33,7 @@ docs/
 | `docs/ref/feature-wishlist.md` | reference | Features rated 1-10, ecosystem implications, component selection guide |
 | `docs/ref/project-log.md` | reference | Decision log (dated), phase breakdown, progress tracking |
 | `docs/ref/bom.md` | reference | Bill of Materials — component list with prices, links, cost estimates |
-| `docs/work/block-diagram.md` | active | Per-section pin-level wiring spec. Source of truth for schematic entry. |
+| `docs/work/block-diagram.md` | active | Design intent, topology, and rationale. Pin-level detail is planning reference (KiCad schematic is the pin-level source of truth). |
 | `docs/work/mcu-pin-assignment.md` | active | STM32H743ZI full pin map (73 pins assigned, ~60 spare) |
 | `docs/work/task-tracker.md` | active | Comprehensive plan to assembled PCB (Phase 3-5: schematic → layout → DIY assembly) |
 | `docs/work/schematic-completion-plan.md` | active | Per-sheet review tracker for Phase 3 schematic fixes |
@@ -56,7 +56,8 @@ Each type of information has **one source of truth**. Other docs link to it — 
 | Research findings | `docs/ref/research-notes.md` | Link, don't restate |
 | Feature ratings + ecosystem implications | `docs/ref/feature-wishlist.md` | Link, don't restate |
 | Pin assignments | `docs/work/mcu-pin-assignment.md` | Link, don't restate |
-| Block wiring spec | `docs/work/block-diagram.md` | Link, don't restate |
+| Design intent & topology rationale | `docs/work/block-diagram.md` | Link, don't restate |
+| Pin-level wiring (actual) | KiCad schematic (`pcb/phone/phone.kicad_sch`) | Extract via kicad-inspector subagent |
 | Current plan/status | `docs/work/task-tracker.md` | Link, don't restate |
 | Schematic fixes | `docs/work/schematic-completion-plan.md` | Link, don't restate |
 | UI design | `docs/work/ui-design.md` | Link, don't restate |
@@ -99,6 +100,7 @@ Each type of information has **one source of truth**. Other docs link to it — 
 | Display | ST7789V SPI TFT 2.0" (outer display dropped 2026-08-16) | 2026-07-19 | project-log.md Display Selection |
 | Keypad | SMD tactile switches, 5×4 matrix | 2026-06-28 | project-log.md Keypad Selection |
 | Form factor | Candybar / single-board (flip deferred to v2) | 2026-08-16 | project-log.md Form Factor Pivot |
+| Camera | OV5640 5MP AF, 8-bit DVP via DCMI (20-pin FPC ZIF) | 2026-08-17 | project-log.md Camera Module Selection |
 | Power | TPS63021 buck-boost + MCP73831 charger + MAX17048 gauge | 2026-07-19 | project-log.md, `docs/work/block-diagram.md` |
 | USB tethering | SIM7600 USB HS direct (no ULPI) | 2026-06-28 | project-log.md USB HS/ULPI Revisit |
 | Schematic | KiCad, flat sheet + global labels | 2026-07-22 | project-log.md Schematic Approach |

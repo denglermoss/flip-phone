@@ -48,7 +48,8 @@ Consult the Source of Truth Assignments table in `AGENTS.md`. Identify which doc
 | Research findings | `docs/ref/research-notes.md` |
 | Feature ratings / ecosystem implications | `docs/ref/feature-wishlist.md` |
 | Pin assignments | `docs/work/mcu-pin-assignment.md` |
-| Block wiring spec | `docs/work/block-diagram.md` |
+| Design intent & topology rationale | `docs/work/block-diagram.md` |
+| Pin-level wiring (actual) | KiCad schematic (`pcb/phone/phone.kicad_sch`) |
 | Current plan / status | `docs/work/task-tracker.md` |
 | Schematic fixes | `docs/work/schematic-completion-plan.md` |
 | UI design | `docs/work/ui-design.md` |

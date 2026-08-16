@@ -49,7 +49,7 @@ updated: 2026-08-16
 | ESDA6V1 ESD (SD) | U11 | U7 |
 | USB-C connector | J1 | USBC1 |
 | Battery connector | J_BATT | CN1 |
-| Slide switch | SW1 | SW21 |
+| Slide switch | SW1 | SW21 | *(2026-08-17: switch moves from EN pin to battery path — power-rated maintained switch, not signal-level. See project-log 2026-08-17.)* |
 
 Note: ESDA6V1 was a single U11 in docs but is two separate chips in the schematic (U6 for SIM, U7 for SD). U1 (MCU) and U2 (modem/MPCIe socket) were already consistent.
 
@@ -116,7 +116,7 @@ HEAD version contains: U5 (ALC5651), U12 (SN74AXC4T774 level shifter), C23-C26/C
 - [ ] **Fix 9 resistor footprint overrides** — R8-R18 have instance Footprint = `""` (blanked), should inherit `easyeda2kicad:R0603`
 - [ ] **Add key-function text labels** — SW1-SW20 need silkscreen labels (1, 2, ..., CALL, END, UP, DOWN, OK, SPARE)
 - [ ] **Add scan-algorithm note** — document the mixed pull-up/pull-down topology (active-low column drive, read rows)
-- [ ] **Update `docs/work/block-diagram.md` §Keypad** — remove "to be specified", add SKQGABE010 part + topology + matrix map
+- [ ] **Update `docs/work/block-diagram.md` §Keypad** — remove "to be specified", add keypad topology + matrix design intent (pin-level detail lives in the schematic)
 - [ ] **Add project-log entry** for SKQGABE010 selection and pull topology
 
 ### §F — Display (Single Board): Backlight FET
@@ -170,7 +170,7 @@ HEAD version contains: U5 (ALC5651), U12 (SN74AXC4T774 level shifter), C23-C26/C
 ### §J — Documentation Sync
 
 - [ ] **`docs/work/task-tracker.md`**: Update §3.2-3.8 checkboxes to reflect actual completion; fix cap refdes (C40/C41/C42 → C18-C22); codec entry correct for HEAD but note working-tree issue
-- [ ] **`docs/work/block-diagram.md`**: Update sections marked "to be specified" that are actually drawn (MCU, modem, keypad, display, SIM/SD); reconcile backlight architecture (LEDA/LEDK vs BL_PWM); reconcile net names (DISP_SDA/SCL vs DISP_MOSI/SCK, SPK+/SPK- vs EARPIECE+/-)
+- [ ] **`docs/work/block-diagram.md`**: Update design intent for sections marked "to be specified" that are actually drawn (MCU, modem, keypad, display, SIM/SD). Reconcile net names (DISP_SDA/SCL vs DISP_MOSI/SCK, SPK+/SPK- vs EARPIECE+/-) — net names are design intent and must match the schematic. Pin-level detail is no longer maintained here (schematic is authoritative).
 - [ ] **`docs/ref/project-log.md`**: Add entries for SKQGABE010 keypad switch selection, SOFNG socket selection, backlight architecture change, codec sheet restore
 - [ ] **`AGENTS.md`**: Reconcile refdes (USBC1, CN1, U8-U10, D1) and socket part (Techship vs SOFNG) with schematic
 

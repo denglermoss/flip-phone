@@ -1,10 +1,12 @@
 ---
 status: active
-updated: 2026-08-16
+updated: 2026-08-17
 ---
-# Schematic Reference
+# Design Intent & Rationale
 
-> **Status**: Living document — updated section-by-section as the schematic is drawn in KiCad. Each section lists components, signals, power nets, and connection notes for that part of the design. Use this alongside KiCad while drawing.
+> **Role**: This document captures **design intent, topology decisions, and rationale** — the "why" behind the design, not the pin-by-pin "what." The **KiCad schematic** (`pcb/phone/phone.kicad_sch`) is the pin-level source of truth. Use the `kicad-inspector` subagent to extract netlists, pin connections, and BOM from the schematic on demand.
+>
+> **Pin-level detail below**: The IC pinout tables, signal mapping tables, and pre-wire checklists in this doc are **planning artifacts** from the pre-schematic phase. They are not actively maintained — once a section's schematic is drawn, the schematic is authoritative and this doc's pin-level detail for that section becomes historical reference. Verify against the schematic (or datasheets) before relying on any pin-level detail here.
 >
 > **Approach**: **Hierarchical schematic** — 8 sub-sheets in a flat root container (`phone.kicad_sch`). Each block (MCU, Modem, Codec, Keypad, Display, Display_Daughter, SIM_SD, Power) is its own `.kicad_sch` file. Power nets are global power symbols. Inter-block signals use **global labels** (not hierarchical pins) — no sheet-pin matching required. Each sub-sheet declares the global labels it needs; connectivity is by name-matching across sheets.
 >
@@ -17,7 +19,7 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 | Net name | Voltage | Source | Consumers |
 |----------|---------|--------|-----------|
 | `VBUS` | 5V | USB-C connector (USBC1) | MCP73831 charger input (U11), MCU VBUS sense (via divider — deferred to MCU section) |
-| `+BATT` | 3.4–4.3V (LiPo) | LiPo via battery connector (CN1, JST S2B-PH-SM4-TB, C295747) | SIM7600 VBAT pins (U2), TPS63021DSJR input (U8), MAX17048 VDD (U10 — power + voltage sense) |
+| `+BATT` | 3.4–4.3V (LiPo) | LiPo via battery connector (CN1, JST S2B-PH-SM4-TB, C295747) → **power switch (SW21, maintained, battery-path disconnect)** → +BATT net | SIM7600 VBAT pins (U2), TPS63021DSJR input (U8), MAX17048 VDD (U10 — power + voltage sense), MCP73831 VBAT. Switch is upstream of all loads — 0 power draw when off. See project-log 2026-08-17. |
 | `+3.3V` | 3.3V | TPS63021DSJR buck-boost output (U8) | MCU, display, SD card, codec MICVDD, level shifter VCCB (U12 SN74AXC4T774) |
 | `+1V8` | 1.8V | TPS7A0218 LDO output (U9, from +3.3V) | ALC5651 codec analog (AVDD/DACREF/CPVDD), codec DBVDD (shared single pin — both I2S ports), level shifter VCCA (U12), I2C pullups |
 | `GND` | 0V | Common ground (USB-C GND, LiPo −, all ICs) | All blocks |
@@ -98,6 +100,8 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 **Consumers:** Every IC has GND pin(s). Every connector has GND. Every decoupling cap has a GND side. The PCB ground plane is a single continuous reference for all rails. No isolated grounds (no split planes) — single GND net everywhere.
 
 ### Power IC pinouts and connections
+
+> **Historical planning reference** — the pinout tables below were created during the pre-schematic planning phase. The KiCad Power sheet is now drawn; verify against the schematic (or the datasheets cited below) rather than relying on these tables as authoritative. Design rationale notes embedded in the tables remain valid.
 
 > **Source for all pinouts**: vendor datasheets, extracted via the PDF MCP server. TPS63021 from `docs/datasheets/tps63021.pdf` (TI SLVS916I §5 Pin Functions). TPS7A02 from TI SBVS277C §5 (DBV/SOT-23-5 variant). MCP73831 from `docs/datasheets/mcp73831.pdf` (Microchip DS20001984H — **DFN-8 2×3mm variant, not SOT-23-5**; see U11 correction below). MAX17048 from `docs/datasheets/max17048.pdf` (ADI/Maxim Rev 7, §Pin/Bump Descriptions p6 — TDFN-8 2×2mm variant). USBC1 USB-C pinout from the KiCad symbol `TYPE-C-31-M-12` (downloaded from LCSC C165948 via easyeda2kicad) — pinout follows the USB Type-C specification (USB-IF).
 
@@ -224,7 +228,7 @@ USB-C USBC1 (A6+B6, A7+B7) → USBLC6-2 ESD (D1) → MCU USB OTG_FS (D+, D-)
 | 6, 7 | L2 | L1 inductor (other end) | Inductor connection 2. Tie pin 6 and 7 together. |
 | 8, 9 | L1 | L1 inductor (one end) | Inductor connection 1. Tie pin 8 and 9 together. |
 | 10, 11 | VIN | `+BATT` | Power-stage supply input. Tie pin 10 and 11 together. |
-| 12 | EN | `+BATT` via 1MΩ pullup | Enable (active high). **Must not float.** Pull up to VIN (+BATT) with 1MΩ for always-on. **Do NOT pull up to VOUT** — chicken-and-egg: at startup VOUT=0 so EN=0 and the chip never starts. +BATT is present immediately when battery connects, so pulling EN to +BATT guarantees startup. The TPS63021 quiescent current in power-save (~25µA) is negligible vs modem idle (17.5mA) — no reason to disable the rail. |
+| 12 | EN | `+BATT` via 1MΩ pullup | Enable (active high). **Must not float.** Pull up to VIN (+BATT) with 1MΩ for always-on. **Do NOT pull up to VOUT** — chicken-and-egg: at startup VOUT=0 so EN=0 and the chip never starts. +BATT is present immediately when the power switch connects the battery, so pulling EN to +BATT guarantees startup. The TPS63021 quiescent current in power-save (~25µA) is negligible vs modem idle (17.5mA) — no reason to disable the rail. **Power switch is in the battery path (upstream of +BATT), not on EN** — see project-log 2026-08-17. |
 | 13 | PS/SYNC | `GND` (tie directly) | Power-save mode enable. **Low = power-save ON** (high efficiency at light load <100mA, auto-switches to PWM above 100mA). **High = PWM always** (lower ripple, worse light-load efficiency). Tie to GND to enable power-save — the chip automatically transitions to PWM when load exceeds 100mA. No need to toggle: standby load (~20-50mA) benefits from power-save; active load (>100mA) auto-switches to PWM. |
 | 14 | PG | MCU GPIO (EXTI-capable) + 10kΩ pullup to +3.3V | **Power-good output — LOCKED 2026-07-21 (wire to MCU).** Open-drain, low = VOUT < ~90% of target (~2.97V). Pull up to **+3.3V** (NOT +BATT) with 10kΩ, wire to MCU GPIO (EXTI-capable, TBD pin assignment). **Why wire it (not "MCU is off when PG is low"):** the STM32H743 BOR (brown-out reset) triggers around ~1.7V, but PG goes low at ~2.97V — there's a ~1.2V window where PG is low but the MCU is still alive and can take defensive action (reduce clock, kill display backlight, pause modem TX, trigger graceful shutdown). Without PG, the MCU has no warning before the rail collapses. Net name: `3V3_OK`. **Pull-up rail corrected 2026-07-22** — the power schematic originally had R4 pulled up to +BATT (3.4–4.3V), which would overvoltage a non-5V-tolerant MCU GPIO. Fixed to +3.3V. |
 | Exposed pad | PGND | `GND` | Thermal pad — connect to large GND copper pour for heat dissipation. Internally tied to PGND. |
@@ -519,6 +523,8 @@ Most labels are shared between variants, but **3 labels are LGA-only** (`MODEM_P
 
 ### Pin mapping — MPCIe variant — *primary*
 
+> **Historical planning reference** — the pin mapping tables below were created during the pre-schematic planning phase. The KiCad Modem sheet is partially drawn; verify against the schematic (or the SIM7600 PCIE HW Design Manual V1.03) rather than relying on these tables as authoritative. Design rationale notes (WAKE# vs STATUS semantics, power supply differences, variant comparison) remain valid.
+
 **Symbol**: `connectors:PCIE-52P40H_C444926` (54 pins = 52 edge + 2 mounting). Pin numbers from SIM7600 PCIE HW Design V1.03 §2.2 (pp 13-15). The socket symbol pins are numbered 1-52 (signal) + 53-54 (mounting pads).
 
 | Global label | MPCIe edge pin name | Pin # | I/O | Notes |
@@ -684,7 +690,7 @@ The MPCIe card's VCC requires **3.0–3.6V (3.3V typical)** — **raw LiPo (up t
 | `SPK+` | ALC5651 earpiece out+ | Earpiece speaker + | Differential audio |
 | `SPK-` | ALC5651 earpiece out- | Earpiece speaker - | Differential audio |
 
-> **Camera**: Out of scope for rev1. DCMI (11 pins + 1 power) stays on the board when added. See project-log.md 2026-07-19 Flip Form Factor (camera-in-base decision retained — camera goes on the single board, not a separate lid).
+> **Camera**: ~~Out of scope for rev1.~~ **INCLUDED on rev1 (2026-08-16)** — camera module + FPC connector + DCMI routing. **Module selected (2026-08-17)**: OV5640 (5MP, auto-focus, 8-bit DVP via 20-pin FPC). DCMI pins (11 data/sync + XCLK + 2 control + I2C2) assigned on MCU. See project-log.md 2026-08-17 Camera Module Selection.
 
 ### Backlight PWM circuit (on single board)
 
@@ -695,6 +701,18 @@ The MPCIe card's VCC requires **3.0–3.6V (3.3V typical)** — **raw LiPo (up t
 - No boost LED driver needed (parallel LEDs, 3.0V Vf < 3.3V rail)
 
 ## Section: Keypad (5×4 matrix) — *to be specified*
+
+## Section: Camera (rev1 expansion — OV5640 selected 2026-08-17) — *to be specified*
+
+> **Added 2026-08-16, module selected 2026-08-17**: Camera included on rev1 per v1 hardware scope decision. See project-log.md 2026-08-16 and 2026-08-17. **Module**: OV5640 (5MP, auto-focus, 8-bit DVP, ArduCAM-standard 20-pin 0.5mm FPC). DCMI pins (11 data/sync) + XCLK (MCO1) + RESET/PWDN (2 GPIO) + I2C2 (SCCB, separate 3.3V bus) assigned on MCU — see `docs/work/mcu-pin-assignment.md`. Needs: 20-pin 0.5mm FPC ZIF connector, 3.3V power only (onboard LDOs on module), separate I2C2 bus (3.3V pull-ups). PCB placement: top edge of board (lens hole in enclosure).
+
+## Section: Headphone Jack (rev1 expansion — 2026-08-16) — *to be specified*
+
+> **Added 2026-08-16**: 3.5mm TRS headphone jack included on rev1. Wired audio output from ALC5651 codec. Needs: 3.5mm SMD connector on board edge (~6×14mm), audio routing from codec stereo output, jack-detect GPIO (mute speakers when inserted). Specific connector + codec output routing TBD at schematic time. See project-log.md 2026-08-16.
+
+## Section: Notification LED + Vibration Motor (rev1 expansion — 2026-08-16) — *to be specified*
+
+> **Added 2026-08-16**: LED notification light + vibration motor included on rev1 (both trivial). LED: single GPIO + LED + current-limit resistor. Vibration motor: GPIO + N-FET driver + flyback diode + 2-pin connector for off-board motor. Assign spare GPIOs at schematic time. See project-log.md 2026-08-16.
 
 ## Section: Fuel Gauge (MAX17048) — *to be specified*
 

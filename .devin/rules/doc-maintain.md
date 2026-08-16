@@ -29,7 +29,8 @@ Key assignments:
 - Constraints → `docs/ref/constraints.md`
 - Component selection + pricing → `docs/ref/bom.md`
 - Pin assignments → `docs/work/mcu-pin-assignment.md`
-- Block wiring spec → `docs/work/block-diagram.md`
+- Design intent & topology rationale → `docs/work/block-diagram.md`
+- Pin-level wiring (actual) → KiCad schematic (`pcb/phone/phone.kicad_sch`) — extract via kicad-inspector
 - Current plan/status → `docs/work/task-tracker.md`
 
 ## Read Before Acting
