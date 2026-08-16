@@ -1,12 +1,14 @@
 ---
 name: kicad-pcb-edit
-description: Governed write workflow for .kicad_pcb files — plan, checkpoint if autonomous, edit, validate, report.
+description: "DORMANT (2026-08-16 role change): Governed write workflow for .kicad_pcb files. Invoke only on explicit user request — user now drives all KiCad edits, agent reviews."
+status: dormant
 triggers:
   - user
-  - model
 subagent: true
 agent: kicad-author
 ---
+
+> **DORMANT as of 2026-08-16** — Per the Workflow Role Change decision (project-log.md 2026-08-16), the user handles all KiCad work and the agent acts as reviewer/guide. This skill remains available but should only be invoked when the user **explicitly** asks the agent to make a KiCad edit. Do not auto-invoke. The active review path is `/kicad-review` (read-only, via kicad-inspector subagent).
 
 Implement a change to a `.kicad_pcb` file in the current KiCad project, following the governed workflow in `pcb/AGENTS.md`.
 
