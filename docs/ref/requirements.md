@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-07-28
+updated: 2026-08-16
 ---
 # Requirements
 
@@ -31,10 +31,13 @@ updated: 2026-07-28
 - **FR-4.2**: Device shall monitor and display battery level.
 - **FR-4.3**: Device shall enter low-power mode when idle (display off, modem standby).
 - **FR-4.4**: Device shall support a standby time of at least 24 hours (target).
+- **FR-4.5**: Device shall power on via a short press of the power switch from both soft-off (MCU STOP mode) and hard-off (rail dead) states. See `docs/ref/project-log.md` 2026-08-02 Power Switch Functionality.
+- **FR-4.6**: Device shall support soft power off — graceful shutdown to MCU STOP mode — triggered by either a short press of the power switch (MCU EXTI) or software (e.g., menu action). Modem stays registered on the network for incoming calls in soft-off. See `docs/ref/project-log.md` 2026-08-02.
+- **FR-4.7**: Device shall support hard power off via a 5-second hold of the power switch. This is a pure-hardware function (RC timer + latch → EN low → +3.3V rail dies) that works independently of MCU state, including when firmware is hung. Modem dies too (true power-off, not standby). See `docs/ref/project-log.md` 2026-08-02.
 
-### FR-5: Form Factor (Flip/Clamshell — LOCKED 2026-07-19)
-- **FR-5.1**: Device form factor is flip/clamshell — two PCBs (main board + display daughterboard) connected via a 14-pin 0.5mm hinge flex cable. Main display (ST7789V 2.0") + outer display (1.14" TFT) on the daughterboard; keypad, MCU, modem, battery, and connectors on the main board.
-- **FR-5.2**: Mechanical design (enclosure, hinge mechanism, keypad feel) is deferred to Phase 7 — depends on electronics being proven first. See `docs/ref/project-log.md` 2026-07-19 Display Panel Selection + Flip Form Factor Locked.
+### FR-5: Form Factor (Candybar / Single-Board — LOCKED 2026-08-16)
+- **FR-5.1**: Device form factor is candybar / single-board — one PCB with all components. Display (ST7789V 2.0") mounts directly via ZIF connector (J7, 12-pin 0.5mm). No hinge flex, no daughterboard, no outer display. Flip/clamshell deferred to v2. See `docs/ref/project-log.md` 2026-08-16 Form Factor Pivot.
+- **FR-5.2**: Mechanical design (enclosure, keypad feel) is deferred to Phase 7 — depends on electronics being proven first. Single-shell enclosure (no hinge mechanism).
 - **FR-5.3**: User has access to FDM, SLA, and CNC for enclosure fabrication.
 
 ### FR-6: Ecosystem Connectivity (Future — Constrains Hardware Selection Now)
@@ -79,7 +82,7 @@ updated: 2026-07-28
 - **Daily-driver scope**: Calls + contacts + SMS + basic menu system (feature phone experience).
 - **Display**: ST7789V SPI color TFT, 2.0" 240×320, RGB565. See research-notes.md Display Options section and project-log.md 2026-06-28 Display Selection.
 - **Keypad**: SMD tactile switches on custom PCB traces (LOCKED 2026-06-28). See Resolved Questions below and project-log.md 2026-06-28 Keypad Selection.
-- **Enclosure/Form factor**: Flip/clamshell — two PCBs (main board + display daughterboard) connected via hinge flex cable. **LOCKED 2026-07-19** (supersedes 2026-06-28 deferral). Hinge mechanism + enclosure design deferred to Phase 7 (mechanical design). User has FDM, SLA, and CNC access.
+- **Enclosure/Form factor**: Candybar / single-board — one PCB, display via ZIF connector. **LOCKED 2026-08-16** (supersedes 2026-07-19 flip/clamshell, which is deferred to v2). Enclosure design deferred to Phase 7 (mechanical design). Single-shell enclosure, no hinge. User has FDM, SLA, and CNC access.
 - **Firmware**: Zephyr RTOS — balances concurrency needs with maintainability for a daily-driver device. See project-log.md 2026-06-28 RTOS Selection.
 
 ## Open Questions (Requirements)

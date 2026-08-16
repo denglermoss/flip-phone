@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-07-28
+updated: 2026-08-16
 ---
 # Problem Definition
 
@@ -8,7 +8,7 @@ updated: 2026-07-28
 
 Design and build a custom cell phone from scratch that can make and receive real voice calls on a live cellular network in the United States. The device must eventually become a usable daily-driver, not just a lab prototype.
 
-**Form factor: flip/clamshell (LOCKED 2026-07-19).** Two PCBs (main board + display daughterboard) connected via a hinge flex cable. The display daughterboard is trivial (~5 components + 3 ZIF connectors). Hinge mechanism and enclosure design are deferred to Phase 7 (mechanical). See `docs/ref/project-log.md` 2026-07-19 Display Panel Selection + Flip Form Factor Locked.
+**Form factor: candybar / single-board (LOCKED 2026-08-16).** One PCB with all components — display mounts directly via ZIF connector, no hinge flex, no daughterboard. Flip/clamshell deferred to a potential v2. See `docs/ref/project-log.md` 2026-08-16 Form Factor Pivot.
 
 ## Modular Ecosystem Vision (Future — Does Not Affect MVP)
 
@@ -36,36 +36,26 @@ A cell phone is a convergence of five engineering disciplines, each non-trivial 
 
 4. **Power Management** — Cellular modules draw 2A+ peaks during transmission. The battery, regulators, and charging circuit must handle this while fitting in a small enclosure. Standby time needs to be at least 24 hours.
 
-5. **Mechanical Integration** (Phase 7) — Enclosure, keypad feel, display mounting, antenna placement, and hinge mechanism. Form factor is locked (flip/clamshell); mechanical design is a separate phase that depends on the electronics being proven first.
+5. **Mechanical Integration** (Phase 7) — Enclosure, keypad feel, display mounting, antenna placement. Form factor is locked (candybar / single-board); mechanical design is a separate phase that depends on the electronics being proven first.
 
-## Architecture (Flip/Clamshell — Locked 2026-07-19)
+## Architecture (Candybar / Single-Board — Locked 2026-08-16)
 
 ```
-┌─────────────────────────────┐
-│        Main Board            │
-│  - MCU (RTOS)                │
-│  - Cellular Module (LTE)     │
-│  - SIM Card Slot             │
-│  - Keypad                    │
-│  - Mic + Battery + Charging  │
-│  - Power Regulation          │
-│  - Antenna                   │
-│  - USB (data + power) ←──┐   │ ← Ecosystem interconnect
-│  - (future: BT/WiFi)     │   │
-└──────────────────────────┼──┘
-                           │
-    ┌──────────────────────┘
-    │ Hinge flex (14-pin 0.5mm FFC)
-    │ — display SPI, backlight,
-    │   earpiece, outer display CS2/DC2
-    │
-┌─────────────────────────────┐
-│   Display Daughterboard       │
-│  - Main display (ST7789V 2.0")│
-│  - Outer display (1.14" TFT)  │
-│  - Earpiece speaker            │
-│  - Backlight FET + resistors  │
-└─────────────────────────────┘
+┌─────────────────────────────────┐
+│        Single Board              │
+│  - MCU (RTOS)                    │
+│  - Cellular Module (LTE)         │
+│  - SIM Card Slot                 │
+│  - Keypad                        │
+│  - Mic + Battery + Charging      │
+│  - Power Regulation              │
+│  - Antenna                       │
+│  - USB (data + power) ←──┐       │ ← Ecosystem interconnect
+│  - (future: BT/WiFi)     │       │
+│  - Main display (ST7789V 2.0")   │ ← ZIF connector, mounts on board
+│  - Earpiece speaker              │
+│  - Backlight FET + resistors     │
+└──────────────────────────────────┘
 
     ┌──────────────────────┐
     │  Future Module (Car)  │
@@ -106,7 +96,7 @@ Ecosystem modules are future scope.
 | PCB EDA | KiCad |
 | Budget | Keep low; flexible |
 | Prototype BOM | < $150/unit |
-| Form factor | Flip/clamshell (LOCKED 2026-07-19) — two PCBs + hinge flex; mechanical design in Phase 7 |
+| Form factor | Candybar / single-board (LOCKED 2026-08-16) — one PCB, display via ZIF; flip deferred to v2 |
 | Assembly | Hand-solderable for prototypes |
 | Enclosure | 3D print (FDM/SLA) or CNC |
 | Ecosystem interconnect | USB (data + power); BT/WiFi deferred |
@@ -117,7 +107,7 @@ Ecosystem modules are future scope.
 2. **Antenna/RF** — LTE antenna design on a custom PCB may have poor performance. May need PCB respin.
 3. **Power budget** — Meeting 24h standby with a small battery while powering an LTE module is tight.
 4. **Carrier device whitelisting** — Some US carriers block unknown IMEIs. T-Mobile prepaid is the most lenient, but this needs validation.
-5. **Mechanical/form factor** — Flip/clamshell locked 2026-07-19 (two PCBs + hinge flex). Hinge mechanism, enclosure fit, and keypad feel are Phase 7 concerns. The display daughterboard is trivial (~5 components); the main board complexity is unchanged vs single-board.
+5. **Mechanical/form factor** — Candybar / single-board locked 2026-08-16 (one PCB, display via ZIF). Enclosure fit and keypad feel are Phase 7 concerns. The single-board approach eliminates hinge mechanism risk (deferred to v2 with the flip form factor).
 6. **Ecosystem compatibility** (future risk) — Hardware choices (MCU USB capability, modem USB routing, connector selection) must not preclude future module connectivity. **Resolved 2026-06-28**: tethering uses the SIM7600's own USB 2.0 HS port directly (no MCU USB HS / ULPI needed); rev1 routes the modem USB to a connector footprint to preserve the option, with an internal USB hub planned for the ecosystem respin. Low risk.
 7. ~~**MAX9880A codec availability/compatibility**~~ **→ ALC5651 codec availability/compatibility** (pre-PCB risk — **FULLY RESOLVED 2026-07-19**): ~~The selected dual-port codec (MAX9880A) has been verified...~~ **SUPERSEDED 2026-07-19**: MAX9880A replaced by **Realtek ALC5651-CG** (LCSC C963633, QFN-40 5×5mm, JLC Extended — no consignment). All three pre-PCB items verified for ALC5651: (1) PCM short-frame sync is confirmed compatible — ALC5651 §7.5.1 PCM Mode A (short sync, Figures 10-11) in slave mode matches SIM7600 §3.6 (master, short sync, 16-bit, 2048/4096kHz BCLK); (2) stock is available at LCSC (407 units, JLC Extended — no consignment needed); (3) SIM7600 PCM pin voltage is 1.8V — confirmed 2026-06-30 from HW Design Manual V1.03 (Table 32 + §3.6.2). PCM lines connect directly to the ALC5651 (also 1.8V). Datasheet (Rev 0.9, 134pp) is complete — full pinout, registers, application circuit, timing, package. The fallback (MCU bridge with NAU8822) remains documented. The Waveshare HAT prototyping (NAU8810) validates the SIM7600 PCM voice output independent of this risk. See project-log.md 2026-07-19 Codec Swap MAX9880A→ALC5651.
 

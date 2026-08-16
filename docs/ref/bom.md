@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-07-28
+updated: 2026-08-16
 ---
 # Bill of Materials (BOM)
 
@@ -65,7 +65,7 @@ These components are required for the phone but have not been formally locked in
 |---|-----------|-------------|--------|-----|-----------|-----------|---------------|-------|
 | 7 | 2.0" SPI IPS TFT color display, 240×320, ST7789VW | Waveshare 2inch LCD Module (SKU 17344) | LOCKED | 1 | $11.99 | $11.99 | [Waveshare — 2inch LCD Module](https://www.waveshare.com/product/2inch-lcd-module.htm) | IPS, 262K color, 4-wire SPI, 58×35mm module. ST7789VW driver. 150KB framebuffer fits internal 1MB SRAM. 6 GPIO pins. See project-log.md 2026-06-28 Display Selection. |
 | 7b | 2.0" ST7789V raw panel (FPC, for PCB integration) | HS HS20HS072RX (LCSC C5329582) | LOCKED | 1 | $3.42 | $3.42 | [LCSC — HS20HS072RX (C5329582)](https://www.lcsc.com/product-detail/C5329582.html) · [JLC part page](https://jlcpcb.com/partdetail/HS-HS20HS072RX/C5329582) | **LOCKED 2026-07-19.** 2.0" IPS TFT, 240×RGB×320, ST7789T3 (compatible variant — same Zephyr driver), 4-wire SPI, 262K color. Outline 51.80×36.20×2.1mm. 12-pin 0.5mm ZIF FPC (backlight LEDs broken out as LEDA/LEDK — enables PWM dimming). 4 parallel white LEDs, 80mA, Vf 3.0V. LCSC: 1,786 in stock. JLC: Extended (pre-order). EasyEDA footprint available. See project-log.md 2026-07-19 Display Panel Selection. **Backlight**: 4 parallel white LEDs (common anode, ~3.0V Vf, 80mA total). Driven by 3.3V rail through current-limiting resistors + PWM-controlled N-FET on a timer-output GPIO. No dedicated LED driver IC needed. |
-| 7c | 1.14" ST7789V raw panel (FPC, outer display for flip lid) | EastRising ER-TFT1.14-2 (BuyDisplay) | LOCKED | 1 | $3.27 | $3.27 | [BuyDisplay — ER-TFT1.14-2](https://www.buydisplay.com/1-14-inch-tft-lcd-display-ips-panel-screen-135x240-for-smart-watch) | **LOCKED 2026-07-19** (replaces Wisevision N114 — see note). 1.14" IPS TFT, 135×240, ST7789V (same driver family as main display — Zephyr `solomon,st7789v`), 4-wire SPI, 65K/262K color. Outline 17.6×31.0×1.6mm. Active area 14.86×24.91mm. **8-pin 0.5mm pitch FPC (top contact)** — standard JLC-stockable ZIF connector (HDGC C2919539). Backlight: 1 white LED, 3.0V, 15mA (PWM dimmable). Supply 2.5–3.3V (3.3V only — no boost converter). Brightness 400 cd/m². Contrast 500:1. Pinout: 1=LEDA, 2=GND, 3=RESET, 4=RS(DC), 5=SDA, 6=SCL, 7=VDD, 8=CS. **Purchased separately from PCB and assembled by user** (ZIF FPC plugs in post-PCB-assembly). 10-year continuity supply promise. See project-log.md 2026-07-19 Outer Display Re-Selection. **Note**: Replaces Wisevision N114-2413THBIG01-H13 (C2890618) — that panel used 0.7mm FPC pitch, which is non-standard and has no JLC-stocked connectors. |
+| 7c | ~~1.14" ST7789V raw panel (FPC, outer display for flip lid)~~ | ~~EastRising ER-TFT1.14-2 (BuyDisplay)~~ | **DROPPED 2026-08-16** | ~~1~~ | ~~$3.27~~ | ~~$3.27~~ | ~~[BuyDisplay — ER-TFT1.14-2](https://www.buydisplay.com/1-14-inch-tft-lcd-display-ips-panel-screen-135x240-for-smart-watch)~~ | **DROPPED 2026-08-16**: Outer display eliminated with flip form factor pivot (candybar/single-board). An outer display only makes sense on a flip lid — no closed state in a candybar. MCU pins PG9/PG10 freed. See project-log.md 2026-08-16 Form Factor Pivot. ~~Originally LOCKED 2026-07-19~~ — 1.14" IPS TFT, 135×240, ST7789V, 4-wire SPI, 8-pin 0.5mm FPC. |
 
 ### 3b. Power (CANDIDATE)
 
@@ -103,9 +103,9 @@ These components are required for the phone but have not been formally locked in
 | 17b | USB-C receptacle (or micro-USB) — modem USB HS port footprint | TBD | CANDIDATE (unpopulated on rev1 — locked 2026-07-19) | 1 | ~$1–3 | ~$0 (unpopulated) | — | **Rev1 decision (2026-07-19)**: route SIM7600 USB HS D+/D- to an unpopulated connector footprint. Preserves tethering + modem FW update + diagnostics + GNSS-over-USB + ecosystem options. May be USB-C (consistent) or micro-USB (smaller footprint) — TBD at schematic time. |
 | 18 | Nano SIM card socket, SMD, hinged | SHOU HAN NANO SIM XG6P H1.35 | LOCKED | 1 | $0.146 | $0.15 | [LCSC — C7529386](https://www.lcsc.com/product-detail/C7529386.html) | **LOCKED 2026-07-19.** Nano-SIM (4FF), hinged lid, 6-pin (no card detect — optional per SIM7600 manual), 1.45mm height. 38,255 in stock. Hinged chosen over push-push (top-loading, no lateral clearance). See project-log.md 2026-07-19 J3/J4 Sourcing. |
 | 19 | MicroSD card socket, SMD, hinged | Molex 472192001 | LOCKED | 1 | $0.765 | $0.77 | [LCSC — C164170](https://www.lcsc.com/product-detail/C164170.html) | **LOCKED 2026-07-19.** MicroSD (TF), hinged lid, 8-pin, 1.9mm height, 1.10mm pitch. Molex OEM. 16,177 in stock. 5,000 cycles. For music/photo storage (rated 7). See project-log.md 2026-07-19 J3/J4 Sourcing. |
-| 20a | FPC ZIF connector 12-pin 0.5mm (main display J7) | HDGC 0.5K-HX-12PWB | LOCKED | 1 | ~$0.11 | ~$0.11 | [JLC — C2919494](https://jlcpcb.com/partdetail/HDGC-0_5K_HX12PWB/C2919494) | **LOCKED 2026-07-19.** Hinged lid, double-sided contacts, 1mm height. Same series as J8/J9/J10. Double-sided eliminates top/bottom contact orientation risk (FPC folds under display). |
-| 20b | FPC ZIF connector 8-pin 0.5mm (outer display J10) | HDGC 0.5K-HX-8PWB | LOCKED | 1 | ~$0.11 | ~$0.11 | [JLC — C2919492](https://jlcpcb.com/partdetail/HDGC-0_5K_HX8PWB/C2919492) | **LOCKED 2026-07-19.** Same series as J7/J8/J9. For ER-TFT1.14-2 outer display. |
-| 20c | FPC ZIF connector 14-pin 0.5mm (hinge flex J8 + J9) | HDGC 0.5K-HX-14PWB | LOCKED | 2 | ~$0.11 | ~$0.22 | [JLC — C2919495](https://jlcpcb.com/partdetail/HDGC-0_5K_HX14PWB/C2919495) | **LOCKED 2026-07-19.** Same series as J7/J10. Two needed (one on main board, one on daughterboard). Need matching 14-pin 0.5mm FFC cable. |
+| 20a | FPC ZIF connector 12-pin 0.5mm (main display J7) | HDGC 0.5K-HX-12PWB | LOCKED | 1 | ~$0.11 | ~$0.11 | [JLC — C2919494](https://jlcpcb.com/partdetail/HDGC-0_5K_HX12PWB/C2919494) | **LOCKED 2026-07-19.** Hinged lid, double-sided contacts, 1mm height. Double-sided eliminates top/bottom contact orientation risk (FPC folds under display). Display mounts directly on single board (candybar, no hinge flex). |
+| ~~20b~~ | ~~FPC ZIF connector 8-pin 0.5mm (outer display J10)~~ | ~~HDGC 0.5K-HX-8PWB~~ | **DROPPED 2026-08-16** | ~~1~~ | ~~$0.11~~ | ~~$0.11~~ | ~~[JLC — C2919492](https://jlcpcb.com/partdetail/HDGC-0_5K_HX8PWB/C2919492)~~ | **DROPPED 2026-08-16**: Outer display eliminated with flip form factor pivot. J10 no longer needed. |
+| ~~20c~~ | ~~FPC ZIF connector 14-pin 0.5mm (hinge flex J8 + J9)~~ | ~~HDGC 0.5K-HX-14PWB~~ | **DROPPED 2026-08-16** | ~~2~~ | ~~$0.11~~ | ~~$0.22~~ | ~~[JLC — C2919495](https://jlcpcb.com/partdetail/HDGC-0_5K_HX14PWB/C2919495)~~ | **DROPPED 2026-08-16**: Hinge flex connectors eliminated with flip form factor pivot (candybar/single-board — no daughterboard, no hinge flex). J8/J9 no longer needed. |
 | | **Connector subtotal** | | | | | **~$3–10** | | |
 
 ### 3f. Antenna (CANDIDATE)
@@ -137,7 +137,7 @@ These components are required for the phone but have not been formally locked in
 |---|-----------|--------|-----|-----------|-----------|-------|
 | 25 | Bulk capacitance — 470µF tantalum polymer (modem +3.3V rail) | SELECTED: Panasonic 6TPF470MAH (LCSC C403809) | 1 | ~$0.80 | ~$0.80 | C40 on modem sheet. Low ESR, handles 2A+ LTE bursts. |
 | 25a | Bulk capacitance — 10µF ceramic (modem +3.3V rail) | SELECTED: Samsung CL10A106KP8NNNC (LCSC C19702) | 2 | ~$0.03 | ~$0.06 | C41/C42 on modem sheet. High-freq decoupling. JLC Basic. |
-| 25b | Power slide switch (TPS63021 EN control) | SELECTED: ALPS SSSS811101 (LCSC C109335) | 1 | ~$0.30 | ~$0.30 | SW21 on power sheet. SPDT slide, 300mA@5V. |
+| 25b | Power switch (momentary pushbutton — soft on/off + 5s hard off) | SELECTED: ALPS SSAL120100 (LCSC C335996) | 1 | ~$0.30 | ~$0.30 | SW21 on power sheet. Momentary SPDT slide (spring-return), 10mA@5V, SMD 7.6×1.2×4.1mm. 4,720 in stock. NRND (acceptable for hobby). Replaces SSSS811101 (maintained slide). **Latch circuit TBD** — see project-log 2026-08-02. |
 | 25c | VDDA ferrite bead (MCU ADC noise isolation) | SELECTED: Murata BLM18KG601SN1D (LCSC C85833) | 1 | ~$0.05 | ~$0.05 | L1 on MCU sheet. 600Ω@100MHz, 0603. Isolates VDDA/VREF+ from digital +3.3V. |
 | 25d | VDDA 1µF decoupling cap | SELECTED: Murata GRM188R61C105KA93D (LCSC C77404) | 1 | ~$0.03 | ~$0.03 | C18 on MCU sheet. 1µF X5R 16V 0603. Bulk decoupling on VDDA side of ferrite. |
 | 25e | VDDA 10nF decoupling cap | SELECTED: YAGEO CC0603KRX7R9BB103 (LCSC C100042) | 1 | ~$0.01 | ~$0.01 | C19 on MCU sheet. 10nF X7R 50V 0603. High-freq decoupling on VDDA. |
@@ -170,7 +170,7 @@ These components are required for the phone but have not been formally locked in
 | Power (battery + charger + 3.3V buck-boost + 1.8V LDO + fuel gauge) | $18 | $18 |
 | Audio transducers (earpiece + speaker + mic) | $5 | $10 |
 | Level shifting | $1 | $1 |
-| Connectors (USB-C, SIM, microSD) | $3 | $9 |
+| Connectors (USB-C, SIM, microSD, display ZIF) | $3 | $9 |
 | ESD protection | $1 | $1 |
 | Antenna (cellular + GNSS) | $8 | $11 |
 | Keypad (SMD tactile switches) | $1 | $2 |

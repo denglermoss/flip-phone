@@ -2,7 +2,7 @@
 
 ## Overview
 
-Designing and building a custom cell phone from scratch — hardware (PCB, electronics), embedded firmware, cellular communication, and eventually mechanical/enclosure design. Flip/clamshell form factor (two PCBs + hinge flex, locked 2026-07-19). Long-term vision: the phone is the hub of a personal ecosystem of USB-connected devices. See `docs/ref/problem-definition.md` for full architecture, MVP, risks, and ecosystem vision.
+Designing and building a custom cell phone from scratch — hardware (PCB, electronics), embedded firmware, cellular communication, and eventually mechanical/enclosure design. Candybar / single-board form factor (locked 2026-08-16 — flip/clamshell deferred to v2). Long-term vision: the phone is the hub of a personal ecosystem of USB-connected devices. See `docs/ref/problem-definition.md` for full architecture, MVP, risks, and ecosystem vision.
 
 ## Goals
 
@@ -13,7 +13,7 @@ Designing and building a custom cell phone from scratch — hardware (PCB, elect
 ## Scope
 
 ### In Scope
-- Custom PCB design (flip/clamshell: main board + display daughterboard + hinge flex)
+- Custom PCB design (candybar / single-board — display via ZIF connector, no hinge flex)
 - Microcontroller + off-the-shelf cellular module architecture
 - Firmware: call handling, UI, contacts, power management
 - Making real phone calls on a real network

@@ -1,6 +1,6 @@
 ---
 status: active
-updated: 2026-07-28
+updated: 2026-08-16
 ---
 # Task Tracker — Path to Assembled PCB
 
@@ -8,7 +8,7 @@ updated: 2026-07-28
 > **Goal**: Physically assembled custom cell phone PCB in hand (soldered, parts on board — no power-on/bring-up in this scope).
 > **Assembly path**: Full DIY assembly (no JLC PCBA). Learning goal, not just cost savings.
 > **Scope**: Hardware-only (schematic → layout → fab → assembly). Firmware port to custom PCB is a separate later effort.
-> **Form factor**: MPCIe primary (SIM7600NA-H-PCIE, Techship S2-109KS-Z30G9), LGA fallback.
+> **Form factor**: Candybar / single-board (LOCKED 2026-08-16). MPCIe modem primary (SIM7600NA-H-PCIE, Techship S2-109KS-Z30G9), LGA fallback. Flip/clamshell deferred to v2.
 >
 > **How to use**: Work top-to-bottom. Each phase has tasks with checkboxes. Update status as you go. Open questions/decisions are called out inline — resolve them before proceeding past their gate. When a phase completes, update `docs/ref/project-log.md` and the Progress Tracking table at the bottom of this doc.
 
@@ -66,13 +66,13 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
   - **Status**: OVERRIDDEN 2026-07-22. Target 60×85mm (55×78mm was too aggressive for DIY assembly — need room for hand-soldering iron access, rework, connector clearance). Final dimensions set during KiCad placement.
   - **Blocks**: Board outline definition, placement.
 
-- **O8 — Hinge flex connector position** *(gate: before placement, may use placeholder)*
-  - **Status**: CONFIRMED 2026-07-22. Placeholder position for rev1 — mechanical constraints (enclosure hinge point, Phase 7) dominate. 14-pin 0.5mm FFC connector on main board edge.
-  - **Blocks**: Connector placement, daughterboard layout.
+- **O8 — ~~Hinge flex connector position~~** *(gate: before placement, may use placeholder)*
+  - **Status**: **MOOT 2026-08-16** (candybar pivot — no hinge flex, no daughterboard). ~~CONFIRMED 2026-07-22. Placeholder position for rev1 — mechanical constraints (enclosure hinge point, Phase 7) dominate. 14-pin 0.5mm FFC connector on main board edge.~~ No longer applicable — single-board design has no hinge flex connector.
+  - **Blocks**: ~~Connector placement, daughterboard layout~~ — unblocked (no daughterboard).
 
-- **O9 — Daughterboard layout scope** *(gate: before layout)*
-  - **Status**: CONFIRMED 2026-07-22. Same KiCad project, separate board. Daughterboard is trivial (~5 components + 3 ZIF connectors, ~55×42mm). Efficient, shares design rules.
-  - **Blocks**: Layout project setup.
+- **O9 — ~~Daughterboard layout scope~~** *(gate: before layout)*
+  - **Status**: **MOOT 2026-08-16** (candybar pivot — no daughterboard). ~~CONFIRMED 2026-07-22. Same KiCad project, separate board. Daughterboard is trivial (~5 components + 3 ZIF connectors, ~55×42mm). Efficient, shares design rules.~~ No longer applicable — single-board design, no daughterboard layout.
+  - **Blocks**: ~~Layout project setup~~ — unblocked (single board only).
 
 ### Gates before ordering (Phase 5 prep)
 
@@ -120,7 +120,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [ ] Wire USB OTG_FS: D+, D- → USBLC6-2 → USB-C; VBUS sense via divider (100k/68k → ~2.02V)
 - [ ] Wire LPUART1: TX, RX, RTS, CTS → level shifter B-side (to modem)
 - [ ] Wire I2C: SCL, SDA → MAX17048 + ALC5651 (shared bus, address 0x36 + 0x1A)
-- [ ] Wire SPI: MOSI, SCK → displays (via hinge flex); CS, DC, RST → main display; CS2, DC2 → outer display
+- [ ] Wire SPI: MOSI, SCK → display (direct on board); CS, DC, RST → main display
 - [ ] Wire I2S: BCLK, LRCK, DACDAT, ADCDAT → ALC5651 I2S-2 (music, 3.3V)
 - [ ] Wire SDMMC: CMD, DAT0-3, CLK → microSD (decide 1-bit vs 4-bit — see O-schematic)
 - [ ] Wire keypad GPIO: 5 rows + 4 columns (9 pins)
@@ -159,19 +159,20 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [ ] Wire I2S-2 (I2S from MCU): BCLK, LRCK, DACDAT, ADCDAT → MCU I2S pins (3.3V)
 - [ ] Wire I2C: SCL, SDA → shared MCU I2C bus (address 0x1A)
 - [ ] Wire mic input: MIC1P/MIC1N (differential) → MEMS mic (MK1, ZTS6117) with bias circuit
-- [ ] Wire earpiece output: HPOUTL/HPOUTR → earpiece speaker via hinge flex
+- [ ] Wire earpiece output: HPOUTL/HPOUTR → earpiece speaker (direct on board)
 - [ ] Wire loudspeaker output: SPKOUTP/SPKOUTM → loudspeaker wire pads
 - [ ] Add coupling caps on audio outputs (AC-coupled)
 - [ ] ERC: power pins correct, I2C pullups present, PCM at 1.8V, I2S-2 at 3.3V, no floating inputs
 
-### 3.5 Display + hinge flex + daughterboard — do fourth
+### 3.5 Display (single board, no hinge flex) — do fourth
 
-**Complexity**: Medium (~3-4 hours). Depends on MCU (SPI, GPIO) and codec (earpiece) sections.
+**Complexity**: Medium (~2-3 hours, reduced from ~3-4 — no hinge flex or daughterboard). Depends on MCU (SPI, GPIO) and codec (earpiece) sections.
+
+> **2026-08-16**: Form factor pivoted to candybar — display mounts directly on single board via J7 ZIF. No hinge flex (J8/J9 removed), no daughterboard, no outer display (J10 removed). See project-log.md 2026-08-16 Form Factor Pivot.
 
 - [ ] Verify main display exact pinout (HS20HS072RX, 12-pin 0.5mm FPC) from mechanical drawing
-- [ ] Place J7 (main display ZIF, 12-pin), J10 (outer display ZIF, 8-pin), J8/J9 (hinge flex ZIF, 14-pin each)
-- [ ] Wire main board side (J8): SPI (SDA, SCL, CS, DC, RST), outer display (CS2, DC2), +3.3V, GND, backlight (LEDA, LEDK), earpiece (SPK+, SPK-)
-- [ ] Wire daughterboard side (J9): route 14 signals to J7 (main display) and J10 (outer display)
+- [ ] Place J7 (main display ZIF, 12-pin) — directly on single board
+- [ ] Wire display: SPI (SDA, SCL, CS, DC, RST), +3.3V, GND, backlight (LEDA, LEDK), earpiece (SPK+, SPK-) — all direct, no hinge flex
 - [ ] Wire backlight PWM circuit: +3.3V → current-limit resistors → LEDA; LEDK → N-FET drain → GND; FET gate → MCU PWM GPIO
 - [ ] Select backlight PWM FET (N-channel logic-level MOSFET) — add to BOM
 - [ ] Calculate backlight resistor value (4 parallel LEDs, ~80mA total: (3.3V-3.0V)/20mA = 15Ω)
@@ -240,11 +241,11 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 ### 4.1 Pre-layout setup
 
 - [ ] **Resolve O6**: Confirm 4-layer stackup (recommended) or 2-layer
-- [ ] **Resolve O7**: Confirm board outline target dimensions
-- [ ] **Resolve O8**: Confirm hinge flex connector placeholder approach
-- [ ] **Resolve O9**: Confirm daughterboard in same KiCad project
+- [ ] **Resolve O7**: Confirm board outline target dimensions (candybar — larger area available, components can go under display)
+- [x] **Resolve O8**: ~~Confirm hinge flex connector placeholder approach~~ **MOOT 2026-08-16** (candybar — no hinge flex)
+- [x] **Resolve O9**: ~~Confirm daughterboard in same KiCad project~~ **MOOT 2026-08-16** (candybar — no daughterboard)
 - [ ] Configure layer stackup in KiCad (L1 Top / L2 GND plane / L3 +3.3V plane / L4 Bottom)
-- [ ] Define board outline (main board + daughterboard as separate boards in project)
+- [ ] Define board outline (single board — candybar form factor)
 - [ ] Configure design rules:
   - Track widths: power 0.3-0.5mm (0.8mm for modem VBAT), signal 0.15mm (6mil), RF per impedance calc
   - Clearances: 0.15mm default, 0.2mm power-to-ground, 1.5mm RF keepout
@@ -256,9 +257,9 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 
 - [ ] Place MPCIe socket (top layer, largest part, sets board min dimension ~54mm)
 - [ ] Define board outline around MPCIe + corner radii + mounting holes (4× M2/M2.5)
-- [ ] Place MCU (bottom layer, under keypad zone, thermal vias to GND plane)
+- [ ] Place MCU (bottom layer, under keypad zone or under display, thermal vias to GND plane)
 - [ ] Place power ICs (U8 TPS63021, U9 TPS7A0218, U11 MCP73831) near battery connector
-- [ ] Place connectors (USBC1 USB-C, CN1, J4 SD, J8 hinge flex, J5/J6 U.FL) on board edges
+- [ ] Place connectors (USBC1 USB-C, CN1, J4 SD, J7 display ZIF, J5/J6 U.FL) on board edges
 - [ ] Place codec (U5 ALC5651) on bottom layer, near MCU I2S and MPCIe PCM pins
 - [ ] Place fuel gauge (U10 MAX17048) near battery connector
 - [ ] Place ESD protection (D1 USBLC6-2 near USB-C, U6/U7 ESDA6V1 near SIM/SD)
@@ -284,9 +285,9 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [ ] **High-speed differential** (Priority 3):
   - USB D+/D- (MCU → USB-C): 90Ω differential, length-matched (<5mil mismatch), no plane splits
   - Modem USB D+/D- → test points (same requirements, unpopulated rev1)
-- [ ] **Display SPI** (Priority 4, through hinge flex):
-  - MCU → hinge flex → daughterboard → displays; keep total <150mm (capacitance)
-  - Include GND in flex (14-pin FFC: ~13 signals + GND)
+- [ ] **Display SPI** (Priority 4, direct on board):
+  - MCU → J7 ZIF → display panel; keep traces short (<50mm, capacitance)
+  - No hinge flex — display mounts directly on single board
 - [ ] **PCM audio** (Priority 5, modem ↔ codec):
   - Short traces (<25mm), CLK/SYNC length-matched, OUT/IN matched (±5mil), GND reference
 - [ ] **I2S audio** (Priority 6, MCU ↔ codec):
@@ -361,7 +362,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [ ] **Resolve O10**: Confirm modem source — Techship MPCIe (S2-109KS-Z30G9, ~$50, recommended) or fallback
 - [ ] Order Techship MPCIe modem (1 qty) — verify US shipping, stock (4 units)
 - [ ] Order main display from LCSC (HS20HS072RX, C5329582, $3.42, 1 qty)
-- [ ] Order outer display from BuyDisplay (ER-TFT1.14-2, $3.27, 1 qty)
+- ~~[ ] Order outer display from BuyDisplay (ER-TFT1.14-2, $3.27, 1 qty)~~ **DROPPED 2026-08-16** (outer display eliminated with candybar pivot)
 
 **Order after layout frozen (PCB-dependent):**
 - [ ] Build LCSC cart from `pcb/PARTS_TRACKING.md` C-numbers (2-3 qty spares):
@@ -438,9 +439,9 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 
 ### 5.9 Daughterboard assembly
 
-- [ ] Stencil → paste → place (3 ZIF connectors + passives) → reflow
-- [ ] Inspect FPC connectors (0.5mm pitch)
-- [ ] Continuity check on hinge flex signals
+- [ ] Stencil → paste → place (1 ZIF connector + passives) → reflow
+- [ ] Inspect FPC connector (0.5mm pitch, J7 display ZIF)
+- [ ] Continuity check on display signals (SPI, backlight, earpiece)
 
 ### 5.10 What NOT to do (out of scope)
 

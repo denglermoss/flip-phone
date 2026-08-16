@@ -1,6 +1,6 @@
 ---
 status: active
-updated: 2026-07-28
+updated: 2026-08-16
 ---
 # Schematic Reference
 
@@ -69,7 +69,7 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 | Consumer | Pin | Notes |
 |----------|-----|-------|
 | MCU (STM32H743ZI) | VDD (multiple), VDDA (analog), VBAT (RTC — not used, tie to +3.3V) | Bulk + 100nF decoupling per VDD pair. VDDA via ferrite bead + 1µF (analog isolation). |
-| Display (main + outer, via hinge flex J8) | IOVCC/VCC, LEDA (backlight anode) | Through hinge flex. Backlight LEDA also from +3.3V via current-limit resistors. |
+| Display (main, via ZIF connector J7) | IOVCC/VCC, LEDA (backlight anode) | Direct on single board. Backlight LEDA also from +3.3V via current-limit resistors. |
 | microSD socket (J4) | VDD | SD card power (3.3V). Card detects its own voltage. |
 | ALC5651 codec (U5) | MICVDD, DBVDD | MICVDD is always 3.3V (mic bias). DBVDD is a **single shared pin (pin 39)** — both I2S-1 and I2S-2 use the same 1.8V domain. **RESOLVED 2026-07-22**: DBVDD=1.8V, I2S-2 (MCU side) goes through SN74AXC4T774 level shifter (U12). |
 | Level shifter (U3 TXB0108) | VCCB (pin 19) | 3.3V side — MCU-facing. |
@@ -662,42 +662,35 @@ The MPCIe card's VCC requires **3.0–3.6V (3.3V typical)** — **raw LiPo (up t
 
 > **Panel**: HS HS20HS072RX (LCSC C5329582) — 2.0" IPS TFT, 240×RGB×320, ST7789T3, 4-wire SPI, 12-pin 0.5mm ZIF FPC. 4 parallel white LEDs (LEDA/LEDK broken out for PWM dimming). See project-log.md 2026-07-19 Display Panel Selection.
 >
-> **Outer display**: EastRising ER-TFT1.14-2 (BuyDisplay) — 1.14" IPS TFT, 135×240, ST7789V (same driver family), 4-wire SPI, **8-pin 0.5mm FPC** (standard JLC-stockable ZIF connector). 3.3V only (no boost converter). Shares SPI bus with main display (+2 signals: CS2, DC2). **Both display panels purchased separately from PCB and assembled by user** (ZIF FPC plugs in post-assembly). See project-log.md 2026-07-19 Outer Display Re-Selection.
->
-> **Form factor**: Flip/clamshell — both displays are on the display daughterboard (lid), connected to the main board via hinge flex cable (J8 main board → J9 daughterboard). See project-log.md 2026-07-19 Flip Form Factor.
+> **Form factor**: Candybar / single-board (LOCKED 2026-08-16). Display mounts directly on the single PCB via ZIF connector (J7, 12-pin 0.5mm). No hinge flex, no daughterboard. Outer display dropped from rev1 (only makes sense on a flip lid). See project-log.md 2026-08-16 Form Factor Pivot.
 
-### Board architecture (flip, two PCBs)
+### Board architecture (candybar, single PCB)
 
-**Main board** (base): MCU, modem, codec, keypad, battery, power, USB-C, SIM, SD, antennas, microphone, loudspeaker, level shifter, ESD, crystals, passives. Connector J8 (14-pin 0.5mm ZIF) for hinge flex.
+**Single board**: MCU, modem, codec, keypad, battery, power, USB-C, SIM, SD, antennas, microphone, loudspeaker, level shifter, ESD, crystals, passives, **main display panel** (J7, 12-pin 0.5mm ZIF), **earpiece speaker**, **backlight FET + resistors**. Display panel is 3.3V-only TFT (no boost converter). **Display panel purchased separately from PCB and plugged into ZIF connector by user post-assembly.**
 
-**Display daughterboard** (lid): main display panel (J7, 12-pin 0.5mm ZIF), outer display (J10, 8-pin 0.5mm ZIF), earpiece speaker. Connector J9 (14-pin 0.5mm ZIF) for hinge flex. ~5 components + 3 connectors — trivial board. Both displays are 3.3V-only TFT (no boost converters). **Display panels are purchased separately from the PCB and plugged into the ZIF connectors by the user post-assembly.**
+### Display signals (direct on single board, no hinge flex)
 
-### Hinge flex signals (~13 signals, 14-pin 0.5mm FFC)
+| Signal | Source | Destination | Notes |
+|--------|--------|-------------|-------|
+| `DISP_SDA` | MCU SPI MOSI | Display panel SDA | High-speed (up to 40MHz) |
+| `DISP_SCL` | MCU SPI SCK | Display panel SCL | High-speed (up to 40MHz) |
+| `DISP_CS` | MCU GPIO | Display panel CS | Active low |
+| `DISP_DC` | MCU GPIO | Display panel DC/RS | Data/command |
+| `DISP_RST` | MCU GPIO | Display panel RST | Reset |
+| `+3.3V` | TPS63021DSJR | Display panel IOVCC/VCI | Power |
+| `GND` | Common | Common | Return for SPI + power |
+| `LEDA` | 3.3V rail | Display panel LEDA | Backlight anode (common) |
+| `LEDK` | PWM FET → GND | Display panel LEDK | Backlight cathode (PWM dimming) |
+| `SPK+` | ALC5651 earpiece out+ | Earpiece speaker + | Differential audio |
+| `SPK-` | ALC5651 earpiece out- | Earpiece speaker - | Differential audio |
 
-| Signal | Direction | Source | Destination | Notes |
-|--------|-----------|--------|-------------|-------|
-| `DISP_SDA` | Main → Lid | MCU SPI MOSI | Display panel SDA | High-speed (up to 40MHz) |
-| `DISP_SCL` | Main → Lid | MCU SPI SCK | Display panel SCL | High-speed (up to 40MHz) |
-| `DISP_CS` | Main → Lid | MCU GPIO | Display panel CS | Active low |
-| `DISP_DC` | Main → Lid | MCU GPIO | Display panel DC/RS | Data/command |
-| `DISP_RST` | Main → Lid | MCU GPIO | Display panel RST | Reset |
-| `+3.3V` | Main → Lid | TPS63021DSJR | Display panel IOVCC/VCI | Power |
-| `GND` | — | Common | Common | Return for SPI + power |
-| `LEDA` | Main → Lid | 3.3V rail | Display panel LEDA | Backlight anode (common) |
-| `LEDK` | Main → Lid | PWM FET → GND | Display panel LEDK | Backlight cathode (PWM dimming) |
-| `SPK+` | Main → Lid | ALC5651 earpiece out+ | Earpiece speaker + | Differential audio |
-| `SPK-` | Main → Lid | ALC5651 earpiece out- | Earpiece speaker - | Differential audio |
-| `OUTER_CS` | Main → Lid | MCU GPIO | Outer display CS2 | Active low (shared SPI bus with main display) |
-| `OUTER_DC` | Main → Lid | MCU GPIO | Outer display DC2 | Data/command (shared SPI bus) |
-| *(spare)* | — | — | — | 14th pin on FFC — unused / spare GND |
+> **Camera**: Out of scope for rev1. DCMI (11 pins + 1 power) stays on the board when added. See project-log.md 2026-07-19 Flip Form Factor (camera-in-base decision retained — camera goes on the single board, not a separate lid).
 
-> **Camera**: Out of scope for rev1. DCMI (11 pins + 1 power) stays on main board when added. No hinge flex reservation. See project-log.md 2026-07-19 Flip Form Factor.
+### Backlight PWM circuit (on single board)
 
-### Backlight PWM circuit (main board)
-
-4 parallel white LEDs in the panel, common anode (LEDA), Vf 3.0V, 80mA total. Circuit on main board (LEDK switches to GND):
-- `+3.3V` → current-limiting resistors → panel LEDA (through hinge flex)
-- Panel LEDK (through hinge flex) → N-FET drain → N-FET source → GND
+4 parallel white LEDs in the panel, common anode (LEDA), Vf 3.0V, 80mA total. Circuit on the single board (LEDK switches to GND):
+- `+3.3V` → current-limiting resistors → panel LEDA
+- Panel LEDK → N-FET drain → N-FET source → GND
 - N-FET gate: MCU timer-output GPIO (PWM dimmable, off during standby per FR-4.3)
 - No boost LED driver needed (parallel LEDs, 3.0V Vf < 3.3V rail)
 

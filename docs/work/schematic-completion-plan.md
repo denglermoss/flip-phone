@@ -1,6 +1,6 @@
 ---
 status: active
-updated: 2026-07-28
+updated: 2026-08-16
 ---
 # Schematic Completion Plan
 
@@ -19,8 +19,8 @@ updated: 2026-07-28
 | Modem | ✅ ~90% | C20 footprint assigned (2026-07-28). USB not routed, socket part doc discrepancy (see §C) |
 | Codec | ✅ Restored from git HEAD 2026-07-28 | Was accidentally wiped in working tree by `add_headphone_jack.py` script. Restored via `git checkout HEAD -- pcb/phone/codec.kicad_sch`. ERC now clean (0 violations on codec sheet). HP_DET still dangling (headphone jack not yet added). (see §D) |
 | Keypad | ✅ Complete | Footprint overrides blanked; no key labels (see §E) |
-| Display (main) | ⚠️ ~80% | Missing backlight FET (see §F) |
-| Display daughter | ⚠️ ~70% | Missing backlight FET, J_HINGE2 footprint empty (see §G) |
+| Display (main) | ⚠️ ~85% | Missing backlight FET (see §F). **2026-08-16**: Form factor pivoted to candybar — display now mounts directly on single board via J7 ZIF, no hinge flex. Outer display + daughterboard sheet dropped (see §G). |
+| ~~Display daughter~~ | **DROPPED 2026-08-16** | Sheet removed from scope — candybar form factor eliminates the daughterboard. J8/J9 hinge connectors and J10 outer display removed. See §G. |
 | SIM/SD | ✅ Complete | **Initially flagged as broken by subagent — RE-VERIFIED via ERC: no errors, no shorts.** Subagent's coordinate-based analysis was wrong. Sheet is fine. |
 
 **ERC result (2026-07-28, after VDDA ferrite + caps)**: 0 errors, 15 warnings (lib_symbol_mismatch ×9 including 3 new for VDDA parts, endpoint_off_grid ×4, isolated_pin_label ×1 for HP_DET, unconnected_wire_endpoint ×1). All 8 sub-sheets individually clean.
@@ -109,25 +109,32 @@ HEAD version contains: U5 (ALC5651), U12 (SN74AXC4T774 level shifter), C23-C26/C
 - [ ] **Update `docs/work/block-diagram.md` §Keypad** — remove "to be specified", add SKQGABE010 part + topology + matrix map
 - [ ] **Add project-log entry** for SKQGABE010 selection and pull topology
 
-### §F — Display (Main Board): Backlight FET
+### §F — Display (Single Board): Backlight FET
+
+> **2026-08-16 update**: The backlight FET architecture conflict is **resolved** by the candybar pivot. The FET lives on the single board, directly switching LEDK — no hinge flex, no daughterboard, no "which board does the FET live on?" question. The old conflict (docs said FET on main board with LEDA/LEDK through hinge; schematic used BL_PWM through hinge with R19 on daughterboard) no longer applies.
 
 - [ ] **Add N-channel logic-level MOSFET** for backlight PWM switching (CRITICAL — without it, MCU GPIO would need to sink ~64-80mA, exceeding 20mA max)
   - Recommended: AO3400A (LCSC C20917), SI2302 (C66355), or BSS138 (C85568)
   - Drain → LEDK, Source → GND, Gate → MCU PWM GPIO (BL_PWM)
 - [ ] **Add gate resistor** (100Ω-1kΩ) on FET gate
 - [ ] **Add gate pull-down** (10kΩ-100kΩ) to ensure backlight OFF during MCU reset
-- [ ] **Resolve backlight architecture** — docs say FET + resistors on main board with LEDA/LEDK through hinge; schematic uses BL_PWM through hinge with R19 on daughterboard. Decide which architecture and update docs.
+- [ ] **Remove hinge flex connectors (J8/J9)** from the display sheet — no longer needed (candybar, single board)
+- [ ] **Remove outer display connector (J10)** and its signals (OUTER_CS, OUTER_DC) from the display sheet — outer display dropped
+- [ ] **Wire display directly** — J7 (12-pin ZIF) connects directly to MCU SPI + GPIO + power + backlight, no hinge flex intermediary
 - [ ] **Add ESD protection on EARPIECE+/-** (optional — user's ear is ESD source)
 - [ ] **Reconcile net names** — DISP_MOSI/SCK vs docs' DISP_SDA/SCL; EARPIECE+/- vs docs' SPK+/SPK-
 
-### §G — Display Daughterboard: Footprint & Backlight
+### §G — ~~Display Daughterboard~~ **DROPPED 2026-08-16** (candybar pivot)
 
-- [ ] **Fix J_HINGE2 footprint** — empty footprint property, should be `easyeda2kicad:FPC-SMD_14P-P0.50_HDGC_0.5K-HX-14PWB`
-- [ ] **Add backlight FET** (if architecture decision puts it on daughterboard — see §F)
-- [ ] **Add second decoupling cap** for outer display (C27 only covers main display)
-- [ ] **Address outer display backlight** — ER-TFT1.14-2 has its own LED backlight; no resistor/FET for it
-- [ ] **Verify earpiece coupling caps** — check ALC5651 datasheet if AC-coupling needed on EARPIECE+/-
-- [ ] **Verify connector shell pins tied to GND** — 12P/14P/8P shell tabs
+> **2026-08-16**: The display daughterboard sheet is **removed from scope**. The candybar form factor (single PCB) eliminates the daughterboard, hinge flex connectors (J8/J9), and outer display (J10). All display components now live on the single board (see §F). The daughterboard `.kicad_sch` sheet can be deleted from the project or left as an empty placeholder — user's call during KiCad cleanup.
+>
+> The following items were previously tracked here and are now **moot**:
+> - ~~Fix J_HINGE2 footprint~~ — J_HINGE2 (J9) removed, no hinge flex
+> - ~~Add backlight FET on daughterboard~~ — FET lives on single board (§F)
+> - ~~Add second decoupling cap for outer display~~ — outer display dropped
+> - ~~Address outer display backlight~~ — outer display dropped
+> - ~~Verify earpiece coupling caps~~ — earpiece now on single board, verify there
+> - ~~Verify connector shell pins tied to GND~~ — only J7 (12-pin) remains, verify there
 
 ### §H — SIM/SD Sheet: NO ACTION NEEDED
 
@@ -157,11 +164,11 @@ HEAD version contains: U5 (ALC5651), U12 (SN74AXC4T774 level shifter), C23-C26/C
 ## Priority Order
 
 1. **§D: Restore codec sheet from git HEAD** ✅ DONE 2026-07-28
-2. **§F: Add backlight FET** (critical — without it, MCU GPIO will be damaged)
+2. **§F: Add backlight FET + remove hinge/outer display** (critical — without FET, MCU GPIO will be damaged; candybar pivot requires removing J8/J9/J10 from display sheet)
 3. **§B: Fix MCU footprints** (C4/C13, R1-R3, USBC1) + add VDDA ferrite + bulk cap
 4. **§C: Assign C20 footprint** (blocks PCB layout)
-5. **§G: Fix J_HINGE2 footprint** (blocks PCB layout)
+5. ~~**§G: Fix J_HINGE2 footprint**~~ **DROPPED 2026-08-16** (candybar pivot — no daughterboard)
 6. **§E: Fix keypad resistor footprints** (blocks PCB layout)
 7. **§A: Reconcile power refdes** (needs user approval — locked section)
-8. **§I: Structural fixes** (page numbers, orphan file)
+8. **§I: Structural fixes** (page numbers, orphan file, remove daughterboard sheet from project)
 9. **§J: Documentation sync** (after all schematic fixes are done)

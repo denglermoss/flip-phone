@@ -1,6 +1,6 @@
 ---
 status: active
-updated: 2026-07-28
+updated: 2026-08-16
 ---
 # MCU Pin Assignment — STM32H743ZIT6 (LQFP-144)
 
@@ -109,12 +109,12 @@ All pin numbers in this document are verified against the STM32H743ZI datasheet 
 
 **Bus devices**: ALC5651 (addr 0x1A, 1.8V DBVDD), MAX17048 (addr 0x36, VIH=1.4V min — works at 1.8V). STM32H7 I2C pins are FT (5V-tolerant), open-drain mode works with 1.8V pullups.
 
-### SPI1 (Displays — via hinge flex)
+### SPI1 (Display — direct on single board, no hinge flex)
 
 | Pin # | Pin Name | AF | Net | Direction | Notes |
 |-------|----------|----|-----|-----------|-------|
-| 41 | PA5 | AF5 | DISP_SCK | Out | SPI clock (shared main + outer display) |
-| 135 | PB5 | AF5 | DISP_MOSI | Out | SPI data (shared main + outer display) |
+| 41 | PA5 | AF5 | DISP_SCK | Out | SPI clock (main display) |
+| 135 | PB5 | AF5 | DISP_MOSI | Out | SPI data (main display) |
 
 **Display control GPIOs** (JTAG pins repurposed — SWD only):
 
@@ -123,8 +123,8 @@ All pin numbers in this document are verified against the STM32H743ZI datasheet 
 | 134 | PB4 | GPIO | DISP_CS | Out | Main display chip select (active low) |
 | 133 | PB3 | GPIO | DISP_DC | Out | Main display data/command |
 | 110 | PA15 | GPIO | DISP_RST | Out | Main display reset (active low) |
-| 124 | PG9 | GPIO | OUTER_CS | Out | Outer display chip select (active low) |
-| 125 | PG10 | GPIO | OUTER_DC | Out | Outer display data/command |
+| 124 | PG9 | — | *(spare)* | — | **Freed 2026-08-16** — was OUTER_CS (outer display dropped with flip form factor). Available for future use (camera DCMI, analog, etc.). |
+| 125 | PG10 | — | *(spare)* | — | **Freed 2026-08-16** — was OUTER_DC (outer display dropped with flip form factor). Available for future use (camera DCMI, analog, etc.). |
 
 ### I2S2 (Codec music path — via SN74AXC4T774 level shifter)
 

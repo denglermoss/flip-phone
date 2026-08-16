@@ -96,9 +96,9 @@ Each type of information has **one source of truth**. Other docs link to it — 
 | Cellular module | SIM7600NA-H (B71, MPCIe primary, LGA fallback) | 2026-06-28 | project-log.md Modem Revisit |
 | RTOS | Zephyr | 2026-06-28 | project-log.md |
 | Audio codec | ALC5651-CG (dual I2S/PCM, MCU not in voice path) | 2026-07-19 | project-log.md Codec Swap |
-| Display | ST7789V SPI TFT 2.0" + ER-TFT1.14-2 outer | 2026-07-19 | project-log.md Display Selection |
+| Display | ST7789V SPI TFT 2.0" (outer display dropped 2026-08-16) | 2026-07-19 | project-log.md Display Selection |
 | Keypad | SMD tactile switches, 5×4 matrix | 2026-06-28 | project-log.md Keypad Selection |
-| Form factor | Flip/clamshell, two PCBs + hinge flex | 2026-07-19 | project-log.md Flip Form Factor |
+| Form factor | Candybar / single-board (flip deferred to v2) | 2026-08-16 | project-log.md Form Factor Pivot |
 | Power | TPS63021 buck-boost + MCP73831 charger + MAX17048 gauge | 2026-07-19 | project-log.md, `docs/work/block-diagram.md` |
 | USB tethering | SIM7600 USB HS direct (no ULPI) | 2026-06-28 | project-log.md USB HS/ULPI Revisit |
 | Schematic | KiCad, flat sheet + global labels | 2026-07-22 | project-log.md Schematic Approach |
@@ -111,6 +111,7 @@ Each type of information has **one source of truth**. Other docs link to it — 
 
 - **Commit messages**: When using a temporary file for the commit message (e.g., `.git/COMMIT_MSG.txt`), always delete it after committing. Do not leave temporary files in the `.git/` directory.
 - **Roles**: The user is the project lead and engineer. The agent is the assistant/intern. The user owns all decisions, architecture, and direction. The agent's job is to research, verify, implement, and explain — not to steer the project. Present findings and options with tradeoffs; the user decides. Reserve autonomous action for mechanical/verification tasks (building, installing, checking stock) where there's a clear right answer. For anything involving judgment or tradeoffs, ask first.
+- **KiCad work division (updated 2026-08-16)**: The **user handles all KiCad work** — schematic capture, PCB layout, footprint assignment, library edits. The agent acts as **reviewer and guide**: reviewing schematics, running ERC/DRC via the kicad-inspector subagent, checking against docs, flagging issues, and advising on design decisions. The agent does **not** directly edit `.kicad_sch` or `.kicad_pcb` files unless the user explicitly asks. The kicad-author subagent and kicad-schematic-edit / kicad-pcb-edit skills remain available but are only invoked on explicit user request. The kicad-inspector subagent (read-only DRC/ERC, BOM, netlist) remains in active use for review. See `docs/ref/project-log.md` 2026-08-16 Workflow Role Change.
 - **Learning is a project goal**: The user wants to understand how things work, not just get answers. Explain the concepts and tradeoffs behind decisions as you go — don't just hand over results. The project docs say "the steep learning curve is a feature, not a bug," and that applies to the collaborative process too.
 
 ## Reference Documentation & PDF MCP Server (set up 2026-06-30)
