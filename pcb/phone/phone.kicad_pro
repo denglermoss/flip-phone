@@ -654,7 +654,7 @@
         "uuid": "451c3b43-1616-42cb-bf96-d436f4db82c2"
       }
     ],
-    "used_designators": "CN1,#PWR1-254,#PWR510-512,#PWR606,D1,L1-2,U1-12,USBC1,J_SPK1,C1-48,R1-33,#FLG1-2,LED1-2,SW1-21,J_DISP1-2,J_EARPIECE1,J_HINGE1-2,J_MIC1,J_SD1,J_SIM1,J1,Y1",
+    "used_designators": "CN1,#PWR1-264,#PWR510-512,#PWR606,D1,L1-2,U1-12,USBC1,J_SPK1,C1-48,R1-34,#FLG1-2,#FLG4-5,LED1-2,SW1-21,J_DISP1-2,J_EARPIECE1,J_HINGE1-2,J_MIC1,J_SD1,J_SIM1,J1,Y1,Q1",
     "variants": []
   },
   "sheets": [
@@ -677,10 +677,6 @@
     [
       "d7f57b90-9db7-4266-b1f1-7949b1054009",
       "Display"
-    ],
-    [
-      "6e22c91a-fb49-47df-bf31-2f484b0239c9",
-      "Display_Daughter"
     ],
     [
       "7fc639d9-249c-4f41-85eb-7c2617f3c206",

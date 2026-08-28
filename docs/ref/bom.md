@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-08-17
+updated: 2026-08-27
 ---
 # Bill of Materials (BOM)
 
@@ -99,14 +99,15 @@ These components are required for the phone but have not been formally locked in
 
 | # | Component | Part Number | Status | Qty | Unit Price | Ext Price | Source / Link | Notes |
 |---|-----------|-------------|--------|-----|-----------|-----------|---------------|-------|
-| 17 | USB-C receptacle, 16-pin, SMD (data + power) — main MCU USB | GCT USB4081 or similar | LOCKED (USB-C locked 2026-07-19) | 1 | ~$1–3 | ~$1–3 | [DigiKey — GCT USB-C](https://www.digikey.com/en/product-highlight/g/gct/usb-type-c) | USB-C 16-pin for USB 2.0 + power. Routes to MCU USB OTG_FS (firmware/files/debug). |
-| 17b | USB-C receptacle (or micro-USB) — modem USB HS port footprint | TBD | CANDIDATE (unpopulated on rev1 — locked 2026-07-19) | 1 | ~$1–3 | ~$0 (unpopulated) | — | **Rev1 decision (2026-07-19)**: route SIM7600 USB HS D+/D- to an unpopulated connector footprint. Preserves tethering + modem FW update + diagnostics + GNSS-over-USB + ecosystem options. May be USB-C (consistent) or micro-USB (smaller footprint) — TBD at schematic time. |
+| 17 | USB-C receptacle, 16-pin, SMD (data + power) — single ecosystem port | GCT USB4081 or similar | LOCKED (USB-C locked 2026-07-19) | 1 | ~$1–3 | ~$1–3 | [DigiKey — GCT USB-C](https://www.digikey.com/en/product-highlight/g/gct/usb-type-c) | USB-C 16-pin for USB 2.0 + power. Routes to USB2512 hub upstream (not MCU directly — see item 17c). VBUS → MCP73831 charger. CC1/CC2 5.1kΩ pull-downs (phone = UFP). |
+| 17b | ~~USB-C receptacle (or micro-USB) — modem USB HS port footprint~~ | ~~TBD~~ | **DROPPED 2026-08-27** | ~~1~~ | ~~$0 (unpopulated)~~ | ~~$0~~ | — | **DROPPED 2026-08-27**: No second physical USB port. Modem USB now routes to the USB2512 hub downstream port (item 17c). See project-log.md 2026-08-27 USB Hub on Rev1. |
+| 17c | USB 2.0 HS hub, 2-port — ecosystem interconnect (rev1 hard requirement) | USB2512B/M2 (Microchip) or equivalent | CANDIDATE (rev1 hard req — locked 2026-08-27, specific part TBD) | 1 | ~$1.20 | ~$1.20 | — | **LOCKED 2026-08-27** (ecosystem is a rev1 hard requirement). 2-port USB 2.0 HS hub (QFN-24). Upstream → USB-C (via USBLC6-2 ESD). Downstream 1 → modem USB (MODEM_USB_DP/DN, HS 480Mbps, RNDIS/ECM). Downstream 2 → MCU OTG_FS (FS 12Mbps, MSC/CDC ACM). Powered from +3.3V. Needs 24MHz crystal (item 27) + decoupling + reset (RC or 1 MCU GPIO). VBUS_DET taps existing VBUS net via divider. See project-log.md 2026-08-27 USB Hub on Rev1. Specific part selection pending — verify LCSC/JLC stock for USB2512 or equivalent (USB2514 4-port is the alternative if 2-port isn't available). |
 | 18 | Nano SIM card socket, SMD, hinged | SHOU HAN NANO SIM XG6P H1.35 | LOCKED | 1 | $0.146 | $0.15 | [LCSC — C7529386](https://www.lcsc.com/product-detail/C7529386.html) | **LOCKED 2026-07-19.** Nano-SIM (4FF), hinged lid, 6-pin (no card detect — optional per SIM7600 manual), 1.45mm height. 38,255 in stock. Hinged chosen over push-push (top-loading, no lateral clearance). See project-log.md 2026-07-19 J3/J4 Sourcing. |
 | 19 | MicroSD card socket, SMD, hinged | Molex 472192001 | LOCKED | 1 | $0.765 | $0.77 | [LCSC — C164170](https://www.lcsc.com/product-detail/C164170.html) | **LOCKED 2026-07-19.** MicroSD (TF), hinged lid, 8-pin, 1.9mm height, 1.10mm pitch. Molex OEM. 16,177 in stock. 5,000 cycles. For music/photo storage (rated 7). See project-log.md 2026-07-19 J3/J4 Sourcing. |
 | 20a | FPC ZIF connector 12-pin 0.5mm (main display J7) | HDGC 0.5K-HX-12PWB | LOCKED | 1 | ~$0.11 | ~$0.11 | [JLC — C2919494](https://jlcpcb.com/partdetail/HDGC-0_5K_HX12PWB/C2919494) | **LOCKED 2026-07-19.** Hinged lid, double-sided contacts, 1mm height. Double-sided eliminates top/bottom contact orientation risk (FPC folds under display). Display mounts directly on single board (candybar, no hinge flex). |
 | ~~20b~~ | ~~FPC ZIF connector 8-pin 0.5mm (outer display J10)~~ | ~~HDGC 0.5K-HX-8PWB~~ | **DROPPED 2026-08-16** | ~~1~~ | ~~$0.11~~ | ~~$0.11~~ | ~~[JLC — C2919492](https://jlcpcb.com/partdetail/HDGC-0_5K_HX8PWB/C2919492)~~ | **DROPPED 2026-08-16**: Outer display eliminated with flip form factor pivot. J10 no longer needed. |
 | ~~20c~~ | ~~FPC ZIF connector 14-pin 0.5mm (hinge flex J8 + J9)~~ | ~~HDGC 0.5K-HX-14PWB~~ | **DROPPED 2026-08-16** | ~~2~~ | ~~$0.11~~ | ~~$0.22~~ | ~~[JLC — C2919495](https://jlcpcb.com/partdetail/HDGC-0_5K_HX14PWB/C2919495)~~ | **DROPPED 2026-08-16**: Hinge flex connectors eliminated with flip form factor pivot (candybar/single-board — no daughterboard, no hinge flex). J8/J9 no longer needed. |
-| | **Connector subtotal** | | | | | **~$3–10** | | |
+| | **Connector subtotal** | | | | | **~$4–12** | | |
 
 ### 3f. Antenna (CANDIDATE)
 
@@ -137,12 +138,12 @@ These components are required for the phone but have not been formally locked in
 |---|-----------|--------|-----|-----------|-----------|-------|
 | 25 | Bulk capacitance — 470µF tantalum polymer (modem +3.3V rail) | SELECTED: Panasonic 6TPF470MAH (LCSC C403809) | 1 | ~$0.80 | ~$0.80 | C40 on modem sheet. Low ESR, handles 2A+ LTE bursts. |
 | 25a | Bulk capacitance — 10µF ceramic (modem +3.3V rail) | SELECTED: Samsung CL10A106KP8NNNC (LCSC C19702) | 2 | ~$0.03 | ~$0.06 | C41/C42 on modem sheet. High-freq decoupling. JLC Basic. |
-| 25b | Power switch (maintained, battery-path disconnect) | TBD (power-rated ≥3A) | 1 | ~$0.50–2 | ~$0.50–2 | Maintained (latching) switch in battery path (between J_BATT and +BATT net). Must handle full system current (TPS63021 can draw 2A+ during LTE TX). Replaces SSAL120100 (signal-level momentary, not power-rated). Specific part TBD at schematic time. See project-log 2026-08-17. |
+| 25b | Power switch (maintained, EN-pin control) | SELECTED: C&K OS102011MA1QN1 (LCSC C226259) | 1 | ~$0.50 | ~$0.50 | SPDT slide switch, through-hole right-angle, 100mA@12V. Switches TPS63021 EN pin between +BATT-through-1MΩ (ON) and GND (OFF). Signal-level — 100mA is sufficient (EN draws microamps). 8.4mm actuator height — usable as finger-operated power toggle. Replaces SSSS811101 (ALPS SMD, 0.3A, 1.4mm height — too thin to actuate, under-spec for original battery-path plan). **Architecture reversed 2026-08-27**: switch moved from battery path back to EN pin. See project-log 2026-08-27. |
 | 25c | VDDA ferrite bead (MCU ADC noise isolation) | SELECTED: Murata BLM18KG601SN1D (LCSC C85833) | 1 | ~$0.05 | ~$0.05 | L1 on MCU sheet. 600Ω@100MHz, 0603. Isolates VDDA/VREF+ from digital +3.3V. |
 | 25d | VDDA 1µF decoupling cap | SELECTED: Murata GRM188R61C105KA93D (LCSC C77404) | 1 | ~$0.03 | ~$0.03 | C18 on MCU sheet. 1µF X5R 16V 0603. Bulk decoupling on VDDA side of ferrite. |
 | 25e | VDDA 10nF decoupling cap | SELECTED: YAGEO CC0603KRX7R9BB103 (LCSC C100042) | 1 | ~$0.01 | ~$0.01 | C19 on MCU sheet. 10nF X7R 50V 0603. High-freq decoupling on VDDA. |
 | 26 | Decoupling caps, resistors, inductors (per IC) | CANDIDATE | ~30–50 | ~$0.05–0.50 | ~$5–15 | Standard SMD passives. |
-| 27 | Crystals (HSE 8MHz for MCU; module has own TCXO) | CANDIDATE | 1 | ~$0.50–1 | ~$0.50–1 | MCU needs HSE crystal for USB. No 32.768kHz RTC crystal (NITZ). |
+| 27 | Crystals (HSE 8MHz for MCU; 24MHz for USB hub; module has own TCXO) | CANDIDATE | 2 | ~$0.50–1 | ~$1–2 | MCU needs HSE crystal for USB. USB2512 hub needs 24MHz crystal. No 32.768kHz RTC crystal (NITZ). |
 | 28 | LEDs (status, notification, backlight) | CANDIDATE | ~3 | ~$0.10–0.30 | ~$0.30–1 | Rated 2 on wishlist. |
 | 29 | Test points, headers, misc hardware | CANDIDATE | — | — | ~$2–5 | For bring-up/debug. |
 | | **Passive/misc subtotal** | | | | **~$12–33** | |
@@ -184,13 +185,13 @@ These components are required for the phone but have not been formally locked in
 | Power (battery + charger + 3.3V buck-boost + 1.8V LDO + fuel gauge) | $18 | $18 |
 | Audio transducers (earpiece + speaker + mic) | $5 | $10 |
 | Level shifting | $1 | $1 |
-| Connectors (USB-C, SIM, microSD, display ZIF) | $3 | $9 |
+| Connectors (USB-C, USB hub, SIM, microSD, display ZIF) | $4 | $12 |
 | ESD protection | $1 | $1 |
 | Antenna (cellular + GNSS) | $8 | $11 |
 | Keypad (SMD tactile switches) | $1 | $2 |
 | rev1 expansion (camera + headphone + LED + motor driver) | $7 | $19 |
-| Passive components & misc | $11 | $32 |
-| **BOM total (components, per unit)** | **~$104** | **~$159** |
+| Passive components & misc | $12 | $34 |
+| **BOM total (components, per unit)** | **~$106** | **~$163** |
 | PCB fab + assembly (separate) | $62 | $122 |
 | **Total per unit (BOM + PCB)** | **~$159** | **~$262** |
 
@@ -236,7 +237,8 @@ Per `docs/ref/constraints.md` and `docs/ref/project-log.md`, these must be verif
 - [ ] **Battery fuel gauge**: Verify MAX17048 I2C address doesn't conflict with ALC5651. Confirm fuel gauge characterization for the selected LiPo (MAX17048 has a characterization table; may need custom model for non-standard cells).
 - [ ] **USB-C connector**: ~~Confirm 16-pin (USB 2.0) vs 24-pin (USB 3.x) — USB FS/HS only needs 16-pin.~~ **RESOLVED 2026-07-19**: 16-pin USB-C (USB 2.0) — formally locked. USB FS/HS only needs D+/D-.
 - [ ] **ESD protection**: Confirm USBLC6-2SC6 and ESDA6V1-5SC6 footprints/placement near connectors.
-- [ ] **Modem USB HS connector (rev1)**: Select USB-C vs micro-USB for the unpopulated modem USB footprint (2026-07-19 decision: include footprint, type TBD at schematic time).
+- [ ] **USB hub (rev1 hard requirement — 2026-08-27)**: Select specific USB2512 (2-port) or USB2514 (4-port) hub IC. Verify LCSC/JLC stock. Confirm QFN-24 (USB2512) vs QFN-36 (USB2514) footprint. Add 24MHz crystal + decoupling caps. See project-log.md 2026-08-27 USB Hub on Rev1.
+- [ ] ~~**Modem USB HS connector (rev1)**: Select USB-C vs micro-USB for the unpopulated modem USB footprint~~ **SUPERSEDED 2026-08-27**: No second physical port. Modem USB routes to USB2512 hub downstream. See USB hub item above.
 - [ ] **GNSS antenna part**: Select specific U.FL GNSS antenna (2026-07-19 decision: include on rev1, part TBD).
 - [ ] **Loudspeaker part**: Select specific loudspeaker transducer (2026-07-19 decision: include on rev1, part TBD).
 - [x] **Camera module** (2026-08-16 rev1 expansion): **SELECTED 2026-08-17**: OV5640 (5MP, auto-focus, 8-bit DVP). ArduCAM-standard 20-pin 0.5mm FPC connector. Power: 3.3V only (onboard LDOs on module). Separate I2C2 bus (3.3V) for SCCB control. Specific module part TBD (sourcing verification needed — confirm DOVDD=2.8V, onboard LDOs, FFC pinout). See project-log.md 2026-08-17.

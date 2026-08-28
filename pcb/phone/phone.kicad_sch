@@ -105,52 +105,6 @@
 		)
 	)
 	(sheet
-		(at 95.415 143.175)
-		(size 30.48 20.32)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(stroke
-			(width 0.1524)
-			(type solid)
-		)
-		(fill
-			(color 0 0 0 0)
-		)
-		(uuid "6e22c91a-fb49-47df-bf31-2f484b0239c9")
-		(property "Sheetname" "Display_Daughter"
-			(at 95.415 142.175 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left bottom)
-			)
-		)
-		(property "Sheetfile" "display_daughter.kicad_sch"
-			(at 95.415 164.175 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left top)
-			)
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2"
-					(page "6")
-				)
-			)
-		)
-	)
-	(sheet
 		(at 141.77 125.4)
 		(size 30.48 20.32)
 		(exclude_from_sim no)

@@ -690,6 +690,16 @@
 			(embedded_fonts no)
 		)
 	)
+	(text "LOCKED 8/29 MD"
+		(exclude_from_sim no)
+		(at 107.442 189.738 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "8451eb3d-2b6d-411d-9626-d941152908a5")
+	)
 	(junction
 		(at 57.15 81.28)
 		(diameter 0)
@@ -3646,10 +3656,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "4893635e-4503-491b-adc5-14935fd7e852")
 		(property "Reference" "R8"
-			(at 162.54 49.53 0)
+			(at 145.542 49.53 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3659,7 +3668,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 162.54 51.19 0)
+			(at 149.352 49.276 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects

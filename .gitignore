@@ -70,6 +70,11 @@ pcb/phone/rewire_keypad.py
 pcb/phone/trace_codec_nets.py
 pcb/phone/cleanup_mcu*.py
 pcb/phone/bom_test.csv
+pcb/phone/bom_*.csv
+pcb/phone/erc_*.json
+pcb/phone/drc_*.json
+pcb/phone/*_netlist.net
+pcb/phone/*_trace.net
 
 # IDE
 .vscode/

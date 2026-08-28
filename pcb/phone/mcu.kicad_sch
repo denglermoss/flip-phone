@@ -4791,6 +4791,10 @@
 		(uuid "2a9bc364-0597-4ab1-a516-a48016d14d68")
 	)
 	(no_connect
+		(at 228.6 82.55)
+		(uuid "2b472d87-7748-41fb-9eda-0422e26add29")
+	)
+	(no_connect
 		(at 165.1 110.49)
 		(uuid "2dc91f53-c1bf-4021-aabd-7bb17d16c4b4")
 	)
@@ -4845,6 +4849,10 @@
 	(no_connect
 		(at 279.4 135.89)
 		(uuid "6d1c12d5-7212-4af6-83cd-d5e39dbf4b5b")
+	)
+	(no_connect
+		(at 226.06 82.55)
+		(uuid "70e806d4-b398-4a53-8cfe-a9819c0b80e4")
 	)
 	(no_connect
 		(at 165.1 146.05)
@@ -5396,16 +5404,6 @@
 	)
 	(wire
 		(pts
-			(xy 226.06 81.28) (xy 226.06 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "68319cd3-e8da-4349-a169-3a69f6150e16")
-	)
-	(wire
-		(pts
 			(xy 195.58 81.28) (xy 195.58 82.55)
 		)
 		(stroke
@@ -5553,16 +5551,6 @@
 			(type default)
 		)
 		(uuid "91ac441f-6b46-4484-af27-3062c3544a50")
-	)
-	(wire
-		(pts
-			(xy 228.6 81.28) (xy 228.6 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "91e25a93-89be-40b3-8ded-521e4e219c44")
 	)
 	(wire
 		(pts
@@ -6606,30 +6594,6 @@
 			)
 		)
 	)
-	(global_label "OUTER_DC"
-		(shape output)
-		(at 226.06 81.28 90)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "6ceb1e0d-8d1a-486f-b9f0-7963ae2a0866")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 226.06 68.7396 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-	)
 	(global_label "MCU_UART_CTS"
 		(shape input)
 		(at 203.2 198.12 270)
@@ -6819,30 +6783,6 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
-			)
-		)
-	)
-	(global_label "OUTER_CS"
-		(shape output)
-		(at 228.6 81.28 90)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "abb57581-bda7-4af3-a90b-5c46b7c7b86a")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 228.6 68.8001 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
 			)
 		)
 	)
@@ -12792,10 +12732,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "c0710c1a-9c2d-4c42-84ed-64a301c8adc6")
 		(property "Reference" "U1"
-			(at 223.52 77.47 0)
+			(at 223.52 140.716 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects

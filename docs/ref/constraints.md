@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-08-16
+updated: 2026-08-27
 ---
 # Constraints
 
@@ -37,7 +37,7 @@ updated: 2026-08-16
   - **USB-C D+/D-**: USBLC6-2SC6 (bidirectional, SOT-23-6, ~$0.50) — protects MCU USB OTG_FS.
   - **SIM + microSD data lines**: ESDA6V1-5SC6 (5-line array, ~$0.50) — protects modem SIM interface and MCU SDMMC.
   - These are small, cheap, and standard practice for any device with external connectors. Omitting them risks ESD damage during handling.
-- **Modem USB HS port (rev1 decision, 2026-07-19)**: Route the SIM7600's USB 2.0 HS port (D+/D-) to an **unpopulated connector footprint** on rev1. Reasons beyond tethering: modem firmware updates (some versions only flash over USB), USB-based AT/diagnostics (higher bandwidth than UART), GNSS NMEA over USB (alternative to UART), and the future ecosystem (car module tethering via RNDIS/ECM). The footprint preserves all options without a respin. Cost: footprint + 2 ESD diodes + short traces. The MCU's USB OTG_FS (12 Mbps) goes to the main populated USB-C connector for firmware/files/debug — the modem USB is a separate, optional connector.
+- **Modem USB HS port (rev1 hard requirement, updated 2026-08-27)**: Route the SIM7600's USB 2.0 HS port (D+/D-) to the **USB2512 hub downstream port 1** on rev1. The hub presents both the modem (RNDIS/ECM for LTE tethering at HS 480 Mbps) and the MCU (MSC/CDC ACM at FS 12 Mbps) to an external USB host over a **single USB-C port** — no second physical connector. Ecosystem is a hard rev1 requirement. The MCU's USB OTG_FS goes to hub downstream 2. See project-log.md 2026-08-27 USB Hub on Rev1.
 - **GNSS antenna (rev1 decision, 2026-07-19)**: Include a **U.FL footprint** for the GNSS antenna on rev1. SIM7600 has built-in GNSS (validated 2026-07-12 on HAT — valid fix in ~60s cold start, works while registered on network). U.FL is a tiny SMD coaxial connector (~2mm) that connects the PCB to an off-board antenna via a short pigtail — standard for cellular/GPS modules. Low cost (~$0.50 connector + ~$2–5 antenna). User wants this board to potentially be the final version — deferring would mean a respin to add it later.
 - **SIM + microSD connector strategy (rev1 decision, 2026-07-19)**: **Deferred to sourcing.** Both combo SIM+microSD sockets (saves board space, common in phones) and separate sockets (easier to source, more placement flexibility, larger footprint) are viable. Decision will be made at BOM finalization based on reliable availability from DigiKey/Mouser/LCSC. If a combo socket is reliably in stock at a reasonable price, use it; otherwise use separate sockets. Both blocks appear in the block diagram either way.
 - **USB-C connector type (formally locked 2026-07-19)**: 16-pin USB-C (USB 2.0) for the main MCU USB connector. USB FS/HS only needs D+/D- — 24-pin USB 3.x is unnecessary. Micro-USB is obsolete and not considered.
@@ -121,8 +121,8 @@ updated: 2026-08-16
 - **MCU USB: OTG_FS only (12 Mbps, built-in PHY).** Sufficient for firmware updates, file/MSC transfer, and CDC ACM debug. ~~USB HS via external ULPI transceiver (USB3300) is a board-level upgrade path preserved by LQFP-144.~~ **DROPPED 2026-06-28** — see below.
 - **Ecosystem tethering uses the SIM7600's own USB 2.0 HS port (480 Mbps), not the MCU.** The modem presents itself as a USB network adapter via RNDIS (`AT+CUSBPIDSWITCH=9011,1,1`) or ECM (`=9018,1,1`), simultaneously exposing AT/ttyUSB serial ports (composite device). This bypasses the MCU entirely for tethering — no MCU USB bottleneck, no USB3300 ULPI transceiver, no Zephyr USB HS stack, no 12 ULPI GPIO pins. The MCU controls the modem via UART (CMUX+PPP); the modem's USB is dedicated to tethering. See project-log.md 2026-06-28 USB HS/ULPI Revisit and research-notes.md "USB HS / ULPI Revisit" section.
 - **Do NOT populate USB3300.** The ULPI footprint is wasted board space under the modem-direct tethering architecture. The 12 ULPI pins on LQFP-144 are freed for other future use.
-- **PCB routing (rev1, minimal commitment)**: Route the SIM7600 USB D+/D- to a connector footprint or test points to preserve the tethering option. MCU USB OTG_FS on the main USB-C (charge + firmware + files).
-- **Future ecosystem respin**: Add an internal USB 2.0 hub (e.g., USB2514, ~$1–2) so a single USB-C presents both the modem (RNDIS for LTE) and the MCU (MSC for files) to the car module — simultaneous LTE + file access over one cable. Two USB devices cannot share one host port without a hub.
+- **PCB routing (rev1, ecosystem hard requirement — 2026-08-27)**: USB-C D+/D- → USBLC6-2 ESD → USB2512 hub upstream. Hub downstream 1 → modem USB (RNDIS/ECM, HS). Hub downstream 2 → MCU USB OTG_FS (MSC/CDC ACM, FS). Single USB-C port for both LTE tethering and MCU file/debug access. See project-log.md 2026-08-27 USB Hub on Rev1.
+- **Hub requirements**: USB2512 (2-port HS hub, QFN-24) + 24MHz crystal + decoupling caps + +3.3V power + reset (RC or 1 MCU GPIO) + VBUS_DET (tap existing VBUS net via divider). Hub is powered whenever phone is on (+3.3V).
 - **Pre-PCB verification**: Validate `AT+CUSBPIDSWITCH=9018,1,1` (ECM) and `=9011,1,1` (RNDIS) on the Waveshare NA-H HAT connected to a Linux host (the HAT exposes the modem USB). Confirm whether the modem can run PPP-over-UART (MCU data) simultaneously with RNDIS-over-USB (car module data) on two PDP contexts.
 
 ## Budget Constraints

@@ -1689,6 +1689,16 @@
 			(embedded_fonts no)
 		)
 	)
+	(text "LOCKED 8/29 MD"
+		(exclude_from_sim no)
+		(at 180.34 170.942 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "f6cce075-64d6-4405-a996-7af8d298c484")
+	)
 	(junction
 		(at 149.86 101.6)
 		(diameter 0)
@@ -1724,16 +1734,6 @@
 			(type default)
 		)
 		(uuid "19ab6f9c-798d-4af7-ac46-fe6610f22c32")
-	)
-	(wire
-		(pts
-			(xy 90.17 129.54) (xy 85.09 129.54)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1e2f3ae2-0278-48b3-9588-5d589bc6716f")
 	)
 	(wire
 		(pts
@@ -1804,16 +1804,6 @@
 			(type default)
 		)
 		(uuid "2ecb28ee-0290-4fd2-b836-c8897b1eca5c")
-	)
-	(wire
-		(pts
-			(xy 100.33 129.54) (xy 105.41 129.54)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3764964c-194d-47f1-bca4-6498e7c2e1b8")
 	)
 	(wire
 		(pts
@@ -2351,30 +2341,6 @@
 			)
 		)
 	)
-	(global_label "USIM_DATA"
-		(shape bidirectional)
-		(at 105.41 129.54 0)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "77a3e166-a6dd-4979-a489-d9a9f0c3bae8")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 105.41 129.54 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-	)
 	(global_label "SD_D2"
 		(shape bidirectional)
 		(at 179.07 143.51 270)
@@ -2436,30 +2402,6 @@
 		(uuid "7e151bd8-e8b9-415f-af2c-b1bae3dfa806")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 172.72 91.44 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-	)
-	(global_label "USIM_VDD"
-		(shape bidirectional)
-		(at 85.09 129.54 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "87d58580-fc60-44a6-859d-fd9489228b1f")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 85.09 129.54 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4987,86 +4929,6 @@
 			(project "phone"
 				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/7fc639d9-249c-4f41-85eb-7c2617f3c206"
 					(reference "#PWR0206")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "passives:RC0603JR-0710KL")
-		(at 95.25 129.54 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d80f0262-577b-45fe-b226-d003077969a3")
-		(property "Reference" "R20"
-			(at 95.25 124.46 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "10k"
-			(at 95.25 134.62 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "easyeda2kicad:R0603"
-			(at 95.25 129.54 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 95.25 129.54 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "10k SIM data pull-up resistor"
-			(at 95.25 129.54 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "20deb01b-3780-4a48-8cef-c3b49daf55d3")
-		)
-		(pin "2"
-			(uuid "12205207-087b-472e-a84c-3d87752e9fde")
-		)
-		(instances
-			(project "phone"
-				(path "/451c3b43-1616-42cb-bf96-d436f4db82c2/7fc639d9-249c-4f41-85eb-7c2617f3c206"
-					(reference "R20")
 					(unit 1)
 				)
 			)

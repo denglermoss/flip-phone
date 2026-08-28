@@ -102,7 +102,7 @@ Each type of information has **one source of truth**. Other docs link to it — 
 | Form factor | Candybar / single-board (flip deferred to v2) | 2026-08-16 | project-log.md Form Factor Pivot |
 | Camera | OV5640 5MP AF, 8-bit DVP via DCMI (20-pin FPC ZIF) | 2026-08-17 | project-log.md Camera Module Selection |
 | Power | TPS63021 buck-boost + MCP73831 charger + MAX17048 gauge | 2026-07-19 | project-log.md, `docs/work/block-diagram.md` |
-| USB tethering | SIM7600 USB HS direct (no ULPI) | 2026-06-28 | project-log.md USB HS/ULPI Revisit |
+| USB tethering | SIM7600 USB HS direct (no ULPI) + USB2512 hub on rev1 (single USB-C) | 2026-06-28 / 2026-08-27 | project-log.md USB HS/ULPI Revisit + USB Hub on Rev1 |
 | Schematic | KiCad, flat sheet + global labels | 2026-07-22 | project-log.md Schematic Approach |
 | Network | LTE with VoLTE (T-Mobile/Mint) | 2026-06-28 | `docs/ref/constraints.md` |
 | Component principle | No feature rated 5+ may be blocked by hardware | 2026-06-28 | `docs/ref/feature-wishlist.md` |

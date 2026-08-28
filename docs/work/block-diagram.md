@@ -1,6 +1,6 @@
 ---
 status: active
-updated: 2026-08-17
+updated: 2026-08-27
 ---
 # Design Intent & Rationale
 
@@ -19,7 +19,7 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 | Net name | Voltage | Source | Consumers |
 |----------|---------|--------|-----------|
 | `VBUS` | 5V | USB-C connector (USBC1) | MCP73831 charger input (U11), MCU VBUS sense (via divider — deferred to MCU section) |
-| `+BATT` | 3.4–4.3V (LiPo) | LiPo via battery connector (CN1, JST S2B-PH-SM4-TB, C295747) → **power switch (SW21, maintained, battery-path disconnect)** → +BATT net | SIM7600 VBAT pins (U2), TPS63021DSJR input (U8), MAX17048 VDD (U10 — power + voltage sense), MCP73831 VBAT. Switch is upstream of all loads — 0 power draw when off. See project-log 2026-08-17. |
+| `+BATT` | 3.4–4.3V (LiPo) | LiPo via battery connector (CN1, JST S2B-PH-SM4-TB, C295747) → +BATT net (direct, no switch in battery path) | SIM7600 VBAT pins (U2), TPS63021DSJR input (U8), MAX17048 VDD (U10 — power + voltage sense), MCP73831 VBAT. Battery always connected — charging works while phone is "off." System on/off controlled by SW21 on TPS63021 EN pin (signal-level), not battery disconnect. See project-log 2026-08-27. |
 | `+3.3V` | 3.3V | TPS63021DSJR buck-boost output (U8) | MCU, display, SD card, codec MICVDD, level shifter VCCB (U12 SN74AXC4T774) |
 | `+1V8` | 1.8V | TPS7A0218 LDO output (U9, from +3.3V) | ALC5651 codec analog (AVDD/DACREF/CPVDD), codec DBVDD (shared single pin — both I2S ports), level shifter VCCA (U12), I2C pullups |
 | `GND` | 0V | Common ground (USB-C GND, LiPo −, all ICs) | All blocks |
@@ -83,7 +83,7 @@ Defined once as power symbols, referenced everywhere. **Names are case-sensitive
 **Source:**
 | Source | Pin | Notes |
 |--------|-----|-------|
-| TPS7A0218 LDO (U9) | OUT (pin 1) | 1.8V fixed, 200mA max. Input from +3.3V. Load is light (~10–20mA codec + level shifter). Needs 1µF in + 1µF out ceramic (datasheet §9.2). |
+| TPS7A0218 LDO (U9) | OUT (pin 5) | 1.8V fixed, 200mA max. Input from +3.3V (pin 1). Load is light (~10–20mA codec + level shifter). Needs 1µF in + 1µF out ceramic (datasheet §9.2). Pin 1=IN, 2=GND, 3=EN, 4=NC, 5=OUT (DBV/SOT-23-5). |
 
 **Consumers:**
 | Consumer | Pin | Notes |
@@ -149,13 +149,18 @@ USB-C USBC1 (A4B9, B4A9) → VBUS net → MCP73831 VDD (pin 1, U11)
 - MCP73831 takes VBUS as its charger input → charges the LiPo at 500mA (R_PROG = 2kΩ).
 - MCU senses VBUS via a resistor divider (5V → ~1.6V at GPIO) to detect "USB connected / charger attached." This is a separate GPIO from the USB OTG_FS VBUS pin (which is for USB enumeration, not charger detection).
 
-**USB data path:**
+**USB data path (updated 2026-08-27 — hub on rev1):**
 ```
-USB-C USBC1 (A6+B6, A7+B7) → USBLC6-2 ESD (D1) → MCU USB OTG_FS (D+, D-)
+USB-C USBC1 (A6+B6, A7+B7) → USBLC6-2 ESD (D1) → USB2512 hub upstream
+                                                          ├─ downstream 1 → modem USB (MODEM_USB_DP/DN, HS 480Mbps, RNDIS/ECM tethering)
+                                                          └─ downstream 2 → MCU USB OTG_FS (D+, D-, FS 12Mbps, MSC/CDC ACM)
 ```
-- USB 2.0 data goes through ESD protection to the MCU's USB OTG_FS peripheral.
-- Used for firmware upload, debug, and file transfer (12 Mbps — sufficient for these tasks).
+- USB 2.0 data from the single USB-C goes through ESD protection to the **USB2512 hub upstream port**.
+- The hub presents two downstream devices to the host: the modem (LTE tethering at HS) and the MCU (firmware/files/debug at FS).
+- The hub handles the HS/FS speed mismatch via its transaction translator — each downstream port negotiates independently.
+- Used for ecosystem tethering (modem RNDIS/ECM), firmware upload, debug, and file transfer.
 - NOT used for charging — charging is handled by the VBUS → MCP73831 path above.
+- See project-log.md 2026-08-27 USB Hub on Rev1.
 
 **Notes:**
 - **Why 5.1kΩ on CC pins**: USB-C uses the CC pins to determine plug orientation and device role. A UFP (device) presents 5.1kΩ to GND on its CC pins. A DFP (host/charger) presents 56kΩ to VBUS on its CC pins and outputs 5V on VBUS when it detects the 5.1kΩ. Without the 5.1kΩ, the charger thinks nothing is connected and won't provide VBUS.
@@ -228,7 +233,7 @@ USB-C USBC1 (A6+B6, A7+B7) → USBLC6-2 ESD (D1) → MCU USB OTG_FS (D+, D-)
 | 6, 7 | L2 | L1 inductor (other end) | Inductor connection 2. Tie pin 6 and 7 together. |
 | 8, 9 | L1 | L1 inductor (one end) | Inductor connection 1. Tie pin 8 and 9 together. |
 | 10, 11 | VIN | `+BATT` | Power-stage supply input. Tie pin 10 and 11 together. |
-| 12 | EN | `+BATT` via 1MΩ pullup | Enable (active high). **Must not float.** Pull up to VIN (+BATT) with 1MΩ for always-on. **Do NOT pull up to VOUT** — chicken-and-egg: at startup VOUT=0 so EN=0 and the chip never starts. +BATT is present immediately when the power switch connects the battery, so pulling EN to +BATT guarantees startup. The TPS63021 quiescent current in power-save (~25µA) is negligible vs modem idle (17.5mA) — no reason to disable the rail. **Power switch is in the battery path (upstream of +BATT), not on EN** — see project-log 2026-08-17. |
+| 12 | EN | Switched by SW21 (OS102011MA1QN1) | Enable (active high). **Must not float.** SW21 (SPDT slide switch) selects: ON → +BATT through R21 (1MΩ); OFF → GND. When ON, EN sees +BATT through 1MΩ — rail starts. When OFF, EN is pulled to GND — TPS63021 disabled, +3.3V rail off. **Do NOT pull up to VOUT** — chicken-and-egg: at startup VOUT=0 so EN=0 and the chip never starts. +BATT is always present (battery directly connected), so pulling EN to +BATT through the switch guarantees startup. **Switch is on EN pin (signal-level), not in battery path** — see project-log 2026-08-27. |
 | 13 | PS/SYNC | `GND` (tie directly) | Power-save mode enable. **Low = power-save ON** (high efficiency at light load <100mA, auto-switches to PWM above 100mA). **High = PWM always** (lower ripple, worse light-load efficiency). Tie to GND to enable power-save — the chip automatically transitions to PWM when load exceeds 100mA. No need to toggle: standby load (~20-50mA) benefits from power-save; active load (>100mA) auto-switches to PWM. |
 | 14 | PG | MCU GPIO (EXTI-capable) + 10kΩ pullup to +3.3V | **Power-good output — LOCKED 2026-07-21 (wire to MCU).** Open-drain, low = VOUT < ~90% of target (~2.97V). Pull up to **+3.3V** (NOT +BATT) with 10kΩ, wire to MCU GPIO (EXTI-capable, TBD pin assignment). **Why wire it (not "MCU is off when PG is low"):** the STM32H743 BOR (brown-out reset) triggers around ~1.7V, but PG goes low at ~2.97V — there's a ~1.2V window where PG is low but the MCU is still alive and can take defensive action (reduce clock, kill display backlight, pause modem TX, trigger graceful shutdown). Without PG, the MCU has no warning before the rail collapses. Net name: `3V3_OK`. **Pull-up rail corrected 2026-07-22** — the power schematic originally had R4 pulled up to +BATT (3.4–4.3V), which would overvoltage a non-5V-tolerant MCU GPIO. Fixed to +3.3V. |
 | Exposed pad | PGND | `GND` | Thermal pad — connect to large GND copper pour for heat dissipation. Internally tied to PGND. |
@@ -238,7 +243,7 @@ USB-C USBC1 (A6+B6, A7+B7) → USBLC6-2 ESD (D1) → MCU USB OTG_FS (D+, D-)
 - C_VIN = 2× 10µF ceramic (input, +BATT to GND, close to pins 10/11)
 - C_VOUT = 3× 22µF ceramic (output, +3.3V to GND, close to pins 4/5)
 - C_VINA = 0.1µF ceramic (VINA bypass to GND, close to pin 1 — **VINA's only connection**)
-- R_EN = 1MΩ pullup to +BATT (always-on — chip runs whenever battery connected)
+- R_EN = R21 (1MΩ) in series with SW21 ON position: +BATT → R21 → SW21 → EN (switched, not permanent pullup — see 2026-08-27)
 - PS/SYNC = direct wire to GND (enable power-save, no resistor needed)
 - R_PG = 10kΩ pullup to +3.3V (NOT +BATT — PG is an MCU input, must not exceed 3.3V)
 
@@ -446,8 +451,8 @@ Most labels are shared between variants, but **3 labels are LGA-only** (`MODEM_P
 | `PCM_OUT` | output | PCM data out → ALC5651 I2S-1 | 1.8V, direct to codec |
 | `PCM_IN` | input | PCM data in ← ALC5651 I2S-1 (mic) | 1.8V, direct from codec |
 | `PCM_SYNC` | output | PCM frame sync → ALC5651 I2S-1 | 1.8V, direct to codec |
-| `MODEM_USB_DP` | bidirectional | Modem USB 2.0 HS D+ | To optional modem USB connector. **Renamed from `USB_DP`** to avoid conflict with MCU USB global label in power schematic |
-| `MODEM_USB_DN` | bidirectional | Modem USB 2.0 HS D- | To optional modem USB connector. **Renamed from `USB_DN`** to avoid conflict with MCU USB global label in power schematic |
+| `MODEM_USB_DP` | bidirectional | Modem USB 2.0 HS D+ | To USB2512 hub downstream 1 (ecosystem tethering, rev1 hard requirement). **Renamed from `USB_DP`** to avoid conflict with MCU USB global label in power schematic |
+| `MODEM_USB_DN` | bidirectional | Modem USB 2.0 HS D- | To USB2512 hub downstream 1 (ecosystem tethering, rev1 hard requirement). **Renamed from `USB_DN`** to avoid conflict with MCU USB global label in power schematic |
 | `MODEM_RST` | input | Reset ← MCU | 1.8V, needs level shifter |
 | `MODEM_STATUS` | output | Module ready → MCU | 1.8V, needs level shifter |
 | `MODEM_PWRKEY` | input | Power key ← MCU | **LGA only** — MPCIe has no PWRKEY pin. Do not place this label in MPCIe wiring |

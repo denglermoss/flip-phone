@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-08-17
+updated: 2026-08-27
 ---
 # Requirements
 
@@ -55,12 +55,13 @@ updated: 2026-08-17
 - **FR-8.1**: Device shall include an LED notification light for missed-call/SMS alerts (single GPIO + LED).
 - **FR-8.2**: Device shall include a vibration motor for silent call/SMS alerts (GPIO + N-FET driver + off-board motor via connector).
 
-### FR-9: Ecosystem Connectivity (Future — Constrains Hardware Selection Now)
-- **FR-9.1**: Device MCU shall have USB capability (device or OTG mode) to enable future module connectivity. This is a hardware selection constraint, not an MVP feature.
-- **FR-9.2**: Device PCB shall include a USB data connector (not charge-only) routed to the MCU. Physical connector type TBD.
-- **FR-9.3**: Future scope (post-daily-driver): USB tethering to expose LTE connectivity to external modules. **Architecture (2026-06-28)**: tethering uses the SIM7600's own USB 2.0 HS port directly (RNDIS/ECM via `AT+CUSBPIDSWITCH`), bypassing the MCU — the modem is the USB network adapter, not the MCU. The MCU's USB (OTG_FS) is not in the tethering path. See project-log.md 2026-06-28 USB HS/ULPI Revisit.
-- **FR-9.4**: Future scope: File access (contacts, music storage) over USB for external modules.
-- **FR-9.5**: Bluetooth/WiFi for wireless ecosystem modules is deferred — not a hardware selection constraint at this time.
+### FR-9: Ecosystem Connectivity (Rev1 Hard Requirement — updated 2026-08-27)
+- **FR-9.1**: Device MCU shall have USB capability (device mode) for ecosystem connectivity. This is a hardware selection constraint, satisfied by STM32H743 OTG_FS.
+- **FR-9.2**: Device PCB shall include a single USB-C data connector (not charge-only) as the ecosystem interconnect port. USB-C 16-pin (USB 2.0), LOCKED 2026-07-19.
+- **FR-9.3**: Device shall expose LTE tethering to external USB hosts via the SIM7600's own USB 2.0 HS port (RNDIS/ECM via `AT+CUSBPIDSWITCH`), bypassing the MCU — the modem is the USB network adapter, not the MCU. The MCU's USB (OTG_FS) is not in the tethering path. See project-log.md 2026-06-28 USB HS/ULPI Revisit.
+- **FR-9.4**: Device shall present both the modem (LTE tethering) and the MCU (file access / firmware / debug) to an external USB host over the **single USB-C port** via an **internal USB 2.0 HS hub** (USB2512-class) on rev1. No second physical USB port. See project-log.md 2026-08-27 USB Hub on Rev1.
+- **FR-9.5**: File access (contacts, music storage) over USB for external modules is enabled by the hub (MCU enumerates as MSC device on hub downstream 2).
+- **FR-9.6**: Bluetooth/WiFi for wireless ecosystem modules is deferred — not a hardware selection constraint at this time.
 
 ## Non-Functional Requirements
 
@@ -118,7 +119,7 @@ Full rationale for each decision is in `docs/ref/project-log.md` — entries bel
 - [x] **Display selection**: ST7789V SPI TFT 2.0" (color-capable, no 5+ features blocked). See project-log.md 2026-06-28 Display Selection.
 - [x] **Keypad selection**: SMD tactile switches, 5×4 matrix. See project-log.md 2026-06-28 Keypad Selection.
 - [x] **USB-C connector type**: 16-pin USB-C (USB 2.0). See project-log.md 2026-07-19.
-- [x] **Modem USB HS port on rev1**: Routed to unpopulated connector footprint. See project-log.md 2026-07-19.
+- [x] **Modem USB HS port on rev1**: ~~Routed to unpopulated connector footprint.~~ **SUPERSEDED 2026-08-27**: Routed to USB hub downstream port (USB2512). No second physical connector. See project-log.md 2026-08-27 USB Hub on Rev1.
 - [x] **GNSS antenna on rev1**: U.FL footprint included. See project-log.md 2026-07-19.
 - [x] **Loudspeaker on rev1**: Both earpiece and loudspeaker included. See project-log.md 2026-07-19.
 - [x] **SIM + microSD connector strategy**: Resolved during sourcing — separate sockets. See `docs/ref/bom.md` and project-log.md 2026-07-19.

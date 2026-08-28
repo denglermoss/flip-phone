@@ -1,6 +1,6 @@
 ---
 status: active
-updated: 2026-08-16
+updated: 2026-08-27
 ---
 # Task Tracker — Path to Assembled PCB
 
@@ -40,7 +40,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
   - **Resolved by**: Subagent verification 2026-07-22 (this session).
 
 - **O2 — MPCIe power-on method** *(gate: before modem schematic section finalized)*
-  - **Status**: RESOLVED 2026-07-22, **UPDATED 2026-07-24, UPDATED 2026-08-17**. SIM7600 MPCIe auto-powers on when 3.3V is applied — no PWRKEY pin. ~~Load switch on +3.3V to modem, controlled by MCU GPIO `MCU_MODEM_PWR_EN` (PE6, pin 5), recommended for power control and graceful shutdown.~~ **SUPERSEDED 2026-07-24**: No load switch — SIM7600 has robust sleep mode (<5mA, maintains call/SMS reception) + dedicated PWRKEY pin. Load switch is redundant. MCU_MODEM_PWR_EN (PE6) is now no_connect. ~~System on/off is controlled by a slide switch (SW21) on the TPS63021 EN pin instead.~~ **UPDATED 2026-08-17**: System on/off is controlled by a maintained power switch (SW21) in the battery path (between J_BATT and +BATT net), not on the EN pin. See project-log 2026-08-17.
+  - **Status**: RESOLVED 2026-07-22, **UPDATED 2026-07-24, UPDATED 2026-08-17, UPDATED 2026-08-27**. SIM7600 MPCIe auto-powers on when 3.3V is applied — no PWRKEY pin. ~~Load switch on +3.3V to modem, controlled by MCU GPIO `MCU_MODEM_PWR_EN` (PE6, pin 5), recommended for power control and graceful shutdown.~~ **SUPERSEDED 2026-07-24**: No load switch — SIM7600 has robust sleep mode (<5mA, maintains call/SMS reception) + dedicated PWRKEY pin. Load switch is redundant. MCU_MODEM_PWR_EN (PE6) is now no_connect. ~~System on/off is controlled by a slide switch (SW21) on the TPS63021 EN pin instead.~~ ~~**UPDATED 2026-08-17**: System on/off is controlled by a maintained power switch (SW21) in the battery path (between J_BATT and +BATT net), not on the EN pin.~~ **UPDATED 2026-08-27**: Switch moved back to EN pin (signal-level). SW21 (OS102011MA1QN1, 100mA SPDT) switches TPS63021 EN between +BATT-through-1MΩ (ON) and GND (OFF). Battery always connected — charging works while off. See project-log 2026-08-27.
   - **Blocks**: ~~Modem section power wiring, MCU GPIO allocation~~ — unblocked.
 
 - **O3 — MCU peripheral-to-pin mapping** *(gate: before any non-power schematic section)*
@@ -117,7 +117,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [ ] Wire power: VDD (multiple pins) → +3.3V with 100nF decoupling per pair + 4.7µF bulk; VDDA via ferrite bead + 1µF; VBAT → +3.3V (RTC not used); all GND pins
 - [ ] Wire HSE crystal (Y1, 8MHz) with load caps (2×18pF for CL=12pF crystal)
 - [ ] Wire LSE crystal (32.768kHz) if RTC used — or mark NC if not
-- [ ] Wire USB OTG_FS: D+, D- → USBLC6-2 → USB-C; VBUS sense via divider (100k/68k → ~2.02V)
+- [ ] Wire USB OTG_FS: D+, D- → USB2512 hub downstream 2 (was direct to USB-C; hub added 2026-08-27); VBUS sense via divider (100k/68k → ~2.02V)
 - [ ] Wire LPUART1: TX, RX, RTS, CTS → level shifter B-side (to modem)
 - [ ] Wire I2C: SCL, SDA → MAX17048 + ALC5651 (shared bus, address 0x36 + 0x1A)
 - [ ] Wire SPI: MOSI, SCK → display (direct on board); CS, DC, RST → main display
@@ -140,7 +140,7 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
 - [x] Add bulk capacitance (470µF tantalum polymer C40 + 2× 10µF ceramic C41/C42) at VCC pins — DONE 2026-07-24
 - [ ] Wire UART: TXD, RXD, RTS, CTS, RI, DTR → level shifter A-side (1.8V)
 - [ ] Wire PCM: CLK, OUT, IN, SYNC → ALC5651 I2S-1 (direct, 1.8V, no shifter)
-- [ ] Wire USB: DP, DN → test points (J2, DNP rev1)
+- [ ] Wire USB: DP, DN → USB2512 hub downstream 1 (ecosystem tethering, rev1 hard requirement — 2026-08-27)
 - [ ] Wire control: PERST# (reset) → MCU GPIO via level shifter; WAKE# (status/interrupt) → MCU GPIO via level shifter
 - [ ] Wire LED: LED_WWAN# (pin 42, active-low) → network status LED circuit (+3.3V → resistor → LED → pin 42)
 - [ ] Wire SIM: USIM_VDD, USIM_DATA, USIM_CLK, USIM_RST → flat sheet SIM socket (global labels)
@@ -283,8 +283,9 @@ These are gates — resolve before proceeding past the indicated phase. Numbered
   - GNSS antenna: MPCIe GNSS pin → U.FL (same requirements)
   - Calculate trace width from stackup (KiCad calculator, typically 0.3-0.4mm on 1.6mm 4-layer)
 - [ ] **High-speed differential** (Priority 3):
-  - USB D+/D- (MCU → USB-C): 90Ω differential, length-matched (<5mil mismatch), no plane splits
-  - Modem USB D+/D- → test points (same requirements, unpopulated rev1)
+  - USB D+/D- (USB-C → USB2512 hub upstream): 90Ω differential, length-matched (<5mil mismatch), no plane splits
+  - Hub downstream 1 → modem USB D+/D- (HS, same requirements)
+  - Hub downstream 2 → MCU USB D+/D- (FS, less critical but keep clean)
 - [ ] **Display SPI** (Priority 4, direct on board):
   - MCU → J7 ZIF → display panel; keep traces short (<50mm, capacitance)
   - No hinge flex — display mounts directly on single board

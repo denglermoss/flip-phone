@@ -1,6 +1,6 @@
 ---
 status: active
-updated: 2026-08-16
+updated: 2026-08-27
 ---
 # IC-by-IC Schematic Review
 
@@ -24,7 +24,7 @@ updated: 2026-08-16
 | IC | Refdes | Sheet | Status | Date Reviewed |
 |----|--------|-------|--------|---------------|
 | TPS63021DSJR (3.3V buck-boost) | U8 | Power | ⚠️ Findings | 2026-08-02 |
-| TPS7A0218 (1.8V LDO) | U9 | Power | ☐ Pending | |
+| TPS7A0218 (1.8V LDO) | U9 | Power | ✅ Pass | 2026-08-27 |
 | MCP73831 (LiPo charger) | U11 | Power | ☐ Pending | |
 | MAX17048 (fuel gauge) | U10 | Power | ☐ Pending | |
 | USBLC6-2 (USB ESD) | D1 | Power | ☐ Pending | |
@@ -88,20 +88,22 @@ Our design wires PG to an MCU GPIO with EXTI (interrupt) for brown-out warning (
 
 **Severity**: Info (no action)
 
-### Q3: Power switch function — ~~momentary slide switch architecture (soft on/off + 5s hard off)~~ **SUPERSEDED 2026-08-17: maintained power switch in battery path + MCU sleep timer**
+### Q3: Power switch function — ~~momentary slide switch architecture (soft on/off + 5s hard off)~~ ~~**SUPERSEDED 2026-08-17: maintained power switch in battery path + MCU sleep timer**~~ **SUPERSEDED 2026-08-27: switch back on EN pin, OS102011MA1QN1 selected**
 
 **Finding**: ~~Architecture decided 2026-08-02. SW21 changed from maintained slide (SSSS811101, direct EN control) to **momentary slide switch** (ALPS SSAL120100, LCSC C335996 — SPDT, spring-return, ALPS "Single-side Recoil Type"). Three functions:~~
 ~~1. **Short press when off** → power on (release hard-off latch → EN high → boot, or EXTI wakes MCU from STOP)~~
 ~~2. **Short press when on** → soft off (MCU EXTI → graceful shutdown → STOP mode)~~
 ~~3. **5-second hold** → hard off (RC timer → latch → EN low → 3.3V rail dies; pure hardware, works if MCU hung)~~
 
-**SUPERSEDED 2026-08-17**: Replaced with a simple maintained power switch in the battery path + MCU inactivity timer for soft off. See project-log 2026-08-17. Key changes:
-- **Hard off**: Maintained switch physically disconnects battery from +BATT net. 0 power draw. No latch circuit needed.
-- **Soft off**: MCU inactivity timer → STOP mode. Firmware-driven, all firmware details deferred until after PCB ordered.
-- **EN pin**: Reverts to always-on (1MΩ pullup to +BATT). No switch on EN.
-- **Switch part**: Changes from SSAL120100 (signal-level momentary, 10mA@5V) to TBD maintained power-rated switch (≥3A). Specific part TBD at schematic time.
-- **Charging while off**: Not supported (switch disconnects battery from charger VBAT path). Accepted.
-- **DEF-002 (latch circuit)**: Moot — no latch needed.
+**SUPERSEDED 2026-08-17**: ~~Replaced with a simple maintained power switch in the battery path + MCU inactivity timer for soft off. See project-log 2026-08-17. Key changes:~~
+~- **Hard off**: Maintained switch physically disconnects battery from +BATT net. 0 power draw. No latch circuit needed.~
+~- **Soft off**: MCU inactivity timer → STOP mode. Firmware-driven, all firmware details deferred until after PCB ordered.~
+~- **EN pin**: Reverts to always-on (1MΩ pullup to +BATT). No switch on EN.~
+~- **Switch part**: Changes from SSAL120100 (signal-level momentary, 10mA@5V) to TBD maintained power-rated switch (≥3A). Specific part TBD at schematic time.~
+~- **Charging while off**: Not supported (switch disconnects battery from charger VBAT path). Accepted.~
+~- **DEF-002 (latch circuit)**: Moot — no latch needed.~
+
+**SUPERSEDED 2026-08-27**: Switch moved back to EN pin (signal-level). Part: C&K OS102011MA1QN1 (SPDT, THT RA, 100mA, LCSC C226259). SW21 switches EN between +BATT-through-1MΩ (ON) and GND (OFF). Battery always connected — charging works while off. No hard battery disconnect. See project-log 2026-08-27.
 
 > **The following text describes the superseded 2026-08-02 architecture and is retained for history. All of it is struck. See the SUPERSEDED note above and project-log 2026-08-17 for the current architecture.**
 
@@ -133,11 +135,53 @@ Our design wires PG to an MCU GPIO with EXTI (interrupt) for brown-out warning (
 
 ---
 
+## U9 — TPS7A0218PDBVR (1.8V LDO)
+
+**Datasheet**: TI SBVS277C (`docs/datasheets/tps7a02.pdf`), Rev. C, Sep 2022 — downloaded 2026-08-27 (was missing from datasheets index; added per doc-maintain rule).
+**Reviewed**: 2026-08-27
+**Method**: kicad-inspector subagent — ERC + netlist extraction against datasheet pinout. Read-only, no schematic edits.
+
+### Datasheet pinout (DBV / SOT-23-5, top view)
+
+| Pin | Name | Type | Datasheet description |
+|-----|------|------|-----------------------|
+| 1 | IN | Input | Input pin. 1µF ceramic to GND, close to pin. |
+| 2 | GND | — | Ground. |
+| 3 | EN | Input | Enable (active high, internal smart pulldown). Float = OFF. |
+| 4 | NC | — | No internal connection. Float or tie to GND. |
+| 5 | OUT | Output | Regulated output. ≥0.5µF effective capacitance required (1µF recommended). |
+
+### Schematic verification (all PASS)
+
+| Check | Expected | Actual | Status |
+|-------|----------|--------|--------|
+| Pin 1 (IN) net | +3.3V | +3.3V | ✅ |
+| Pin 2 (GND) net | GND | GND | ✅ |
+| Pin 3 (EN) net | +3.3V (tied to IN, always-on per decision 2026-07-21) | +3.3V (same net as IN) | ✅ |
+| Pin 4 (NC) | No connect (float or GND both OK) | Floating (pin type = no_connect in symbol) | ✅ |
+| Pin 5 (OUT) net | +1V8 | +1V8 | ✅ |
+| Cin | ≥1µF | C35 = 1µF X5R 16V 0603 (GRM188R61C105KA93D, +3.3V↔GND) | ✅ |
+| Cout | ≥0.5µF effective (1µF recommended) | C36 = 1µF X5R 16V 0603 (same MPN, +1V8↔GND) | ✅ |
+| Footprint | SOT-23-5 (TI DBV) | easyeda2kicad:SOT-23-5_L2.9-W1.6-P0.95-LS2.8-BL | ✅ |
+| ERC | No violations on U9 or its nets | 0 of 100 total ERC violations touch U9/+1V8/+3.3V/GND | ✅ |
+
+### Notes
+
+- **EN always-on**: EN is tied to IN via the shared +3.3V power rail (separate +3.3V power symbols, not a direct pin-to-pin wire). Electrically equivalent. Consistent with the locked decision (project-log 2026-07-21): ALC5651 datasheet §7.1 says cutting 1.8V while 3.3V stays up *causes* leakage; standby is handled via I2C registers, not rail cutting.
+- **NC pin 4**: Left floating. Datasheet explicitly allows both floating and GND. No action needed.
+- **Load margin**: 200mA max output vs ~10–20mA actual load (codec analog + level shifter VCCA) — 10× margin.
+- **Dropout**: ~205mV typ @200mA (3.3V variant). At our 1.8V output and light load, dropout is negligible; +3.3V input is always well above 1.8V + dropout.
+- **Doc fix applied**: `docs/work/block-diagram.md` line 86 said "OUT (pin 1)" — corrected to "OUT (pin 5)". Pin 1 is IN, pin 5 is OUT per the DBV datasheet.
+
+**Severity**: No issues. All checks pass.
+
+---
+
 ## Deferred Tasks
 
 | ID | Description | Origin | Date | Status |
 |----|-------------|--------|------|--------|
-| DEF-001 | Power switch architecture: what does "off" mean? Does modem VBAT need a separate switch? How does LGA modem change this? SW21 placement. | U8 review Q3 | 2026-08-02 | **Resolved 2026-08-02, SUPERSEDED 2026-08-17** — replaced by maintained power switch in battery path + MCU sleep timer. See Q3 above + project-log 2026-08-17. |
+| DEF-001 | Power switch architecture: what does "off" mean? Does modem VBAT need a separate switch? How does LGA modem change this? SW21 placement. | U8 review Q3 | 2026-08-02 | **Resolved 2026-08-02, SUPERSEDED 2026-08-17, SUPERSEDED 2026-08-27** — switch on EN pin (signal-level), OS102011MA1QN1 selected. See Q3 above + project-log 2026-08-27. |
 | DEF-002 | ~~Latch circuit implementation for hard-off persistence: SR latch (2 transistors + RC timer) vs dedicated IC (LTC2950). Component selection, schematic wiring, RC time constant calc.~~ **MOOT 2026-08-17** — no latch circuit needed. The maintained power switch physically disconnects the battery; no latch is required to hold EN low. | U8 review Q3 | 2026-08-02 | **Moot (2026-08-17)** — eliminated by power switch simplification. |
 
 ---
@@ -150,3 +194,5 @@ Our design wires PG to an MCU GPIO with EXTI (interrupt) for brown-out warning (
 | 2026-08-02 | U8 | Q3 updated: power switch architecture decided (momentary slide switch, soft on/off + 5s hard off). DEF-001 resolved, DEF-002 opened (latch circuit TBD). SW21 part changed SSSS811101 → SSAL120100. |
 | 2026-08-02 | U8 | Q3 corrected: SSAL120100 is a momentary **slide** switch (SPDT, spring-return), not a pushbutton. Added NRND flag. Added long-press decision (simple for rev1 — no menu, 5s hardware kill only). Added unified power-on explanation + power-on race condition firmware note. DEF-002 deferred to power schematic drawing time. |
 | 2026-08-17 | U8 | Q3 SUPERSEDED: Power switch architecture simplified to maintained switch in battery path + MCU inactivity timer. Latch circuit eliminated (DEF-002 moot). EN reverts to always-on. Switch part changes from SSAL120100 to TBD power-rated maintained switch. See project-log 2026-08-17. |
+| 2026-08-27 | U8 | Q3 SUPERSEDED again: Switch moved back to EN pin (signal-level). Part selected: OS102011MA1QN1 (100mA SPDT, LCSC C226259). Battery always connected — charging while off restored. No hard battery disconnect. See project-log 2026-08-27. |
+| 2026-08-27 | U9 | Initial review: all 6 checks PASS (pin mapping, Cin/Cout, EN always-on, NC floating, footprint, ERC). Datasheet `tps7a02.pdf` downloaded + indexed. Doc fix: block-diagram.md line 86 pin number corrected (OUT pin 1 → pin 5). |

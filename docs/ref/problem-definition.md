@@ -1,6 +1,6 @@
 ---
 status: reference
-updated: 2026-08-17
+updated: 2026-08-27
 ---
 # Problem Definition
 
@@ -22,7 +22,7 @@ The phone is the first and primary project. However, the long-term vision is a *
 
 **Design principle**: The phone's hardware and firmware decisions must not prevent ecosystem integration. Specifically, the phone must expose connectivity interfaces (USB at minimum) that allow a future module to access LTE tethering, file storage, and potentially audio. This does not change the MVP scope — it only constrains hardware choices to leave the door open.
 
-**Tethering architecture (updated 2026-06-28)**: LTE tethering to the car module uses the **SIM7600's own USB 2.0 HS port (480 Mbps)** directly — the modem presents itself as a USB network adapter (RNDIS/ECM via `AT+CUSBPIDSWITCH`), bypassing the MCU entirely. The MCU's USB (OTG_FS, 12 Mbps) handles firmware updates, file/MSC transfer, and debug. A future internal USB 2.0 hub (USB2514) presents both the modem (LTE) and the MCU (files) to the car module over one USB-C cable. The earlier "MCU bridges LTE to USB CDC ECM, needs USB HS via ULPI" plan is superseded — no USB3300 ULPI transceiver needed. See `docs/ref/project-log.md` 2026-06-28 USB HS/ULPI Revisit.
+**Tethering architecture (updated 2026-08-27)**: LTE tethering to the car module uses the **SIM7600's own USB 2.0 HS port (480 Mbps)** directly — the modem presents itself as a USB network adapter (RNDIS/ECM via `AT+CUSBPIDSWITCH`), bypassing the MCU entirely. The MCU's USB (OTG_FS, 12 Mbps) handles firmware updates, file/MSC transfer, and debug. An **internal USB 2.0 HS hub (USB2512)** on rev1 presents both the modem (LTE) and the MCU (files) to the car module over a **single USB-C cable** — ecosystem is a hard rev1 requirement, no future respin needed. The earlier "MCU bridges LTE to USB CDC ECM, needs USB HS via ULPI" plan is superseded — no USB3300 ULPI transceiver needed. See `docs/ref/project-log.md` 2026-06-28 USB HS/ULPI Revisit and 2026-08-27 USB Hub on Rev1.
 
 ## Why This Is Hard
 
@@ -115,7 +115,7 @@ Ecosystem modules are future scope.
 3. **Power budget** — Meeting 24h standby with a small battery while powering an LTE module is tight.
 4. **Carrier device whitelisting** — Some US carriers block unknown IMEIs. T-Mobile prepaid is the most lenient, but this needs validation.
 5. **Mechanical/form factor** — Candybar / single-board locked 2026-08-16 (one PCB, display via ZIF). Enclosure fit and keypad feel are Phase 7 concerns. The single-board approach eliminates hinge mechanism risk (deferred to v2 with the flip form factor).
-6. **Ecosystem compatibility** (future risk) — Hardware choices (MCU USB capability, modem USB routing, connector selection) must not preclude future module connectivity. **Resolved 2026-06-28**: tethering uses the SIM7600's own USB 2.0 HS port directly (no MCU USB HS / ULPI needed); rev1 routes the modem USB to a connector footprint to preserve the option, with an internal USB hub planned for the ecosystem respin. Low risk.
+6. **Ecosystem compatibility** (rev1 hard requirement) — Hardware choices (MCU USB capability, modem USB routing, USB hub, single USB-C connector) must enable module connectivity on rev1. **Resolved 2026-06-28 + 2026-08-27**: tethering uses the SIM7600's own USB 2.0 HS port directly (no MCU USB HS / ULPI needed); an internal USB2512 hub on rev1 presents both modem (LTE) and MCU (files) over one USB-C. No second physical port. Low risk.
 7. ~~**MAX9880A codec availability/compatibility**~~ **→ ALC5651 codec availability/compatibility** (pre-PCB risk — **FULLY RESOLVED 2026-07-19**): ~~The selected dual-port codec (MAX9880A) has been verified...~~ **SUPERSEDED 2026-07-19**: MAX9880A replaced by **Realtek ALC5651-CG** (LCSC C963633, QFN-40 5×5mm, JLC Extended — no consignment). All three pre-PCB items verified for ALC5651: (1) PCM short-frame sync is confirmed compatible — ALC5651 §7.5.1 PCM Mode A (short sync, Figures 10-11) in slave mode matches SIM7600 §3.6 (master, short sync, 16-bit, 2048/4096kHz BCLK); (2) stock is available at LCSC (407 units, JLC Extended — no consignment needed); (3) SIM7600 PCM pin voltage is 1.8V — confirmed 2026-06-30 from HW Design Manual V1.03 (Table 32 + §3.6.2). PCM lines connect directly to the ALC5651 (also 1.8V). Datasheet (Rev 0.9, 134pp) is complete — full pinout, registers, application circuit, timing, package. The fallback (MCU bridge with NAU8822) remains documented. The Waveshare HAT prototyping (NAU8810) validates the SIM7600 PCM voice output independent of this risk. See project-log.md 2026-07-19 Codec Swap MAX9880A→ALC5651.
 
 ## Success Criteria
